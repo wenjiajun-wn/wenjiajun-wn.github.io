@@ -14,7 +14,7 @@
 <meta property="og:description" content="本项目设计并实现了一个基于大模型的智能TODO提取助手项目的本质是用户截图或者上传图片然后OCR进行图片的文字提取，然后把提取出来的文字交给AI大模型进行分析总结，最后提取出代办事项 OCR：全称是“光学字符识别”（Optical Character Recognition）。简单来说，它是一种能把图片、扫描件或纸质文档上的文字“翻译”成电子设备可以编辑、搜索的文本的技术。 在这之后，我们还需要知">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2026-05-24T16:00:00.000Z">
-<meta property="article:modified_time" content="2026-05-31T16:59:03.196Z">
+<meta property="article:modified_time" content="2026-05-31T17:06:43.810Z">
 <meta property="article:author" content="wn">
 <meta property="article:tag" content="ai_assitant">
 <meta name="twitter:card" content="summary">
@@ -105,16 +105,16 @@
 <p>前端使用Streamlit，它是一个开源的python框架，可以快速的将python脚本转化为交互式的Web应用，它只需要在终端先<code>pip install streamlit</code>,然后在脚本中使用内置函数就可以创建页面和交互组件比如<br>st.title主要是定义内容，<br>st.button主要是触发交互<br>st.dataframe展示核心数据</p>
 <p>初代的ai_assitant的流程框架<br>用户上传截图<br>↓<br>OCR识别文字<br>↓<br>大模型分析内容<br>↓<br>提取TODO<br>↓<br>生成JSON<br>↓<br>保存SQLite<br>↓<br>Web界面展示</p>
 <p>第二版本的框架<br>截图 (Win+Shift+S)<br>        │<br>        ▼<br>┌─────────────────────────┐<br>│  hotkey_screenshot.py   │  ← 主力入口，后台常驻<br>│  · 轮询剪贴板 (1s)       │<br>│  · MD5 去重 + 互斥锁     │<br>│  · 图片压缩 base64       │<br>└───────────┬─────────────┘<br>            │ base64 + prompt<br>            ▼<br>┌─────────────────────────┐<br>│  DashScope qwen-vl-max  │  ← AI 视觉分析<br>│  · 截图 → 待办列表       │<br>└───────────┬─────────────┘<br>            │ Markdown<br>            ▼<br>┌─────────────────────────┐<br>│  parse_todos_from_md()  │  ← 解析层<br>│  · 正则提取 优先级&#x2F;任务   │<br>│  · 中文日期 → ISO 格式   │<br>└───────────┬─────────────┘<br>            │ [{title, date, priority}]<br>            ▼<br>┌─────────────────────────┐<br>│  calendar_sync.py       │  ← 日历同步<br>│  ① Outlook COM 静默写入  │     主路径<br>│  ② .ics 文件兜底        │     降级<br>└───────────┬─────────────┘<br>            │<br>            ▼<br>    📅 Outlook 日历 → 📱 手机同步</p>
-<pre><code>─────────────────────
-</code></pre>
+<p>─────────────────────</p>
 <p>![截图](C:\Users\32030\Pictures\Screenshots\屏幕截图 2026-05-28 223557.png)<br>这个就是自动提取出来然后导入到日历中的效果图</p>
 <p>其次ImageGrab.grabclipboard() 是 Windows 专有API，能直接从剪贴板拿到 PIL Image 对象——不需要保存文件到磁盘，不需要用户选择路径。</p>
 <p>然后需要注意的就是MD5(是一种哈希算法，它能将任意长度的数据（比如一张图片、一段文字）计算成一个固定 128 位（32 个十六进制字符）的指纹)去重，Windows 截图工具对同一张图不会重复放入剪贴板，但微信&#x2F;QQ 截图可能会。对整张图的 tobytes() 做 MD5，比存 PIL Image( Python 图像处理库) 对象更省内存。图片预处理(pil_to_base64)<br>长边超过 2048px 等比缩放，控制传输体积RGBA&#x2F;P 模式转 RGB，避免 JPEG 编码报错，quality&#x3D;85，在体积和清晰度之间取平衡<br>最后就是processing 标志防止 AI 分析期间（可能 5-10 秒）重复触发。外层 while True 捕获所有异常，内层 last_hash &#x3D; None 重置确保出错后下一次能重新尝试。</p>
 <p>关于Vision LLM的选择，刚开始我试用的模型是deep seek v4-pro，但是后来发现它并不是多模态模型，然后就选择了阿里云的qwen-vl-max，或者也可以使用GPT-4V等，但是需要注意的是如果使用GPT的Vision模型需要进行网络代理，而且成本比较高。</p>
 <p>prompt的设计思路逐区域扫描 → 列出每个任务&#x2F;@提及&#x2F;会议&#x2F;截止日期&#x2F;代码 TODO<br>即使只有模糊线索也要列出（对抗模型”偷懒”倾向）<br>按 紧急 → 重要 → 普通 三级分类<br>统一 Markdown 输出格式<br>之后在对prompt设计上更新了一些指令”逐区域扫描”、”即使只有一条模糊的任务线索也要列出来”——这些指令是对模型”偷懒”倾向的对抗。实际测试中发现不加这些约束，模型经常直接回复”没有待办事项”。</p>
 <p>然后就是日历上的同步</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">outlook = win32com.client.Dispatch(<span class="string">&quot;Outlook.Application&quot;</span>)</span><br><span class="line">appt = outlook.CreateItem(<span class="number">1</span>)           <span class="comment"># olAppointmentItem</span></span><br><span class="line">appt.Subject = <span class="string">f&quot;[<span class="subst">&#123;priority&#125;</span>] <span class="subst">&#123;title&#125;</span>&quot;</span></span><br><span class="line">appt.Start = <span class="string">&quot;2026-05-28 00:00&quot;</span></span><br><span class="line">appt.End   = <span class="string">&quot;2026-05-28 23:59&quot;</span></span><br><span class="line">appt.AllDayEvent = <span class="literal">True</span></span><br><span class="line">appt.ReminderSet = <span class="literal">True</span></span><br><span class="line">appt.ReminderMinutesBeforeStart = <span class="number">15</span> <span class="comment"># 提前15分钟提醒</span></span><br><span class="line">appt.Save()</span><br></pre></td></tr></table></figure>
-<h1 id="写入默认日历，无弹窗"><a href="#写入默认日历，无弹窗" class="headerlink" title="写入默认日历，无弹窗"></a>写入默认日历，无弹窗</h1><p>appt.Save() 直接入库，不像 .ics 方案需要弹出日历窗口让用户确认。事件会自动同步到手机——只要 iPhone&#x2F;Android 上登录了同一个 Outlook&#x2F;Exchange 账号。<br>add_to_calendar() 先 outlook.Name 探测 COM(是微软的一套二进制接口标准，Windows 剪贴板、OLE 拖放、自动化等都建立在它之上) 是否真正可用，任何异常都静默降级到 .ics 方案。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">python</span><br><span class="line">outlook = win32com.client.Dispatch(&quot;Outlook.Application&quot;)</span><br><span class="line">appt = outlook.CreateItem(1)           # olAppointmentItem</span><br><span class="line">appt.Subject = f&quot;[&#123;priority&#125;] &#123;title&#125;&quot;</span><br><span class="line">appt.Start = &quot;2026-05-28 00:00&quot;</span><br><span class="line">appt.End   = &quot;2026-05-28 23:59&quot;</span><br><span class="line">appt.AllDayEvent = True</span><br><span class="line">appt.ReminderSet = True</span><br><span class="line">appt.ReminderMinutesBeforeStart = 15 # 提前15分钟提醒</span><br><span class="line">appt.Save()</span><br></pre></td></tr></table></figure>
+<p>写入默认日历，无弹窗</p>
+<p>appt.Save() 直接入库，不像 .ics 方案需要弹出日历窗口让用户确认。事件会自动同步到手机——只要 iPhone&#x2F;Android 上登录了同一个 Outlook&#x2F;Exchange 账号。<br>add_to_calendar() 先 outlook.Name 探测 COM(是微软的一套二进制接口标准，Windows 剪贴板、OLE 拖放、自动化等都建立在它之上) 是否真正可用，任何异常都静默降级到 .ics 方案。</p>
 <p>设计原则<br>零依赖云服务：不依赖任何外部账号体系。唯一的外部 API 是 DashScope（AI 分析）</p>
 <p>静默优先：后台运行时不弹控制台（clipboard_watcher.vbs 用 pythonw.exe 启动），成功&#x2F;失败都走 Toast 通知，不打断用户工作流。</p>
 <p>渐进降级：Outlook COM → .ics 文件 → 下载按钮。每条路径都有兜底，没有单点故障。</p>
@@ -129,28 +129,9 @@
 <p>检查尺寸+哈希<br>计算文件的尺寸和哈希值，在一个去重记录表（比如 Redis、数据库、本地缓存）中查找是否存在该组合。<br>若存在 → 判定为重复，结束处理。<br>若不存在 → 记录该尺寸+哈希，然后继续处理。</p>
 <p>5冷却检查<br>对于刚刚处理过的内容，可以在去重记录表里额外记录一个“处理时间戳”。如果当前时间与上次处理时间差 &lt; 5 秒，则直接拒绝（即使尺寸+哈希相同）。<br>实际中常把冷却时间整合到去重记录的过期时间中（例如键值对设置 TTL &#x3D; 5 秒）。<br>执行业务处理（如下载、入库、通知等）</p>
 <p>处理完成后更新冷却标记（设置该内容的最后处理时间为当前时间，并保留 5 秒）</p>
-<p>示例<br>graph TB<br>    subgraph 输入层<br>        A[Win+Shift+S 截图] –&gt; B[keyboard 热键监听]<br>        C[Streamlit 上传] –&gt; D[app.py]<br>    end</p>
-<pre><code>subgraph AI层
-    B --&gt; E[win32clipboard 读剪贴板]
-    E --&gt; F[Qwen-VL-Max&lt;br/&gt;视觉大模型]
-    D --&gt; F
-    F --&gt; G[一段话总结&lt;br/&gt;+ 截止日提取]
-end
+<p>示例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">mermaid</span><br><span class="line">graph TB</span><br><span class="line">    subgraph 输入层</span><br><span class="line">        A[Win+Shift+S 截图] --&gt; B[keyboard 热键监听]</span><br><span class="line">        C[Streamlit 上传] --&gt; D[app.py]</span><br><span class="line">    end</span><br><span class="line"></span><br><span class="line">    subgraph AI层</span><br><span class="line">        B --&gt; E[win32clipboard 读剪贴板]</span><br><span class="line">        E --&gt; F[Qwen-VL-Max&lt;br/&gt;视觉大模型]</span><br><span class="line">        D --&gt; F</span><br><span class="line">        F --&gt; G[一段话总结&lt;br/&gt;+ 截止日提取]</span><br><span class="line">    end</span><br><span class="line"></span><br><span class="line">    subgraph 存储层</span><br><span class="line">        G --&gt; H[push_to_calendar_server]</span><br><span class="line">        H --&gt; I[&quot;POST /api/events/batch&quot;]</span><br><span class="line">        I --&gt; J[(calendar_data.json)]</span><br><span class="line">        J -.-&gt; K[(pending_todos.json&lt;br/&gt;离线兜底)]</span><br><span class="line">    end</span><br><span class="line"></span><br><span class="line">    subgraph 展示层</span><br><span class="line">        J --&gt; L[&quot;GET /api/events&quot;]</span><br><span class="line">        L --&gt; M[calendar_server.py&lt;br/&gt;Flask + 原生 HTML/CSS/JS]</span><br><span class="line">        M --&gt; N[月/周/日视图&lt;br/&gt;左侧栏事项列表&lt;br/&gt;优先级切换 + 批量删除]</span><br><span class="line">        H --&gt; O[首次自动打开浏览器]</span><br><span class="line">    end</span><br></pre></td></tr></table></figure>
 
-subgraph 存储层
-    G --&gt; H[push_to_calendar_server]
-    H --&gt; I[&quot;POST /api/events/batch&quot;]
-    I --&gt; J[(calendar_data.json)]
-    J -.-&gt; K[(pending_todos.json&lt;br/&gt;离线兜底)]
-end
-
-subgraph 展示层
-    J --&gt; L[&quot;GET /api/events&quot;]
-    L --&gt; M[calendar_server.py&lt;br/&gt;Flask + 原生 HTML/CSS/JS]
-    M --&gt; N[月/周/日视图&lt;br/&gt;左侧栏事项列表&lt;br/&gt;优先级切换 + 批量删除]
-    H --&gt; O[首次自动打开浏览器]
-end
-</code></pre>
 <p>   流程– 截图 → clipboard → AI总结(80字) → 提取截止日 → POST JSON → 日历网页 ≤3秒自动刷新</p>
 <p>   它拥有两个入口，一个是run.bat<br>   另一个是streamlit run app.py<br>   区别：第一个双击日常使用，后台截图监听<br>   第二个终端手动上传已有图片</p>
 <p>API的设计(REST)<br>GET    &#x2F;api&#x2F;events            获取所有事件<br>POST   &#x2F;api&#x2F;events            创建单个事件<br>POST   &#x2F;api&#x2F;events&#x2F;batch      批量导入（AI 推送入口）<br>PUT    &#x2F;api&#x2F;events&#x2F;<id>       更新事件（改颜色&#x2F;优先级）<br>DELETE &#x2F;api&#x2F;events&#x2F;<id>       删除单个<br>DELETE &#x2F;api&#x2F;events&#x2F;batch      批量删除（传 IDs）<br>POST   &#x2F;api&#x2F;pending&#x2F;import    导入离线暂存</p>
