@@ -139,6 +139,9 @@
 <p>PIL（Pillow）是 Python 最常用的图像处理库，用来做图片的读取、压缩、格式转换。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Image.<span class="built_in">open</span>(BytesIO(data))  <span class="comment"># 读取剪贴板原始数据转图片</span></span><br><span class="line">image.save(buf, <span class="built_in">format</span>=<span class="string">&quot;JPEG&quot;</span>, quality=<span class="number">85</span>)  <span class="comment"># 图片压缩转 base64 发给 AI</span></span><br><span class="line">img.tobytes()  <span class="comment"># 计算图片 MD5 去重</span></span><br></pre></td></tr></table></figure>
 
+<h3 id="新增多用户支持"><a href="#新增多用户支持" class="headerlink" title="新增多用户支持"></a>新增多用户支持</h3><p>数据层上:JSON 结构从 [{event}] 升级为 {“events”:{“userA”:[],”userB”:[]}}，旧数据自动迁移,同时api加上？user&#x3D; 参数隔离<br>前端js：添加 USER_ID 常量，fetch() URL 追加 ？user&#x3D;、页面标题显示用户名.<br>客户端：hotkey_screenshot.py 读取 user_config.json，推送和浏览器 URL 带用户参数</p>
+<h3 id="打包，部署过程"><a href="#打包，部署过程" class="headerlink" title="打包，部署过程"></a>打包，部署过程</h3><p>build_exe.bat——PyInstaller 一键打包脚本<br>user_config.json——用户配置模板（用户名 + 服务器地址）<br>env_template——.env 空模板(不含 API Key，用户自己申请)<br>使用阿里云轻量服务器，连接上termius，使用SFTP上传</p>
+
       
     </div>
     <footer class="article-footer">
