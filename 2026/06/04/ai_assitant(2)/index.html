@@ -6,17 +6,17 @@
   
   <title>一个可以提取图片中重要信息并分成优先级的ai助手 | WN</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="第三版：日历网页第三版框架assitant_vision&#x2F;├── calendar_server.py    # Flask 日历网页 + API（前后端一体）├── hotkey_screenshot.py  # 截图监听（Win+Shift+S → AI → 日历）├── app.py                # Streamlit 手动上传界面├── run.bat">
+  <meta name="description" content="第三版：日历网页项目结构第三版的项目目录如下： 123456assitant_vision&#x2F;├── calendar_server.py    # Flask 日历网页 + API（前后端一体）├── hotkey_screenshot.py  # 截图监听（Win+Shift+S → AI → 日历）├── app.py                # Streamlit 手动上传界面├──">
 <meta property="og:type" content="article">
 <meta property="og:title" content="一个可以提取图片中重要信息并分成优先级的ai助手">
 <meta property="og:url" content="https://wenjiajun-wn.github.io/2026/06/04/ai_assitant(2)/index.html">
 <meta property="og:site_name" content="WN">
-<meta property="og:description" content="第三版：日历网页第三版框架assitant_vision&#x2F;├── calendar_server.py    # Flask 日历网页 + API（前后端一体）├── hotkey_screenshot.py  # 截图监听（Win+Shift+S → AI → 日历）├── app.py                # Streamlit 手动上传界面├── run.bat">
+<meta property="og:description" content="第三版：日历网页项目结构第三版的项目目录如下： 123456assitant_vision&#x2F;├── calendar_server.py    # Flask 日历网页 + API（前后端一体）├── hotkey_screenshot.py  # 截图监听（Win+Shift+S → AI → 日历）├── app.py                # Streamlit 手动上传界面├──">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://wenjiajun-wn.github.io/images/screenshot-streamlit-upload.png">
 <meta property="og:image" content="https://wenjiajun-wn.github.io/images/screenshot-streamlit-ui.png">
 <meta property="article:published_time" content="2026-06-03T16:00:00.000Z">
-<meta property="article:modified_time" content="2026-06-04T02:14:36.913Z">
+<meta property="article:modified_time" content="2026-06-04T02:21:57.248Z">
 <meta property="article:author" content="wn">
 <meta property="article:tag" content="ai_assitant(2)">
 <meta name="twitter:card" content="summary">
@@ -99,51 +99,195 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h2 id="第三版：日历网页"><a href="#第三版：日历网页" class="headerlink" title="第三版：日历网页"></a>第三版：日历网页</h2><p>第三版框架<br>assitant_vision&#x2F;<br>├── calendar_server.py    # Flask 日历网页 + API（前后端一体）<br>├── hotkey_screenshot.py  # 截图监听（Win+Shift+S → AI → 日历）<br>├── app.py                # Streamlit 手动上传界面<br>├── run.bat               # 一键启动脚本<br>└── .env                  # API 密钥<br><img src="/images/screenshot-streamlit-upload.png" alt="截图"><br>这个是Streamlit 手动上传界面</p>
+        <h2 id="第三版：日历网页"><a href="#第三版：日历网页" class="headerlink" title="第三版：日历网页"></a>第三版：日历网页</h2><h3 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h3><p>第三版的项目目录如下：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">assitant_vision/</span><br><span class="line">├── calendar_server.py    # Flask 日历网页 + API（前后端一体）</span><br><span class="line">├── hotkey_screenshot.py  # 截图监听（Win+Shift+S → AI → 日历）</span><br><span class="line">├── app.py                # Streamlit 手动上传界面</span><br><span class="line">├── run.bat               # 一键启动脚本</span><br><span class="line">└── .env                  # API 密钥</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/screenshot-streamlit-upload.png" alt="截图"></p>
+<p>Streamlit 手动上传界面</p>
 <p><img src="/images/screenshot-streamlit-ui.png" alt="截图"></p>
 <h3 id="架构流程图"><a href="#架构流程图" class="headerlink" title="架构流程图"></a>架构流程图</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">graph TB</span><br><span class="line">    subgraph 输入层</span><br><span class="line">        A[Win+Shift+S 截图] --&gt; B[keyboard 热键监听]</span><br><span class="line">        C[Streamlit 上传] --&gt; D[app.py]</span><br><span class="line">    end</span><br><span class="line"></span><br><span class="line">    subgraph AI层</span><br><span class="line">        B --&gt; E[win32clipboard 读剪贴板]</span><br><span class="line">        E --&gt; F[Qwen-VL-Max&lt;br/&gt;视觉大模型]</span><br><span class="line">        D --&gt; F</span><br><span class="line">        F --&gt; G[一段话总结&lt;br/&gt;+ 截止日提取]</span><br><span class="line">    end</span><br><span class="line"></span><br><span class="line">    subgraph 存储层</span><br><span class="line">        G --&gt; H[push_to_calendar_server]</span><br><span class="line">        H --&gt; I[&quot;POST /api/events/batch&quot;]</span><br><span class="line">        I --&gt; J[(calendar_data.json)]</span><br><span class="line">        J -.-&gt; K[(pending_todos.json&lt;br/&gt;离线兜底)]</span><br><span class="line">    end</span><br><span class="line"></span><br><span class="line">    subgraph 展示层</span><br><span class="line">        J --&gt; L[&quot;GET /api/events&quot;]</span><br><span class="line">        L --&gt; M[calendar_server.py&lt;br/&gt;Flask + 原生 HTML/CSS/JS]</span><br><span class="line">        M --&gt; N[月/周/日视图&lt;br/&gt;左侧栏事项列表&lt;br/&gt;优先级切换 + 批量删除]</span><br><span class="line">        H --&gt; O[首次自动打开浏览器]</span><br><span class="line">    end</span><br></pre></td></tr></table></figure>
 
-<p>流程– 截图 → clipboard → AI总结(80字) → 提取截止日 → POST JSON → 日历网页 ≤3秒自动刷新</p>
-<p>它拥有两个入口，一个是run.bat<br>另一个是streamlit run app.py<br>区别：第一个双击日常使用，后台截图监听<br>第二个终端手动上传已有图片</p>
-<h3 id="功能效果"><a href="#功能效果" class="headerlink" title="功能效果"></a>功能效果</h3><p>实现的功能效果</p>
+<p>整体流程：截图 → 剪贴板 → AI 总结（80字内）→ 提取截止日 → POST JSON → 日历网页 ≤3秒自动刷新。</p>
+<p>项目提供两个入口：</p>
 <ul>
+<li>**<code>run.bat</code>**：双击日常使用，后台截图监听</li>
+<li>**<code>streamlit run app.py</code>**：终端手动上传已有图片</li>
+</ul>
+<h3 id="功能效果"><a href="#功能效果" class="headerlink" title="功能效果"></a>功能效果</h3><ul>
 <li><strong>截图触发</strong>：Win+Shift+S → 键盘钩子检测 → 读剪贴板选区</li>
 <li><strong>AI 总结</strong>：一张截图 → 一段 80 字内的简洁总结</li>
-<li><strong>截止日识别</strong>：自动从总结中提取日期（6月20日&#x2F;明天&#x2F;下周五等），放到对应日历格子</li>
+<li><strong>截止日识别</strong>：自动从总结中提取日期（6月20日 &#x2F; 明天 &#x2F; 下周五等），放到对应日历格子</li>
 <li><strong>日历网页</strong>：月&#x2F;周&#x2F;日视图，左侧边栏当天事项，全屏自适应</li>
 <li><strong>自动推送</strong>：AI 分析完直接推送到日历，无需任何手动操作</li>
 <li><strong>浏览器唤醒</strong>：首次推送自动打开日历网页</li>
 <li><strong>优先级切换</strong>：点击圆点循环切换 普通&#x2F;重要&#x2F;紧急，颜色+标签同步</li>
 <li><strong>批量删除</strong>：侧边栏复选框 + 删除所选</li>
-<li><strong>去重防重复</strong>：哈希+尺寸去重 + 5秒冷却 + 单实例文件锁</li>
+<li><strong>去重防重复</strong>：哈希 + 尺寸去重 + 5秒冷却 + 单实例文件锁</li>
 </ul>
-<p>完整流程：Win+Shift+S 截图选区域 → AI 一句总结 → 提取截止日 → 自动推送到日历 → 浏览器弹出显示</p>
-<h2 id="关键技术概念"><a href="#关键技术概念" class="headerlink" title="关键技术概念"></a>关键技术概念</h2><h3 id="哈希"><a href="#哈希" class="headerlink" title="哈希"></a>哈希</h3><p>哈希：一种将任意长度的数据（比如文件、文本、数字）转换成固定长度短字符串的算法。这个短字符串通常被称为哈希值，简单来说它相当于给数据一个独一无二的编码，输出相同的数据就会返回相同的哈希值，而且哈希值的计算很快，一般哈希的<strong>主要用途就是数据去重，密码储存，文件的完整性校验</strong>，哈希表&#x2F;字典(编程语言中的 Map、Object、Dict 都用哈希来快速定位键值对。)</p>
-<h3 id="单实例文件锁"><a href="#单实例文件锁" class="headerlink" title="单实例文件锁"></a>单实例文件锁</h3><p>单实例文件锁：是一个并发控制&#x2F;互斥机制，确保同一时间整个系统<strong>只有一个进程（或线程）</strong>在执行核心的去重+处理逻辑。<br>使用操作系统提供的文件锁（flock、LockFile 等）来锁住一个约定的锁文件。</p>
-<p>进程启动时尝试获取锁：<br>成功获取 → 成为<strong>单实例</strong>，继续执行。<br>获取失败 → 说明已经有另一个实例在运行，当前进程直接退出或等待。<br>作用：<br>在分布式或多进程环境下，防止多个进程同时修改状态、同时处理同一个内容，导致重复处理或数据错乱文件锁是<strong>轻量级的单实例保障</strong>。</p>
-<h3 id="防重复流程"><a href="#防重复流程" class="headerlink" title="防重复流程"></a>防重复流程</h3><p>一个典型的完整防重复流程如下（例如处理一个上传的文件）：<br>获取单实例文件锁<br>确保同一时间只有一个处理实例在运行。如果拿不到锁，直接退出。</p>
-<p>检查尺寸+哈希<br>计算文件的尺寸和哈希值，在一个去重记录表（比如 Redis、数据库、本地缓存）中查找是否存在该组合。<br>若存在 → 判定为重复，结束处理。<br>若不存在 → 记录该尺寸+哈希，然后继续处理。</p>
-<p>5冷却检查<br>对于刚刚处理过的内容，可以在去重记录表里额外记录一个“处理时间戳”。如果当前时间与上次处理时间差 &lt; 5 秒，则直接拒绝（即使尺寸+哈希相同）。<br>实际中常把冷却时间整合到去重记录的过期时间中（例如键值对设置 TTL &#x3D; 5 秒）。<br>执行业务处理（如下载、入库、通知等）</p>
-<p>处理完成后更新冷却标记（设置该内容的最后处理时间为当前时间，并保留 5 秒）</p>
-<h3 id="API-设计"><a href="#API-设计" class="headerlink" title="API 设计"></a>API 设计</h3><p>API的设计(REST)<br>GET    &#x2F;api&#x2F;events            获取所有事件<br>POST   &#x2F;api&#x2F;events            创建单个事件<br>POST   &#x2F;api&#x2F;events&#x2F;batch      批量导入（AI 推送入口）<br>PUT    &#x2F;api&#x2F;events&#x2F;<id>       更新事件（改颜色&#x2F;优先级）<br>DELETE &#x2F;api&#x2F;events&#x2F;<id>       删除单个<br>DELETE &#x2F;api&#x2F;events&#x2F;batch      批量删除（传 IDs）<br>POST   &#x2F;api&#x2F;pending&#x2F;import    导入离线暂存</p>
-<h3 id="核心函数调用链"><a href="#核心函数调用链" class="headerlink" title="核心函数调用链"></a>核心函数调用链</h3><p>核心函数的使用</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">main()</span><br><span class="line">└─ keyboard.add_hotkey(&#x27;win+shift+s&#x27;, process_screenshot)</span><br><span class="line">     └─ win32clipboard 读图</span><br><span class="line">           └─ pil_to_base64()</span><br><span class="line">               └─ client.chat.completions.create()  ← Qwen-VL</span><br><span class="line">                     └─ parse_chinese_date()  ← 提取截止日</span><br><span class="line">                          └─</span><br><span class="line">                          push_to_calendar_server()</span><br><span class="line">                               └─ POST /api/events/batch</span><br><span class="line">                                   └─ open_calendar()  ← 唤醒浏览器</span><br></pre></td></tr></table></figure>
-<p>win32clipboard 是 pywin32 库的剪贴板模块，直接调用 Windows 底层 API 读取剪贴板里的图片数据。之前用 PIL 自带的 ImageGrab.grabclipboard() 在后台进程里读不到剪贴板，换成 win32clipboard 才解决。就三行逻辑：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">win32clipboard.OpenClipboard()                               <span class="comment"># 打开剪贴板</span></span><br><span class="line">data = win32clipboard.GetClipboardData(CF_DIB)</span><br><span class="line">                                 <span class="comment"># 读取图片原始数据</span></span><br><span class="line">win32clipboard.CloseClipboard()  <span class="comment"># 关闭</span></span><br><span class="line">img = Image.<span class="built_in">open</span>(BytesIO(data))  <span class="comment"># 转成 PIL 图片</span></span><br></pre></td></tr></table></figure>
-<p>PIL（Pillow）是 Python 最常用的图像处理库，用来做图片的读取、压缩、格式转换。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Image.<span class="built_in">open</span>(BytesIO(data))  <span class="comment"># 读取剪贴板原始数据转图片</span></span><br><span class="line">image.save(buf, <span class="built_in">format</span>=<span class="string">&quot;JPEG&quot;</span>, quality=<span class="number">85</span>)  <span class="comment"># 图片压缩转 base64 发给 AI</span></span><br><span class="line">img.tobytes()  <span class="comment"># 计算图片 MD5 去重</span></span><br></pre></td></tr></table></figure>
+<p>完整流程：Win+Shift+S 截图选区域 → AI 一句总结 → 提取截止日 → 自动推送到日历 → 浏览器弹出显示。</p>
+<h2 id="关键技术概念"><a href="#关键技术概念" class="headerlink" title="关键技术概念"></a>关键技术概念</h2><h3 id="哈希"><a href="#哈希" class="headerlink" title="哈希"></a>哈希</h3><p>哈希是一种将任意长度的数据（比如文件、文本、数字）转换成固定长度短字符串的算法。这个短字符串通常被称为哈希值，相当于给数据一个独一无二的”指纹”——相同的数据永远返回相同的哈希值，而且计算速度很快。</p>
+<p>哈希的主要用途：</p>
+<ul>
+<li><strong>数据去重</strong>：比较哈希值判断内容是否重复</li>
+<li><strong>密码储存</strong>：只存哈希值，不存明文密码</li>
+<li><strong>文件完整性校验</strong>：对比下载前后哈希值是否一致</li>
+<li><strong>哈希表&#x2F;字典</strong>：编程语言中的 Map、Object、Dict 都用哈希来快速定位键值对</li>
+</ul>
+<h3 id="单实例文件锁"><a href="#单实例文件锁" class="headerlink" title="单实例文件锁"></a>单实例文件锁</h3><p>单实例文件锁是一种并发控制&#x2F;互斥机制，确保同一时间整个系统<strong>只有一个进程（或线程）</strong>在执行核心的去重+处理逻辑。它使用操作系统提供的文件锁（flock、LockFile 等）来锁住一个约定的锁文件。</p>
+<p>进程启动时尝试获取锁：</p>
+<ul>
+<li>成功获取 → 成为<strong>单实例</strong>，继续执行</li>
+<li>获取失败 → 说明已经有另一个实例在运行，当前进程直接退出或等待</li>
+</ul>
+<p>在分布式或多进程环境下，文件锁能防止多个进程同时修改状态、同时处理同一个内容，导致重复处理或数据错乱。它是一种<strong>轻量级的单实例保障</strong>。</p>
+<h3 id="防重复流程"><a href="#防重复流程" class="headerlink" title="防重复流程"></a>防重复流程</h3><p>一个典型的完整防重复流程如下：</p>
+<ol>
+<li><p><strong>获取单实例文件锁</strong><br>确保同一时间只有一个处理实例在运行。如果拿不到锁，直接退出。</p>
+</li>
+<li><p><strong>检查尺寸 + 哈希</strong><br>计算文件的尺寸和哈希值，在去重记录表（比如 Redis、数据库、本地缓存）中查找是否存在该组合。</p>
+<ul>
+<li>若存在 → 判定为重复，结束处理</li>
+<li>若不存在 → 记录该尺寸+哈希，然后继续处理</li>
+</ul>
+</li>
+<li><p><strong>5秒冷却检查</strong><br>对于刚刚处理过的内容，在去重记录表里额外记录一个”处理时间戳”。如果当前时间与上次处理时间差 &lt; 5 秒，则直接拒绝（即使尺寸+哈希相同）。<br>实际中常把冷却时间整合到去重记录的过期时间中（例如键值对设置 TTL &#x3D; 5 秒）。</p>
+</li>
+<li><p><strong>执行业务处理</strong>（如下载、入库、通知等）</p>
+</li>
+<li><p><strong>更新冷却标记</strong><br>设置该内容的最后处理时间为当前时间，并保留 5 秒。</p>
+</li>
+</ol>
+<h3 id="API-设计"><a href="#API-设计" class="headerlink" title="API 设计"></a>API 设计</h3><p>采用 RESTful 风格设计：</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>路径</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>GET</td>
+<td><code>/api/events</code></td>
+<td>获取所有事件</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/api/events</code></td>
+<td>创建单个事件</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/api/events/batch</code></td>
+<td>批量导入（AI 推送入口）</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td><code>/api/events/&lt;id&gt;</code></td>
+<td>更新事件（改颜色&#x2F;优先级）</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td><code>/api/events/&lt;id&gt;</code></td>
+<td>删除单个事件</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td><code>/api/events/batch</code></td>
+<td>批量删除（传 IDs）</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/api/pending/import</code></td>
+<td>导入离线暂存</td>
+</tr>
+</tbody></table>
+<h3 id="核心函数调用链"><a href="#核心函数调用链" class="headerlink" title="核心函数调用链"></a>核心函数调用链</h3><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">main()</span><br><span class="line">└─ keyboard.add_hotkey(&#x27;win+shift+s&#x27;, process_screenshot)</span><br><span class="line">     └─ win32clipboard 读图</span><br><span class="line">           └─ pil_to_base64()</span><br><span class="line">               └─ client.chat.completions.create()  ← Qwen-VL</span><br><span class="line">                     └─ parse_chinese_date()  ← 提取截止日</span><br><span class="line">                          └─ push_to_calendar_server()</span><br><span class="line">                               └─ POST /api/events/batch</span><br><span class="line">                                   └─ open_calendar()  ← 唤醒浏览器</span><br></pre></td></tr></table></figure>
 
-<h3 id="新增多用户支持"><a href="#新增多用户支持" class="headerlink" title="新增多用户支持"></a>新增多用户支持</h3><p>数据层上:JSON 结构从 [{event}] 升级为 {“events”:{“userA”:[],”userB”:[]}}，旧数据自动迁移,同时api加上？user&#x3D; 参数隔离<br>前端js：添加 USER_ID 常量，fetch() URL 追加 ？user&#x3D;、页面标题显示用户名.<br>客户端：hotkey_screenshot.py 读取 user_config.json，推送和浏览器 URL 带用户参数</p>
-<h3 id="打包，部署过程"><a href="#打包，部署过程" class="headerlink" title="打包，部署过程"></a>打包，部署过程</h3><p>build_exe.bat——PyInstaller 一键打包脚本<br>user_config.json——用户配置模板（用户名 + 服务器地址）<br>env_template——.env 空模板(不含 API Key，用户自己申请)<br>使用阿里云轻量服务器，连接上termius，使用SFTP上传</p>
-<h3 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h3><p>使用SQLite轻量数据库，属于python内置替换了原来的json版本<br>新增:<br>_get_db() — 创建数据库连接，开启 WAL 模式（允许并发读写）<br>_init_db() — 建表 + 检测旧的 calendar_data.json 自动迁移</p>
-<p>自动迁移机制：<br>_init_db() 启动时会检查是否存在旧文件 calendar_data.json。如果存在，自动把数据导入 SQLite，然后把 JSON 文件重命名为 calendar_data.json.migrated，不会重复迁移。</p>
-<h3 id="新增登录界面-login"><a href="#新增登录界面-login" class="headerlink" title="新增登录界面(&#x2F;login)"></a>新增登录界面(&#x2F;login)</h3><p>新增 users 表 + 注册&#x2F;登录 API<br>POST &#x2F;api&#x2F;auth&#x2F;register——注册：输入用户名+密码，创建账号<br>POST &#x2F;api&#x2F;auth&#x2F;login——登录：验证密码，写入 Session<br>POST &#x2F;api&#x2F;auth&#x2F;logout—— 登出：清除 Session<br>GET &#x2F;api&#x2F;auth&#x2F;me—— 查当前登录状态<br><strong>Session</strong>数据存在服务端（Flask 默认存在加密的 Cookie 里，也可以存 Redis&#x2F;数据库）浏览器只持有一个 Session ID（一串随机字符），不存实际数据，所以安全</p>
-<p>没登录 → 自动跳转到 &#x2F;login<br>登录了 → 显示自己的日历</p>
-<p>每个 API 原来从 URL ?user&#x3D;xxx 读用户，现在从 Session 读取<br>原来是user &#x3D; request.args.get(“user”)<br>现在是user &#x3D; session[‘user’]   # 浏览器登录后自动携带</p>
-<h3 id="exe-客户端怎么认证？"><a href="#exe-客户端怎么认证？" class="headerlink" title="exe 客户端怎么认证？"></a>exe 客户端怎么认证？</h3><p>浏览器用 Cookie&#x2F;Session，exe 用 API Token。注册成功后会给一个 32 位随机 Token，写在 user_config.json 里。exe 每次请求在 HTTP Header 里带上 X-API-Token: xxx，服务端就认得是谁了。</p>
-<h3 id="用户体验流程"><a href="#用户体验流程" class="headerlink" title="用户体验流程"></a>用户体验流程</h3><p>首次使用：<br>  打开网页 → 登录页 → 点”注册” → 输入用户名+密码 → 注册成功<br>  → 复制 API Token → 填到 exe 的 user_config.json<br>  → 下次直接打开就自动登录了</p>
-<p>日常使用：<br>  打开网页 → 已登录，直接看到日历<br>  截图 → exe 用 Token 推送 → 日历自动刷新</p>
-<h2 id="用户首次使用："><a href="#用户首次使用：" class="headerlink" title="用户首次使用："></a>用户首次使用：</h2><p>用户拿到 exe 后：<br>双击 AI-TODO-Assistant.exe<br>首次运行弹出提示，输入用户名 + 密码<br>自动尝试登录 → 没账号就自动注册 → Token 自动保存<br>窗口显示 “Setup complete! Starting…”<br>按 Win+Shift+S 截图使用</p>
+<p><code>win32clipboard</code> 是 pywin32 库的剪贴板模块，直接调用 Windows 底层 API 读取剪贴板里的图片数据。之前用 PIL 自带的 <code>ImageGrab.grabclipboard()</code> 在后台进程里读不到剪贴板，换成 <code>win32clipboard</code> 才解决。核心逻辑就三行：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">win32clipboard.OpenClipboard()                              <span class="comment"># 打开剪贴板</span></span><br><span class="line">data = win32clipboard.GetClipboardData(CF_DIB)              <span class="comment"># 读取图片原始数据</span></span><br><span class="line">win32clipboard.CloseClipboard()                             <span class="comment"># 关闭</span></span><br><span class="line">img = Image.<span class="built_in">open</span>(BytesIO(data))                             <span class="comment"># 转成 PIL 图片</span></span><br></pre></td></tr></table></figure>
+
+<p>PIL（Pillow）是 Python 最常用的图像处理库，用来做图片的读取、压缩、格式转换：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Image.<span class="built_in">open</span>(BytesIO(data))                    <span class="comment"># 读取剪贴板原始数据转图片</span></span><br><span class="line">image.save(buf, <span class="built_in">format</span>=<span class="string">&quot;JPEG&quot;</span>, quality=<span class="number">85</span>)   <span class="comment"># 图片压缩转 base64 发给 AI</span></span><br><span class="line">img.tobytes()                                <span class="comment"># 计算图片 MD5 去重</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="新增多用户支持"><a href="#新增多用户支持" class="headerlink" title="新增多用户支持"></a>新增多用户支持</h3><p>数据层上，JSON 结构从 <code>[&#123;event&#125;]</code> 升级为 <code>&#123;&quot;events&quot;:&#123;&quot;userA&quot;:[],&quot;userB&quot;:[]&#125;&#125;</code>，旧数据自动迁移。API 加上 <code>?user=</code> 参数隔离不同用户。</p>
+<p>前端 JS 添加 <code>USER_ID</code> 常量，<code>fetch()</code> URL 追加 <code>?user=</code>，页面标题显示用户名。</p>
+<p>客户端 <code>hotkey_screenshot.py</code> 读取 <code>user_config.json</code>，推送和浏览器 URL 带用户参数。</p>
+<h3 id="打包与部署"><a href="#打包与部署" class="headerlink" title="打包与部署"></a>打包与部署</h3><ul>
+<li>**<code>build_exe.bat</code>**：PyInstaller 一键打包脚本</li>
+<li>**<code>user_config.json</code>**：用户配置模板（用户名 + 服务器地址）</li>
+<li><strong><code>.env</code> 模板</strong>：不含 API Key，用户自己申请</li>
+</ul>
+<p>部署使用阿里云轻量服务器，通过 Termius 连接，SFTP 上传文件。</p>
+<h3 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h3><p>使用 SQLite 轻量数据库（Python 内置），替换了原来的 JSON 存储方案。新增两个核心函数：</p>
+<ul>
+<li>**<code>_get_db()</code>**：创建数据库连接，开启 WAL 模式（允许并发读写）</li>
+<li>**<code>_init_db()</code>**：建表 + 检测旧的 <code>calendar_data.json</code> 自动迁移</li>
+</ul>
+<p>自动迁移机制：<code>_init_db()</code> 启动时会检查是否存在旧文件 <code>calendar_data.json</code>。如果存在，自动把数据导入 SQLite，然后把 JSON 文件重命名为 <code>calendar_data.json.migrated</code>，不会重复迁移。</p>
+<h3 id="新增登录界面（-login）"><a href="#新增登录界面（-login）" class="headerlink" title="新增登录界面（/login）"></a>新增登录界面（<code>/login</code>）</h3><p>新增 <code>users</code> 表 + 注册&#x2F;登录 API：</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>路径</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>POST</td>
+<td><code>/api/auth/register</code></td>
+<td>注册：输入用户名+密码，创建账号</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/api/auth/login</code></td>
+<td>登录：验证密码，写入 Session</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/api/auth/logout</code></td>
+<td>登出：清除 Session</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/auth/me</code></td>
+<td>查询当前登录状态</td>
+</tr>
+</tbody></table>
+<p><strong>Session</strong> 数据存在服务端（Flask 默认存在加密的 Cookie 里，也可以存 Redis&#x2F;数据库），浏览器只持有一个 Session ID（一串随机字符），不存实际数据，因此安全。</p>
+<p>权限控制：</p>
+<ul>
+<li>没登录 → 自动跳转到 <code>/login</code></li>
+<li>已登录 → 显示自己的日历</li>
+</ul>
+<p>每个 API 原来从 URL <code>?user=xxx</code> 读用户，现在从 Session 读取：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 原来</span></span><br><span class="line">user = request.args.get(<span class="string">&quot;user&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 现在</span></span><br><span class="line">user = session[<span class="string">&#x27;user&#x27;</span>]  <span class="comment"># 浏览器登录后自动携带</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="exe-客户端怎么认证？"><a href="#exe-客户端怎么认证？" class="headerlink" title="exe 客户端怎么认证？"></a>exe 客户端怎么认证？</h3><p>浏览器用 Cookie&#x2F;Session，exe 用 API Token：</p>
+<ol>
+<li>注册成功后会给一个 32 位随机 Token，写在 <code>user_config.json</code> 里</li>
+<li>exe 每次请求在 HTTP Header 里带上 <code>X-API-Token: xxx</code></li>
+<li>服务端就能识别是谁在推送</li>
+</ol>
+<h2 id="用户使用流程"><a href="#用户使用流程" class="headerlink" title="用户使用流程"></a>用户使用流程</h2><h3 id="首次使用"><a href="#首次使用" class="headerlink" title="首次使用"></a>首次使用</h3><ol>
+<li>打开网页 → 自动跳转登录页 → 点击”注册”</li>
+<li>输入用户名 + 密码 → 注册成功</li>
+<li>复制 API Token → 填到 exe 的 <code>user_config.json</code> 中</li>
+<li>之后打开网页就自动登录了</li>
+</ol>
+<p>拿到 exe 后的操作：</p>
+<ol>
+<li>双击 <code>AI-TODO-Assistant.exe</code></li>
+<li>首次运行弹出提示，输入用户名 + 密码</li>
+<li>自动尝试登录 → 没账号就自动注册 → Token 自动保存</li>
+<li>窗口显示 “Setup complete! Starting…”</li>
+<li>按 <code>Win+Shift+S</code> 截图即可使用</li>
+</ol>
+<h3 id="日常使用"><a href="#日常使用" class="headerlink" title="日常使用"></a>日常使用</h3><ul>
+<li>打开网页 → 已登录，直接看到日历</li>
+<li>截图 → exe 用 Token 推送 → 日历自动刷新</li>
+</ul>
 
       
     </div>
