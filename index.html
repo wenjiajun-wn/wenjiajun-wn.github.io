@@ -71,6 +71,165 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-AI Agents with Hugging Face smolagents" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/06/12/AI%20Agents%20with%20Hugging%20Face%20smolagents/" class="article-date">
+  <time class="dt-published" datetime="2026-06-11T16:00:00.000Z" itemprop="datePublished">2026-06-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2026/06/12/AI%20Agents%20with%20Hugging%20Face%20smolagents/">用 Hugging Face smolagents 打造智能 AI Agent</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>AI Agent（AI 代理人）正在改变我们与软件互动的方式。过去，我们给 LLM 一个问题，它回答；现在，Agent 能够搜索数据、推理、执行代码，甚至主动完成复杂任务。本篇博客整理 <strong>smolagents</strong> 框架的四大核心主题并学习多代理系统的设计</p>
+<h2 id="一、Introduction-to-Hugging-Face-smolagents"><a href="#一、Introduction-to-Hugging-Face-smolagents" class="headerlink" title="一、Introduction to Hugging Face smolagents"></a>一、Introduction to Hugging Face smolagents</h2><h3 id="什么是-smolagents？"><a href="#什么是-smolagents？" class="headerlink" title="什么是 smolagents？"></a>什么是 smolagents？</h3><p>smolagents 是 Hugging Face 开发的<strong>轻量级 Python 框架</strong>，专为构建能够推理与行动的 AI Agent 而设计。它的核心理念是让 LLM 不只是”回答问题”，而是能够<strong>生成并执行 Python 代码</strong>来完成任务。</p>
+<h3 id="两种核心-Agent-类型"><a href="#两种核心-Agent-类型" class="headerlink" title="两种核心 Agent 类型"></a>两种核心 Agent 类型</h3><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>说明</th>
+<th>行动方式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>CodeAgent</strong></td>
+<td>smolagents 的主要 Agent 类型</td>
+<td>生成并执行 Python 代码</td>
+</tr>
+<tr>
+<td><strong>ToolCallingAgent</strong></td>
+<td>第二种 Agent 类型</td>
+<td>输出 JSON&#x2F;文本格式，由系统解析后执行</td>
+</tr>
+</tbody></table>
+<p>CodeAgent 的优势在于它直接输出可执行的代码，逻辑更灵活、更强大；ToolCallingAgent 则更适合需要严格结构化输出的场景。</p>
+<h3 id="Tools（工具）：Agent-的行动工具"><a href="#Tools（工具）：Agent-的行动工具" class="headerlink" title="Tools（工具）：Agent 的行动工具"></a>Tools（工具）：Agent 的行动工具</h3><p>Tool是 Agent 能够调用的函数，是 Agent 的基本组成。smolagents 提供三种方式定义工具：</p>
+<ol>
+<li><strong>内置工具箱</strong>：如 <code>DuckDuckGoSearchTool</code>、<code>VisitWebpageTool</code> 等DuckDuckGoSearchTool：调用 DuckDuckGo 搜索引擎，帮 Agent 上网搜东西。相当于 Agent 的”百度一下”，不用 API Key，免费用<br>VisitWebpageTool：打开一个网页，把里面的文字内容抓回来。搜到结果后点进去看具体内容，相当于 Agent 的”打开网页看一眼”</li>
+<li><strong><code>@tool</code> 装饰器</strong>：把一般函数变成 Agent 可调用的工具</li>
+<li><strong>继承 <code>Tool</code> 类</strong>：更完整的自定义工具实现</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> smolagents <span class="keyword">import</span> CodeAgent, DuckDuckGoSearchTool, InferenceClientModel</span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化工具与模型</span></span><br><span class="line">search_tool = DuckDuckGoSearchTool()</span><br><span class="line">model = InferenceClientModel()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建 Agent</span></span><br><span class="line">agent = CodeAgent(</span><br><span class="line">    model=model,</span><br><span class="line">    tools=[search_tool],</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行任务</span></span><br><span class="line">response = agent.run(<span class="string">&quot;帮我找最新的 AI 代理技术发展&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>工具也可以分享到 Hugging Face Hub，或加载社区贡献的工具，形成开放的工具生态系统。</p>
+<h3 id="为什么选择-smolagents？"><a href="#为什么选择-smolagents？" class="headerlink" title="为什么选择 smolagents？"></a>为什么选择 smolagents？</h3><ul>
+<li><strong>轻量</strong>：核心逻辑精简，容易理解与修改</li>
+<li><strong>与模型无关</strong>：支持 HF Inference、OpenAI、Ollama、vLLM 等多种后端，一行切换</li>
+<li><strong>安全执行</strong>：代码可以在 Docker、E2B、WebAssembly sandbox 沙箱中隔离执行</li>
+<li><strong>生态完整</strong>：深度整合 Hugging Face Hub，工具与模型唾手可得</li>
+</ul>
+<h2 id="二、Agenti-RAG-and-Multi-Step-Agents"><a href="#二、Agenti-RAG-and-Multi-Step-Agents" class="headerlink" title="二、Agenti RAG and Multi-Step Agents"></a>二、Agenti RAG and Multi-Step Agents</h2><h3 id="传统的-RAG-限制"><a href="#传统的-RAG-限制" class="headerlink" title="传统的 RAG 限制"></a>传统的 RAG 限制</h3><p>传统 RAG 的流程是：一次查询 → 一次检索 → 生成答案。这在面对复杂问题时容易出现”检索不够精准”或”信息不足”的困境，因为它无法根据中间结果动态调整搜索策略。</p>
+<h3 id="Agent-RAG：让-Agent-主动检索"><a href="#Agent-RAG：让-Agent-主动检索" class="headerlink" title="Agent RAG：让 Agent 主动检索"></a>Agent RAG：让 Agent 主动检索</h3><p>Agentic RAG 赋予 Agent 自主决策的能力：</p>
+<ul>
+<li><strong>自主重构查询</strong>：根据问题语义，自动生成更精确的搜索词</li>
+<li><strong>迭代式检索</strong>：分多步骤从不同来源获取信息</li>
+<li><strong>批判性评估</strong>：自动判断检索结果是否足够，决定是否再次搜索</li>
+<li><strong>多来源整合</strong>：同时结合网络搜索与本地知识库</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> smolagents <span class="keyword">import</span> CodeAgent, DuckDuckGoSearchTool, InferenceClientModel</span><br><span class="line"></span><br><span class="line">agent = CodeAgent(</span><br><span class="line">    model=InferenceClientModel(),</span><br><span class="line">    tools=[DuckDuckGoSearchTool()],</span><br><span class="line">    max_steps=<span class="number">4</span>,          <span class="comment"># 允许多步推理</span></span><br><span class="line">    verbosity_level=<span class="number">2</span>,    <span class="comment"># 显示详细推理过程</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h3 id="规划间隔（Planning-Intervals）"><a href="#规划间隔（Planning-Intervals）" class="headerlink" title="规划间隔（Planning Intervals）"></a>规划间隔（Planning Intervals）</h3><p>在多步骤任务中，可以设定让 Agent 定期”停下来想一想”——评估目前进度、调整接下来的行动策略，避免一直盲目执行而偏离目标。</p>
+<h3 id="回溯机制-Callbacks-：实时监控-Agent-行为"><a href="#回溯机制-Callbacks-：实时监控-Agent-行为" class="headerlink" title="回溯机制(Callbacks)：实时监控 Agent 行为"></a>回溯机制(Callbacks)：实时监控 Agent 行为</h3><p>通过 Callback 机制，可以在 Agent 执行的每个步骤插入自定义逻辑，用于：</p>
+<ul>
+<li>实时追踪执行状态</li>
+<li>记录 Token 使用量与延迟</li>
+<li>在特定条件下中断或修改行为</li>
+</ul>
+<h3 id="Stateful-Tools（有状态工具）"><a href="#Stateful-Tools（有状态工具）" class="headerlink" title="Stateful Tools（有状态工具）"></a>Stateful Tools（有状态工具）</h3><p>有别于一般无状态函数，Stateful Tool 能在多步骤任务中维持内部状态，例如记住上一步的检索结果，让后续步骤可以接续使用，大幅提升复杂任务的效率。</p>
+<h2 id="三、Multi-Agent-Systems"><a href="#三、Multi-Agent-Systems" class="headerlink" title="三、Multi-Agent Systems"></a>三、Multi-Agent Systems</h2><h3 id="为什么需要多代理系统？"><a href="#为什么需要多代理系统？" class="headerlink" title="为什么需要多代理系统？"></a>为什么需要多代理系统？</h3><p>单一 Agent 处理复杂任务时能力有限，以及 Context 窗口有限。多代理系统通过<strong>分工合作</strong>解决这个问题：把复杂任务拆分给专业 Agent，各司其职，再由 Manager Agent 协调整合。</p>
+<h3 id="架构设计：Manager-管理-Specialist-专家"><a href="#架构设计：Manager-管理-Specialist-专家" class="headerlink" title="架构设计：Manager(管理) + Specialist(专家)"></a>架构设计：Manager(管理) + Specialist(专家)</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Manager Agent</span><br><span class="line">├── Web Search Agent（网络搜索）</span><br><span class="line">│   ├── DuckDuckGoSearchTool</span><br><span class="line">│   └── VisitWebpageTool</span><br><span class="line">├── Code Interpreter（代码执行）</span><br><span class="line">└── Retriever Agent（知识库查询）</span><br></pre></td></tr></table></figure>
+
+<p>Manager Agent 负责拆解任务、指派子任务给各专业 Agent，并整合最终结果。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> smolagents <span class="keyword">import</span> CodeAgent, InferenceClientModel</span><br><span class="line"></span><br><span class="line">model = InferenceClientModel(<span class="string">&quot;Qwen/Qwen2.5-Coder-32B-Instruct&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建专业子 Agent</span></span><br><span class="line">web_agent = CodeAgent(</span><br><span class="line">    model=model,</span><br><span class="line">    tools=[GoogleSearchTool(), VisitWebpageTool()],</span><br><span class="line">    name=<span class="string">&quot;web_agent&quot;</span>,</span><br><span class="line">    description=<span class="string">&quot;负责浏览网络并搜集信息&quot;</span>,</span><br><span class="line">    max_steps=<span class="number">10</span>,</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Manager Agent 管理子 Agent</span></span><br><span class="line">manager_agent = CodeAgent(</span><br><span class="line">    model=model,</span><br><span class="line">    tools=[web_agent],  <span class="comment"># 子 Agent 作为工具</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h3 id="典型的多代理-RAG-系统"><a href="#典型的多代理-RAG-系统" class="headerlink" title="典型的多代理 RAG 系统"></a>典型的多代理 RAG 系统</h3><p>一个完整的多代理 RAG 系统可能包含：</p>
+<ul>
+<li><strong>Web Agent</strong>：负责搜索网络最新信息</li>
+<li><strong>Retriever Agent</strong>：查询本地知识库或向量数据库</li>
+<li><strong>Image Generation Agent</strong>：按需求生成图像</li>
+<li><strong>Manager Agent</strong>：整合所有子 Agent 的输出</li>
+</ul>
+<p>这种架构适合需要跨领域知识整合的复杂任务。</p>
+<h2 id="四、Memory-and-Validation"><a href="#四、Memory-and-Validation" class="headerlink" title="四、Memory and Validation"></a>四、Memory and Validation</h2><h3 id="Memory：让-Agent-记住对话的上下文"><a href="#Memory：让-Agent-记住对话的上下文" class="headerlink" title="Memory：让 Agent 记住对话的上下文"></a>Memory：让 Agent 记住对话的上下文</h3><p>没有记忆的 Agent 每次对话都是”从零开始”，无法处理追问或多轮任务。smolagents 的记忆系统让 Agent 能够：</p>
+<ul>
+<li>保留对话历史，自然处理追问</li>
+<li>记住已完成的步骤，避免重复工作</li>
+<li>根据过往互动调整策略</li>
+</ul>
+<p>Memory 以步骤形式序列化存储，包含时间戳与 Token 使用量等元数据，方便后续分析。</p>
+<h3 id="执行追踪（Execution-Traces）"><a href="#执行追踪（Execution-Traces）" class="headerlink" title="执行追踪（Execution Traces）"></a>执行追踪（Execution Traces）</h3><p>除了记忆，smolagents 还提供详细的执行追踪：</p>
+<ul>
+<li><strong>推理步骤记录</strong>：完整保留 Agent 每一步的思考过程</li>
+<li><strong>Debug 辅助</strong>：当 Agent 行为异常时，可以逐步回放推理过程找出问题</li>
+<li><strong>性能分析</strong>：了解哪些步骤耗时、哪些工具调用最频繁</li>
+</ul>
+<h3 id="Validation（输出验证）"><a href="#Validation（输出验证）" class="headerlink" title="Validation（输出验证）"></a>Validation（输出验证）</h3><p>Agent 的输出不一定永远正确，验证机制是确保可靠性的关键环节：</p>
+<p><strong>常见验证方法：</strong></p>
+<ol>
+<li><strong>结果相关性验证</strong>：确认检索到的信息确实回答了问题</li>
+<li><strong>格式验证</strong>：确保输出符合预期的数据结构</li>
+<li><strong>事实一致性检查</strong>：交叉比对多个来源的信息</li>
+<li><strong>Fallback 机制</strong>：当主要方法失败时，启动备用策略</li>
+</ol>
+<p><strong>错误恢复：</strong></p>
+<p>smolagents 内置错误日志与重试机制，让 Agent 在遇到工具调用失败或结果不佳时，能自动尝试替代方案，而不是直接中断任务。</p>
+<h2 id="总结：smolagents-的核心设计哲学"><a href="#总结：smolagents-的核心设计哲学" class="headerlink" title="总结：smolagents 的核心设计哲学"></a>总结：smolagents 的核心设计哲学</h2><table>
+<thead>
+<tr>
+<th>主题</th>
+<th>核心概念</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>基础框架</strong></td>
+<td>CodeAgent 以 Python 代码为行动语言，Tool 是行为积木</td>
+</tr>
+<tr>
+<td><strong>Agentic RAG</strong></td>
+<td>迭代式、多步骤的智能检索，取代一次性的静态查询</td>
+</tr>
+<tr>
+<td><strong>多代理系统</strong></td>
+<td>Manager 协调 Specialist，分工合作处理复杂工作流</td>
+</tr>
+<tr>
+<td><strong>记忆与验证</strong></td>
+<td>跨轮次记忆 + 执行追踪 + 验证策略，确保可靠输出</td>
+</tr>
+</tbody></table>
+<p>smolagents 的设计是框架本身保持轻量，让开发者能够完全理解其运作原理，同时通过工具生态与多代理协作，支撑起现实中的复杂应用场景。</p>
+<p>无论是自动化数据的工作流还是智能文档问答系统，或者跨领域的研究助理，smolagents 都可以提供一个清晰、灵活、可扩展的起点。</p>
+<hr>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://wenjiajun-wn.github.io/2026/06/12/AI%20Agents%20with%20Hugging%20Face%20smolagents/" data-id="cmqaskkua00009k7kbkn866zc" data-title="用 Hugging Face smolagents 打造智能 AI Agent" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AI-Agent/" rel="tag">AI-Agent</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/smolagents/" rel="tag">smolagents</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-ai_assitant(3)" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2026/06/04/ai_assitant(3)/" class="article-date">
@@ -565,9 +724,9 @@
 
 
   
-    <article id="post-利用agent生成一个可以联网回答问题的机器人" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-基于agent生成一个可以联网回答问题的机器人" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2026/05/24/%E5%88%A9%E7%94%A8agent%E7%94%9F%E6%88%90%E4%B8%80%E4%B8%AA%E5%8F%AF%E4%BB%A5%E8%81%94%E7%BD%91%E5%9B%9E%E7%AD%94%E9%97%AE%E9%A2%98%E7%9A%84%E6%9C%BA%E5%99%A8%E4%BA%BA/" class="article-date">
+    <a href="/2026/05/24/%E5%9F%BA%E4%BA%8Eagent%E7%94%9F%E6%88%90%E4%B8%80%E4%B8%AA%E5%8F%AF%E4%BB%A5%E8%81%94%E7%BD%91%E5%9B%9E%E7%AD%94%E9%97%AE%E9%A2%98%E7%9A%84%E6%9C%BA%E5%99%A8%E4%BA%BA/" class="article-date">
   <time class="dt-published" datetime="2026-05-23T16:00:00.000Z" itemprop="datePublished">2026-05-24</time>
 </a>
     
@@ -579,7 +738,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/05/24/%E5%88%A9%E7%94%A8agent%E7%94%9F%E6%88%90%E4%B8%80%E4%B8%AA%E5%8F%AF%E4%BB%A5%E8%81%94%E7%BD%91%E5%9B%9E%E7%AD%94%E9%97%AE%E9%A2%98%E7%9A%84%E6%9C%BA%E5%99%A8%E4%BA%BA/">基于agent生成一个联网回答问题的机器人</a>
+      <a class="p-name article-title" href="/2026/05/24/%E5%9F%BA%E4%BA%8Eagent%E7%94%9F%E6%88%90%E4%B8%80%E4%B8%AA%E5%8F%AF%E4%BB%A5%E8%81%94%E7%BD%91%E5%9B%9E%E7%AD%94%E9%97%AE%E9%A2%98%E7%9A%84%E6%9C%BA%E5%99%A8%E4%BA%BA/">基于agent生成一个联网回答问题的机器人</a>
     </h1>
   
 
@@ -587,7 +746,7 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>首先就是导入好需要的模块</p>
+        <p>首先是导入好需要的模块</p>
 <pre><code class="import">import io
 import os
 import requests
@@ -632,7 +791,7 @@ tool：是把普通函数变为LangChain的可用工具，是一个装饰器
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wenjiajun-wn.github.io/2026/05/24/%E5%88%A9%E7%94%A8agent%E7%94%9F%E6%88%90%E4%B8%80%E4%B8%AA%E5%8F%AF%E4%BB%A5%E8%81%94%E7%BD%91%E5%9B%9E%E7%AD%94%E9%97%AE%E9%A2%98%E7%9A%84%E6%9C%BA%E5%99%A8%E4%BA%BA/" data-id="cmpjoqhp800039g7k4vu38soz" data-title="基于agent生成一个联网回答问题的机器人" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wenjiajun-wn.github.io/2026/05/24/%E5%9F%BA%E4%BA%8Eagent%E7%94%9F%E6%88%90%E4%B8%80%E4%B8%AA%E5%8F%AF%E4%BB%A5%E8%81%94%E7%BD%91%E5%9B%9E%E7%AD%94%E9%97%AE%E9%A2%98%E7%9A%84%E6%9C%BA%E5%99%A8%E4%BA%BA/" data-id="cmqaskkuk00059k7kbfx6dc67" data-title="基于agent生成一个联网回答问题的机器人" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -744,7 +903,7 @@ tool：是把普通函数变为LangChain的可用工具，是一个装饰器
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-agent/" rel="tag">ai agent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-assitant/" rel="tag">ai_assitant</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-assitant-2/" rel="tag">ai_assitant(2)</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-assitant-3/" rel="tag">ai_assitant(3)</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/chatting-robot/" rel="tag">chatting robot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-Agent/" rel="tag">AI-Agent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-agent/" rel="tag">ai agent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-assitant/" rel="tag">ai_assitant</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-assitant-2/" rel="tag">ai_assitant(2)</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-assitant-3/" rel="tag">ai_assitant(3)</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/chatting-robot/" rel="tag">chatting robot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/smolagents/" rel="tag">smolagents</a></li></ul>
     </div>
   </div>
 
@@ -754,7 +913,7 @@ tool：是把普通函数变为LangChain的可用工具，是一个装饰器
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/ai-agent/" style="font-size: 10px;">ai agent</a> <a href="/tags/ai-assitant/" style="font-size: 10px;">ai_assitant</a> <a href="/tags/ai-assitant-2/" style="font-size: 10px;">ai_assitant(2)</a> <a href="/tags/ai-assitant-3/" style="font-size: 10px;">ai_assitant(3)</a> <a href="/tags/chatting-robot/" style="font-size: 10px;">chatting robot</a> <a href="/tags/git/" style="font-size: 10px;">git</a>
+      <a href="/tags/AI-Agent/" style="font-size: 10px;">AI-Agent</a> <a href="/tags/ai-agent/" style="font-size: 10px;">ai agent</a> <a href="/tags/ai-assitant/" style="font-size: 10px;">ai_assitant</a> <a href="/tags/ai-assitant-2/" style="font-size: 10px;">ai_assitant(2)</a> <a href="/tags/ai-assitant-3/" style="font-size: 10px;">ai_assitant(3)</a> <a href="/tags/chatting-robot/" style="font-size: 10px;">chatting robot</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/smolagents/" style="font-size: 10px;">smolagents</a>
     </div>
   </div>
 
@@ -776,6 +935,10 @@ tool：是把普通函数变为LangChain的可用工具，是一个装饰器
       <ul>
         
           <li>
+            <a href="/2026/06/12/AI%20Agents%20with%20Hugging%20Face%20smolagents/">用 Hugging Face smolagents 打造智能 AI Agent</a>
+          </li>
+        
+          <li>
             <a href="/2026/06/04/ai_assitant(3)/">一个可以提取图片中重要信息并分成优先级的ai助手</a>
           </li>
         
@@ -789,10 +952,6 @@ tool：是把普通函数变为LangChain的可用工具，是一个装饰器
         
           <li>
             <a href="/2026/05/24/hello-world/">Hello World</a>
-          </li>
-        
-          <li>
-            <a href="/2026/05/24/%E5%88%A9%E7%94%A8agent%E7%94%9F%E6%88%90%E4%B8%80%E4%B8%AA%E5%8F%AF%E4%BB%A5%E8%81%94%E7%BD%91%E5%9B%9E%E7%AD%94%E9%97%AE%E9%A2%98%E7%9A%84%E6%9C%BA%E5%99%A8%E4%BA%BA/">基于agent生成一个联网回答问题的机器人</a>
           </li>
         
       </ul>
