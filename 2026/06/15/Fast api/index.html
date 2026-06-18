@@ -14,7 +14,7 @@
 <meta property="og:description" content="FastAPI 学习来源：DataCamp《Introduction to FastAPI》课程     什么是 FastAPI？FastAPI 是一个现代、高性能的 Python Web 框架，专门用于构建 API。它由 Sebastián Ramírez 开发，基于以下两个强大的库：  Starlette：提供异步 Web 框架的核心能力 Pydantic：负责数据验证与序列化  FastAP">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2026-06-14T16:00:00.000Z">
-<meta property="article:modified_time" content="2026-06-18T14:24:02.125Z">
+<meta property="article:modified_time" content="2026-06-18T14:36:24.984Z">
 <meta property="article:author" content="wn">
 <meta property="article:tag" content="Fast api的基础知识">
 <meta name="twitter:card" content="summary">
@@ -383,8 +383,8 @@
 <ul>
 <li>参数解析 &amp; 类型转换</li>
 <li>数据合法性校验</li>
-<li>JSON 序列化 &#x2F; 反序列化</li>
-<li>Swagger 文档自动生成</li>
+<li>JSON 序列化 &#x2F; 反序列化<br>(在 FastAPI 里你不需要手动做这些——你返回一个 dict，它自动序列化成 JSON；前端发来 JSON，它自动反序列化成 Pydantic 对象。简单说就是”打包发送、拆包接收”，FastAPI 帮你全自动搞定。)</li>
+<li>Swagger（现在叫 OpenAPI） 文档自动生成(简单说就是自动给你的接口生成一个可视化页面能在浏览器里查看和测试所有 API。)</li>
 </ul>
 <hr>
 <h1 id="FastAPI-进阶：从-PUT-DELETE-到-CRUD-API-测试"><a href="#FastAPI-进阶：从-PUT-DELETE-到-CRUD-API-测试" class="headerlink" title="FastAPI 进阶：从 PUT&#x2F;DELETE 到 CRUD API 测试"></a>FastAPI 进阶：从 PUT&#x2F;DELETE 到 CRUD API 测试</h1><blockquote>
