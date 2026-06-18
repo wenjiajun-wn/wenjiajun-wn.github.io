@@ -4,21 +4,19 @@
   <meta charset="utf-8">
   
   
-  <title>FastAPI 入门学习笔记 | WN</title>
+  <title>Fast api | WN</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="学习来源：DataCamp《Introduction to FastAPI》课程  什么是 FastAPI？FastAPI 是一个现代、高性能的 Python Web 框架，专门用于构建 API。它由 Sebastián Ramírez 开发，基于两个强大的库：  Starlette：提供异步 Web 框架的核心能力 Pydantic：负责数据验证与序列化  名字本身就说明了两大特点：Fast（">
+  <meta name="description" content="FastAPI 学习来源：DataCamp《Introduction to FastAPI》课程     什么是 FastAPI？FastAPI 是一个现代、高性能的 Python Web 框架，专门用于构建 API。它由 Sebastián Ramírez 开发，基于以下两个强大的库：  Starlette：提供异步 Web 框架的核心能力 Pydantic：负责数据验证与序列化  FastAP">
 <meta property="og:type" content="article">
-<meta property="og:title" content="FastAPI 入门学习笔记">
+<meta property="og:title" content="Fast api">
 <meta property="og:url" content="https://wenjiajun-wn.github.io/2026/06/15/Fast%20api/index.html">
 <meta property="og:site_name" content="WN">
-<meta property="og:description" content="学习来源：DataCamp《Introduction to FastAPI》课程  什么是 FastAPI？FastAPI 是一个现代、高性能的 Python Web 框架，专门用于构建 API。它由 Sebastián Ramírez 开发，基于两个强大的库：  Starlette：提供异步 Web 框架的核心能力 Pydantic：负责数据验证与序列化  名字本身就说明了两大特点：Fast（">
+<meta property="og:description" content="FastAPI 学习来源：DataCamp《Introduction to FastAPI》课程     什么是 FastAPI？FastAPI 是一个现代、高性能的 Python Web 框架，专门用于构建 API。它由 Sebastián Ramírez 开发，基于以下两个强大的库：  Starlette：提供异步 Web 框架的核心能力 Pydantic：负责数据验证与序列化  FastAP">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2026-06-14T16:00:00.000Z">
-<meta property="article:modified_time" content="2026-06-16T10:38:21.488Z">
+<meta property="article:modified_time" content="2026-06-18T14:24:02.125Z">
 <meta property="article:author" content="wn">
-<meta property="article:tag" content="FastAPI">
-<meta property="article:tag" content="Python">
-<meta property="article:tag" content="Web开发">
+<meta property="article:tag" content="Fast api的基础知识">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="WN" type="application/atom+xml">
@@ -90,7 +88,7 @@
         
   
     <h1 class="p-name article-title" itemprop="headline name">
-      FastAPI 入门学习笔记
+      Fast api
     </h1>
   
 
@@ -98,15 +96,17 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <blockquote>
-<p>学习来源：DataCamp《Introduction to FastAPI》课程</p>
+        <h1 id="FastAPI"><a href="#FastAPI" class="headerlink" title="FastAPI"></a>FastAPI</h1><blockquote>
+<p>学习来源：DataCamp《Introduction to FastAPI》课程  </p>
 </blockquote>
-<h2 id="什么是-FastAPI？"><a href="#什么是-FastAPI？" class="headerlink" title="什么是 FastAPI？"></a>什么是 FastAPI？</h2><p>FastAPI 是一个现代、高性能的 Python Web 框架，专门用于构建 API。它由 Sebastián Ramírez 开发，基于两个强大的库：</p>
+<hr>
+<h2 id="什么是-FastAPI？"><a href="#什么是-FastAPI？" class="headerlink" title="什么是 FastAPI？"></a>什么是 FastAPI？</h2><p>FastAPI 是一个现代、高性能的 Python Web 框架，专门用于构建 API。它由 Sebastián Ramírez 开发，基于以下两个强大的库：</p>
 <ul>
 <li><strong>Starlette</strong>：提供异步 Web 框架的核心能力</li>
 <li><strong>Pydantic</strong>：负责数据验证与序列化</li>
 </ul>
-<p>名字本身就说明了两大特点：<strong>Fast</strong>（快速）—— 既指运行速度快，也指开发速度快。</p>
+<p>FastAPI 的名字本身就说明了它的两大特点：<strong>Fast</strong>（快速）—— 既指运行速度快，也指开发速度快。</p>
+<hr>
 <h2 id="为什么选择-FastAPI？"><a href="#为什么选择-FastAPI？" class="headerlink" title="为什么选择 FastAPI？"></a>为什么选择 FastAPI？</h2><table>
 <thead>
 <tr>
@@ -127,29 +127,71 @@
 <td>内置 Swagger UI 和 ReDoc，无需手写文档</td>
 </tr>
 <tr>
-<td>类型提示</td>
+<td>Python 类型提示</td>
 <td>充分利用 Python 3.6+ 的类型系统</td>
 </tr>
 <tr>
 <td>易于上手</td>
-<td>代码简洁直观，学习曲线平缓</td>
+<td>代码简洁直观，</td>
 </tr>
 </tbody></table>
-<h2 id="快速上手"><a href="#快速上手" class="headerlink" title="快速上手"></a>快速上手</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install fastapi uvicorn</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="第一个-FastAPI-应用"><a href="#第一个-FastAPI-应用" class="headerlink" title="第一个 FastAPI 应用"></a>第一个 FastAPI 应用</h2><h3 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install fastapi uvicorn</span><br></pre></td></tr></table></figure>
 
-<h3 id="第一个应用"><a href="#第一个应用" class="headerlink" title="第一个应用"></a>第一个应用</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> fastapi <span class="keyword">import</span> FastAPI</span><br><span class="line"></span><br><span class="line">app = FastAPI()</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.get(<span class="params"><span class="string">&quot;/&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">read_root</span>():</span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">&quot;message&quot;</span>: <span class="string">&quot;Hello, FastAPI!&quot;</span>&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="创建应用"><a href="#创建应用" class="headerlink" title="创建应用"></a>创建应用</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> fastapi <span class="keyword">import</span> FastAPI</span><br><span class="line"></span><br><span class="line">app = FastAPI()</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.get(<span class="params"><span class="string">&quot;/&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">read_root</span>():</span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">&quot;message&quot;</span>: <span class="string">&quot;Hello, FastAPI!&quot;</span>&#125;</span><br></pre></td></tr></table></figure>
 
 <h3 id="启动服务"><a href="#启动服务" class="headerlink" title="启动服务"></a>启动服务</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uvicorn main:app --reload</span><br></pre></td></tr></table></figure>
 
-<p>访问 <code>http://127.0.0.1:8000</code>，就能看到返回的 JSON 结果了。</p>
-<h2 id="路径操作"><a href="#路径操作" class="headerlink" title="路径操作"></a>路径操作</h2><p>FastAPI 使用装饰器定义路由，对应 HTTP 的不同请求方法，语义清晰：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.get(<span class="params"><span class="string">&quot;/items&quot;</span></span>)          </span><span class="comment"># 获取资源</span></span><br><span class="line"><span class="meta">@app.post(<span class="params"><span class="string">&quot;/items&quot;</span></span>)         </span><span class="comment"># 创建资源</span></span><br><span class="line"><span class="meta">@app.put(<span class="params"><span class="string">&quot;/items/&#123;id&#125;&quot;</span></span>)     </span><span class="comment"># 更新资源</span></span><br><span class="line"><span class="meta">@app.delete(<span class="params"><span class="string">&quot;/items/&#123;id&#125;&quot;</span></span>)  </span><span class="comment"># 删除资源</span></span><br></pre></td></tr></table></figure>
+<p>访问 <code>http://127.0.0.1:8000</code>，你就能看到 API 的返回结果</p>
+<hr>
+<h2 id="核心概念：路径的操作"><a href="#核心概念：路径的操作" class="headerlink" title="核心概念：路径的操作"></a>核心概念：路径的操作</h2><p>FastAPI 使用<strong>装饰器</strong>来定义路由，对应 HTTP 的不同请求方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.get(<span class="params"><span class="string">&quot;/items&quot;</span></span>)       </span><span class="comment"># 获取资源</span></span><br><span class="line"><span class="meta">@app.post(<span class="params"><span class="string">&quot;/items&quot;</span></span>)      </span><span class="comment"># 创建资源</span></span><br><span class="line"><span class="meta">@app.put(<span class="params"><span class="string">&quot;/items/&#123;id&#125;&quot;</span></span>)  </span><span class="comment"># 更新资源</span></span><br><span class="line"><span class="meta">@app.delete(<span class="params"><span class="string">&quot;/items/&#123;id&#125;&quot;</span></span>) </span><span class="comment"># 删除资源</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="路径参数与查询参数"><a href="#路径参数与查询参数" class="headerlink" title="路径参数与查询参数"></a>路径参数与查询参数</h2><h3 id="路径参数"><a href="#路径参数" class="headerlink" title="路径参数"></a>路径参数</h3><p>路径参数写在 URL 中，用花括号 <code>&#123;&#125;</code> 包裹，FastAPI 自动做类型转换：</p>
+<p>这些装饰器直接对应 RESTful API 的设计规范，语义更清晰</p>
+<hr>
+<h2 id="路径参数与查询参数"><a href="#路径参数与查询参数" class="headerlink" title="路径参数与查询参数"></a>路径参数与查询参数</h2><h3 id="路径参数（Path-Parameters）"><a href="#路径参数（Path-Parameters）" class="headerlink" title="路径参数（Path Parameters）"></a>路径参数（Path Parameters）</h3><p>路径参数写在 URL 路径中，用花括号 <code>&#123;&#125;</code> 包裹：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.get(<span class="params"><span class="string">&quot;/users/&#123;user_id&#125;&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_user</span>(<span class="params">user_id: <span class="built_in">int</span></span>):</span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">&quot;user_id&quot;</span>: user_id&#125;</span><br></pre></td></tr></table></figure>
 
-<p>访问 <code>/users/42</code> 时，<code>user_id</code> 被自动解析为整数 <code>42</code>。</p>
-<h3 id="查询参数"><a href="#查询参数" class="headerlink" title="查询参数"></a>查询参数</h3><p>函数中未被路径捕获的参数，会自动成为查询参数。拿 Google 搜索举例：</p>
+<p>访问 <code>/users/42</code> 时，<code>user_id</code> 会自动被解析为整数 <code>42</code>。</p>
+<h3 id="查询参数（Query-Parameters）"><a href="#查询参数（Query-Parameters）" class="headerlink" title="查询参数（Query Parameters）"></a>查询参数（Query Parameters）</h3><p>函数中未被路径捕获的参数，会自动成为查询参数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.get(<span class="params"><span class="string">&quot;/items&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_items</span>(<span class="params">skip: <span class="built_in">int</span> = <span class="number">0</span>, limit: <span class="built_in">int</span> = <span class="number">10</span></span>):</span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">&quot;skip&quot;</span>: skip, <span class="string">&quot;limit&quot;</span>: limit&#125;</span><br></pre></td></tr></table></figure>
+
+<p>访问 <code>/items?skip=5&amp;limit=20</code> 即可传入参数。</p>
+<hr>
+<h2 id="POST-请求与请求体"><a href="#POST-请求与请求体" class="headerlink" title="POST 请求与请求体"></a>POST 请求与请求体</h2><p>利用 <strong>Pydantic</strong> 模型，定义请求非常简单：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pydantic <span class="keyword">import</span> BaseModel</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Item</span>(<span class="title class_ inherited__">BaseModel</span>):</span><br><span class="line">    name: <span class="built_in">str</span></span><br><span class="line">    price: <span class="built_in">float</span></span><br><span class="line">    is_available: <span class="built_in">bool</span> = <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.post(<span class="params"><span class="string">&quot;/items&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">create_item</span>(<span class="params">item: Item</span>):</span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">&quot;message&quot;</span>: <span class="string">f&quot;Item &#x27;<span class="subst">&#123;item.name&#125;</span>&#x27; created!&quot;</span>, <span class="string">&quot;data&quot;</span>: item&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Pydantic 会自动完成：</p>
+<ul>
+<li>类型校验（如 price 必须是数字）</li>
+<li>默认值处理</li>
+<li>错误提示（数据不符合要求时返回详细报错）</li>
+</ul>
+<hr>
+<h2 id="自动生成的交互式文档"><a href="#自动生成的交互式文档" class="headerlink" title="自动生成的交互式文档"></a>自动生成的交互式文档</h2><p>这是 FastAPI 的功能之一。启动服务后，直接访问：</p>
+<ul>
+<li><strong>Swagger UI</strong>：<code>http://127.0.0.1:8000/docs</code></li>
+<li><strong>ReDoc</strong>：<code>http://127.0.0.1:8000/redoc</code></li>
+</ul>
+<p>不需要写任何额外代码，FastAPI 会根据你的路由和数据模型<strong>自动生成</strong>完整的 API 文档，并且支持在线调试</p>
+<hr>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><ol>
+<li><strong>FastAPI 的定位</strong>：现代 Python API 框架，性能强、开发效率高</li>
+<li><strong>基本路由定义</strong>：用装饰器绑定 HTTP 方法和路径</li>
+<li><strong>参数处理</strong>：路径参数、查询参数的声明方式</li>
+<li><strong>数据验证</strong>：通过 Pydantic BaseModel 处理请求体</li>
+<li><strong>自动文档</strong>：零配置获得 Swagger UI</li>
+</ol>
+<h2 id="FastAPI-把”写-API”这件事变得非常优雅。Python-类型提示不再只是注释，而是真正参与到数据验证、文档生成和编辑器智能提示中。对于习惯-Flask-或-Django-的开发者来说，FastAPI-的体验会让你更便捷"><a href="#FastAPI-把”写-API”这件事变得非常优雅。Python-类型提示不再只是注释，而是真正参与到数据验证、文档生成和编辑器智能提示中。对于习惯-Flask-或-Django-的开发者来说，FastAPI-的体验会让你更便捷" class="headerlink" title="FastAPI 把”写 API”这件事变得非常优雅。Python 类型提示不再只是注释，而是真正参与到数据验证、文档生成和编辑器智能提示中。对于习惯 Flask 或 Django 的开发者来说，FastAPI 的体验会让你更便捷"></a>FastAPI 把”写 API”这件事变得非常优雅。Python 类型提示不再只是注释，而是真正参与到数据验证、文档生成和编辑器智能提示中。对于习惯 Flask 或 Django 的开发者来说，FastAPI 的体验会让你更便捷</h2><h1 id="FastAPI-入门（二）：GET-与-POST-请求详解"><a href="#FastAPI-入门（二）：GET-与-POST-请求详解" class="headerlink" title="FastAPI 入门（二）：GET 与 POST 请求详解"></a>FastAPI 入门（二）：GET 与 POST 请求详解</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在 Web 开发中，API 是前后端通信的核心桥梁。上一篇我们完成了 FastAPI 的环境搭建和基本概念入门，本篇将深入学习两种最常用的 HTTP 请求方式：</p>
+<ul>
+<li><strong>GET 请求</strong> + 查询参数（Query Parameters）</li>
+<li><strong>POST 请求</strong> + 请求体（Request Body）</li>
+<li><strong>Pydantic 数据模型</strong> 的定义与嵌套</li>
+<li><strong>cURL</strong> 命令行测试接口</li>
+</ul>
+<hr>
+<h2 id="一、HTTP-GET-请求"><a href="#一、HTTP-GET-请求" class="headerlink" title="一、HTTP GET 请求"></a>一、HTTP GET 请求</h2><p>GET 是最常见的 HTTP 方法，主要用于<strong>查询</strong>和<strong>获取</strong>资源，参数直接附在 URL 后面。</p>
+<p>以 Google 搜索为例：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://www.google.com/search?q=fastapi</span><br></pre></td></tr></table></figure>
 
 <table>
@@ -161,25 +203,43 @@
 </thead>
 <tbody><tr>
 <td>Host</td>
-<td><code>google.com</code></td>
+<td>google.com</td>
+</tr>
+<tr>
+<td>Port</td>
+<td>80（默认）</td>
 </tr>
 <tr>
 <td>Path</td>
-<td><code>/search</code></td>
+<td>&#x2F;search</td>
 </tr>
 <tr>
 <td>Query String</td>
-<td><code>?q=fastapi</code></td>
+<td>?q&#x3D;fastapi</td>
 </tr>
 </tbody></table>
-<p><code>q=fastapi</code> 就是一个查询参数。在 FastAPI 中这样写：</p>
+<p>其中 <code>?q=fastapi</code> 就是一个查询参数，键为 <code>q</code>，值为 <code>&quot;fastapi&quot;</code>。</p>
+<h3 id="第一个-GET-接口"><a href="#第一个-GET-接口" class="headerlink" title="第一个 GET 接口"></a>第一个 GET 接口</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> fastapi <span class="keyword">import</span> FastAPI</span><br><span class="line"></span><br><span class="line">app = FastAPI()</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.get(<span class="params"><span class="string">&quot;/&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">root</span>():</span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">&quot;message&quot;</span>: <span class="string">&quot;Hello World&quot;</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p>启动后访问 <code>http://localhost:8000</code>，返回：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span> <span class="attr">&quot;message&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Hello World&quot;</span> <span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="二、使用-cURL-测试接口"><a href="#二、使用-cURL-测试接口" class="headerlink" title="二、使用 cURL 测试接口"></a>二、使用 cURL 测试接口</h2><p>除了浏览器，<strong>cURL</strong> 是测试 API 的利器，尤其适合 POST 等非 GET 请求。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 基础请求</span></span><br><span class="line">curl http://localhost:8000</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看详细请求过程（请求头、响应头）</span></span><br><span class="line">curl -v http://localhost:8000</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>💡 在没有 Postman 的环境下，cURL 是快速验证接口的首选工具。</p>
+</blockquote>
+<hr>
+<h2 id="三、查询参数（Query-Parameters）"><a href="#三、查询参数（Query-Parameters）" class="headerlink" title="三、查询参数（Query Parameters）"></a>三、查询参数（Query Parameters）</h2><p>FastAPI 中，<strong>函数参数默认就是查询参数</strong>，无需任何额外配置：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.get(<span class="params"><span class="string">&quot;/hello&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">hello</span>(<span class="params">name: <span class="built_in">str</span> = <span class="string">&quot;Alan&quot;</span></span>):</span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">&quot;message&quot;</span>: <span class="string">f&quot;Hello <span class="subst">&#123;name&#125;</span>&quot;</span>&#125;</span><br></pre></td></tr></table></figure>
 
 <table>
 <thead>
 <tr>
 <th>访问 URL</th>
-<th>返回</th>
+<th>返回结果</th>
 </tr>
 </thead>
 <tbody><tr>
@@ -191,8 +251,15 @@
 <td><code>&#123;&quot;message&quot;: &quot;Hello Steve&quot;&#125;</code></td>
 </tr>
 </tbody></table>
-<p>FastAPI 自动完成了参数读取、类型转换、校验和默认值处理——全是自动的。</p>
-<h2 id="GET-vs-POST"><a href="#GET-vs-POST" class="headerlink" title="GET vs POST"></a>GET vs POST</h2><table>
+<p>FastAPI 会自动完成：</p>
+<ul>
+<li>读取 URL 参数</li>
+<li>类型转换（如 <code>str</code> → <code>int</code>）</li>
+<li>参数合法性校验</li>
+<li>缺省值处理</li>
+</ul>
+<hr>
+<h2 id="四、GET-vs-POST：核心区别"><a href="#四、GET-vs-POST：核心区别" class="headerlink" title="四、GET vs POST：核心区别"></a>四、GET vs POST：核心区别</h2><table>
 <thead>
 <tr>
 <th>特性</th>
@@ -211,61 +278,67 @@
 <td>请求体（Body）</td>
 </tr>
 <tr>
-<td>数据量</td>
+<td>参数是否可见</td>
+<td>可见</td>
+<td>不可见</td>
+</tr>
+<tr>
+<td>支持数据量</td>
 <td>较小（受 URL 长度限制）</td>
 <td>较大</td>
 </tr>
 <tr>
-<td>复杂数据结构</td>
+<td>浏览器直接访问</td>
+<td>支持</td>
 <td>不支持</td>
-<td>支持（JSON 嵌套、数组等）</td>
+</tr>
+<tr>
+<td>支持复杂数据结构</td>
+<td>不支持</td>
+<td>（JSON 嵌套、数组等）</td>
 </tr>
 </tbody></table>
-<h2 id="请求体与-Pydantic-数据模型"><a href="#请求体与-Pydantic-数据模型" class="headerlink" title="请求体与 Pydantic 数据模型"></a>请求体与 Pydantic 数据模型</h2><p>POST 请求通过请求体传递数据，支持复杂的 JSON 结构：</p>
+<hr>
+<h2 id="五、HTTP-请求"><a href="#五、HTTP-请求" class="headerlink" title="五、HTTP 请求"></a>五、HTTP 请求</h2><p>POST 请求通过 <strong>Request Body</strong> 传递数据，支持复杂的 JSON 结构：</p>
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;movie&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Interstellar&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;review&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;num_stars&quot;</span><span class="punctuation">:</span> <span class="number">5</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;text&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Amazing movie!&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;public&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
 
-<p>这种嵌套结构是 GET 查询参数做不到的。为了让 FastAPI 自动校验请求体，使用 Pydantic 来定义数据结构：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pydantic <span class="keyword">import</span> BaseModel</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Review</span>(<span class="title class_ inherited__">BaseModel</span>):</span><br><span class="line">    num_stars: <span class="built_in">int</span>          <span class="comment"># 评分（必填）</span></span><br><span class="line">    text: <span class="built_in">str</span>               <span class="comment"># 评论内容（必填）</span></span><br><span class="line">    public: <span class="built_in">bool</span> = <span class="literal">False</span>    <span class="comment"># 是否公开（选填，默认 False）</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MovieReview</span>(<span class="title class_ inherited__">BaseModel</span>):</span><br><span class="line">    movie: <span class="built_in">str</span></span><br><span class="line">    review: Review          <span class="comment"># 嵌套 Review 模型</span></span><br></pre></td></tr></table></figure>
+<p>这种嵌套结构是 GET 查询参数做不到的，非常适合创建资源的场景。</p>
+<hr>
+<h2 id="六、Pydantic-模型"><a href="#六、Pydantic-模型" class="headerlink" title="六、Pydantic 模型"></a>六、Pydantic 模型</h2><p>为了让 FastAPI 能自动校验请求体，我们使用 <strong>Pydantic</strong> 来定义数据结构。</p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install pydantic</span><br></pre></td></tr></table></figure>
 
-<p>将模型与 POST 路由结合：</p>
+<h3 id="定义模型"><a href="#定义模型" class="headerlink" title="定义模型"></a>定义模型</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pydantic <span class="keyword">import</span> BaseModel</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Review</span>(<span class="title class_ inherited__">BaseModel</span>):</span><br><span class="line">    num_stars: <span class="built_in">int</span>      <span class="comment"># 评分（必填）</span></span><br><span class="line">    text: <span class="built_in">str</span>           <span class="comment"># 评论内容（必填）</span></span><br><span class="line">    public: <span class="built_in">bool</span> = <span class="literal">False</span>  <span class="comment"># 是否公开（选填，默认 False）</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="嵌套模型"><a href="#嵌套模型" class="headerlink" title="嵌套模型"></a>嵌套模型</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MovieReview</span>(<span class="title class_ inherited__">BaseModel</span>):</span><br><span class="line">    movie: <span class="built_in">str</span></span><br><span class="line">    review: Review      <span class="comment"># 嵌套 Review 模型</span></span><br></pre></td></tr></table></figure>
+
+<p>Pydantic 的优势：</p>
+<ul>
+<li>自动类型校验（传错类型会返回清晰的错误信息）</li>
+<li>支持默认值</li>
+<li>支持嵌套结构</li>
+<li>配合 FastAPI 自动生成文档</li>
+</ul>
+<hr>
+<h2 id="七、创建-POST-接口"><a href="#七、创建-POST-接口" class="headerlink" title="七、创建 POST 接口"></a>七、创建 POST 接口</h2><p>将 Pydantic 模型与 POST 路由结合：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> fastapi <span class="keyword">import</span> FastAPI</span><br><span class="line"><span class="keyword">from</span> pydantic <span class="keyword">import</span> BaseModel</span><br><span class="line"></span><br><span class="line">app = FastAPI()</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Review</span>(<span class="title class_ inherited__">BaseModel</span>):</span><br><span class="line">    num_stars: <span class="built_in">int</span></span><br><span class="line">    text: <span class="built_in">str</span></span><br><span class="line">    public: <span class="built_in">bool</span> = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MovieReview</span>(<span class="title class_ inherited__">BaseModel</span>):</span><br><span class="line">    movie: <span class="built_in">str</span></span><br><span class="line">    review: Review</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.post(<span class="params"><span class="string">&quot;/reviews&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">create_review</span>(<span class="params">review: MovieReview</span>):</span><br><span class="line">    <span class="keyword">return</span> review</span><br></pre></td></tr></table></figure>
 
-<p>FastAPI 自动将 JSON 请求体解析为 <code>MovieReview</code> 对象，不需要手动 <code>json.loads()</code>。Pydantic 还会自动完成类型校验——传错类型会返回清晰的报错信息。</p>
-<h2 id="用-cURL-测试接口"><a href="#用-cURL-测试接口" class="headerlink" title="用 cURL 测试接口"></a>用 cURL 测试接口</h2><p>除了浏览器和 Postman，cURL 是命令行测试 API 的利器，尤其适合 POST 请求。</p>
-<h3 id="测试-GET"><a href="#测试-GET" class="headerlink" title="测试 GET"></a>测试 GET</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 基础请求</span></span><br><span class="line">curl http://localhost:8000</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看详细过程（请求头、响应头）</span></span><br><span class="line">curl -v http://localhost:8000</span><br></pre></td></tr></table></figure>
-
-<h3 id="测试-POST"><a href="#测试-POST" class="headerlink" title="测试 POST"></a>测试 POST</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">curl -X POST \</span><br><span class="line">  -H <span class="string">&quot;Content-Type: application/json&quot;</span> \</span><br><span class="line">  -d <span class="string">&#x27;&#123;</span></span><br><span class="line"><span class="string">    &quot;movie&quot;: &quot;Interstellar&quot;,</span></span><br><span class="line"><span class="string">    &quot;review&quot;: &#123;</span></span><br><span class="line"><span class="string">      &quot;num_stars&quot;: 5,</span></span><br><span class="line"><span class="string">      &quot;text&quot;: &quot;Amazing movie!&quot;,</span></span><br><span class="line"><span class="string">      &quot;public&quot;: true</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">  &#125;&#x27;</span> \</span><br><span class="line">  http://localhost:8000/reviews</span><br></pre></td></tr></table></figure>
+<p>FastAPI 会自动将 JSON 请求体解析为 <code>MovieReview</code> 对象，无需手动 <code>json.loads()</code>。</p>
+<hr>
+<h2 id="八、用-CURL-发送-POST-请求"><a href="#八、用-CURL-发送-POST-请求" class="headerlink" title="八、用 CURL 发送 POST 请求"></a>八、用 CURL 发送 POST 请求</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">curl -X POST \</span><br><span class="line">  -H <span class="string">&quot;Content-Type: application/json&quot;</span> \</span><br><span class="line">  -d <span class="string">&#x27;&#123;</span></span><br><span class="line"><span class="string">    &quot;movie&quot;: &quot;Interstellar&quot;,</span></span><br><span class="line"><span class="string">    &quot;review&quot;: &#123;</span></span><br><span class="line"><span class="string">      &quot;num_stars&quot;: 5,</span></span><br><span class="line"><span class="string">      &quot;text&quot;: &quot;Amazing movie!&quot;,</span></span><br><span class="line"><span class="string">      &quot;public&quot;: true</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">  &#125;&#x27;</span> \</span><br><span class="line">  http://localhost:8000/reviews</span><br></pre></td></tr></table></figure>
 
 <p>返回：</p>
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;movie&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Interstellar&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;review&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;num_stars&quot;</span><span class="punctuation">:</span> <span class="number">5</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;text&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Amazing movie!&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;public&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
 
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>作用</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>-X POST</code></td>
-<td>指定请求方法为 POST</td>
-</tr>
-<tr>
-<td><code>-H</code></td>
-<td>声明请求头（Content-Type 告诉服务器数据格式是 JSON）</td>
-</tr>
-<tr>
-<td><code>-d</code></td>
-<td>请求体数据</td>
-</tr>
-</tbody></table>
-<h2 id="自动生成的交互式文档"><a href="#自动生成的交互式文档" class="headerlink" title="自动生成的交互式文档"></a>自动生成的交互式文档</h2><p>这是 FastAPI 最方便的功能之一。启动服务后直接访问：</p>
+<blockquote>
+<p>关键参数说明：</p>
 <ul>
-<li><strong>Swagger UI</strong>：<code>http://127.0.0.1:8000/docs</code></li>
-<li><strong>ReDoc</strong>：<code>http://127.0.0.1:8000/redoc</code></li>
+<li><code>-X POST</code>：指定请求方法为 POST</li>
+<li><code>-H &quot;Content-Type: application/json&quot;</code>：声明请求体格式为 JSON</li>
+<li><code>-d &#39;&#123;...&#125;&#39;</code>：请求体数据</li>
 </ul>
-<p>不需要写任何额外代码，FastAPI 根据路由和数据模型<strong>自动生成</strong>完整的 API 文档，Swagger UI 还支持在线调试——直接在网页里填参数、发请求、看结果。</p>
-<h2 id="核心概念速查"><a href="#核心概念速查" class="headerlink" title="核心概念速查"></a>核心概念速查</h2><table>
+</blockquote>
+<hr>
+<h2 id="九、核心概念"><a href="#九、核心概念" class="headerlink" title="九、核心概念"></a>九、核心概念</h2><table>
 <thead>
 <tr>
 <th>概念</th>
@@ -279,19 +352,14 @@
 <td>查询数据</td>
 </tr>
 <tr>
+<td>查询参数</td>
+<td><code>def fn(name: str = &quot;默认值&quot;)</code></td>
+<td>自动解析 URL 参数</td>
+</tr>
+<tr>
 <td>POST 路由</td>
 <td><code>@app.post(&quot;/path&quot;)</code></td>
 <td>创建资源</td>
-</tr>
-<tr>
-<td>路径参数</td>
-<td><code>def fn(id: int)</code></td>
-<td><code>/users/42</code> → <code>id=42</code></td>
-</tr>
-<tr>
-<td>查询参数</td>
-<td><code>def fn(name: str = &quot;默认值&quot;)</code></td>
-<td>自动解析 <code>?name=xxx</code></td>
 </tr>
 <tr>
 <td>Pydantic 模型</td>
@@ -301,30 +369,182 @@
 <tr>
 <td>嵌套模型</td>
 <td>模型中引用另一个模型</td>
-<td>支持复杂 JSON</td>
+<td>支持复杂 JSON 结构</td>
 </tr>
 <tr>
-<td>cURL GET</td>
-<td><code>curl http://localhost:8000</code></td>
-<td>命令行测试 GET</td>
-</tr>
-<tr>
-<td>cURL POST</td>
+<td>cURL 测试</td>
 <td><code>curl -X POST -d &#39;&#123;...&#125;&#39;</code></td>
-<td>命令行测试 POST</td>
+<td>命令行调试接口</td>
 </tr>
 </tbody></table>
+<hr>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>FastAPI 最大的魅力在于：<strong>用最少的代码，做最多的事</strong>。</p>
-<p>只需定义路由函数 + Pydantic 模型，参数解析、类型转换、数据校验、JSON 序列化、Swagger 文档全部自动搞定。Python 类型提示不再只是注释，而是真正参与到了运行时验证、文档生成和编辑器智能提示中。对于习惯 Flask 或 Django 的开发者来说，FastAPI 的体验会让你耳目一新。</p>
+<p>只需定义路由函数 + Pydantic 模型，FastAPI 自动搞定：</p>
+<ul>
+<li>参数解析 &amp; 类型转换</li>
+<li>数据合法性校验</li>
+<li>JSON 序列化 &#x2F; 反序列化</li>
+<li>Swagger 文档自动生成</li>
+</ul>
+<hr>
+<h1 id="FastAPI-进阶：从-PUT-DELETE-到-CRUD-API-测试"><a href="#FastAPI-进阶：从-PUT-DELETE-到-CRUD-API-测试" class="headerlink" title="FastAPI 进阶：从 PUT&#x2F;DELETE 到 CRUD API 测试"></a>FastAPI 进阶：从 PUT&#x2F;DELETE 到 CRUD API 测试</h1><blockquote>
+<p>本文对应 DataCamp《Introduction to FastAPI》课程第二节（FastAPI 进阶主题）与第三节（构建并测试 JSON CRUD API）的核心内容，帮助你在掌握基础 GET&#x2F;POST 操作之后，进一步构建生产级别的 API。</p>
+</blockquote>
+<hr>
+<h2 id="第二节：FastAPI-进阶主题"><a href="#第二节：FastAPI-进阶主题" class="headerlink" title="第二节：FastAPI 进阶主题"></a>第二节：FastAPI 进阶主题</h2><h3 id="一、PUT-与-DELETE-操作"><a href="#一、PUT-与-DELETE-操作" class="headerlink" title="一、PUT 与 DELETE 操作"></a>一、PUT 与 DELETE 操作</h3><p>在第一节里，我们学会了用 GET 读取数据、用 POST 创建数据。现在有另外两种 HTTP 操作：</p>
+<ul>
+<li><strong>PUT</strong>：更新已有对象</li>
+<li><strong>DELETE</strong>：删除已有对象</li>
+</ul>
+<p>和 POST 一样，它们都可以从查询字符串（query string）和请求体（request body）中接收参数。关键区别在于——这两种操作需要<strong>引用一个已存在的对象</strong>。</p>
+<h4 id="引用已有对象"><a href="#引用已有对象" class="headerlink" title="引用已有对象"></a>引用已有对象</h4><p>FastAPI 没有内置 ORM，这意味着把 API 请求映射到数据库对象是应用本身的责任。惯例做法是在参数名里包含列名，例如 <code>review_id</code> 表示 <code>reviews</code> 表的主键 ID。</p>
+<p>先定义一个包含数据库标识符的 Pydantic 模型：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pydantic <span class="keyword">import</span> BaseModel</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">DbReview</span>(<span class="title class_ inherited__">BaseModel</span>):</span><br><span class="line">    review_id: <span class="built_in">int</span></span><br><span class="line">    movie_title: <span class="built_in">str</span></span><br><span class="line">    rating: <span class="built_in">float</span></span><br><span class="line">    review_text: <span class="built_in">str</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="实现-PUT-功能"><a href="#实现-PUT-功能" class="headerlink" title="实现 PUT 功能"></a>实现 PUT 功能</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> fastapi <span class="keyword">import</span> FastAPI</span><br><span class="line"></span><br><span class="line">app = FastAPI()</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.put(<span class="params"><span class="string">&quot;/reviews&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">update_review</span>(<span class="params">review: DbReview</span>) -&gt; DbReview:</span><br><span class="line">    <span class="comment"># 将 review 数据更新到数据库</span></span><br><span class="line">    updated = update_review_in_db(review)</span><br><span class="line">    <span class="keyword">return</span> updated</span><br></pre></td></tr></table></figure>
+
+<p><code>@app.put</code> 装饰器告诉 FastAPI 这是一个 PUT 操作。函数接受 <code>DbReview</code> 作为请求体，更新完成后返回同一模型。</p>
+<h4 id="实现-DELETE-功能"><a href="#实现-DELETE-功能" class="headerlink" title="实现 DELETE 功能"></a>实现 DELETE 功能</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.delete(<span class="params"><span class="string">&quot;/reviews&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">delete_review</span>(<span class="params">review: DbReview</span>):</span><br><span class="line">    <span class="comment"># 从数据库中删除对应记录</span></span><br><span class="line">    delete_review_from_db(review)</span><br><span class="line">    <span class="comment"># 删除操作不返回数据，对象已不存在</span></span><br></pre></td></tr></table></figure>
+
+<p>DELETE 端点不返回数据——对象删除之后已经消失了，没有什么可返回的。</p>
+<hr>
+<h3 id="二、错误处理与-HTTP-状态码"><a href="#二、错误处理与-HTTP-状态码" class="headerlink" title="二、错误处理与 HTTP 状态码"></a>二、错误处理与 HTTP 状态码</h3><p>一个好的的 API 不能只处理顺利的操作，还必须要处理各种错误，并始终返回恰当的 HTTP 状态码。</p>
+<h4 id="状态码"><a href="#状态码" class="headerlink" title="状态码"></a>状态码</h4><table>
+<thead>
+<tr>
+<th>范围</th>
+<th>含义</th>
+<th>典型示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2xx</td>
+<td>成功</td>
+<td>200 OK、201 Created、204 No Content</td>
+</tr>
+<tr>
+<td>4xx</td>
+<td>客户端错误</td>
+<td>400 Bad Request、404 Not Found、422 Unprocessable Entity</td>
+</tr>
+<tr>
+<td>5xx</td>
+<td>服务器错误</td>
+<td>500 Internal Server Error</td>
+</tr>
+</tbody></table>
+<h4 id="使用-HTTPException-引出错误"><a href="#使用-HTTPException-引出错误" class="headerlink" title="使用 HTTPException 引出错误"></a>使用 HTTPException 引出错误</h4><p>FastAPI 提供了 <code>HTTPException</code>，让你在任何地方都能轻松返回带有状态码和说明的错误响应：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> fastapi <span class="keyword">import</span> FastAPI, HTTPException</span><br><span class="line"></span><br><span class="line">app = FastAPI()</span><br><span class="line"></span><br><span class="line">fake_db = &#123;<span class="number">1</span>: &#123;<span class="string">&quot;title&quot;</span>: <span class="string">&quot;Inception&quot;</span>, <span class="string">&quot;rating&quot;</span>: <span class="number">9.0</span>&#125;&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.get(<span class="params"><span class="string">&quot;/movies/&#123;movie_id&#125;&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_movie</span>(<span class="params">movie_id: <span class="built_in">int</span></span>):</span><br><span class="line">    <span class="keyword">if</span> movie_id <span class="keyword">not</span> <span class="keyword">in</span> fake_db:</span><br><span class="line">        <span class="keyword">raise</span> HTTPException(</span><br><span class="line">            status_code=<span class="number">404</span>,</span><br><span class="line">            detail=<span class="string">f&quot;Movie with ID <span class="subst">&#123;movie_id&#125;</span> not found.&quot;</span></span><br><span class="line">        )</span><br><span class="line">    <span class="keyword">return</span> fake_db[movie_id]</span><br></pre></td></tr></table></figure>
+
+<p>当请求一个不存在的 ID 时，FastAPI 会自动返回：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;detail&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Movie with ID 99 not found.&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>这比返回一个 200 状态码但内容为空要更好理解，也让 API 能清楚地知道出了什么问题。</p>
+<hr>
+<h3 id="三、使用-async-处理并发请求"><a href="#三、使用-async-处理并发请求" class="headerlink" title="三、使用 async 处理并发请求"></a>三、使用 async 处理并发请求</h3><p>现代 API 往往需要同时处理大量请求。FastAPI 支持 Python 的 <code>async/await</code> 语法，让你的应用能以更低的消耗应对更高的并发。</p>
+<h4 id="什么时候用-async？"><a href="#什么时候用-async？" class="headerlink" title="什么时候用 async？"></a>什么时候用 async？</h4><ul>
+<li>调用外部 API 或数据库时（I&#x2F;O 密集型操作）</li>
+<li>操作本身有等待时间，而 CPU 其实处于空闲状态时</li>
+</ul>
+<p>如果函数只做纯 CPU 计算（不涉及 I&#x2F;O 等待），则不需要 async。</p>
+<h4 id="异步-DELETE-功能"><a href="#异步-DELETE-功能" class="headerlink" title="异步 DELETE 功能"></a>异步 DELETE 功能</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"><span class="keyword">from</span> fastapi <span class="keyword">import</span> FastAPI</span><br><span class="line"></span><br><span class="line">app = FastAPI()</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.delete(<span class="params"><span class="string">&quot;/reviews&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">delete_review</span>(<span class="params">review: DbReview</span>):</span><br><span class="line">    <span class="comment"># 假设 db_delete 是一个异步数据库操作</span></span><br><span class="line">    <span class="keyword">await</span> db_delete(review.review_id)</span><br></pre></td></tr></table></figure>
+
+<p>加上 <code>async def</code> 和 <code>await</code>，FastAPI 就能在等待数据库响应时继续处理其他请求，显著提升吞吐量。</p>
+<hr>
+<h2 id="第三节：构建并测试-JSON-CRUD-API"><a href="#第三节：构建并测试-JSON-CRUD-API" class="headerlink" title="第三节：构建并测试 JSON CRUD API"></a>第三节：构建并测试 JSON CRUD API</h2><p>掌握了四种 HTTP 操作（GET、POST、PUT、DELETE）和错误处理之后，并组合成一个完整的 <strong>CRUD API</strong>，并学习如何用自动化测试来保障质量。</p>
+<h3 id="一、FastAPI-自动化测试"><a href="#一、FastAPI-自动化测试" class="headerlink" title="一、FastAPI 自动化测试"></a>一、FastAPI 自动化测试</h3><h4 id="单元测试和系统测试"><a href="#单元测试和系统测试" class="headerlink" title="单元测试和系统测试"></a>单元测试和系统测试</h4><table>
+<thead>
+<tr>
+<th>测试类型</th>
+<th>测试范围</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>单元测试</td>
+<td>单个函数&#x2F;模块</td>
+<td>快速、隔离，不涉及网络</td>
+</tr>
+<tr>
+<td>系统测试</td>
+<td>单个 API 端点</td>
+<td>真实 HTTP 请求，验证端到端行为</td>
+</tr>
+<tr>
+<td>功能测试</td>
+<td>多个端点协作</td>
+<td>模拟真实用户操作流程</td>
+</tr>
+</tbody></table>
+<p>对于 FastAPI，<strong>系统测试</strong>是最常用的测试方式。FastAPI 官方提供了 <code>TestClient</code>（基于 <code>httpx</code>），可以在不启动服务器的情况下发送真实 HTTP 请求。</p>
+<h4 id="编写系统测试"><a href="#编写系统测试" class="headerlink" title="编写系统测试"></a>编写系统测试</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> fastapi.testclient <span class="keyword">import</span> TestClient</span><br><span class="line"><span class="keyword">from</span> main <span class="keyword">import</span> app  <span class="comment"># 导入你的 FastAPI 应用</span></span><br><span class="line"></span><br><span class="line">client = TestClient(app)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_get_movie</span>():</span><br><span class="line">    response = client.get(<span class="string">&quot;/movies/1&quot;</span>)</span><br><span class="line">    <span class="keyword">assert</span> response.status_code == <span class="number">200</span></span><br><span class="line">    <span class="keyword">assert</span> response.json()[<span class="string">&quot;title&quot;</span>] == <span class="string">&quot;Inception&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_get_movie_not_found</span>():</span><br><span class="line">    response = client.get(<span class="string">&quot;/movies/999&quot;</span>)</span><br><span class="line">    <span class="keyword">assert</span> response.status_code == <span class="number">404</span></span><br></pre></td></tr></table></figure>
+
+<p>运行方式：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pytest test_main.py</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="二、构建完整的-JSON-CRUD-API"><a href="#二、构建完整的-JSON-CRUD-API" class="headerlink" title="二、构建完整的 JSON CRUD API"></a>二、构建完整的 JSON CRUD API</h3><p>以”电影评论”为例子，实现一套完整的 CRUD API。</p>
+<h4 id="定义数据模型"><a href="#定义数据模型" class="headerlink" title="定义数据模型"></a>定义数据模型</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pydantic <span class="keyword">import</span> BaseModel</span><br><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> <span class="type">Optional</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Review</span>(<span class="title class_ inherited__">BaseModel</span>):</span><br><span class="line">    movie_title: <span class="built_in">str</span></span><br><span class="line">    rating: <span class="built_in">float</span></span><br><span class="line">    review_text: <span class="built_in">str</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">DbReview</span>(<span class="title class_ inherited__">Review</span>):</span><br><span class="line">    review_id: <span class="built_in">int</span>  <span class="comment"># 数据库生成的唯一标识</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="四个核心端点"><a href="#四个核心端点" class="headerlink" title="四个核心端点"></a>四个核心端点</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> fastapi <span class="keyword">import</span> FastAPI, HTTPException</span><br><span class="line"></span><br><span class="line">app = FastAPI()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 模拟数据库</span></span><br><span class="line">db: <span class="built_in">dict</span>[<span class="built_in">int</span>, DbReview] = &#123;&#125;</span><br><span class="line">next_id = <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># CREATE — 创建新评论</span></span><br><span class="line"><span class="meta">@app.post(<span class="params"><span class="string">&quot;/reviews&quot;</span>, status_code=<span class="number">201</span></span>)</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">create_review</span>(<span class="params">review: Review</span>) -&gt; DbReview:</span><br><span class="line">    <span class="keyword">global</span> next_id</span><br><span class="line">    new_review = DbReview(review_id=next_id, **review.<span class="built_in">dict</span>())</span><br><span class="line">    db[next_id] = new_review</span><br><span class="line">    next_id += <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> new_review</span><br><span class="line"></span><br><span class="line"><span class="comment"># READ — 读取单条评论</span></span><br><span class="line"><span class="meta">@app.get(<span class="params"><span class="string">&quot;/reviews/&#123;review_id&#125;&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">get_review</span>(<span class="params">review_id: <span class="built_in">int</span></span>) -&gt; DbReview:</span><br><span class="line">    <span class="keyword">if</span> review_id <span class="keyword">not</span> <span class="keyword">in</span> db:</span><br><span class="line">        <span class="keyword">raise</span> HTTPException(status_code=<span class="number">404</span>, detail=<span class="string">&quot;Review not found.&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> db[review_id]</span><br><span class="line"></span><br><span class="line"><span class="comment"># UPDATE — 更新已有的评论</span></span><br><span class="line"><span class="meta">@app.put(<span class="params"><span class="string">&quot;/reviews&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">update_review</span>(<span class="params">review: DbReview</span>) -&gt; DbReview:</span><br><span class="line">    <span class="keyword">if</span> review.review_id <span class="keyword">not</span> <span class="keyword">in</span> db:</span><br><span class="line">        <span class="keyword">raise</span> HTTPException(status_code=<span class="number">404</span>, detail=<span class="string">&quot;Review not found.&quot;</span>)</span><br><span class="line">    db[review.review_id] = review</span><br><span class="line">    <span class="keyword">return</span> review</span><br><span class="line"></span><br><span class="line"><span class="comment"># DELETE — 删除评论</span></span><br><span class="line"><span class="meta">@app.delete(<span class="params"><span class="string">&quot;/reviews&quot;</span>, status_code=<span class="number">204</span></span>)</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">delete_review</span>(<span class="params">review: DbReview</span>):</span><br><span class="line">    <span class="keyword">if</span> review.review_id <span class="keyword">not</span> <span class="keyword">in</span> db:</span><br><span class="line">        <span class="keyword">raise</span> HTTPException(status_code=<span class="number">404</span>, detail=<span class="string">&quot;Review not found.&quot;</span>)</span><br><span class="line">    <span class="keyword">del</span> db[review.review_id]</span><br></pre></td></tr></table></figure>
+
+<p>HTTP 操作与 CRUD 步骤的对应关系：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">POST   → Create（创建）</span><br><span class="line">GET    → Read  （读取）</span><br><span class="line">PUT    → Update（更新）</span><br><span class="line">DELETE → Delete（删除）</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="三、手动功能测试"><a href="#三、手动功能测试" class="headerlink" title="三、手动功能测试"></a>三、手动功能测试</h3><p>系统测试验证单个端点，而<strong>功能测试</strong>模拟真实用户的完整操作流程——例如”先创建一条评论，再更新它，最后删除它”。</p>
+<p>功能测试通常用 Python 的 <code>requests</code> 库手动编写：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">BASE_URL = <span class="string">&quot;http://localhost:8000&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 步骤 1：创建评论</span></span><br><span class="line">response = requests.post(<span class="string">f&quot;<span class="subst">&#123;BASE_URL&#125;</span>/reviews&quot;</span>, json=&#123;</span><br><span class="line">    <span class="string">&quot;movie_title&quot;</span>: <span class="string">&quot;Inception&quot;</span>,</span><br><span class="line">    <span class="string">&quot;rating&quot;</span>: <span class="number">9.5</span>,</span><br><span class="line">    <span class="string">&quot;review_text&quot;</span>: <span class="string">&quot;一部烧脑的神作&quot;</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">assert</span> response.status_code == <span class="number">201</span></span><br><span class="line">review_id = response.json()[<span class="string">&quot;review_id&quot;</span>]</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot; 创建成功，ID = <span class="subst">&#123;review_id&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 步骤 2：读取评论</span></span><br><span class="line">response = requests.get(<span class="string">f&quot;<span class="subst">&#123;BASE_URL&#125;</span>/reviews/<span class="subst">&#123;review_id&#125;</span>&quot;</span>)</span><br><span class="line"><span class="keyword">assert</span> response.status_code == <span class="number">200</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot; 读取成功：<span class="subst">&#123;response.json()&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 步骤 3：更新评论</span></span><br><span class="line">response = requests.put(<span class="string">f&quot;<span class="subst">&#123;BASE_URL&#125;</span>/reviews&quot;</span>, json=&#123;</span><br><span class="line">    <span class="string">&quot;review_id&quot;</span>: review_id,</span><br><span class="line">    <span class="string">&quot;movie_title&quot;</span>: <span class="string">&quot;Inception&quot;</span>,</span><br><span class="line">    <span class="string">&quot;rating&quot;</span>: <span class="number">9.0</span>,</span><br><span class="line">    <span class="string">&quot;review_text&quot;</span>: <span class="string">&quot;再刷一遍，依然精彩。&quot;</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">assert</span> response.status_code == <span class="number">200</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot; 更新成功：<span class="subst">&#123;response.json()&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 步骤 4：删除评论</span></span><br><span class="line">response = requests.delete(<span class="string">f&quot;<span class="subst">&#123;BASE_URL&#125;</span>/reviews&quot;</span>, json=&#123;</span><br><span class="line">    <span class="string">&quot;review_id&quot;</span>: review_id,</span><br><span class="line">    <span class="string">&quot;movie_title&quot;</span>: <span class="string">&quot;Inception&quot;</span>,</span><br><span class="line">    <span class="string">&quot;rating&quot;</span>: <span class="number">9.0</span>,</span><br><span class="line">    <span class="string">&quot;review_text&quot;</span>: <span class="string">&quot;再刷一遍，依然精彩。&quot;</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">assert</span> response.status_code == <span class="number">204</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot; 删除成功&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h4 id="系统测试-vs-功能测试"><a href="#系统测试-vs-功能测试" class="headerlink" title="系统测试 vs 功能测试"></a>系统测试 vs 功能测试</h4><table>
+<thead>
+<tr>
+<th>对比维度</th>
+<th>系统测试</th>
+<th>功能测试</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>测试粒度</td>
+<td>单个端点</td>
+<td>多个端点协作</td>
+</tr>
+<tr>
+<td>工具</td>
+<td><code>TestClient</code> (pytest)</td>
+<td><code>requests</code> (手动运行)</td>
+</tr>
+<tr>
+<td>速度</td>
+<td>快</td>
+<td>相对慢</td>
+</tr>
+<tr>
+<td>适用场景</td>
+<td>CI&#x2F;CD 自动化</td>
+<td>验证真实业务流程</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h2><ol>
+<li><strong>PUT &amp; DELETE</strong>：掌握更新和删除操作，理解对象引用的重要性</li>
+<li><strong>错误处理</strong>：用 <code>HTTPException</code> 返回语义明确的状态码，让 API 更健壮</li>
+<li><strong>async</strong>：用异步编程提升并发处理能力，应对高负载场景</li>
+<li><strong>系统测试</strong>：用 <code>TestClient</code> 自动化验证每个端点</li>
+<li><strong>完整 CRUD API</strong>：将四种 HTTP 操作串联成一个完整的数据生命周期管理系统</li>
+<li><strong>功能测试</strong>：模拟真实用户流程，验证端点之间的协作</li>
+</ol>
+<hr>
+<p>*参考资料：DataCamp《Introduction to FastAPI》课程 · FastAPI 官方文档 </p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wenjiajun-wn.github.io/2026/06/15/Fast%20api/" data-id="cmqgien2d00008c7k6oix389i" data-title="FastAPI 入门学习笔记" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wenjiajun-wn.github.io/2026/06/15/Fast%20api/" data-id="cmqgien2d00008c7k6oix389i" data-title="Fast api" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/FastAPI/" rel="tag">FastAPI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Web%E5%BC%80%E5%8F%91/" rel="tag">Web开发</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Fast-api%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" rel="tag">Fast api的基础知识</a></li></ul>
 
     </footer>
   </div>
@@ -355,7 +575,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-Agent/" rel="tag">AI-Agent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FastAPI/" rel="tag">FastAPI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web%E5%BC%80%E5%8F%91/" rel="tag">Web开发</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-agent/" rel="tag">ai agent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-assistant/" rel="tag">ai_assistant</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-assistant-2/" rel="tag">ai_assistant(2)</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-assistant-3/" rel="tag">ai_assistant(3)</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/chatting-robot/" rel="tag">chatting robot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/smolagents/" rel="tag">smolagents</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-Agent/" rel="tag">AI-Agent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Fast-api%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" rel="tag">Fast api的基础知识</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-agent/" rel="tag">ai agent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-assistant/" rel="tag">ai_assistant</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-assistant-2/" rel="tag">ai_assistant(2)</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-assistant-3/" rel="tag">ai_assistant(3)</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/chatting-robot/" rel="tag">chatting robot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/smolagents/" rel="tag">smolagents</a></li></ul>
     </div>
   </div>
 
@@ -365,7 +585,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/AI-Agent/" style="font-size: 10px;">AI-Agent</a> <a href="/tags/FastAPI/" style="font-size: 10px;">FastAPI</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/Web%E5%BC%80%E5%8F%91/" style="font-size: 10px;">Web开发</a> <a href="/tags/ai-agent/" style="font-size: 10px;">ai agent</a> <a href="/tags/ai-assistant/" style="font-size: 10px;">ai_assistant</a> <a href="/tags/ai-assistant-2/" style="font-size: 10px;">ai_assistant(2)</a> <a href="/tags/ai-assistant-3/" style="font-size: 10px;">ai_assistant(3)</a> <a href="/tags/chatting-robot/" style="font-size: 10px;">chatting robot</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/smolagents/" style="font-size: 10px;">smolagents</a>
+      <a href="/tags/AI-Agent/" style="font-size: 10px;">AI-Agent</a> <a href="/tags/Fast-api%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" style="font-size: 10px;">Fast api的基础知识</a> <a href="/tags/ai-agent/" style="font-size: 10px;">ai agent</a> <a href="/tags/ai-assistant/" style="font-size: 10px;">ai_assistant</a> <a href="/tags/ai-assistant-2/" style="font-size: 10px;">ai_assistant(2)</a> <a href="/tags/ai-assistant-3/" style="font-size: 10px;">ai_assistant(3)</a> <a href="/tags/chatting-robot/" style="font-size: 10px;">chatting robot</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/smolagents/" style="font-size: 10px;">smolagents</a>
     </div>
   </div>
 
@@ -387,7 +607,7 @@
       <ul>
         
           <li>
-            <a href="/2026/06/15/Fast%20api/">FastAPI 入门学习笔记</a>
+            <a href="/2026/06/15/Fast%20api/">Fast api</a>
           </li>
         
           <li>
