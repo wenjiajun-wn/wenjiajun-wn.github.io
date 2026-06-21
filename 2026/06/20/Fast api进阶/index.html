@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Fast api | WN</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="FastAPI用 FastAPI 将 AI 模型部署到生产环境：从零到上线的完整指南 基于 DataCamp《Deploying AI into Production with FastAPI》课程内容整理   前言：为什么 AI 模型的上线很困难训练一个机器学习模型现在的技术很成熟。但把它真正部署到生产环境，让其他用户能够调用它——这才是真正的挑战。 FastAPI 的出现，让这件事变得出乎意料">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Fast api">
+<meta property="og:url" content="https://wenjiajun-wn.github.io/2026/06/20/Fast%20api%E8%BF%9B%E9%98%B6/index.html">
+<meta property="og:site_name" content="WN">
+<meta property="og:description" content="FastAPI用 FastAPI 将 AI 模型部署到生产环境：从零到上线的完整指南 基于 DataCamp《Deploying AI into Production with FastAPI》课程内容整理   前言：为什么 AI 模型的上线很困难训练一个机器学习模型现在的技术很成熟。但把它真正部署到生产环境，让其他用户能够调用它——这才是真正的挑战。 FastAPI 的出现，让这件事变得出乎意料">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-06-19T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-06-21T12:45:35.389Z">
+<meta property="article:author" content="wn">
+<meta property="article:tag" content="Fast api的进阶知识">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="WN" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">WN</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://wenjiajun-wn.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Fast api进阶" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/06/20/Fast%20api%E8%BF%9B%E9%98%B6/" class="article-date">
+  <time class="dt-published" datetime="2026-06-19T16:00:00.000Z" itemprop="datePublished">2026-06-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Fast api
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="FastAPI"><a href="#FastAPI" class="headerlink" title="FastAPI"></a>FastAPI</h1><h1 id="用-FastAPI-将-AI-模型部署到生产环境：从零到上线的完整指南"><a href="#用-FastAPI-将-AI-模型部署到生产环境：从零到上线的完整指南" class="headerlink" title="用 FastAPI 将 AI 模型部署到生产环境：从零到上线的完整指南"></a>用 FastAPI 将 AI 模型部署到生产环境：从零到上线的完整指南</h1><blockquote>
+<p>基于 DataCamp《Deploying AI into Production with FastAPI》课程内容整理</p>
+</blockquote>
+<hr>
+<h2 id="前言：为什么-AI-模型的上线很困难"><a href="#前言：为什么-AI-模型的上线很困难" class="headerlink" title="前言：为什么 AI 模型的上线很困难"></a>前言：为什么 AI 模型的上线很困难</h2><p>训练一个机器学习模型现在的技术很成熟。但把它真正部署到生产环境，让其他用户能够调用它——这才是真正的挑战。</p>
+<p>FastAPI 的出现，让这件事变得出乎意料地简单。它是一个基于 Python的 Web 框架，内置数据验证、自动文档生成，天然支持异步处理，是 AI 工程师部署模型的首选工具。</p>
+<p>文章根据 DataCamp 的 <em>Deploying AI into Production with FastAPI</em> 课程，共四大模块。</p>
+<hr>
+<h2 id="模块一：FastAPI-基础与模型服务入门"><a href="#模块一：FastAPI-基础与模型服务入门" class="headerlink" title="模块一：FastAPI 基础与模型服务入门"></a>模块一：FastAPI 基础与模型服务入门</h2><h3 id="GET-与-POST：API-的两种基本姿势"><a href="#GET-与-POST：API-的两种基本姿势" class="headerlink" title="GET 与 POST：API 的两种基本姿势"></a>GET 与 POST：API 的两种基本姿势</h3><p>理解 FastAPI，先从 HTTP 请求方法入手。</p>
+<p><strong>GET 请求</strong>就像去餐厅看菜单——你在获取信息的时候，不改变任何东西。在 FastAPI 里，用 <code>@app.get</code> 装饰器定义，路径参数直接写在 URL 里，加上类型注解后会自动校验：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> fastapi <span class="keyword">import</span> FastAPI, HTTPException</span><br><span class="line"></span><br><span class="line">app = FastAPI()</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.get(<span class="params"><span class="string">&quot;/item/&#123;item_id&#125;&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">read_item</span>(<span class="params">item_id: <span class="built_in">int</span></span>):</span><br><span class="line">    <span class="keyword">if</span> item_id <span class="keyword">not</span> <span class="keyword">in</span> db:</span><br><span class="line">        <span class="keyword">raise</span> HTTPException(status_code=<span class="number">404</span>, detail=<span class="string">&quot;Item not found&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> db[item_id]</span><br></pre></td></tr></table></figure>
+
+<p><strong>POST 请求</strong>则是点餐——你在向服务器发送数据、创建或更新资源。数据以 JSON 格式放在请求体中传递。</p>
+<h3 id="Pydantic：数据验证的基础"><a href="#Pydantic：数据验证的基础" class="headerlink" title="Pydantic：数据验证的基础"></a>Pydantic：数据验证的基础</h3><p>FastAPI 与 Pydantic 深度集成，用 Pydantic 模型来定义请求和响应的数据结构，实现自动校验与序列化：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pydantic <span class="keyword">import</span> BaseModel</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">PenguinInput</span>(<span class="title class_ inherited__">BaseModel</span>):</span><br><span class="line">    culmen_length: <span class="built_in">float</span></span><br><span class="line">    culmen_depth: <span class="built_in">float</span></span><br><span class="line">    flipper_length: <span class="built_in">float</span></span><br><span class="line">    body_mass: <span class="built_in">float</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.post(<span class="params"><span class="string">&quot;/predict&quot;</span>, status_code=<span class="number">201</span></span>)</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">predict</span>(<span class="params">data: PenguinInput</span>):</span><br><span class="line">    result = model.predict([[</span><br><span class="line">        data.culmen_length, data.culmen_depth,</span><br><span class="line">        data.flipper_length, data.body_mass</span><br><span class="line">    ]])</span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">&quot;species&quot;</span>: result[<span class="number">0</span>]&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当请求中的字段类型不对或缺少必填项时，FastAPI 会自动返回清晰的错误信息，不需要手动写检验的逻辑。</p>
+<h3 id="加载预训练模型：用-lifespan-管理生命周期"><a href="#加载预训练模型：用-lifespan-管理生命周期" class="headerlink" title="加载预训练模型：用 lifespan 管理生命周期"></a>加载预训练模型：用 lifespan 管理生命周期</h3><p>关键技巧：模型不应该在每次请求时重新加载，而应该在服务器启动时加载一次，然后常驻内存。FastAPI 通过 <code>lifespan</code> 异步上下文管理器实现：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> contextlib <span class="keyword">import</span> asynccontextmanager</span><br><span class="line"><span class="keyword">import</span> joblib</span><br><span class="line"></span><br><span class="line">model = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@asynccontextmanager</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">lifespan</span>(<span class="params">app: FastAPI</span>):</span><br><span class="line">    <span class="keyword">global</span> model</span><br><span class="line">    model = joblib.load(<span class="string">&quot;penguin_classifier.pkl&quot;</span>)  <span class="comment"># 启动时加载</span></span><br><span class="line">    <span class="keyword">yield</span></span><br><span class="line">    <span class="comment"># yield 之后的代码在服务关闭时运行（清理资源）</span></span><br><span class="line"></span><br><span class="line">app = FastAPI(lifespan=lifespan)</span><br></pre></td></tr></table></figure>
+
+<p>用 uvicorn 启动服务也很简单：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uvicorn main:app --host 0.0.0.0 --port 8080</span><br></pre></td></tr></table></figure>
+
+<p>或者在脚本中启动：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> uvicorn</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    uvicorn.run(<span class="string">&quot;main:app&quot;</span>, host=<span class="string">&quot;0.0.0.0&quot;</span>, port=<span class="number">8080</span>)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="模块二：AI-模型集成——服务真实的-ML-模型"><a href="#模块二：AI-模型集成——服务真实的-ML-模型" class="headerlink" title="模块二：AI 模型集成——服务真实的 ML 模型"></a>模块二：AI 模型集成——服务真实的 ML 模型</h2><h3 id="接入-LLM：以-ChatGPT-风格-API-为例"><a href="#接入-LLM：以-ChatGPT-风格-API-为例" class="headerlink" title="接入 LLM：以 ChatGPT 风格 API 为例"></a>接入 LLM：以 ChatGPT 风格 API 为例</h3><p>演示了如何将大型语言模型（LLM）集成进 FastAPI 服务。核心思路是：</p>
+<ol>
+<li>在 lifespan 中初始化 LLM 客户端</li>
+<li>定义请求&#x2F;响应的 Pydantic 模型</li>
+<li>在端点中调用模型，返回结构化响应</li>
+</ol>
+<p>不同的是，LLM 的推理通常耗时更长，需要考虑流式输出或异步处理来提升用户体验。</p>
+<h3 id="Health-Check"><a href="#Health-Check" class="headerlink" title="Health Check"></a>Health Check</h3><p>就是让系统知道 API 是否就绪生产环境中，负载均衡器和容器编排系统（比如 Kubernetes）会定期检查服务健康状态。一个简单但必不可少的端点：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.get(<span class="params"><span class="string">&quot;/health&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">health_check</span>():</span><br><span class="line">    <span class="keyword">if</span> model <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        <span class="keyword">raise</span> HTTPException(status_code=<span class="number">503</span>, detail=<span class="string">&quot;Model not loaded&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">&quot;status&quot;</span>: <span class="string">&quot;OK&quot;</span>, <span class="string">&quot;model_loaded&quot;</span>: <span class="literal">True</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="模块三：安全与性能优化"><a href="#模块三：安全与性能优化" class="headerlink" title="模块三：安全与性能优化"></a>模块三：安全与性能优化</h2><p>是走向生产环境最关键的技术。</p>
+<h3 id="API-Key-认证"><a href="#API-Key-认证" class="headerlink" title="API Key 认证"></a>API Key 认证</h3><p>没有认证的 AI API 就像银行金库大门敞开。FastAPI 提供了 <code>APIKeyHeader</code> 类来实现请求头中的 API Key 验证：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> fastapi <span class="keyword">import</span> FastAPI, Depends, HTTPException</span><br><span class="line"><span class="keyword">from</span> fastapi.security <span class="keyword">import</span> APIKeyHeader</span><br><span class="line"></span><br><span class="line">API_SECRET_KEY = <span class="string">&quot;your-secret-key-here&quot;</span></span><br><span class="line">header_scheme = APIKeyHeader(name=<span class="string">&quot;X-API-Key&quot;</span>, auto_error=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">verify_api_key</span>(<span class="params">api_key: <span class="built_in">str</span> = Depends(<span class="params">header_scheme</span>)</span>):</span><br><span class="line">    <span class="keyword">if</span> api_key != API_SECRET_KEY:</span><br><span class="line">        <span class="keyword">raise</span> HTTPException(status_code=<span class="number">403</span>, detail=<span class="string">&quot;Invalid API Key&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> api_key</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.post(<span class="params"><span class="string">&quot;/predict&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">predict</span>(<span class="params">data: PenguinInput, key: <span class="built_in">str</span> = Depends(<span class="params">verify_api_key</span>)</span>):</span><br><span class="line">    <span class="comment"># 只有 API Key 验证通过的请求才能到达这里</span></span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+
+<p>将 <code>verify_api_key</code> 提取成独立函数是最佳实践——它可以复用在多个端点上。</p>
+<h3 id="速率限制"><a href="#速率限制" class="headerlink" title="速率限制"></a>速率限制</h3><p>AI 推理通常是计算密集型操作，不加限制地开放会导致资源耗尽。速率限制通过追踪每个客户端在时间窗口内的请求次数来控制流量：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> defaultdict</span><br><span class="line"><span class="keyword">from</span> time <span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> fastapi <span class="keyword">import</span> Request</span><br><span class="line"></span><br><span class="line">request_counts = defaultdict(<span class="built_in">list</span>)</span><br><span class="line">RATE_LIMIT = <span class="number">10</span>     <span class="comment"># 最多 10 次请求</span></span><br><span class="line">RATE_WINDOW = <span class="number">60</span>    <span class="comment"># 每 60 秒</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">rate_limiter</span>(<span class="params">request: Request</span>):</span><br><span class="line">    client_ip = request.client.host</span><br><span class="line">    now = time()</span><br><span class="line">    <span class="comment"># 清除时间窗口外的旧记录</span></span><br><span class="line">    request_counts[client_ip] = [</span><br><span class="line">        t <span class="keyword">for</span> t <span class="keyword">in</span> request_counts[client_ip] <span class="keyword">if</span> now - t &lt; RATE_WINDOW</span><br><span class="line">    ]</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(request_counts[client_ip]) &gt;= RATE_LIMIT:</span><br><span class="line">        <span class="keyword">raise</span> HTTPException(status_code=<span class="number">429</span>, detail=<span class="string">&quot;Too Many Requests&quot;</span>)</span><br><span class="line">    request_counts[client_ip].append(now)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意：上面是基于内存的简单实现。生产环境中推荐用 Redis 存储请求计数，以支持多进程&#x2F;多实例部署。</p>
+</blockquote>
+<h3 id="异步处理（Async）"><a href="#异步处理（Async）" class="headerlink" title="异步处理（Async）"></a>异步处理（Async）</h3><p>FastAPI 原生支持 Python 的 <code>async/await</code>。对于 I&#x2F;O 密集型任务（调用外部 LLM API、读写数据库），异步处理可以大幅提升吞吐量——服务器在等待响应时不会阻塞，可以同时处理其他请求：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> httpx</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.post(<span class="params"><span class="string">&quot;/analyze&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">analyze_sentiment</span>(<span class="params">text: <span class="built_in">str</span>, key: <span class="built_in">str</span> = Depends(<span class="params">verify_api_key</span>)</span>):</span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">with</span> httpx.AsyncClient() <span class="keyword">as</span> client:</span><br><span class="line">        response = <span class="keyword">await</span> client.post(</span><br><span class="line">            <span class="string">&quot;https://api.openai.com/v1/chat/completions&quot;</span>,</span><br><span class="line">            json=&#123;<span class="string">&quot;model&quot;</span>: <span class="string">&quot;gpt-4o-mini&quot;</span>, <span class="string">&quot;messages&quot;</span>: [&#123;<span class="string">&quot;role&quot;</span>: <span class="string">&quot;user&quot;</span>, <span class="string">&quot;content&quot;</span>: text&#125;]&#125;</span><br><span class="line">        )</span><br><span class="line">    <span class="keyword">return</span> response.json()</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="模块四：版本管理、监控与日志"><a href="#模块四：版本管理、监控与日志" class="headerlink" title="模块四：版本管理、监控与日志"></a>模块四：版本管理、监控与日志</h2><p>这是让 API 在生产环境中<strong>长期稳定运行</strong>的核心能力。</p>
+<h3 id="API-版本管理：平滑迭代而不破坏现有用户"><a href="#API-版本管理：平滑迭代而不破坏现有用户" class="headerlink" title="API 版本管理：平滑迭代而不破坏现有用户"></a>API 版本管理：平滑迭代而不破坏现有用户</h3><p>想象 API 端点是餐厅菜单上的菜品——你不能随便改变大家最爱点的菜，但你可以在菜单上加新菜。API 版本管理就是这个道理：让老用户继续用 v1，新功能在 v2 上提供。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> fastapi <span class="keyword">import</span> APIRouter</span><br><span class="line"></span><br><span class="line"><span class="comment"># v1 路由</span></span><br><span class="line">router_v1 = APIRouter(prefix=<span class="string">&quot;/v1&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">AIJobV1</span>(<span class="title class_ inherited__">BaseModel</span>):</span><br><span class="line">    job_name: <span class="built_in">str</span></span><br><span class="line">    input_data: <span class="built_in">dict</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@router_v1.post(<span class="params"><span class="string">&quot;/jobs&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">create_job_v1</span>(<span class="params">job: AIJobV1</span>):</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line"><span class="comment"># v2 路由——新增了必填字段</span></span><br><span class="line">router_v2 = APIRouter(prefix=<span class="string">&quot;/v2&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">AIJobV2</span>(<span class="title class_ inherited__">BaseModel</span>):</span><br><span class="line">    job_name: <span class="built_in">str</span></span><br><span class="line">    input_data: <span class="built_in">dict</span></span><br><span class="line">    config: <span class="built_in">dict</span>  <span class="comment"># 新增字段</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@router_v2.post(<span class="params"><span class="string">&quot;/jobs&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">create_job_v2</span>(<span class="params">job: AIJobV2</span>):</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">app.include_router(router_v1)</span><br><span class="line">app.include_router(router_v2)</span><br></pre></td></tr></table></figure>
+
+<p><strong>小技巧</strong>：如果只是新增可选字段，用 <code>Optional</code> 类型即可，不需要新建版本：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> <span class="type">Optional</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">AIJobV1Extended</span>(<span class="title class_ inherited__">BaseModel</span>):</span><br><span class="line">    job_name: <span class="built_in">str</span></span><br><span class="line">    input_data: <span class="built_in">dict</span></span><br><span class="line">    config: <span class="type">Optional</span>[<span class="built_in">dict</span>] = <span class="literal">None</span>  <span class="comment"># 可选，不破坏现有调用</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Swagger-自动文档"><a href="#Swagger-自动文档" class="headerlink" title="Swagger 自动文档"></a>Swagger 自动文档</h3><p>FastAPI 基于 OpenAPI 标准自动生成交互式 API 文档，无需额外配置：</p>
+<ul>
+<li><strong>Swagger UI</strong>：访问 <code>/docs</code>，可以直接在浏览器里测试每个端点</li>
+<li><strong>OpenAPI JSON</strong>：访问 <code>/openapi.json</code>，获取机器可读的 API 规范</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">app = FastAPI(</span><br><span class="line">    title=<span class="string">&quot;Penguin Species Classifier API&quot;</span>,</span><br><span class="line">    description=<span class="string">&quot;使用机器学习模型预测企鹅种类&quot;</span>,</span><br><span class="line">    version=<span class="string">&quot;2.0.0&quot;</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h3 id="高级输入验证"><a href="#高级输入验证" class="headerlink" title="高级输入验证"></a>高级输入验证</h3><p>随着 AI 应用越来越复杂，输入数据也不再是简单的数字和字符串可以处理复杂数据类型。Pydantic 支持嵌套模型、列表、枚举等复杂类型：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pydantic <span class="keyword">import</span> BaseModel, Field, validator</span><br><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> <span class="type">List</span></span><br><span class="line"><span class="keyword">from</span> enum <span class="keyword">import</span> Enum</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SentimentLabel</span>(<span class="built_in">str</span>, Enum):</span><br><span class="line">    positive = <span class="string">&quot;positive&quot;</span></span><br><span class="line">    negative = <span class="string">&quot;negative&quot;</span></span><br><span class="line">    neutral = <span class="string">&quot;neutral&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">BatchRequest</span>(<span class="title class_ inherited__">BaseModel</span>):</span><br><span class="line">    texts: <span class="type">List</span>[<span class="built_in">str</span>] = Field(..., min_items=<span class="number">1</span>, max_items=<span class="number">100</span>)</span><br><span class="line">    </span><br><span class="line"><span class="meta">    @validator(<span class="params"><span class="string">&quot;texts&quot;</span>, each_item=<span class="literal">True</span></span>)</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">text_not_empty</span>(<span class="params">cls, v</span>):</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> v.strip():</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">&quot;文本不能为空&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> v</span><br></pre></td></tr></table></figure>
+
+<h3 id="监控与日志"><a href="#监控与日志" class="headerlink" title="监控与日志"></a>监控与日志</h3><p>没有监控的生产服务是”乱用”。FastAPI 可以通过中间件（Middleware）统一记录每个请求的信息：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> fastapi <span class="keyword">import</span> Request</span><br><span class="line"></span><br><span class="line">logging.basicConfig(level=logging.INFO)</span><br><span class="line">logger = logging.getLogger(__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.middleware(<span class="params"><span class="string">&quot;http&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">log_requests</span>(<span class="params">request: Request, call_next</span>):</span><br><span class="line">    start_time = time.time()</span><br><span class="line">    response = <span class="keyword">await</span> call_next(request)</span><br><span class="line">    duration = time.time() - start_time</span><br><span class="line">    </span><br><span class="line">    logger.info(</span><br><span class="line">        <span class="string">f&quot;<span class="subst">&#123;request.method&#125;</span> <span class="subst">&#123;request.url.path&#125;</span> &quot;</span></span><br><span class="line">        <span class="string">f&quot;status=<span class="subst">&#123;response.status_code&#125;</span> &quot;</span></span><br><span class="line">        <span class="string">f&quot;duration=<span class="subst">&#123;duration:<span class="number">.3</span>f&#125;</span>s&quot;</span></span><br><span class="line">    )</span><br><span class="line">    <span class="keyword">return</span> response</span><br></pre></td></tr></table></figure>
+
+<p>配合 Health Check 端点，可以实时掌握服务状态，快速定位问题。</p>
+<hr>
+<h2 id="总结：一个生产就绪的-FastAPI-AI-服务应该具备"><a href="#总结：一个生产就绪的-FastAPI-AI-服务应该具备" class="headerlink" title="总结：一个生产就绪的 FastAPI AI 服务应该具备"></a>总结：一个生产就绪的 FastAPI AI 服务应该具备</h2><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>关键实现</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>模型服务</strong></td>
+<td>lifespan 加载模型，Pydantic 校验输入输出</td>
+</tr>
+<tr>
+<td><strong>安全</strong></td>
+<td>API Key 认证，速率限制防滥用</td>
+</tr>
+<tr>
+<td><strong>性能</strong></td>
+<td>async&#x2F;await 异步处理，提升并发能力</td>
+</tr>
+<tr>
+<td><strong>可维护性</strong></td>
+<td>API 版本管理，Swagger 自动文档</td>
+</tr>
+<tr>
+<td><strong>可观测性</strong></td>
+<td>请求日志中间件，Health Check 端点</td>
+</tr>
+</tbody></table>
+<p>FastAPI 的强大之处在于，它把这些生产级别的能力都封装得足够简洁——不需要写大量样板代码，就能获得一个强大、高性能、易维护的 AI 服务。</p>
+<p>从训练好的模型到稳定运行的生产 API，FastAPI 是目前 Python 生态中最顺利的路。</p>
+<hr>
+<p><em>参考课程：<a target="_blank" rel="noopener" href="https://app.datacamp.com/learn/courses/deploying-ai-into-production-with-fastapi">Deploying AI into Production with FastAPI</a> — DataCamp</em></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://wenjiajun-wn.github.io/2026/06/20/Fast%20api%E8%BF%9B%E9%98%B6/" data-id="cmqns76w10000uo7k1mvh2a1c" data-title="Fast api" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Fast-api%E7%9A%84%E8%BF%9B%E9%98%B6%E7%9F%A5%E8%AF%86/" rel="tag">Fast api的进阶知识</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2026/06/15/Fast%20api/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Fast api</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-Agent/" rel="tag">AI-Agent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Fast-api%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" rel="tag">Fast api的基础知识</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Fast-api%E7%9A%84%E8%BF%9B%E9%98%B6%E7%9F%A5%E8%AF%86/" rel="tag">Fast api的进阶知识</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-agent/" rel="tag">ai agent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-assistant/" rel="tag">ai_assistant</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-assistant-2/" rel="tag">ai_assistant(2)</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-assistant-3/" rel="tag">ai_assistant(3)</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/chatting-robot/" rel="tag">chatting robot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/smolagents/" rel="tag">smolagents</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AI-Agent/" style="font-size: 10px;">AI-Agent</a> <a href="/tags/Fast-api%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" style="font-size: 10px;">Fast api的基础知识</a> <a href="/tags/Fast-api%E7%9A%84%E8%BF%9B%E9%98%B6%E7%9F%A5%E8%AF%86/" style="font-size: 10px;">Fast api的进阶知识</a> <a href="/tags/ai-agent/" style="font-size: 10px;">ai agent</a> <a href="/tags/ai-assistant/" style="font-size: 10px;">ai_assistant</a> <a href="/tags/ai-assistant-2/" style="font-size: 10px;">ai_assistant(2)</a> <a href="/tags/ai-assistant-3/" style="font-size: 10px;">ai_assistant(3)</a> <a href="/tags/chatting-robot/" style="font-size: 10px;">chatting robot</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/smolagents/" style="font-size: 10px;">smolagents</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/06/">June 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/05/">May 2026</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2026/06/20/Fast%20api%E8%BF%9B%E9%98%B6/">Fast api</a>
+          </li>
+        
+          <li>
+            <a href="/2026/06/15/Fast%20api/">Fast api</a>
+          </li>
+        
+          <li>
+            <a href="/2026/06/12/AI%20Agents%20with%20Hugging%20Face%20smolagents/">用 Hugging Face smolagents 打造智能 AI Agent</a>
+          </li>
+        
+          <li>
+            <a href="/2026/06/04/ai_assistant(3)/">一个可以提取图片中重要信息并分成优先级的ai助手</a>
+          </li>
+        
+          <li>
+            <a href="/2026/06/03/ai_assistant(2)/">一个可以提取图片中重要信息并分成优先级的ai助手</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 wn<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
