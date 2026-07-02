@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>AWS基础 | WN</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="AWS：云计算的核心概念全解析 本文基于 DataCamp《AWS Concepts》课程核心知识整理   一、什么是 AWS？在当今数字化时代，云计算已经不再是”可选项”，而是企业 IT 基础设施的标配。而在众多云平台中，Amazon Web Services（AWS） 凭借其超过 200 种服务、覆盖全球的基础设施以及灵活的定价模式，牢牢占据市场领导地位。 无论你是初创公司还是世界 500 强">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AWS基础">
+<meta property="og:url" content="https://wenjiajun-wn.github.io/2026/06/26/AWS%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:site_name" content="WN">
+<meta property="og:description" content="AWS：云计算的核心概念全解析 本文基于 DataCamp《AWS Concepts》课程核心知识整理   一、什么是 AWS？在当今数字化时代，云计算已经不再是”可选项”，而是企业 IT 基础设施的标配。而在众多云平台中，Amazon Web Services（AWS） 凭借其超过 200 种服务、覆盖全球的基础设施以及灵活的定价模式，牢牢占据市场领导地位。 无论你是初创公司还是世界 500 强">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-06-25T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-06-28T06:53:19.029Z">
+<meta property="article:author" content="wn">
+<meta property="article:tag" content="AWS">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="WN" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">WN</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://wenjiajun-wn.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-AWS基础" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/06/26/AWS%E5%9F%BA%E7%A1%80/" class="article-date">
+  <time class="dt-published" datetime="2026-06-25T16:00:00.000Z" itemprop="datePublished">2026-06-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      AWS基础
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="AWS：云计算的核心概念全解析"><a href="#AWS：云计算的核心概念全解析" class="headerlink" title="AWS：云计算的核心概念全解析"></a>AWS：云计算的核心概念全解析</h1><blockquote>
+<p>本文基于 DataCamp《AWS Concepts》课程核心知识整理</p>
+</blockquote>
+<hr>
+<h2 id="一、什么是-AWS？"><a href="#一、什么是-AWS？" class="headerlink" title="一、什么是 AWS？"></a>一、什么是 AWS？</h2><p>在当今数字化时代，云计算已经不再是”可选项”，而是企业 IT 基础设施的标配。而在众多云平台中，<strong>Amazon Web Services（AWS）</strong> 凭借其超过 200 种服务、覆盖全球的基础设施以及灵活的定价模式，牢牢占据市场领导地位。</p>
+<p>无论你是初创公司还是世界 500 强企业，AWS 都能提供满足需求的工具：从存储数据、运行应用，到构建机器学习模型。</p>
+<hr>
+<h2 id="二、为什么选择云？"><a href="#二、为什么选择云？" class="headerlink" title="二、为什么选择云？"></a>二、为什么选择云？</h2><p>传统 IT 模式需要你提前购买服务器、机房、网络设备——这些都是巨大的<strong>前期资本投入（CapEx）</strong>。而 AWS 将这一切转变为<strong>按需付费的运营支出（OpEx）</strong>。</p>
+<p>AWS 的核心价值可以从四个方面来解释：</p>
+<h3 id="1-灵活性与敏捷性"><a href="#1-灵活性与敏捷性" class="headerlink" title="1. 灵活性与敏捷性"></a>1. 灵活性与敏捷性</h3><p>无需提前规划容量。你可以在几分钟内启动服务器，也可以在业务缩减时立即释放资源，极大缩短了产品上市时间。</p>
+<h3 id="2-成本优化"><a href="#2-成本优化" class="headerlink" title="2. 成本优化"></a>2. 成本优化</h3><p>AWS 采用<strong>消费即付费</strong>的模式，只为你实际使用的资源买单，没有闲置成本，同时随着使用量的增加，还可以享受阶梯式折扣。</p>
+<h3 id="3-弹性扩展"><a href="#3-弹性扩展" class="headerlink" title="3. 弹性扩展"></a>3. 弹性扩展</h3><p>AWS 的架构天然支持<strong>水平扩展</strong>。无论你的用户量从 100 增长到 100 万，系统都能平滑应对，无需手动干预。</p>
+<h3 id="4-全球覆盖"><a href="#4-全球覆盖" class="headerlink" title="4. 全球覆盖"></a>4. 全球覆盖</h3><p>凭借遍布全球的<strong>区域（Region）和可用区（Availability Zone，AZ）</strong>，AWS 让你的应用能够以极低的延迟服务全球用户，同时实现多地容灾。</p>
+<hr>
+<h2 id="三、AWS-的全球基础设施"><a href="#三、AWS-的全球基础设施" class="headerlink" title="三、AWS 的全球基础设施"></a>三、AWS 的全球基础设施</h2><p>理解 AWS 的全球架构，是用好 AWS 的第一步。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">┌──────────────────────────────────────────┐</span><br><span class="line">│              AWS 全球基础设施              │</span><br><span class="line">│                                          │</span><br><span class="line">│  Region（区域）                           │</span><br><span class="line">│  ├── Availability Zone A（可用区 A）       │</span><br><span class="line">│  │    └── 数据中心 1, 2, 3...             │</span><br><span class="line">│  ├── Availability Zone B（可用区 B）       │</span><br><span class="line">│  └── Availability Zone C（可用区 C）       │</span><br><span class="line">│                                          │</span><br><span class="line">│  Edge Location（边缘节点）→ CloudFront CDN │</span><br><span class="line">└──────────────────────────────────────────┘</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>Region（区域）</strong>：AWS 在全球部署的独立地理区域，每个区域相互隔离，例如 <code>us-east-1</code>（美国东部）、<code>ap-northeast-1</code>（东京）。</li>
+<li><strong>Availability Zone（可用区）</strong>：每个区域内包含多个相互独立的可用区，由独立的电源、冷却和网络支撑。在多个 AZ 部署应用可实现高可用。</li>
+<li><strong>Edge Location（边缘节点）</strong>：用于 Amazon CloudFront 的内容分发，将内容缓存到离用户更近的地方，降低访问延迟。</li>
+</ul>
+<p><strong>选择 Region 的原则</strong>：合规要求 &gt; 用户地理位置 &gt; 服务可用性 &gt; 成本。</p>
+<hr>
+<h2 id="四、AWS-的三种部署模式"><a href="#四、AWS-的三种部署模式" class="headerlink" title="四、AWS 的三种部署模式"></a>四、AWS 的三种部署模式</h2><p>根据业务需求，你可以选择不同的云部署模式：</p>
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>说明</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>公有云（Public Cloud）</strong></td>
+<td>完全托管于 AWS</td>
+<td>初创公司、快速迭代的互联网产品</td>
+</tr>
+<tr>
+<td><strong>私有云（Private Cloud）</strong></td>
+<td>企业自建或专属云环境</td>
+<td>金融、医疗等强合规行业</td>
+</tr>
+<tr>
+<td><strong>混合云（Hybrid Cloud）</strong></td>
+<td>公有云 + 私有数据中心结合</td>
+<td>有遗留系统且需要逐步迁云的企业</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="五、AWS-核心服务详解"><a href="#五、AWS-核心服务详解" class="headerlink" title="五、AWS 核心服务详解"></a>五、AWS 核心服务详解</h2><p>AWS 的服务体系庞大，但入门阶段只需掌握三大支柱：<strong>计算、存储、数据库</strong>。</p>
+<h3 id="🖥️-计算服务"><a href="#🖥️-计算服务" class="headerlink" title="🖥️ 计算服务"></a>🖥️ 计算服务</h3><h4 id="Amazon-EC2（Elastic-Compute-Cloud）"><a href="#Amazon-EC2（Elastic-Compute-Cloud）" class="headerlink" title="Amazon EC2（Elastic Compute Cloud）"></a>Amazon EC2（Elastic Compute Cloud）</h4><p>EC2 是 AWS 的虚拟机服务，提供可调整大小的云端计算资源。你可以选择不同的<strong>实例类型</strong>来匹配你的工作负载：</p>
+<ul>
+<li><strong>通用型</strong>（如 <code>t3.micro</code>）：适合轻量应用和开发测试</li>
+<li><strong>计算优化型</strong>（如 <code>c6i</code>）：适合高性能 Web 服务器、批处理</li>
+<li><strong>内存优化型</strong>（如 <code>r6g</code>）：适合大型数据库、内存缓存</li>
+</ul>
+<p>EC2 还支持：</p>
+<ul>
+<li><strong>弹性负载均衡（ELB）</strong>：自动将流量分发到多个实例，避免单点故障</li>
+<li><strong>Auto Scaling</strong>：根据负载自动增减实例数量，做到真正的”按需使用”</li>
+</ul>
+<h4 id="AWS-Lambda（无服务器计算）"><a href="#AWS-Lambda（无服务器计算）" class="headerlink" title="AWS Lambda（无服务器计算）"></a>AWS Lambda（无服务器计算）</h4><p>如果你不想管理服务器，Lambda 是绝佳选择。你只需上传代码，AWS 自动处理所有基础设施——代码只在被触发时执行，<strong>只为实际运行时间付费</strong>，空闲时零成本。</p>
+<blockquote>
+<p> 场景：图片上传后自动触发压缩处理、API 请求的后端逻辑、定时任务。</p>
+</blockquote>
+<hr>
+<h3 id="存储服务"><a href="#存储服务" class="headerlink" title="存储服务"></a>存储服务</h3><h4 id="Amazon-S3（Simple-Storage-Service）"><a href="#Amazon-S3（Simple-Storage-Service）" class="headerlink" title="Amazon S3（Simple Storage Service）"></a>Amazon S3（Simple Storage Service）</h4><p>S3 是 AWS 最具代表性的服务之一，提供<strong>对象存储</strong>，具备近乎无限的扩展能力和 99.999999999%（11 个 9）的数据持久性。</p>
+<p>S3 根据访问频率提供不同的<strong>存储类别</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>存储类别</th>
+<th>适用场景</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>S3 Standard</td>
+<td>频繁访问的数据</td>
+<td>高可用，低延迟</td>
+</tr>
+<tr>
+<td>S3 Standard-IA</td>
+<td>不频繁访问但需快速读取</td>
+<td>存储成本低，读取费用较高</td>
+</tr>
+<tr>
+<td>S3 Glacier</td>
+<td>长期归档</td>
+<td>极低成本，检索需要数小时</td>
+</tr>
+<tr>
+<td>S3 Glacier Deep Archive</td>
+<td>7年以上超长期归档</td>
+<td>AWS 最低存储价格</td>
+</tr>
+</tbody></table>
+<h4 id="Amazon-EBS（Elastic-Block-Store）"><a href="#Amazon-EBS（Elastic-Block-Store）" class="headerlink" title="Amazon EBS（Elastic Block Store）"></a>Amazon EBS（Elastic Block Store）</h4><p>如果 S3 是”U 盘”，那 EBS 就是”硬盘”。EBS 提供持久化的块存储，直接挂载到 EC2 实例，适合数据库、操作系统等需要低延迟 I&#x2F;O 的场景。</p>
+<hr>
+<h3 id="数据库服务"><a href="#数据库服务" class="headerlink" title="数据库服务"></a>数据库服务</h3><h4 id="Amazon-RDS（Relational-Database-Service）"><a href="#Amazon-RDS（Relational-Database-Service）" class="headerlink" title="Amazon RDS（Relational Database Service）"></a>Amazon RDS（Relational Database Service）</h4><p>RDS 是托管的关系型数据库服务，支持 MySQL、PostgreSQL、Oracle、SQL Server 等主流引擎。AWS 负责底层的备份、打补丁、故障转移，你只需关注数据本身。</p>
+<h4 id="Amazon-DynamoDB（NoSQL-数据库）"><a href="#Amazon-DynamoDB（NoSQL-数据库）" class="headerlink" title="Amazon DynamoDB（NoSQL 数据库）"></a>Amazon DynamoDB（NoSQL 数据库）</h4><p>DynamoDB 是 AWS 的全托管 NoSQL 数据库，专为需要<strong>毫秒级延迟</strong>和<strong>超高并发</strong>的场景设计。无需预设 Schema，数据以键值对或文档形式存储，天然支持水平扩展。</p>
+<blockquote>
+<p><strong>何时选 RDS，何时选 DynamoDB？</strong></p>
+<ul>
+<li>数据有复杂关系、需要 JOIN 查询 → <strong>RDS</strong></li>
+<li>海量数据、高并发读写、灵活 Schema → <strong>DynamoDB</strong></li>
+</ul>
+</blockquote>
+<hr>
+<h2 id="六、AWS-安全基础：共担责任模型"><a href="#六、AWS-安全基础：共担责任模型" class="headerlink" title="六、AWS 安全基础：共担责任模型"></a>六、AWS 安全基础：共担责任模型</h2><p>AWS 的安全体系建立在<strong>共担责任模型（Shared Responsibility Model）</strong> 之上：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">┌────────────────────────────────────────┐</span><br><span class="line">│            客户的责任                   │</span><br><span class="line">│  数据加密 | 用户权限 | 应用安全 | 配置  │</span><br><span class="line">├────────────────────────────────────────┤</span><br><span class="line">│            AWS 的责任                   │</span><br><span class="line">│  物理安全 | 硬件 | 网络基础设施 | 虚拟化 │</span><br><span class="line">└────────────────────────────────────────┘</span><br></pre></td></tr></table></figure>
+
+<p>简单记忆：<strong>AWS 负责云本身的安全，你负责云中资源的安全。</strong></p>
+<p>核心安全工具：</p>
+<ul>
+<li><strong>IAM（Identity and Access Management）</strong>：管理用户权限，坚守”最小权限原则”</li>
+<li><strong>VPC（Virtual Private Cloud）</strong>：在 AWS 内创建隔离的虚拟网络</li>
+<li><strong>CloudTrail</strong>：记录所有 API 调用日志，用于审计和合规</li>
+</ul>
+<hr>
+<h2 id="七、总结：AWS-知识"><a href="#七、总结：AWS-知识" class="headerlink" title="七、总结：AWS 知识"></a>七、总结：AWS 知识</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">AWS</span><br><span class="line">├── 全球基础设施</span><br><span class="line">│   ├── Region（区域）</span><br><span class="line">│   ├── Availability Zone（可用区）</span><br><span class="line">│   └── Edge Location（边缘节点）</span><br><span class="line">│</span><br><span class="line">├── 核心服务</span><br><span class="line">│   ├── 计算：EC2 / Lambda / Fargate</span><br><span class="line">│   ├── 存储：S3 / Glacier / EBS</span><br><span class="line">│   └── 数据库：RDS / DynamoDB</span><br><span class="line">│</span><br><span class="line">├── 网络与安全</span><br><span class="line">│   ├── VPC / IAM / CloudTrail</span><br><span class="line">│   └── 共担责任模型</span><br><span class="line">│</span><br><span class="line">└── 定价模式</span><br><span class="line">    └── 按需付费 / 预留实例 / Spot 实例</span><br></pre></td></tr></table></figure>
+
+<p>AWS 的服务生态十分庞大，但万变不离其宗——掌握计算、存储、数据库这三大核心，再逐步延伸到网络、安全、AI&#x2F;ML 等领域，是最稳健的学习路径。</p>
+<hr>
+<blockquote>
+<p>云计算的学习，最终还是要动手。理论只是起点，实践才是真正的加速器。</p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://wenjiajun-wn.github.io/2026/06/26/AWS%E5%9F%BA%E7%A1%80/" data-id="cmr37rojy0001sg7k34fg06gb" data-title="AWS基础" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AWS/" rel="tag">AWS</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2026/06/29/AWS%E4%BA%91%E6%8A%80%E6%9C%AF%E4%B8%8E%E6%9C%8D%E5%8A%A1%E6%A6%82%E5%BF%B5/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          AWS云技术与服务概念
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2026/06/20/Fast%20api%E8%BF%9B%E9%98%B6/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Fast api</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-Agent/" rel="tag">AI-Agent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AWS/" rel="tag">AWS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Fast-api%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" rel="tag">Fast api的基础知识</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Fast-api%E7%9A%84%E8%BF%9B%E9%98%B6%E7%9F%A5%E8%AF%86/" rel="tag">Fast api的进阶知识</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-agent/" rel="tag">ai agent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-assistant/" rel="tag">ai_assistant</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-assistant-2/" rel="tag">ai_assistant(2)</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-assistant-3/" rel="tag">ai_assistant(3)</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/chatting-robot/" rel="tag">chatting robot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/smolagents/" rel="tag">smolagents</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AI-Agent/" style="font-size: 10px;">AI-Agent</a> <a href="/tags/AWS/" style="font-size: 20px;">AWS</a> <a href="/tags/Fast-api%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" style="font-size: 10px;">Fast api的基础知识</a> <a href="/tags/Fast-api%E7%9A%84%E8%BF%9B%E9%98%B6%E7%9F%A5%E8%AF%86/" style="font-size: 10px;">Fast api的进阶知识</a> <a href="/tags/ai-agent/" style="font-size: 10px;">ai agent</a> <a href="/tags/ai-assistant/" style="font-size: 10px;">ai_assistant</a> <a href="/tags/ai-assistant-2/" style="font-size: 10px;">ai_assistant(2)</a> <a href="/tags/ai-assistant-3/" style="font-size: 10px;">ai_assistant(3)</a> <a href="/tags/chatting-robot/" style="font-size: 10px;">chatting robot</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/smolagents/" style="font-size: 10px;">smolagents</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/06/">June 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/05/">May 2026</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2026/06/29/AWS%E4%BA%91%E6%8A%80%E6%9C%AF%E4%B8%8E%E6%9C%8D%E5%8A%A1%E6%A6%82%E5%BF%B5/">AWS云技术与服务概念</a>
+          </li>
+        
+          <li>
+            <a href="/2026/06/26/AWS%E5%9F%BA%E7%A1%80/">AWS基础</a>
+          </li>
+        
+          <li>
+            <a href="/2026/06/20/Fast%20api%E8%BF%9B%E9%98%B6/">Fast api</a>
+          </li>
+        
+          <li>
+            <a href="/2026/06/15/Fast%20api/">Fast api</a>
+          </li>
+        
+          <li>
+            <a href="/2026/06/12/AI%20Agents%20with%20Hugging%20Face%20smolagents/">用 Hugging Face smolagents 打造智能 AI Agent</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 wn<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

@@ -71,6 +71,300 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-AWS云技术与服务概念" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/06/29/AWS%E4%BA%91%E6%8A%80%E6%9C%AF%E4%B8%8E%E6%9C%8D%E5%8A%A1%E6%A6%82%E5%BF%B5/" class="article-date">
+  <time class="dt-published" datetime="2026-06-28T16:00:00.000Z" itemprop="datePublished">2026-06-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2026/06/29/AWS%E4%BA%91%E6%8A%80%E6%9C%AF%E4%B8%8E%E6%9C%8D%E5%8A%A1%E6%A6%82%E5%BF%B5/">AWS云技术与服务概念</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="AWS-云技术：从计算、存储到-AI"><a href="#AWS-云技术：从计算、存储到-AI" class="headerlink" title="AWS 云技术：从计算、存储到 AI"></a>AWS 云技术：从计算、存储到 AI</h1><p>云计算的世界很大，AWS 提供的服务也很多。想在短时间内学习 AWS 核心服务的整体认知，从计算、数据库、网络存储，一路到 AI&#x2F;ML，是一条很实用的学习路径。</p>
+<h2 id="一、计算服务：从-EC2-到无服务器"><a href="#一、计算服务：从-EC2-到无服务器" class="headerlink" title="一、计算服务：从 EC2 到无服务器"></a>一、计算服务：从 EC2 到无服务器</h2><h3 id="EC2：云上最基础的计算单元"><a href="#EC2：云上最基础的计算单元" class="headerlink" title="EC2：云上最基础的计算单元"></a>EC2：云上最基础的计算单元</h3><p><strong>Amazon EC2</strong>（Elastic Compute Cloud）提供的是可伸缩的云端计算能力，每一台虚拟机被称为一个”实例”。它的核心特点是可以根据需求灵活地扩容或缩容，并且提供多种针对不同场景优化的实例类型。AWS 把 EC2 实例分成六大类：</p>
+<ul>
+<li><strong>通用型</strong>：兼顾计算、内存与网络资源的均衡配置，适合动态网站、代码仓库等场景。</li>
+<li><strong>计算优化型</strong>：面向计算密集型的高性能工作负载，比如科学模拟、金融建模。</li>
+<li><strong>内存优化型</strong>：适合内存消耗大但存储需求不高的场景，比如实时流数据分析、字幕生成。</li>
+<li><strong>存储优化型</strong>：擅长对大数据集进行高吞吐的顺序读写，常用于数据仓库、大型关系型数据库重构。</li>
+<li><strong>加速计算型</strong>：搭载 GPU、FPGA 等专用硬件加速器，适合深度学习、游戏图形渲染。</li>
+<li><strong>高性能计算（HPC）优化型</strong>：在大规模高性能工作负载上追求最佳性价比，用于天气预测、碰撞模拟等场景。</li>
+</ul>
+<p>连接 EC2 实例的方式也有好几种：通过 SSH 客户端用密钥连接（需要自行管理密钥）、通过 AWS Session Manager 实现无密钥的、与 IAM 集成的访问，或者用 EC2 Instance Connect 做基于浏览器的临时快速连接。</p>
+<h3 id="负载均衡与自动扩缩容"><a href="#负载均衡与自动扩缩容" class="headerlink" title="负载均衡与自动扩缩容"></a>负载均衡与自动扩缩容</h3><p>当流量增大时，靠一台实例显然扛不住。<strong>负载均衡</strong>的作用是把进来的请求均匀分配到多个 EC2 实例上，避免单点过载，同时保证高可用性和水平扩展能力。它的工作流程是：用户请求先到达负载均衡器，负载均衡器优先把流量导向主目标组；如果需求继续上升，再激活备用目标组，把负载分散到所有实例上。</p>
+<p><strong>弹性（Elasticity）</strong>则是指系统能够根据需求自动伸缩资源的能力，这在 EC2 上是通过 <strong>Auto Scaling</strong> 实现的：系统会根据实际使用情况自动增减活跃实例数量，从而优化成本、避免资源过度配置。简单说，负载均衡负责”把流量分匀”，自动扩缩容负责”按需增减机器”——二者经常配合使用，但解决的是不同的问题。</p>
+<h3 id="容器与无服务器计算"><a href="#容器与无服务器计算" class="headerlink" title="容器与无服务器计算"></a>容器与无服务器计算</h3><p>随着微服务架构和事件驱动应用的普及，传统的常驻计算模式已经不够用了。<strong>容器</strong>把应用程序及其依赖打包成轻量的独立单元，既能与底层系统解耦，又能共享宿主操作系统资源，还便于跨环境迁移。AWS 提供两个主要的容器服务：</p>
+<ul>
+<li><strong>Amazon ECS</strong>：全托管的容器编排服务，适合部署和管理微服务应用，也能用来做批处理任务的调度和运行。</li>
+<li><strong>Amazon EKS</strong>：专注于运行基于 Kubernetes 的容器编排服务，常与加速计算型 EC2 实例搭配运行机器学习容器，也适合管理混合云环境下的集群。</li>
+</ul>
+<p>而<strong>无服务器架构</strong>则更进一步：完全不需要管理服务器，由事件触发函数执行，并且只为实际用量付费。<strong>AWS Lambda</strong> 是这一领域的代表，可以在响应事件时自动运行代码并弹性伸缩计算资源。<strong>AWS Fargate</strong> 则为容器提供无服务器化的运行环境，常用于无需大量服务器预置的 AI&#x2F;ML 应用，以及需要并行处理能力的大规模批处理任务。</p>
+<h2 id="二、数据库、网络与存储：AWS-的数据基础"><a href="#二、数据库、网络与存储：AWS-的数据基础" class="headerlink" title="二、数据库、网络与存储：AWS 的数据基础"></a>二、数据库、网络与存储：AWS 的数据基础</h2><h3 id="数据库服务"><a href="#数据库服务" class="headerlink" title="数据库服务"></a>数据库服务</h3><p>AWS 的数据库服务让用户无需自建物理基础设施或安装软件就能直接使用数据库。按数据模型划分，主要有三类：</p>
+<p><strong>关系型数据库</strong>将数据组织成带有预定义关系的表结构，优势在于数据完整性、一致性与可扩展性。AWS 在这方面提供：</p>
+<ul>
+<li><strong>Amazon RDS</strong>：全托管关系型数据库服务，支持多种数据库引擎，可高效扩展云端及本地数据库。</li>
+<li><strong>AWS Aurora</strong>：针对 MySQL 和 PostgreSQL 优化的关系型数据库，性能出众且成本仅为传统方案的约十分之一，内置持续备份和跨区域自动复制。</li>
+</ul>
+<p><strong>NoSQL 数据库</strong>用于处理 JSON、文档等超出传统关系模型的多样化数据，具备模式灵活性和水平扩展能力。代表服务是 <strong>Amazon DynamoDB</strong>——一款无服务器、全托管的 NoSQL 数据库，能在任意规模下实现个位数毫秒级的响应性能，可用吞吐几乎不受限，并提供 99.999% 的全球可用性，常用于实时视频流媒体、购物车追踪、游戏玩家数据和排行榜等场景。此外，<strong>Amazon DocumentDB</strong> 是兼容 MongoDB 的原生 JSON 文档数据库，适合内容管理系统、用户画像管理，乃至语义搜索、产品推荐、聊天机器人等生成式 AI 场景。</p>
+<p><strong>内存数据库</strong>利用 RAM 实现高性能的数据存取，适合缓存高频访问数据、实时分析和高速事务处理。<strong>MemoryDB for Redis</strong> 就是 AWS 在这一领域的方案，具备超高速读写、99.99% 可用性以及近乎零数据丢失的快速恢复能力。</p>
+<p>值得一提的是，除了这些全托管方案，用户也可以选择在 <strong>EC2 实例上自行部署数据库</strong>，这种方式能提供更细粒度的配置控制，但备份和补丁维护的责任也完全落在用户自己身上。</p>
+<h3 id="数据库迁移"><a href="#数据库迁移" class="headerlink" title="数据库迁移"></a>数据库迁移</h3><p>面对遗留系统难以满足快速扩展需求，以及生成式 AI 对算力和存储提出的更高要求，数据迁移成为许多企业绕不开的课题。AWS 提供了一套迁移工具组合：</p>
+<ul>
+<li><strong>AWS Database Migration Service</strong>：支持 20 多种数据库和分析引擎的迁移，通过自动化实时数据复制将停机时间降到最低，并提供校验检查和任务监控。</li>
+<li><strong>AWS Snow Family</strong>：提供物理设备，用于 PB 级数据的离线传输，适合边缘场景下的大规模数据搬迁。</li>
+<li><strong>AWS DataSync</strong>：通过并行处理简化、自动化并加速本地存储与 AWS 云之间的大数据量传输。</li>
+<li><strong>AWS Schema Conversion Tool</strong>：自动将源数据库的模式转换为目标格式，支持自定义转换规则，并提供诊断与优化建议。</li>
+</ul>
+<h3 id="网络服务"><a href="#网络服务" class="headerlink" title="网络服务"></a>网络服务</h3><p><strong>Amazon VPC</strong>（Virtual Private Cloud）是 AWS 云中一个逻辑隔离的网络空间，用户可以在其中启动和管理自己的资源。它支持 IPv4 和 IPv6、可自定义 IP 地址范围，并通过安全组和网络访问控制列表（ACL）提供多层安全防护，同时允许用户完全掌控子网、路由表和网关配置。AWS 会自动创建一个默认 VPC（带有预配置的子网和默认联网能力），用户也可以创建完全自定义的 VPC。</p>
+<p>在网络安全层面，<strong>网络 ACL</strong> 相当于子网级别的防火墙，<strong>安全组</strong>则是实例级别的防火墙。而 <strong>VPC 终端节点</strong>和 <strong>AWS PrivateLink</strong> 能够让 AWS 服务之间、乃至与本地网络之间实现私有连接，无需暴露公网 IP。至于连接本地网络与云端的方式，<strong>AWS VPN</strong> 适合小规模或临时性连接场景，<strong>AWS Direct Connect</strong> 则提供专线连接，拥有更高带宽和更低延迟，适合关键业务的持续性负载。</p>
+<p>此外，<strong>Amazon Route 53</strong> 作为 DNS 服务负责把域名解析为 IP 地址，而 <strong>Amazon CloudFront</strong> 作为内容分发网络（CDN），通过在全球部署缓存节点来加速网页内容、API 与流媒体的传输，同时提供 DDoS 防护和 HTTPS 支持。</p>
+<h3 id="存储解决方案"><a href="#存储解决方案" class="headerlink" title="存储解决方案"></a>存储解决方案</h3><p>AWS 的存储服务大致可以分为四类：</p>
+<ul>
+<li><strong>对象存储</strong>：以”对象”为单位管理非结构化数据，支持水平扩展和元数据管理。<strong>Amazon S3</strong> 是这一领域的旗舰产品，提供 99.999999999%（11 个 9）的数据持久性，并覆盖所有 AWS 区域。S3 还细分出多种存储类别：Standard（高频访问）、Intelligent-Tiering（自动根据访问模式切换层级以优化成本）、One Zone-IA（单可用区、低成本，适合易于重建的低频数据）、Glacier（低成本归档，检索时间从几分钟到几小时不等）、Glacier Deep Archive（最低成本、检索时间最长）以及 S3 Outposts（本地存储延伸，打通私有云与公有云数据）。</li>
+<li><strong>块存储</strong>：把数据切分成带有唯一地址的固定大小数据块，适合高 I&#x2F;O 事务型应用和大数据分析引擎。<strong>Amazon EBS</strong> 是专为配合 AWS 计算服务设计的高性能块存储方案。</li>
+<li><strong>文件存储</strong>：以分层结构组织数据，支持多用户多服务的并发读写。<strong>Amazon EFS</strong> 适用于简化 DevOps 流程、增强内容管理系统性能，以及加速数据科学工作。</li>
+<li><strong>缓存存储</strong>：把高频访问数据放在能快速取用的位置，借此提升应用响应速度、降低后端负载。<strong>Amazon ElastiCache</strong> 常用于存储 Web 应用的会话数据，以及加速实时分析数据的访问。</li>
+</ul>
+<p>最后，<strong>存储生命周期策略</strong>能基于预定义规则自动在 S3 各存储类别之间迁移对象，兼顾成本与性能优化；而 <strong>AWS Backup</strong> 则是一项全托管的集中式备份服务，支持跨区域备份并可以设定保留和删除策略。</p>
+<h2 id="三、AI-与机器学习"><a href="#三、AI-与机器学习" class="headerlink" title="三、AI 与机器学习"></a>三、AI 与机器学习</h2><p>在前两部分打好计算与数据基础之后，AWS 在 AI&#x2F;ML 领域构建了一整套从”开箱即用”到”完全自定义”的服务体系。要理解这套体系，得先厘清两个常被混用的概念：<strong>人工智能（AI）</strong>是一个更宽泛的概念，指的是让机器模拟人类智能的各种方法，涵盖问题解决、语音识别、学习能力等多个方面；<strong>机器学习（ML）</strong>则是 AI 的一个子集，专注于让系统通过海量数据自主学习规律、推导结论，而不是靠人工写死的规则。AWS 把这块业务分成了四类：AI 服务、ML 服务、ML 框架与基础设施，以及一套通用的机器学习工作流程。</p>
+<h3 id="AI-服务"><a href="#AI-服务" class="headerlink" title="AI 服务"></a>AI 服务</h3><p>AWS 的 AI 类服务大多是预训练或自动训练好的模型，开发者不需要懂太多机器学习原理，直接调用接口就能把智能能力集成进自己的应用里。常见的几个包括：</p>
+<ul>
+<li><strong>Amazon Translate</strong>：多语言文本自动翻译。</li>
+<li><strong>Amazon Polly</strong>：文本转语音，输出接近真人的语音效果。</li>
+<li><strong>Amazon Lex</strong>：用于搭建聊天机器人一类的对话式交互界面，处理从开发到部署的整个流程。</li>
+<li><strong>Amazon Comprehend</strong>：文本分析工具，可以提取情感倾向、识别实体，或判断文本所使用的语言。</li>
+<li><strong>Amazon Forecast</strong>：基于历史数据自动生成时间序列预测。</li>
+<li><strong>Amazon CodeGuru</strong>：面向开发者的自动化代码审查工具，能给出提升代码质量的智能建议。</li>
+<li><strong>Amazon Rekognition</strong>：图像和视频识别服务，可以识别物体、提取情绪等信息。</li>
+</ul>
+<p>这些服务的共同特点是”黑盒可用”——不需要关心背后的模型是怎么训练出来的，重点是解决业务问题。</p>
+<h3 id="ML-服务"><a href="#ML-服务" class="headerlink" title="ML 服务"></a>ML 服务</h3><p>如果 AI 服务提供的是现成的智能，那么 ML 服务面向的就是自己动手构建定制化模型的开发者和数据科学家。AWS 在这方面主要提供两个服务：</p>
+<ul>
+<li><strong>Amazon SageMaker</strong>：一个覆盖机器学习全生命周期的托管服务，集成了 Jupyter Notebook，支持快速训练和部署模型，可以用来做预测分析、计算机视觉、自然语言处理等各类应用。</li>
+<li><strong>Amazon CodeWhisperer</strong>：由机器学习驱动的代码审查工具，能自动化、简化整个代码审查流程，提升代码质量。</li>
+</ul>
+<h3 id="ML-框架"><a href="#ML-框架" class="headerlink" title="ML 框架"></a>ML 框架</h3><p>除了托管服务，AWS 也支持业界主流的开源机器学习框架运行在其基础设施之上，方便团队按需搭建可扩展、可定制的训练和部署流程。三个代表性框架是：</p>
+<ul>
+<li><strong>TensorFlow</strong>：谷歌开发的开源框架，支持模型的开发、部署与规模化扩展。</li>
+<li><strong>PyTorch</strong>：Meta 打造的深度学习框架，擅长处理基于计算图的动态执行场景。</li>
+<li><strong>MXNet</strong>：由 Apache 管理，专注于大规模、分布式的深度神经网络训练。</li>
+</ul>
+<p>这一层的意义在于灵活性：企业不必完全依赖 AWS 的封装服务，也可以把已有的模型训练代码迁移到云端资源上继续跑。</p>
+<h3 id="一个典型的机器学习流水线长什么样？"><a href="#一个典型的机器学习流水线长什么样？" class="headerlink" title="一个典型的机器学习流水线长什么样？"></a>一个典型的机器学习流水线长什么样？</h3><p>把前面提到的计算、存储、数据库服务和 AI&#x2F;ML 服务串起来，一个典型的 AWS ML 流水线大致是这样运作的：</p>
+<ol>
+<li><strong>数据存储</strong>：原始数据先存放在 <strong>S3</strong> 存储桶中，作为整个流程的数据源。</li>
+<li><strong>模型训练</strong>：<strong>SageMaker</strong> 直接从 S3 读取数据，完成模型的开发和训练。</li>
+<li><strong>部署上线</strong>：训练好的 SageMaker Notebook 被打包成容器，通过 <strong>EKS</strong> 推送到生产环境。</li>
+<li><strong>自动化再训练</strong>：当有新数据到来时，<strong>Lambda</strong> 会被触发，自动启动模型的重新训练和部署流程，让整个系统保持”自我更新”的能力。</li>
+</ol>
+<p>这套流程很好地体现了 AWS 各服务模块之间的协作关系：S3 负责存数据，SageMaker 负责训练，EKS 负责稳定部署，Lambda 负责自动化触发——计算层、数据层与 AI 层在这里真正被打通成一条完整的工程闭环。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>把这三大模块串起来看，AWS 的核心服务体系其实遵循着一条清晰的逻辑链：</p>
+<ul>
+<li><strong>计算层</strong>（EC2、ECS&#x2F;EKS、Lambda&#x2F;Fargate）负责”跑起来”——不管是传统虚拟机、容器化微服务，还是完全无服务器的事件驱动应用；</li>
+<li><strong>数据与网络层</strong>（RDS&#x2F;Aurora、DynamoDB&#x2F;DocumentDB、MemoryDB、VPC、S3&#x2F;EBS&#x2F;EFS）负责”存得住、传得快、连得通”；</li>
+<li><strong>AI&#x2F;ML 层</strong>（Translate、Rekognition、SageMaker、TensorFlow&#x2F;PyTorch&#x2F;MXNet）则是在前两层稳固的基础设施之上，把数据和算力转化为实际的智能应用——想要快速集成现成能力就用 AI 服务，想要自己训练定制模型就用 SageMaker，想要掌控底层框架就直接跑 TensorFlow&#x2F;PyTorch&#x2F;MXNet，想要搭建完整的生产级流水线，就组合使用 S3 + SageMaker + EKS + Lambda。</li>
+</ul>
+<p>理解这条逻辑链，再去看 AWS 具体的产品名称和参数，会发现它们并不是孤立的功能点，而是彼此配合、服务于不同业务场景的一整套工具箱。这也正是 AWS 能够支撑起从初创公司到全球企业的各种复杂应用、并在 AI 时代持续领跑的原因所在。</p>
+<hr>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://wenjiajun-wn.github.io/2026/06/29/AWS%E4%BA%91%E6%8A%80%E6%9C%AF%E4%B8%8E%E6%9C%8D%E5%8A%A1%E6%A6%82%E5%BF%B5/" data-id="cmr37rojv0000sg7k3dc86a82" data-title="AWS云技术与服务概念" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AWS/" rel="tag">AWS</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-AWS基础" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/06/26/AWS%E5%9F%BA%E7%A1%80/" class="article-date">
+  <time class="dt-published" datetime="2026-06-25T16:00:00.000Z" itemprop="datePublished">2026-06-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2026/06/26/AWS%E5%9F%BA%E7%A1%80/">AWS基础</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="AWS：云计算的核心概念全解析"><a href="#AWS：云计算的核心概念全解析" class="headerlink" title="AWS：云计算的核心概念全解析"></a>AWS：云计算的核心概念全解析</h1><blockquote>
+<p>本文基于 DataCamp《AWS Concepts》课程核心知识整理</p>
+</blockquote>
+<hr>
+<h2 id="一、什么是-AWS？"><a href="#一、什么是-AWS？" class="headerlink" title="一、什么是 AWS？"></a>一、什么是 AWS？</h2><p>在当今数字化时代，云计算已经不再是”可选项”，而是企业 IT 基础设施的标配。而在众多云平台中，<strong>Amazon Web Services（AWS）</strong> 凭借其超过 200 种服务、覆盖全球的基础设施以及灵活的定价模式，牢牢占据市场领导地位。</p>
+<p>无论你是初创公司还是世界 500 强企业，AWS 都能提供满足需求的工具：从存储数据、运行应用，到构建机器学习模型。</p>
+<hr>
+<h2 id="二、为什么选择云？"><a href="#二、为什么选择云？" class="headerlink" title="二、为什么选择云？"></a>二、为什么选择云？</h2><p>传统 IT 模式需要你提前购买服务器、机房、网络设备——这些都是巨大的<strong>前期资本投入（CapEx）</strong>。而 AWS 将这一切转变为<strong>按需付费的运营支出（OpEx）</strong>。</p>
+<p>AWS 的核心价值可以从四个方面来解释：</p>
+<h3 id="1-灵活性与敏捷性"><a href="#1-灵活性与敏捷性" class="headerlink" title="1. 灵活性与敏捷性"></a>1. 灵活性与敏捷性</h3><p>无需提前规划容量。你可以在几分钟内启动服务器，也可以在业务缩减时立即释放资源，极大缩短了产品上市时间。</p>
+<h3 id="2-成本优化"><a href="#2-成本优化" class="headerlink" title="2. 成本优化"></a>2. 成本优化</h3><p>AWS 采用<strong>消费即付费</strong>的模式，只为你实际使用的资源买单，没有闲置成本，同时随着使用量的增加，还可以享受阶梯式折扣。</p>
+<h3 id="3-弹性扩展"><a href="#3-弹性扩展" class="headerlink" title="3. 弹性扩展"></a>3. 弹性扩展</h3><p>AWS 的架构天然支持<strong>水平扩展</strong>。无论你的用户量从 100 增长到 100 万，系统都能平滑应对，无需手动干预。</p>
+<h3 id="4-全球覆盖"><a href="#4-全球覆盖" class="headerlink" title="4. 全球覆盖"></a>4. 全球覆盖</h3><p>凭借遍布全球的<strong>区域（Region）和可用区（Availability Zone，AZ）</strong>，AWS 让你的应用能够以极低的延迟服务全球用户，同时实现多地容灾。</p>
+<hr>
+<h2 id="三、AWS-的全球基础设施"><a href="#三、AWS-的全球基础设施" class="headerlink" title="三、AWS 的全球基础设施"></a>三、AWS 的全球基础设施</h2><p>理解 AWS 的全球架构，是用好 AWS 的第一步。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">┌──────────────────────────────────────────┐</span><br><span class="line">│              AWS 全球基础设施              │</span><br><span class="line">│                                          │</span><br><span class="line">│  Region（区域）                           │</span><br><span class="line">│  ├── Availability Zone A（可用区 A）       │</span><br><span class="line">│  │    └── 数据中心 1, 2, 3...             │</span><br><span class="line">│  ├── Availability Zone B（可用区 B）       │</span><br><span class="line">│  └── Availability Zone C（可用区 C）       │</span><br><span class="line">│                                          │</span><br><span class="line">│  Edge Location（边缘节点）→ CloudFront CDN │</span><br><span class="line">└──────────────────────────────────────────┘</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>Region（区域）</strong>：AWS 在全球部署的独立地理区域，每个区域相互隔离，例如 <code>us-east-1</code>（美国东部）、<code>ap-northeast-1</code>（东京）。</li>
+<li><strong>Availability Zone（可用区）</strong>：每个区域内包含多个相互独立的可用区，由独立的电源、冷却和网络支撑。在多个 AZ 部署应用可实现高可用。</li>
+<li><strong>Edge Location（边缘节点）</strong>：用于 Amazon CloudFront 的内容分发，将内容缓存到离用户更近的地方，降低访问延迟。</li>
+</ul>
+<p><strong>选择 Region 的原则</strong>：合规要求 &gt; 用户地理位置 &gt; 服务可用性 &gt; 成本。</p>
+<hr>
+<h2 id="四、AWS-的三种部署模式"><a href="#四、AWS-的三种部署模式" class="headerlink" title="四、AWS 的三种部署模式"></a>四、AWS 的三种部署模式</h2><p>根据业务需求，你可以选择不同的云部署模式：</p>
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>说明</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>公有云（Public Cloud）</strong></td>
+<td>完全托管于 AWS</td>
+<td>初创公司、快速迭代的互联网产品</td>
+</tr>
+<tr>
+<td><strong>私有云（Private Cloud）</strong></td>
+<td>企业自建或专属云环境</td>
+<td>金融、医疗等强合规行业</td>
+</tr>
+<tr>
+<td><strong>混合云（Hybrid Cloud）</strong></td>
+<td>公有云 + 私有数据中心结合</td>
+<td>有遗留系统且需要逐步迁云的企业</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="五、AWS-核心服务详解"><a href="#五、AWS-核心服务详解" class="headerlink" title="五、AWS 核心服务详解"></a>五、AWS 核心服务详解</h2><p>AWS 的服务体系庞大，但入门阶段只需掌握三大支柱：<strong>计算、存储、数据库</strong>。</p>
+<h3 id="🖥️-计算服务"><a href="#🖥️-计算服务" class="headerlink" title="🖥️ 计算服务"></a>🖥️ 计算服务</h3><h4 id="Amazon-EC2（Elastic-Compute-Cloud）"><a href="#Amazon-EC2（Elastic-Compute-Cloud）" class="headerlink" title="Amazon EC2（Elastic Compute Cloud）"></a>Amazon EC2（Elastic Compute Cloud）</h4><p>EC2 是 AWS 的虚拟机服务，提供可调整大小的云端计算资源。你可以选择不同的<strong>实例类型</strong>来匹配你的工作负载：</p>
+<ul>
+<li><strong>通用型</strong>（如 <code>t3.micro</code>）：适合轻量应用和开发测试</li>
+<li><strong>计算优化型</strong>（如 <code>c6i</code>）：适合高性能 Web 服务器、批处理</li>
+<li><strong>内存优化型</strong>（如 <code>r6g</code>）：适合大型数据库、内存缓存</li>
+</ul>
+<p>EC2 还支持：</p>
+<ul>
+<li><strong>弹性负载均衡（ELB）</strong>：自动将流量分发到多个实例，避免单点故障</li>
+<li><strong>Auto Scaling</strong>：根据负载自动增减实例数量，做到真正的”按需使用”</li>
+</ul>
+<h4 id="AWS-Lambda（无服务器计算）"><a href="#AWS-Lambda（无服务器计算）" class="headerlink" title="AWS Lambda（无服务器计算）"></a>AWS Lambda（无服务器计算）</h4><p>如果你不想管理服务器，Lambda 是绝佳选择。你只需上传代码，AWS 自动处理所有基础设施——代码只在被触发时执行，<strong>只为实际运行时间付费</strong>，空闲时零成本。</p>
+<blockquote>
+<p> 场景：图片上传后自动触发压缩处理、API 请求的后端逻辑、定时任务。</p>
+</blockquote>
+<hr>
+<h3 id="存储服务"><a href="#存储服务" class="headerlink" title="存储服务"></a>存储服务</h3><h4 id="Amazon-S3（Simple-Storage-Service）"><a href="#Amazon-S3（Simple-Storage-Service）" class="headerlink" title="Amazon S3（Simple Storage Service）"></a>Amazon S3（Simple Storage Service）</h4><p>S3 是 AWS 最具代表性的服务之一，提供<strong>对象存储</strong>，具备近乎无限的扩展能力和 99.999999999%（11 个 9）的数据持久性。</p>
+<p>S3 根据访问频率提供不同的<strong>存储类别</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>存储类别</th>
+<th>适用场景</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>S3 Standard</td>
+<td>频繁访问的数据</td>
+<td>高可用，低延迟</td>
+</tr>
+<tr>
+<td>S3 Standard-IA</td>
+<td>不频繁访问但需快速读取</td>
+<td>存储成本低，读取费用较高</td>
+</tr>
+<tr>
+<td>S3 Glacier</td>
+<td>长期归档</td>
+<td>极低成本，检索需要数小时</td>
+</tr>
+<tr>
+<td>S3 Glacier Deep Archive</td>
+<td>7年以上超长期归档</td>
+<td>AWS 最低存储价格</td>
+</tr>
+</tbody></table>
+<h4 id="Amazon-EBS（Elastic-Block-Store）"><a href="#Amazon-EBS（Elastic-Block-Store）" class="headerlink" title="Amazon EBS（Elastic Block Store）"></a>Amazon EBS（Elastic Block Store）</h4><p>如果 S3 是”U 盘”，那 EBS 就是”硬盘”。EBS 提供持久化的块存储，直接挂载到 EC2 实例，适合数据库、操作系统等需要低延迟 I&#x2F;O 的场景。</p>
+<hr>
+<h3 id="数据库服务"><a href="#数据库服务" class="headerlink" title="数据库服务"></a>数据库服务</h3><h4 id="Amazon-RDS（Relational-Database-Service）"><a href="#Amazon-RDS（Relational-Database-Service）" class="headerlink" title="Amazon RDS（Relational Database Service）"></a>Amazon RDS（Relational Database Service）</h4><p>RDS 是托管的关系型数据库服务，支持 MySQL、PostgreSQL、Oracle、SQL Server 等主流引擎。AWS 负责底层的备份、打补丁、故障转移，你只需关注数据本身。</p>
+<h4 id="Amazon-DynamoDB（NoSQL-数据库）"><a href="#Amazon-DynamoDB（NoSQL-数据库）" class="headerlink" title="Amazon DynamoDB（NoSQL 数据库）"></a>Amazon DynamoDB（NoSQL 数据库）</h4><p>DynamoDB 是 AWS 的全托管 NoSQL 数据库，专为需要<strong>毫秒级延迟</strong>和<strong>超高并发</strong>的场景设计。无需预设 Schema，数据以键值对或文档形式存储，天然支持水平扩展。</p>
+<blockquote>
+<p><strong>何时选 RDS，何时选 DynamoDB？</strong></p>
+<ul>
+<li>数据有复杂关系、需要 JOIN 查询 → <strong>RDS</strong></li>
+<li>海量数据、高并发读写、灵活 Schema → <strong>DynamoDB</strong></li>
+</ul>
+</blockquote>
+<hr>
+<h2 id="六、AWS-安全基础：共担责任模型"><a href="#六、AWS-安全基础：共担责任模型" class="headerlink" title="六、AWS 安全基础：共担责任模型"></a>六、AWS 安全基础：共担责任模型</h2><p>AWS 的安全体系建立在<strong>共担责任模型（Shared Responsibility Model）</strong> 之上：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">┌────────────────────────────────────────┐</span><br><span class="line">│            客户的责任                   │</span><br><span class="line">│  数据加密 | 用户权限 | 应用安全 | 配置  │</span><br><span class="line">├────────────────────────────────────────┤</span><br><span class="line">│            AWS 的责任                   │</span><br><span class="line">│  物理安全 | 硬件 | 网络基础设施 | 虚拟化 │</span><br><span class="line">└────────────────────────────────────────┘</span><br></pre></td></tr></table></figure>
+
+<p>简单记忆：<strong>AWS 负责云本身的安全，你负责云中资源的安全。</strong></p>
+<p>核心安全工具：</p>
+<ul>
+<li><strong>IAM（Identity and Access Management）</strong>：管理用户权限，坚守”最小权限原则”</li>
+<li><strong>VPC（Virtual Private Cloud）</strong>：在 AWS 内创建隔离的虚拟网络</li>
+<li><strong>CloudTrail</strong>：记录所有 API 调用日志，用于审计和合规</li>
+</ul>
+<hr>
+<h2 id="七、总结：AWS-知识"><a href="#七、总结：AWS-知识" class="headerlink" title="七、总结：AWS 知识"></a>七、总结：AWS 知识</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">AWS</span><br><span class="line">├── 全球基础设施</span><br><span class="line">│   ├── Region（区域）</span><br><span class="line">│   ├── Availability Zone（可用区）</span><br><span class="line">│   └── Edge Location（边缘节点）</span><br><span class="line">│</span><br><span class="line">├── 核心服务</span><br><span class="line">│   ├── 计算：EC2 / Lambda / Fargate</span><br><span class="line">│   ├── 存储：S3 / Glacier / EBS</span><br><span class="line">│   └── 数据库：RDS / DynamoDB</span><br><span class="line">│</span><br><span class="line">├── 网络与安全</span><br><span class="line">│   ├── VPC / IAM / CloudTrail</span><br><span class="line">│   └── 共担责任模型</span><br><span class="line">│</span><br><span class="line">└── 定价模式</span><br><span class="line">    └── 按需付费 / 预留实例 / Spot 实例</span><br></pre></td></tr></table></figure>
+
+<p>AWS 的服务生态十分庞大，但万变不离其宗——掌握计算、存储、数据库这三大核心，再逐步延伸到网络、安全、AI&#x2F;ML 等领域，是最稳健的学习路径。</p>
+<hr>
+<blockquote>
+<p>云计算的学习，最终还是要动手。理论只是起点，实践才是真正的加速器。</p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://wenjiajun-wn.github.io/2026/06/26/AWS%E5%9F%BA%E7%A1%80/" data-id="cmr37rojy0001sg7k34fg06gb" data-title="AWS基础" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AWS/" rel="tag">AWS</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-Fast api进阶" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2026/06/20/Fast%20api%E8%BF%9B%E9%98%B6/" class="article-date">
@@ -1433,92 +1727,12 @@ tool：是把普通函数变为LangChain的可用工具，是一个装饰器
 
 
   
-    <article id="post-AI-agent的看法" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2026/05/23/AI-agent%E7%9A%84%E7%9C%8B%E6%B3%95/" class="article-date">
-  <time class="dt-published" datetime="2026-05-23T13:09:26.000Z" itemprop="datePublished">2026-05-23</time>
-</a>
+
+
+  <nav id="page-nav">
     
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/05/23/AI-agent%E7%9A%84%E7%9C%8B%E6%B3%95/">AI agent的看法</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>我认为agent主要就是一个可以进行思考，规划，使用工具且执行行动后从得到的结果中获取反馈的一个ai<br>Agent &#x3D; LLM大模型(类似大脑) + 规划的能力 + 能使用工具 + 行动的接口<br> 规划能力：是可以将我们提出的复杂问题拆分成解决问题的每一个优先级步骤<br> 工具使用：能调用搜索引擎，API，等等外部的工具<br> 执行行动：在我们规划好的范围内，人为不进行干预，让ai自主完成实现代码的运行</p>
-<p>其中agent有一些重要的理论比如：React架构，TAO循环<br> React架构：(reasoning + acting,推理加行动)，就是让ai不只是拥有文本输出，而是像人一样边思考边行动<br>TAO循环：拥有三个主要的模块Thought(思考)、Action(行动)、Observation(观测)<br> Thought(思考)：ai接受到人类指令时，会进行思考然后计划下一步开始做什么，并且分析当前的状况，推理出需要的信息，最后决定采取什么行动<br> Action(行动)：ai在思考中进行的决定，它会调用搜索工具，查询SQL，或者进行计算，与外部进行互动<br> Observation(观测) ：ai接收并分析行动的反馈结果，如果结果不理想，循环就会再次启动，进行新一轮的思考-行动-观测</p>
-<p> React架构的本质是推理-行动-观测三者的循环迭代<br> React架构的设计理念就是定义了一个让AI能够思考-行动-观测的行为模式<br> TAO循环是实现ReAct的具体运转步骤，是这个模式的代称</p>
-<p>Guardrails(护栏)：强大的ai需要设置安全的边界，防止ai失控<br> react-cycle-guard :它正是React循环与护栏概念在代码层面的结合,一个用来检测和防止React组件陷入无限渲染循环的护栏，而且能能确保UI的稳定<br>总结：TAO循环是让AI变“活”的运转模式，护栏是确保AI变“稳”的安全机制。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://wenjiajun-wn.github.io/2026/05/23/AI-agent%E7%9A%84%E7%9C%8B%E6%B3%95/" data-id="cmpjoqhp000009g7k1pci84wa" data-title="AI agent的看法" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ai-agent/" rel="tag">ai agent</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-git的基础语法" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2026/05/23/git%E7%9A%84%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/" class="article-date">
-  <time class="dt-published" datetime="2026-05-22T16:00:00.000Z" itemprop="datePublished">2026-05-23</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/05/23/git%E7%9A%84%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/">git的基础语法</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>如何使用git<br>git的基本操作<br>pwd–打印当前的工作目录<br>cd–移动到目录<br>ls–列出目录下的文件<br>git –version–查看git的版本<br>git init–初始化一个git仓库<br>git status–查看当前仓库的状态<br>git add. 只需一个命令，将两个修改过的文件添加到备用区域。<br>git commit -m提交一个提交，包括合适的标志，这样你就可以作为命令的一部分提供日志消息<br>git log–查看提交历史<br>git log -2 仅查看最近两个提交的信息。<br>git log –since’–查看自某个日期以来的提交<br>git diff–查看文件的修改内容<br>git diff –staged–运行命令将最后提交的版本与预备区的版本进行比较<br>git diff –report.md–查看report.md文件的修改内容<br>git diff HEAD<del>1 HEAD</del>2–比较最近两次提交之间的差异<br>git revert–撤销一个提交<br>git checkout–切换分支或恢复工作树文件<br>git restore –staged–将文件从暂存区恢复到工作区<br>git revert HEAD –no-edit– 撤销最近的提交，并使用默认的提交消息</p>
-<h1 id="欢迎来到我的博客"><a href="#欢迎来到我的博客" class="headerlink" title="欢迎来到我的博客"></a>欢迎来到我的博客</h1>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://wenjiajun-wn.github.io/2026/05/23/git%E7%9A%84%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/" data-id="cmpjoqhp900049g7kabd6f3h8" data-title="git的基础语法" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/" rel="tag">git</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+  </nav>
 
 </section>
         
@@ -1531,7 +1745,7 @@ tool：是把普通函数变为LangChain的可用工具，是一个装饰器
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-Agent/" rel="tag">AI-Agent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Fast-api%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" rel="tag">Fast api的基础知识</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Fast-api%E7%9A%84%E8%BF%9B%E9%98%B6%E7%9F%A5%E8%AF%86/" rel="tag">Fast api的进阶知识</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-agent/" rel="tag">ai agent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-assistant/" rel="tag">ai_assistant</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-assistant-2/" rel="tag">ai_assistant(2)</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-assistant-3/" rel="tag">ai_assistant(3)</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/chatting-robot/" rel="tag">chatting robot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/smolagents/" rel="tag">smolagents</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-Agent/" rel="tag">AI-Agent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AWS/" rel="tag">AWS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Fast-api%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" rel="tag">Fast api的基础知识</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Fast-api%E7%9A%84%E8%BF%9B%E9%98%B6%E7%9F%A5%E8%AF%86/" rel="tag">Fast api的进阶知识</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-agent/" rel="tag">ai agent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-assistant/" rel="tag">ai_assistant</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-assistant-2/" rel="tag">ai_assistant(2)</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-assistant-3/" rel="tag">ai_assistant(3)</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/chatting-robot/" rel="tag">chatting robot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/smolagents/" rel="tag">smolagents</a></li></ul>
     </div>
   </div>
 
@@ -1541,7 +1755,7 @@ tool：是把普通函数变为LangChain的可用工具，是一个装饰器
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/AI-Agent/" style="font-size: 10px;">AI-Agent</a> <a href="/tags/Fast-api%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" style="font-size: 10px;">Fast api的基础知识</a> <a href="/tags/Fast-api%E7%9A%84%E8%BF%9B%E9%98%B6%E7%9F%A5%E8%AF%86/" style="font-size: 10px;">Fast api的进阶知识</a> <a href="/tags/ai-agent/" style="font-size: 10px;">ai agent</a> <a href="/tags/ai-assistant/" style="font-size: 10px;">ai_assistant</a> <a href="/tags/ai-assistant-2/" style="font-size: 10px;">ai_assistant(2)</a> <a href="/tags/ai-assistant-3/" style="font-size: 10px;">ai_assistant(3)</a> <a href="/tags/chatting-robot/" style="font-size: 10px;">chatting robot</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/smolagents/" style="font-size: 10px;">smolagents</a>
+      <a href="/tags/AI-Agent/" style="font-size: 10px;">AI-Agent</a> <a href="/tags/AWS/" style="font-size: 20px;">AWS</a> <a href="/tags/Fast-api%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" style="font-size: 10px;">Fast api的基础知识</a> <a href="/tags/Fast-api%E7%9A%84%E8%BF%9B%E9%98%B6%E7%9F%A5%E8%AF%86/" style="font-size: 10px;">Fast api的进阶知识</a> <a href="/tags/ai-agent/" style="font-size: 10px;">ai agent</a> <a href="/tags/ai-assistant/" style="font-size: 10px;">ai_assistant</a> <a href="/tags/ai-assistant-2/" style="font-size: 10px;">ai_assistant(2)</a> <a href="/tags/ai-assistant-3/" style="font-size: 10px;">ai_assistant(3)</a> <a href="/tags/chatting-robot/" style="font-size: 10px;">chatting robot</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/smolagents/" style="font-size: 10px;">smolagents</a>
     </div>
   </div>
 
@@ -1563,6 +1777,14 @@ tool：是把普通函数变为LangChain的可用工具，是一个装饰器
       <ul>
         
           <li>
+            <a href="/2026/06/29/AWS%E4%BA%91%E6%8A%80%E6%9C%AF%E4%B8%8E%E6%9C%8D%E5%8A%A1%E6%A6%82%E5%BF%B5/">AWS云技术与服务概念</a>
+          </li>
+        
+          <li>
+            <a href="/2026/06/26/AWS%E5%9F%BA%E7%A1%80/">AWS基础</a>
+          </li>
+        
+          <li>
             <a href="/2026/06/20/Fast%20api%E8%BF%9B%E9%98%B6/">Fast api</a>
           </li>
         
@@ -1572,14 +1794,6 @@ tool：是把普通函数变为LangChain的可用工具，是一个装饰器
         
           <li>
             <a href="/2026/06/12/AI%20Agents%20with%20Hugging%20Face%20smolagents/">用 Hugging Face smolagents 打造智能 AI Agent</a>
-          </li>
-        
-          <li>
-            <a href="/2026/06/04/ai_assistant(3)/">一个可以提取图片中重要信息并分成优先级的ai助手</a>
-          </li>
-        
-          <li>
-            <a href="/2026/06/03/ai_assistant(2)/">一个可以提取图片中重要信息并分成优先级的ai助手</a>
           </li>
         
       </ul>
