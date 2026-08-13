@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>大模型基础第一章 | WN</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="大模型基础（一）：认识大模型 本文是”大模型基础”系列的第一章，从定义、由来、计量单位、分类方式到开源与闭源，带你建立对大模型的整体认知。   1.1 定义目前对大模型（Large Models）并没有绝对统一的严格定义，但在教学层面上，通常指的是：  参数规模大 训练数据多 训练算力强 能够在多种任务上表现出较强通用能力  很多资料会把”参数量达到 10 亿以上”作为一个粗略分界线。这个分界并不">
+<meta property="og:type" content="article">
+<meta property="og:title" content="大模型基础第一章">
+<meta property="og:url" content="https://wenjiajun-wn.github.io/2026/08/13/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:site_name" content="WN">
+<meta property="og:description" content="大模型基础（一）：认识大模型 本文是”大模型基础”系列的第一章，从定义、由来、计量单位、分类方式到开源与闭源，带你建立对大模型的整体认知。   1.1 定义目前对大模型（Large Models）并没有绝对统一的严格定义，但在教学层面上，通常指的是：  参数规模大 训练数据多 训练算力强 能够在多种任务上表现出较强通用能力  很多资料会把”参数量达到 10 亿以上”作为一个粗略分界线。这个分界并不">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-08-12T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-08-13T07:51:53.062Z">
+<meta property="article:author" content="wn">
+<meta property="article:tag" content="LLM">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="WN" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">WN</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://wenjiajun-wn.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-大模型基础" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/08/13/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%9F%BA%E7%A1%80/" class="article-date">
+  <time class="dt-published" datetime="2026-08-12T16:00:00.000Z" itemprop="datePublished">2026-08-13</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      大模型基础第一章
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="大模型基础（一）：认识大模型"><a href="#大模型基础（一）：认识大模型" class="headerlink" title="大模型基础（一）：认识大模型"></a>大模型基础（一）：认识大模型</h1><blockquote>
+<p>本文是”大模型基础”系列的第一章，从定义、由来、计量单位、分类方式到开源与闭源，带你建立对大模型的整体认知。</p>
+</blockquote>
+<hr>
+<h2 id="1-1-定义"><a href="#1-1-定义" class="headerlink" title="1.1 定义"></a>1.1 定义</h2><p>目前对<strong>大模型（Large Models）</strong>并没有绝对统一的严格定义，但在教学层面上，通常指的是：</p>
+<ul>
+<li><strong>参数规模大</strong></li>
+<li><strong>训练数据多</strong></li>
+<li><strong>训练算力强</strong></li>
+<li><strong>能够在多种任务上表现出较强通用能力</strong></li>
+</ul>
+<p>很多资料会把”参数量达到 10 亿以上”作为一个粗略分界线。这个分界并不是一条严格法律线，但它有助于建立一个直观印象：</p>
+<blockquote>
+<p>大模型 &#x3D; 用海量数据和强算力训练出来的超大规模深度神经网络模型。</p>
+</blockquote>
+<p>其次，有一个常见的混淆：</p>
+<ul>
+<li><strong>模型</strong>：是底层能力的本体，比如 Qwen、DeepSeek、GPT 等这类模型</li>
+<li><strong>产品</strong>：是对外提供给用户使用的完整系统，比如 ChatGPT、Claude、DeepSeek Chat、Qwen Chat、各种 AI 助手和智能体平台</li>
+</ul>
+<p>还有 BERT 和 BART：</p>
+<ul>
+<li><strong>BERT</strong>：Google 开发</li>
+<li><strong>BART</strong>：Meta（原 Facebook）开发</li>
+</ul>
+<p>它们都属于 NLP 时代的重要模型，但通常不归入今天常说的”大模型主流范畴”，更适合被理解为”大模型之前的重要阶段性代表”。</p>
+<blockquote>
+<p><strong>NLP（自然语言处理）</strong>：让计算机理解和生成人类语言。</p>
+</blockquote>
+<hr>
+<h2 id="1-2-为什么会出现大模型"><a href="#1-2-为什么会出现大模型" class="headerlink" title="1.2 为什么会出现大模型"></a>1.2 为什么会出现大模型</h2><p>大模型的出现，是数据规模、计算能力、模型架构三方面共同演进的结果。</p>
+<h3 id="1-2-1-数据够多"><a href="#1-2-1-数据够多" class="headerlink" title="1.2.1 数据够多"></a>1.2.1 数据够多</h3><p>训练范式的变化，让模型能够使用的训练数据规模发生了数量级提升。</p>
+<p>什么叫”训练范式”？</p>
+<p>可以把”范式”看作某一类问题的标准做法、主流做法、常用方法框架。放到这里，训练范式指的就是”模型通常按照什么思路、用什么类型的数据、完成什么训练任务来学习”。</p>
+<p>例如：</p>
+<ul>
+<li><strong>传统监督学习范式</strong>：依赖人工标注数据，让模型学习”输入 → 正确答案”</li>
+<li><strong>自监督学习范式</strong>：不依赖人工标注，而是让模型从数据本身构造学习任务，比如”预测下一个 token”</li>
+</ul>
+<p>放到训练里看，范式不是某一个具体算法，而是一整套训练思路。</p>
+<p>传统机器学习和早期深度学习通常更依赖人工标注数据，而大模型时代最关键的变化是：大量模型采用了自监督学习范式，例如”预测下一个 token””根据上下文恢复被遮住的部分”等。</p>
+<blockquote>
+<p>更直白地说：以前是”人先把答案标出来，再教机器”；现在更多是”机器从数据本身的结构里自己找学习信号”。</p>
+</blockquote>
+<h3 id="1-2-2-算力够强"><a href="#1-2-2-算力够强" class="headerlink" title="1.2.2 算力够强"></a>1.2.2 算力够强</h3><p>深度学习训练本质上是大规模矩阵运算，而矩阵运算天然适合并行计算。GPU、TPU、NPU 这类芯片的发展，让这种计算终于变得现实。</p>
+<ul>
+<li><strong>TPU（Tensor Processing Unit，张量处理单元）</strong>：可以看作是为云端大规模 AI 模型打造的”算力巨兽”。</li>
+<li><strong>NPU（Neural Processing Unit，神经处理单元）</strong>：可以看作是专为终端设备 AI 任务设计的”节能专家”。</li>
+</ul>
+<p>今天训练超大模型时，常见的并行方式包括：</p>
+<ul>
+<li><strong>数据并行</strong>：不同设备处理不同数据批次（每个设备持有完整的模型副本，不同设备处理不同的数据子集，通过梯度聚合同步更新模型参数）</li>
+<li><strong>张量并行</strong>：把同一个大矩阵切到不同设备（将模型中的张量（如权重矩阵）按维度切分到不同设备上，每个设备只处理部分张量，通过集合通信合并结果）</li>
+<li><strong>流水线并行</strong>：把模型不同层分配到不同设备（将模型按层或模块切分成多个阶段，每个阶段分配到不同设备，数据按流水线方式依次传递）</li>
+</ul>
+<p>大模型不是”某一张卡突然特别强”，而是硬件 + 集群 + 并行训练方法一起推动起来的。</p>
+<h3 id="1-2-3-架构合理"><a href="#1-2-3-架构合理" class="headerlink" title="1.2.3 架构合理"></a>1.2.3 架构合理</h3><p><strong>Transformer</strong> 架构是大模型时代最关键的技术转折之一。它的重要性不只是”效果好”，更在于它具备很强的可扩展性。</p>
+<p>“可扩展性”可以简单理解为：当你继续增加模型规模、训练数据和训练算力时，模型性能往往还能继续提升，而不是很快碰到天花板。</p>
+<p>Transformer 能把”更多参数 + 更多数据 + 更多算力”比较稳定地转化成更好的模型性能。因此，”大模型时代”会建立在 Transformer 架构之上：只有架构本身能继续吃下数据和算力，持续堆叠才有价值。</p>
+<h3 id="1-2-4-架构演进"><a href="#1-2-4-架构演进" class="headerlink" title="1.2.4 架构演进"></a>1.2.4 架构演进</h3><p>Transformer 是沿着 NLP 架构演进走出来的。它逐步解决了早期模型在长文本、并行训练和信息传递上的问题。</p>
+<p>从 RNN 到 Transformer，可以先抓住这条主线：</p>
+<table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>核心思路</th>
+<th>主要问题</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>RNN</td>
+<td>按顺序一个词一个词读，前面的状态传给后面</td>
+<td>长文本容易遗忘，训练难并行</td>
+</tr>
+<tr>
+<td>LSTM &#x2F; GRU</td>
+<td>在 RNN 基础上加入门控机制，尽量保留重要信息</td>
+<td>缓解长期依赖，但仍然偏串行</td>
+</tr>
+<tr>
+<td>Seq2Seq</td>
+<td>用编码器读输入，用解码器生成输出</td>
+<td>中间向量容易成为信息瓶颈</td>
+</tr>
+<tr>
+<td>Seq2Seq + Attention</td>
+<td>解码时动态关注输入中的不同位置</td>
+<td>仍然保留 RNN 的串行包袱</td>
+</tr>
+<tr>
+<td>Transformer</td>
+<td>用注意力机制直接建模任意 token 之间的关系</td>
+<td>更适合并行训练和规模扩展</td>
+</tr>
+</tbody></table>
+<p>RNN 的工作方式很像”按队伍顺序传话”：第 10 个词想理解第 1 个词的信息，需要一层层传过来。句子短时还能工作，序列一长，早期信息就容易被冲淡。</p>
+<p>所以，Transformer 的意义可以概括成三点：</p>
+<ol>
+<li><strong>并行计算</strong>：不再必须一个词等一个词地顺序处理，更适合 GPU 集群训练。</li>
+<li><strong>全局依赖</strong>：任意两个 token 可以通过注意力直接建立关系，更适合长距离信息建模。</li>
+<li><strong>可扩展性</strong>：模型、数据和计算量继续扩大时，效果通常还能稳定提升。</li>
+</ol>
+<h3 id="1-2-5-Decoder-Only"><a href="#1-2-5-Decoder-Only" class="headerlink" title="1.2.5 Decoder-Only"></a>1.2.5 Decoder-Only</h3><p>Transformer 本身包含编码器和解码器，但后来形成了三条常见技术路线：</p>
+<table>
+<thead>
+<tr>
+<th>架构路线</th>
+<th>典型用途</th>
+<th>直观理解</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Encoder-Only</td>
+<td>表征、分类、检索、Embedding</td>
+<td>更擅长”理解输入”</td>
+</tr>
+<tr>
+<td>Encoder-Decoder</td>
+<td>翻译、摘要等输入输出边界清晰的任务</td>
+<td>先读懂输入，再生成输出</td>
+</tr>
+<tr>
+<td>Decoder-Only</td>
+<td>对话、写作、代码生成、通用生成</td>
+<td>给定上下文，不断预测下一个 token</td>
+</tr>
+</tbody></table>
+<p>现代通用 LLM 基本采用 Decoder-Only，核心原因是它天然适合”自回归生成”：</p>
+<ol>
+<li>先把输入文本切成 token，并映射成向量。</li>
+<li>模型根据已有上下文预测下一个 token 的概率分布。</li>
+<li>采样或选择出下一个 token。</li>
+<li>把新 token 追加到上下文后面，继续预测下一个。</li>
+</ol>
+<blockquote>
+<p>你给模型的 System Prompt、用户问题、历史消息、检索结果、工具返回，最后都会变成 Decoder-Only 模型继续预测下一个 token 的上下文。</p>
+</blockquote>
+<h3 id="1-2-6-小结"><a href="#1-2-6-小结" class="headerlink" title="1.2.6 小结"></a>1.2.6 小结</h3><p>大模型之所以会出现，核心原因可以总结成三句话：</p>
+<ol>
+<li>数据规模上来了</li>
+<li>算力基础设施跟上了</li>
+<li>Transformer 架构让扩展变得有效了</li>
+</ol>
+<p>三者叠加，才真正迎来了今天的大模型时代。</p>
+<hr>
+<h2 id="1-3-大模型计量单位"><a href="#1-3-大模型计量单位" class="headerlink" title="1.3 大模型计量单位"></a>1.3 大模型计量单位</h2><p>理解大模型时，最常见的三个尺度是：</p>
+<ul>
+<li>参数规模</li>
+<li>训练数据规模</li>
+<li>计算规模</li>
+</ul>
+<h3 id="1-3-1-参数规模"><a href="#1-3-1-参数规模" class="headerlink" title="1.3.1 参数规模"></a>1.3.1 参数规模</h3><p>常见误区：模型参数不是”层数、神经元数量、超参数”的统称。更准确地说，参数主要指模型里通过训练学出来的<strong>权重（weights）和偏置（biases）</strong>。</p>
+<p>所以当我们说一个模型是 7B、70B 参数时，通常指的是模型里这类可训练数值的总量很大，而不是单纯指”层数多”或者”神经元多”。</p>
+<p>大模型参数规模（Parameters Scale）常用 B 表示，即 Billion，10 亿。例如：<strong>7B &#x3D; 70 亿参数，70B &#x3D; 700 亿参数</strong>。</p>
+<p>参数越多，通常意味着模型能表示更复杂的模式，但并不代表”一定更强”。效果还取决于训练数据质量、训练策略、架构设计和推理方式。</p>
+<h3 id="1-3-2-训练数据集规模"><a href="#1-3-2-训练数据集规模" class="headerlink" title="1.3.2 训练数据集规模"></a>1.3.2 训练数据集规模</h3><p>大语言模型的训练数据规模，通常用 token 数量来衡量。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1B token = 10⁹ token   = 10 亿 token</span><br><span class="line">1T token = 10³ B token = 10¹² token = 1 万亿 token</span><br></pre></td></tr></table></figure>
+
+<p>这里要特别理解 token 不是”字数”，也不是”单词数”的简单等价。</p>
+<p><strong>token 是模型处理语言时的基本切分单位。</strong>对中文来说，一个汉字可能是一个 token，也可能不是；对英文来说，一个单词可能是一个 token，也可能被拆成多个 token。</p>
+<p>所以你会在大模型领域经常看到：</p>
+<ul>
+<li>上下文长度是多少 token</li>
+<li>训练数据是多少 token</li>
+<li>输入消耗了多少 token</li>
+</ul>
+<p>如果你想更直观地体验，可以直接用 OpenAI 的 Tokenizer 工具测试：<a target="_blank" rel="noopener" href="https://platform.openai.com/tokenizer">https://platform.openai.com/tokenizer</a></p>
+<h3 id="1-3-3-计算规模"><a href="#1-3-3-计算规模" class="headerlink" title="1.3.3 计算规模"></a>1.3.3 计算规模</h3><p>模型训练要消耗大量浮点运算，因此常用 <strong>FLOPs（Floating Point Operations）</strong>来衡量计算规模。</p>
+<ul>
+<li>1 FLOP &#x3D; 1 次浮点运算</li>
+<li>1 PFLOPs &#x3D; 10¹⁵ 次浮点运算</li>
+<li>1 EFLOPs &#x3D; 10¹⁸ 次浮点运算</li>
+</ul>
+<p>不必死背单位换算，但要知道：训练大模型不是”数据喂进去就完了”，而是要为海量数据和巨大算力付出极高的工程与资金成本。</p>
+<hr>
+<h2 id="1-4-大模型分类"><a href="#1-4-大模型分类" class="headerlink" title="1.4 大模型分类"></a>1.4 大模型分类</h2><p>大模型常见的两种分类方式是：</p>
+<ul>
+<li>按模态分类</li>
+<li>按功能 &#x2F; 输出形态分类</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>分类标准</th>
+<th>类别</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>按照模态分类</td>
+<td>大语言模型（LLM）</td>
+<td>Qwen &#x2F; DeepSeek &#x2F; GPT &#x2F; Claude</td>
+</tr>
+<tr>
+<td></td>
+<td>多模态理解模型（Multimodal Understanding）</td>
+<td>GPT-4o &#x2F; Gemini &#x2F; Qwen-VL</td>
+</tr>
+<tr>
+<td></td>
+<td>多模态生成模型（Multimodal Generation）</td>
+<td>Stable Diffusion &#x2F; DALL·E &#x2F; Sora</td>
+</tr>
+<tr>
+<td>按照功能分类</td>
+<td>大语言模型 &#x2F; 生成模型（LLM）</td>
+<td>GPT &#x2F; DeepSeek &#x2F; Qwen</td>
+</tr>
+<tr>
+<td></td>
+<td>嵌入模型（Embedding）</td>
+<td>BGE &#x2F; E5 &#x2F; GTE</td>
+</tr>
+<tr>
+<td></td>
+<td>重排序模型（Reranker）</td>
+<td>BGE-Reranker &#x2F; Cross-Encoder 系列</td>
+</tr>
+<tr>
+<td></td>
+<td>分类模型（Classifier）</td>
+<td>各类经过微调的文本&#x2F;图像分类模型</td>
+</tr>
+</tbody></table>
+<h3 id="1-4-1-根据模态分类"><a href="#1-4-1-根据模态分类" class="headerlink" title="1.4.1 根据模态分类"></a>1.4.1 根据模态分类</h3><p>根据模态，可以把大模型分为：</p>
+<ul>
+<li>语言大模型（LLM）</li>
+<li>多模态理解模型</li>
+<li>多模态生成模型</li>
+</ul>
+<blockquote>
+<p><strong>什么是模态（Modality）？</strong><br>模态指的是机器感知和处理世界的不同信息形式，例如：文本、图像、音频 &#x2F; 语音、视频等。</p>
+</blockquote>
+<p><strong>类型 1：语言大模型（Large Language Model，LLM）</strong></p>
+<p>又称语言 &#x2F; 文本大模型，专门处理文本序列。</p>
+<p><strong>类型 2：多模态理解大模型</strong></p>
+<p>能够同时处理文本和图像、音频、视频等多种模态，并通常输出文本结果。</p>
+<p><strong>类型 3：多模态生成模型</strong></p>
+<p>不仅能理解多模态输入，还能生成图像、视频、音频等内容。</p>
+<blockquote>
+<p>注意：ChatGPT、Claude、Gemini 这类面向用户的产品，往往不只是单一模型，而是一个以模型为核心、再叠加工具、多模态输入输出、记忆和产品能力的系统。</p>
+</blockquote>
+<h3 id="1-4-2-按模型功能-输出形态分类"><a href="#1-4-2-按模型功能-输出形态分类" class="headerlink" title="1.4.2 按模型功能 &#x2F; 输出形态分类"></a>1.4.2 按模型功能 &#x2F; 输出形态分类</h3><p>按功能和输出形态来分，可以分成四类：大语言模型 &#x2F; 生成模型（LLM）、嵌入模型（Embedding Model）、重排序模型（Reranker）、分类模型（Classifier）。</p>
+<p><strong>类型 1：大语言模型 &#x2F; 生成模型（LLM）</strong></p>
+<p>这里说的”生成模型”，指的是负责根据上下文生成文本结果的 LLM。对话模型可以理解为 LLM 在聊天场景中的一种常见使用形态，但不能把所有 LLM 都简单等同为对话模型。特点：</p>
+<ul>
+<li>输出：token 序列</li>
+<li>目标：预测下一个 token</li>
+<li>典型应用：对话、写作、RAG 最终回答、代码生成、Agent 决策</li>
+</ul>
+<p><strong>类型 2：嵌入模型（Embedding Model）</strong></p>
+<p>嵌入模型不负责生成文本，而是把文本或图像映射为向量表示。特点：</p>
+<ul>
+<li>输出：固定维度向量</li>
+<li>典型应用：语义搜索、推荐、知识库检索、相似度计算</li>
+</ul>
+<p><strong>类型 3：重排序模型（Reranker）</strong></p>
+<p>重排序模型会对初步检索到的候选结果重新打分和排序。特点：</p>
+<ul>
+<li>输入：(query, doc)</li>
+<li>输出：相关性得分</li>
+<li>典型应用：RAG 检索结果精排、搜索排序优化</li>
+</ul>
+<p><strong>类型 4：分类模型（Classifier）</strong></p>
+<p>分类模型负责把输入归到预定义类别里。特点：</p>
+<ul>
+<li>输出：标签 &#x2F; 概率 &#x2F; 是非判断</li>
+<li>典型应用：情感分析、意图分类、垃圾内容识别、主题分类</li>
+</ul>
+<p>四者关系对比：</p>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>大语言模型 &#x2F; 生成模型（LLM）</th>
+<th>嵌入模型（Embedding）</th>
+<th>重排序模型（Reranker）</th>
+<th>分类模型（Classifier）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>核心任务</td>
+<td>内容生成</td>
+<td>语义编码</td>
+<td>相关性排序</td>
+<td>类别预测</td>
+</tr>
+<tr>
+<td>输出形式</td>
+<td>自然语言 &#x2F; 多模态</td>
+<td>高维向量</td>
+<td>相关性分数</td>
+<td>类别标签</td>
+</tr>
+<tr>
+<td>典型位置</td>
+<td>最终回答 &#x2F; 决策</td>
+<td>检索前处理</td>
+<td>检索后精排</td>
+<td>过滤 &#x2F; 路由 &#x2F; 标注</td>
+</tr>
+</tbody></table>
+<p><strong>协同工作流程</strong></p>
+<p>在实际项目里，这四类模型经常一起工作：</p>
+<ol>
+<li>用 Embedding 把文档转成向量并存入向量库</li>
+<li>用户提问时，用 Embedding 把问题也转成向量</li>
+<li>先检索候选文档</li>
+<li>用 Reranker 做精排</li>
+<li>必要时用 Classifier 做过滤或意图判断</li>
+<li>最终把结果交给 LLM 生成回答</li>
+</ol>
+<p>这正是很多 RAG 系统的典型结构。</p>
+<p><strong>具象理解：四类模型如何配合（以知识库 + 硅基流动为例）</strong></p>
+<p>大家平时接触最多的是聊天产品里的对话形态：你问一句，它答一句。但在工程实现里，真正负责生成回答的通常称为大语言模型或生成模型。当你开始做知识库、RAG 或问数系统时，往往还会同时接触嵌入模型、重排序模型和分类模型。</p>
+<p>以”你在硅基流动选模型、在 Cherry Studio 等工具里建知识库”为例，可以按这个方式理解：</p>
+<ol>
+<li><strong>大语言模型 &#x2F; 生成模型（LLM）</strong><ul>
+<li>负责最后生成自然语言答案</li>
+<li>是用户最直观看到的”大模型”</li>
+</ul>
+</li>
+<li><strong>嵌入模型（Embedding）</strong><ul>
+<li>负责把文本变成向量</li>
+<li>是知识库检索的基础</li>
+<li>建库和查询时必须使用同一类嵌入模型或同一向量空间</li>
+</ul>
+</li>
+<li><strong>重排序模型（Reranker）</strong><ul>
+<li>负责对召回候选结果重新打分</li>
+<li>作用是让最相关的几条排到更前面</li>
+</ul>
+</li>
+<li><strong>分类模型（Classifier）</strong><ul>
+<li>负责给问题或候选文档打标签</li>
+<li>可用于意图判断、过滤无关结果、选择路由</li>
+</ul>
+</li>
+</ol>
+<p>一条用户提问在系统里的顺序通常是：</p>
+<ol>
+<li>用户提问</li>
+<li>（可选）分类模型判断意图</li>
+<li>嵌入模型做向量检索</li>
+<li>（可选）重排序模型精排</li>
+<li>（可选）分类模型继续过滤</li>
+<li>LLM 生成最终答案</li>
+</ol>
+<hr>
+<h2 id="1-5-大模型的开源-vs-闭源"><a href="#1-5-大模型的开源-vs-闭源" class="headerlink" title="1.5 大模型的开源 vs 闭源"></a>1.5 大模型的开源 vs 闭源</h2><h3 id="1-5-1-大模型四要素"><a href="#1-5-1-大模型四要素" class="headerlink" title="1.5.1 大模型四要素"></a>1.5.1 大模型四要素</h3><p>一个大模型通常可以拆成四个关键要素：</p>
+<ul>
+<li><strong>模型权重（参数）</strong></li>
+<li><strong>推理代码</strong></li>
+<li><strong>训练代码</strong></li>
+<li><strong>训练数据集</strong></li>
+</ul>
+<p>其中，训练代码基本不开源；训练数据集属于大厂的核心竞争力（大厂可能会花钱购买数据并进行人工标注），通常也不会开源；而模型权重（参数）是开放的，可以部署到自己的服务器上。</p>
+<h3 id="1-5-2-开源-vs-闭源大模型"><a href="#1-5-2-开源-vs-闭源大模型" class="headerlink" title="1.5.2 开源 vs 闭源大模型"></a>1.5.2 开源 vs 闭源大模型</h3><p><strong>开源 &#x2F; 开放权重大模型</strong>：不同于传统软件的开源，大模型开源多数时候指开放权重（模型参数），可能包含推理代码、模型配置、Tokenizer 和使用示例，但通常不包含完整训练代码和训练数据集。能否商用、能否再分发，还要看具体许可证。</p>
+<ul>
+<li>典型代表：DeepSeek 系列、Qwen 系列、Llama 系列、文心大模型 4.5</li>
+</ul>
+<p><strong>闭源大模型</strong>：特定企业开发并保密，源代码和内部实现不对外公开。</p>
+<ul>
+<li>典型代表：GPT 系列（不包括早期的 GPT-1、GPT-2，以及最近开源的 GPT-OSS 系列）、Gemini 系列（大多数）、Claude 系列</li>
+</ul>
+<p>开源 vs 闭源对比：</p>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>开源大模型</th>
+<th>闭源大模型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>透明度</td>
+<td>代码和算法完全透明，可审查验证</td>
+<td>内部机制不透明，存在”黑箱”问题</td>
+</tr>
+<tr>
+<td>可访问性</td>
+<td>免费使用，降低技术门槛</td>
+<td>需要特定许可或授权，通常付费</td>
+</tr>
+<tr>
+<td>定制性</td>
+<td>支持深度定制和优化</td>
+<td>定制能力受限，仅限 API 参数调整</td>
+</tr>
+<tr>
+<td>创新速度</td>
+<td>社区协作推动快速迭代</td>
+<td>依赖单一团队，创新速度较慢</td>
+</tr>
+<tr>
+<td>成本结构</td>
+<td>免费使用，但需硬件和运维投入</td>
+<td>按使用量付费，前期投入低但长期成本高</td>
+</tr>
+<tr>
+<td>技术支持</td>
+<td>依赖社区，缺乏官方专业支持</td>
+<td>提供企业级技术支持和维护服务</td>
+</tr>
+<tr>
+<td>安全性</td>
+<td>透明可审计，但可能被恶意利用</td>
+<td>代码不公开，保护知识产权和用户数据</td>
+</tr>
+</tbody></table>
+<hr>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://wenjiajun-wn.github.io/2026/08/13/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%9F%BA%E7%A1%80/" data-id="cmsr808po0001fo7kgtn5hwbg" data-title="大模型基础第一章" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LLM/" rel="tag">LLM</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2026/07/09/Courier%20Helper/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Courier Helper</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-Agent/" rel="tag">AI-Agent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AWS/" rel="tag">AWS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Fast-api%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" rel="tag">Fast api的基础知识</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Fast-api%E7%9A%84%E8%BF%9B%E9%98%B6%E7%9F%A5%E8%AF%86/" rel="tag">Fast api的进阶知识</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LLM/" rel="tag">LLM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-agent/" rel="tag">ai agent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-assistant/" rel="tag">ai_assistant</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-assistant-2/" rel="tag">ai_assistant(2)</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-assistant-3/" rel="tag">ai_assistant(3)</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/chatting-robot/" rel="tag">chatting robot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/smolagents/" rel="tag">smolagents</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AI-Agent/" style="font-size: 10px;">AI-Agent</a> <a href="/tags/AWS/" style="font-size: 20px;">AWS</a> <a href="/tags/Fast-api%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" style="font-size: 10px;">Fast api的基础知识</a> <a href="/tags/Fast-api%E7%9A%84%E8%BF%9B%E9%98%B6%E7%9F%A5%E8%AF%86/" style="font-size: 10px;">Fast api的进阶知识</a> <a href="/tags/LLM/" style="font-size: 10px;">LLM</a> <a href="/tags/ai-agent/" style="font-size: 10px;">ai agent</a> <a href="/tags/ai-assistant/" style="font-size: 10px;">ai_assistant</a> <a href="/tags/ai-assistant-2/" style="font-size: 10px;">ai_assistant(2)</a> <a href="/tags/ai-assistant-3/" style="font-size: 10px;">ai_assistant(3)</a> <a href="/tags/chatting-robot/" style="font-size: 10px;">chatting robot</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/smolagents/" style="font-size: 10px;">smolagents</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/08/">August 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/07/">July 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/06/">June 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/05/">May 2026</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2026/08/13/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%9F%BA%E7%A1%80/">大模型基础第一章</a>
+          </li>
+        
+          <li>
+            <a href="/2026/07/09/Courier%20Helper/">Courier Helper</a>
+          </li>
+        
+          <li>
+            <a href="/2026/06/29/AWS%E4%BA%91%E6%8A%80%E6%9C%AF%E4%B8%8E%E6%9C%8D%E5%8A%A1%E6%A6%82%E5%BF%B5/">AWS云技术与服务概念</a>
+          </li>
+        
+          <li>
+            <a href="/2026/06/26/AWS%E5%9F%BA%E7%A1%80/">AWS基础</a>
+          </li>
+        
+          <li>
+            <a href="/2026/06/20/Fast%20api%E8%BF%9B%E9%98%B6/">Fast api</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 wn<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
