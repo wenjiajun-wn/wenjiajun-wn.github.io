@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>ollama基础 | WN</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Ollama 基础：从本地安装到 LangChain 整合 本文介绍 Ollama 本地大模型运行环境：从定义与定位、安装配置、常用命令，到与 LangChain 的整合。   一、Ollama 简介1.1 定义Ollama 是一个用于在本地运行开源大模型的工具，本质是把模型下载、管理、加载、运行、暴露 API 这几件事封装起来的本地大模型运行环境。 一句话总结：  Ollama &#x3D; 让">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ollama基础">
+<meta property="og:url" content="https://wenjiajun-wn.github.io/2026/08/14/ollama%E7%9A%84%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:site_name" content="WN">
+<meta property="og:description" content="Ollama 基础：从本地安装到 LangChain 整合 本文介绍 Ollama 本地大模型运行环境：从定义与定位、安装配置、常用命令，到与 LangChain 的整合。   一、Ollama 简介1.1 定义Ollama 是一个用于在本地运行开源大模型的工具，本质是把模型下载、管理、加载、运行、暴露 API 这几件事封装起来的本地大模型运行环境。 一句话总结：  Ollama &#x3D; 让">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-08-13T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-08-14T07:40:03.650Z">
+<meta property="article:author" content="wn">
+<meta property="article:tag" content="LLM">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="WN" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">WN</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://wenjiajun-wn.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-ollama的基础" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/08/14/ollama%E7%9A%84%E5%9F%BA%E7%A1%80/" class="article-date">
+  <time class="dt-published" datetime="2026-08-13T16:00:00.000Z" itemprop="datePublished">2026-08-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      ollama基础
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Ollama-基础：从本地安装到-LangChain-整合"><a href="#Ollama-基础：从本地安装到-LangChain-整合" class="headerlink" title="Ollama 基础：从本地安装到 LangChain 整合"></a>Ollama 基础：从本地安装到 LangChain 整合</h1><blockquote>
+<p>本文介绍 Ollama 本地大模型运行环境：从定义与定位、安装配置、常用命令，到与 LangChain 的整合。</p>
+</blockquote>
+<hr>
+<h2 id="一、Ollama-简介"><a href="#一、Ollama-简介" class="headerlink" title="一、Ollama 简介"></a>一、Ollama 简介</h2><h3 id="1-1-定义"><a href="#1-1-定义" class="headerlink" title="1.1 定义"></a>1.1 定义</h3><p><strong>Ollama</strong> 是一个用于在本地运行开源大模型的工具，本质是把模型下载、管理、加载、运行、暴露 API 这几件事封装起来的本地大模型运行环境。</p>
+<p>一句话总结：</p>
+<blockquote>
+<p>Ollama &#x3D; 让你用很少的命令，在自己电脑上把开源大模型跑起来。</p>
+</blockquote>
+<p>安装好之后，你通常只需要像下面这样输入一条命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ollama run qwen:4b</span><br></pre></td></tr></table></figure>
+
+<p>如果本地还没有这个模型，Ollama 会先下载；下载完成后，它会直接启动并进入交互模式。从入门视角看，这比自己去处理模型权重、推理框架、启动服务、配置推理端口，要简单得多。</p>
+<h3 id="1-2-Ollama-解决了什么问题"><a href="#1-2-Ollama-解决了什么问题" class="headerlink" title="1.2 Ollama 解决了什么问题"></a>1.2 Ollama 解决了什么问题</h3><p>如果你已经学过前两章的云端模型调用，应该已经知道：通过阿里百炼、DeepSeek、OpenAI 这类平台调用模型，优点是简单、稳定、开箱即用；但它也有明显局限：</p>
+<ul>
+<li>需要联网</li>
+<li>需要 API Key</li>
+<li>会产生调用费用</li>
+<li>某些场景下，数据不能离开本地机器或企业内网</li>
+</ul>
+<p>Ollama 对应的，正好是另一条路：把模型放到你自己的电脑上跑。</p>
+<p>因此它最直接解决的是：</p>
+<ul>
+<li>想离线使用模型</li>
+<li>想减少对云端 API 的依赖</li>
+<li>想做本地开发、本地测试</li>
+<li>想让敏感数据尽量不出本机</li>
+<li>想学习开源模型和本地推理的基本流程</li>
+</ul>
+<p>可以把它和云端 API 调用看作两种”模型接入方式”：</p>
+<ul>
+<li><strong>云端 API</strong>：模型在别人服务器上，你通过网络调用</li>
+<li><strong>Ollama 本地运行</strong>：模型在你机器上，你通过本机服务调用</li>
+</ul>
+<h3 id="1-3-Ollama-和云端-API-的区别"><a href="#1-3-Ollama-和云端-API-的区别" class="headerlink" title="1.3 Ollama 和云端 API 的区别"></a>1.3 Ollama 和云端 API 的区别</h3><p>这里要先分清楚：很多同学学 Ollama 时会下意识地把它当成”另一个模型平台”，其实它更像是本地运行层。</p>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>云端 API（如阿里百炼、DeepSeek）</th>
+<th>Ollama</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>模型在哪</td>
+<td>厂商服务器上</td>
+<td>你自己的电脑上</td>
+</tr>
+<tr>
+<td>是否需要 API Key</td>
+<td>通常需要</td>
+<td>本地运行通常不需要</td>
+</tr>
+<tr>
+<td>是否依赖联网</td>
+<td>是</td>
+<td>本地调用可不依赖外网，但首次拉模型一般需要联网</td>
+</tr>
+<tr>
+<td>成本</td>
+<td>按调用计费</td>
+<td>模型本地推理不按 token 计费，但会消耗本机算力、内存、磁盘</td>
+</tr>
+<tr>
+<td>适合什么</td>
+<td>快速接入、稳定服务、无需本地硬件负担</td>
+<td>本地开发、隐私敏感场景、离线测试、学习开源模型</td>
+</tr>
+</tbody></table>
+<p>从真实项目角度看，这两者不是非此即彼，而是经常配合使用：</p>
+<ul>
+<li>本地开发阶段，用 Ollama 跑小模型验证逻辑</li>
+<li>上线阶段，再切换到更强、更稳定的云端模型</li>
+<li>或者企业内网环境中，本地 &#x2F; 私有化模型与云端模型混合使用</li>
+</ul>
+<h3 id="1-4-使用场景"><a href="#1-4-使用场景" class="headerlink" title="1.4 使用场景"></a>1.4 使用场景</h3><p>从项目角度给一个比较稳的建议：</p>
+<ul>
+<li><strong>本地开发 &#x2F; 课程练习</strong>：适合用 Ollama</li>
+<li><strong>企业内网原型 &#x2F; 隐私敏感验证</strong>：也很适合</li>
+<li><strong>对性能、稳定性、并发要求很高的正式推理服务</strong>：要根据业务再评估是否继续用 Ollama，还是切向更专业的推理部署方案</li>
+</ul>
+<p>但也要有合理预期：</p>
+<ul>
+<li>它不等于”任何模型都能在你的电脑上丝滑跑起来”</li>
+<li>它也不等于”本地跑一定比云端便宜或更强”</li>
+<li>它更像一个本地推理入口，适合开发、实验、教学和一些轻中量应用</li>
+</ul>
+<h3 id="1-5-优势与局限"><a href="#1-5-优势与局限" class="headerlink" title="1.5 优势与局限"></a>1.5 优势与局限</h3><p>学习时，最好同时看到它的优点和边界。</p>
+<p><strong>优势</strong>：</p>
+<ul>
+<li>安装和使用门槛低</li>
+<li>命令简单，适合入门</li>
+<li>模型管理方便，pull &#x2F; run &#x2F; list &#x2F; rm 一套命令就够用</li>
+<li>本地调用通常不需要 API Key</li>
+<li>与 LangChain 的 ChatOllama 集成成熟</li>
+</ul>
+<p><strong>局限</strong>：</p>
+<ul>
+<li>是否跑得动，强烈依赖你的机器配置</li>
+<li>模型体积大，会占内存和磁盘</li>
+<li>本地模型能力通常取决于你能跑多大的模型</li>
+<li>高并发、企业级推理服务场景，不一定优先选 Ollama</li>
+</ul>
+<p>所以，对这章最准确的定位应该是：</p>
+<blockquote>
+<p>Ollama 很适合学习本地模型、开发调试和轻量本地服务，但不是所有生产场景的唯一方案。</p>
+</blockquote>
+<hr>
+<h2 id="二、安装与配置"><a href="#二、安装与配置" class="headerlink" title="二、安装与配置"></a>二、安装与配置</h2><h3 id="2-1-安装前先知道两件事"><a href="#2-1-安装前先知道两件事" class="headerlink" title="2.1 安装前先知道两件事"></a>2.1 安装前先知道两件事</h3><p>在真正安装之前，最容易忽略两件事：</p>
+<ul>
+<li>Ollama 程序本身不大，真正占空间的是模型</li>
+<li>你未来可能会下载多个模型，因此模型目录最好一开始就想清楚</li>
+</ul>
+<p>这也是为什么很多教程安装完很快就会讲 <code>OLLAMA_MODELS</code>。</p>
+<p>因为模型文件一旦大起来，很容易把系统盘吃满。</p>
+<h3 id="2-2-下载方式"><a href="#2-2-下载方式" class="headerlink" title="2.2 下载方式"></a>2.2 下载方式</h3><p>你可以从 Ollama 官网下载对应平台版本：</p>
+<ul>
+<li>下载总入口：<a target="_blank" rel="noopener" href="https://ollama.com/download">https://ollama.com/download</a></li>
+</ul>
+<h3 id="2-3-运行环境与硬件预期"><a href="#2-3-运行环境与硬件预期" class="headerlink" title="2.3 运行环境与硬件预期"></a>2.3 运行环境与硬件预期</h3><p>这里先把硬件预期说清楚，因为”能不能运行”不只是软件安装问题，更是硬件问题。</p>
+<p>Ollama 跑得是否顺畅，主要受三件事影响：</p>
+<ul>
+<li>模型大小</li>
+<li>系统内存 &#x2F; 显存</li>
+<li>是否有可用 GPU 加速</li>
+</ul>
+<p>你可以先记一个粗略但实用的结论：</p>
+<ul>
+<li>模型越大，占用的内存 &#x2F; 显存越高</li>
+<li>小模型更适合本地学习</li>
+<li>不是所有电脑都适合一上来就跑 14B、32B、70B 级模型</li>
+</ul>
+<hr>
+<h2 id="三、常用命令"><a href="#三、常用命令" class="headerlink" title="三、常用命令"></a>三、常用命令</h2><h3 id="3-1-最常用的一组命令"><a href="#3-1-最常用的一组命令" class="headerlink" title="3.1 最常用的一组命令"></a>3.1 最常用的一组命令</h3><p>安装完成后，你最常用到的其实就下面这些命令：</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ollama pull llama3</code></td>
+<td>下载指定模型</td>
+</tr>
+<tr>
+<td><code>ollama run llama3</code></td>
+<td>运行模型并进入交互对话</td>
+</tr>
+<tr>
+<td><code>ollama list</code></td>
+<td>查看本机已下载模型</td>
+</tr>
+<tr>
+<td><code>ollama rm llama3</code></td>
+<td>删除模型</td>
+</tr>
+<tr>
+<td><code>ollama show llama3</code></td>
+<td>查看模型详情</td>
+</tr>
+<tr>
+<td><code>ollama ps</code></td>
+<td>查看当前加载中的模型</td>
+</tr>
+<tr>
+<td><code>ollama stop llama3</code></td>
+<td>停止正在运行的模型</td>
+</tr>
+<tr>
+<td><code>ollama serve</code></td>
+<td>启动 Ollama 本地服务</td>
+</tr>
+<tr>
+<td><code>ollama create my-model -f Modelfile</code></td>
+<td>基于 Modelfile 创建自定义模型</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="四、安装与验证模型"><a href="#四、安装与验证模型" class="headerlink" title="四、安装与验证模型"></a>四、安装与验证模型</h2><h3 id="4-1-验证-Ollama-是否安装成功"><a href="#4-1-验证-Ollama-是否安装成功" class="headerlink" title="4.1 验证 Ollama 是否安装成功"></a>4.1 验证 Ollama 是否安装成功</h3><p>建议安装完成后，先做两个最基础的验证：</p>
+<ol>
+<li>命令是否可用</li>
+<li>本地服务是否真的在监听</li>
+</ol>
+<h4 id="4-1-1-看版本号"><a href="#4-1-1-看版本号" class="headerlink" title="4.1.1 看版本号"></a>4.1.1 看版本号</h4><p>在终端执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ollama --version</span><br></pre></td></tr></table></figure>
+
+<p>如果命令可用，会输出类似：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ollama version is 0.x.x</span><br></pre></td></tr></table></figure>
+
+<p>这至少说明两件事：</p>
+<ul>
+<li>Ollama 已经安装</li>
+<li>终端里能找到 ollama 命令</li>
+</ul>
+<h4 id="4-1-2-看默认端口是否监听"><a href="#4-1-2-看默认端口是否监听" class="headerlink" title="4.1.2 看默认端口是否监听"></a>4.1.2 看默认端口是否监听</h4><p>Ollama 本地 API 默认端口是 <strong>11434</strong>。</p>
+<p>如果服务正常启动，通常会在这个端口监听。</p>
+<p>Windows 下常见验证方式：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -ano | findstr 11434</span><br></pre></td></tr></table></figure>
+
+<p>如果看到类似：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">TCP    127.0.0.1:11434        0.0.0.0:0              LISTENING</span><br></pre></td></tr></table></figure>
+
+<p>说明 Ollama 服务已经在本机监听。</p>
+<p>根据 Ollama 官方 API 文档，本地 API 默认地址是：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost:11434/api</span><br></pre></td></tr></table></figure>
+
+<p>但要注意一点：</p>
+<ul>
+<li>直接调 Ollama 原生 API 时，通常会看到 <code>/api/...</code></li>
+<li>LangChain 的 ChatOllama 一般只需要写根地址，例如 <code>http://localhost:11434</code></li>
+</ul>
+<p>这个区别很关键，后面写 LangChain 代码时会再次用到。</p>
+<p>默认情况下，Ollama 只监听 127.0.0.1（本机回环）。若需要局域网内其他设备访问本机 Ollama，需在启动前通过环境变量 <code>OLLAMA_HOST</code> 绑定地址（如 <code>0.0.0.0:11434</code>），具体写法见 Ollama FAQ 中”How do I configure Ollama server?”一节。</p>
+<h3 id="4-2-模型从哪里找"><a href="#4-2-模型从哪里找" class="headerlink" title="4.2 模型从哪里找"></a>4.2 模型从哪里找</h3><p>如果你想知道 Ollama 里有哪些模型，最直接的方式是去官方模型库：</p>
+<ul>
+<li>模型搜索 &#x2F; 模型库：<a target="_blank" rel="noopener" href="https://ollama.com/search">https://ollama.com/search</a></li>
+</ul>
+<p>这里你可以看到：</p>
+<ul>
+<li>模型名称</li>
+<li>标签（tag）</li>
+<li>参数规模</li>
+<li>是否支持 vision &#x2F; tools &#x2F; thinking 等特性</li>
+</ul>
+<p>Ollama 调用模型时，模型名和标签需要写完整。比如：</p>
+<ul>
+<li><code>qwen:4b</code></li>
+<li><code>qwen3:8b</code></li>
+<li><code>deepseek-r1:14b</code></li>
+</ul>
+<p>这些标签都是”模型名 + 规格”。</p>
+<h3 id="4-3-如何判断模型有没有真的跑起来"><a href="#4-3-如何判断模型有没有真的跑起来" class="headerlink" title="4.3 如何判断模型有没有真的跑起来"></a>4.3 如何判断模型有没有真的跑起来</h3><p>从学习和排障角度，最常用的判断方式有三种：</p>
+<ul>
+<li><code>ollama run &lt;模型名&gt;</code> 能正常进入对话</li>
+<li><code>ollama list</code> 能看到模型已下载</li>
+<li><code>ollama ps</code> 能看到模型正在内存中</li>
+</ul>
+<p>在入门阶段，这三条基本足够。</p>
+<hr>
+<h2 id="五、LangChain-整合-Ollama"><a href="#五、LangChain-整合-Ollama" class="headerlink" title="五、LangChain 整合 Ollama"></a>五、LangChain 整合 Ollama</h2><h3 id="5-1-从命令行到项目接入"><a href="#5-1-从命令行到项目接入" class="headerlink" title="5.1 从命令行到项目接入"></a>5.1 从命令行到项目接入</h3><p>只会用 <code>ollama run</code> 在终端里聊天，还不等于能把它接到自己的项目中。</p>
+<p>真正的开发目标通常是：</p>
+<ul>
+<li>在 Python 代码里调用本地模型</li>
+<li>让本地模型也能接 Prompt、Parser、LCEL、Agent</li>
+<li>让本地模型和云端模型一样，进入统一的 LangChain 生态</li>
+</ul>
+<p>本节的核心目的：</p>
+<blockquote>
+<p>把 Ollama 从”命令行能聊天的工具”升级成”项目里能调用的模型端点”。</p>
+</blockquote>
+<h3 id="5-2-ChatOllama-是什么"><a href="#5-2-ChatOllama-是什么" class="headerlink" title="5.2 ChatOllama 是什么"></a>5.2 ChatOllama 是什么</h3><p><strong>ChatOllama</strong> 是 LangChain 中用于连接本地 Ollama 聊天模型的类，它负责：</p>
+<ul>
+<li>本地模型版本的 Chat Model 客户端</li>
+</ul>
+<p>这意味着，它在使用体验上会和你前面学过的：</p>
+<ul>
+<li>ChatOpenAI</li>
+<li>init_chat_model(…)</li>
+</ul>
+<p>有很多共通点：</p>
+<ul>
+<li>都可以 invoke()</li>
+<li>都会返回 AIMessage</li>
+<li>都能继续接 Prompt、LCEL、Agent</li>
+</ul>
+<p>区别只在于：</p>
+<ul>
+<li>前面那些大多连接的是云端模型</li>
+<li>ChatOllama 连接的是本机 Ollama 服务</li>
+</ul>
+<p>可以把两条模型接入路线这样对照：</p>
+<table>
+<thead>
+<tr>
+<th>路线</th>
+<th>模型在哪里跑</th>
+<th>主要优点</th>
+<th>主要限制</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>云端 API</td>
+<td>服务商服务器</td>
+<td>省本机资源、模型能力强、维护少</td>
+<td>数据会出本机，依赖网络、额度和平台稳定性</td>
+</tr>
+<tr>
+<td>Ollama</td>
+<td>本机或自管服务器</td>
+<td>控制力强、适合本地实验和私有环境</td>
+<td>受本机显存 &#x2F; 内存限制，速度和并发要自己承担</td>
+</tr>
+</tbody></table>
+<p>所以 Ollama 不是”取代云端模型”，而是给你多了一条本地可控的模型接入路线。</p>
+<h3 id="5-3-最小用法：直接传字符串"><a href="#5-3-最小用法：直接传字符串" class="headerlink" title="5.3 最小用法：直接传字符串"></a>5.3 最小用法：直接传字符串</h3><p>最简单的写法可以这样：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain_ollama <span class="keyword">import</span> ChatOllama</span><br><span class="line"></span><br><span class="line">model = ChatOllama(</span><br><span class="line">    model=<span class="string">&quot;qwen:4b&quot;</span>,</span><br><span class="line">    base_url=<span class="string">&quot;http://localhost:11434&quot;</span>,</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(model.invoke(<span class="string">&quot;什么是 LangChain，100 字以内&quot;</span>).content)</span><br></pre></td></tr></table></figure>
+
+<p>这和你在前面章节里学的”字符串 invoke()”几乎是一样的，只是端点从云端换成了本地。</p>
+<h3 id="5-4-消息列表写法：更贴近后续章节"><a href="#5-4-消息列表写法：更贴近后续章节" class="headerlink" title="5.4 消息列表写法：更贴近后续章节"></a>5.4 消息列表写法：更贴近后续章节</h3><p>如果你希望和 第 13 章 提示词与消息模板 保持一致，也可以传消息列表：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain_core.messages <span class="keyword">import</span> HumanMessage</span><br><span class="line"><span class="keyword">from</span> langchain_ollama <span class="keyword">import</span> ChatOllama</span><br><span class="line"></span><br><span class="line">ollama_llm = ChatOllama(model=<span class="string">&quot;qwen3:8b&quot;</span>)</span><br><span class="line">messages = [HumanMessage(content=<span class="string">&quot;你好，请介绍一下你自己&quot;</span>)]</span><br><span class="line">resp = ollama_llm.invoke(messages)</span><br><span class="line"><span class="built_in">print</span>(resp.content)</span><br></pre></td></tr></table></figure>
+
+<p>这种写法的好处是学习 Prompt、Messages、多轮历史、Agent 时，思路是连续的。</p>
+<h3 id="5-5-显式写-base-url-原因"><a href="#5-5-显式写-base-url-原因" class="headerlink" title="5.5 显式写 base_url 原因"></a>5.5 显式写 base_url 原因</h3><p>很多人会好奇：为什么有时代码里写 <code>base_url=&quot;http://localhost:11434&quot;</code>，有时不写？</p>
+<p>这里可以按下面的规则处理：</p>
+<ul>
+<li><strong>不写</strong>：默认走本机默认地址</li>
+<li><strong>写了</strong>：更显式、更清楚，也方便你以后切到远程 Ollama 或不同端口</li>
+</ul>
+<p>比如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ChatOllama(</span><br><span class="line">    model=<span class="string">&quot;qwen3:8b&quot;</span>,</span><br><span class="line">    base_url=<span class="string">&quot;http://localhost:11434&quot;</span>,</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>这在教学上也更直观，因为你能明确知道自己连的是哪个服务地址。</p>
+<hr>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://wenjiajun-wn.github.io/2026/08/14/ollama%E7%9A%84%E5%9F%BA%E7%A1%80/" data-id="cmssn7wbq00007k7kh20ue6rj" data-title="ollama基础" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LLM/" rel="tag">LLM</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2026/08/13/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%9F%BA%E7%A1%80/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">大模型基础第一章</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-Agent/" rel="tag">AI-Agent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AWS/" rel="tag">AWS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Fast-api%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" rel="tag">Fast api的基础知识</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Fast-api%E7%9A%84%E8%BF%9B%E9%98%B6%E7%9F%A5%E8%AF%86/" rel="tag">Fast api的进阶知识</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LLM/" rel="tag">LLM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-agent/" rel="tag">ai agent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-assistant/" rel="tag">ai_assistant</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-assistant-2/" rel="tag">ai_assistant(2)</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-assistant-3/" rel="tag">ai_assistant(3)</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/chatting-robot/" rel="tag">chatting robot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/smolagents/" rel="tag">smolagents</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AI-Agent/" style="font-size: 10px;">AI-Agent</a> <a href="/tags/AWS/" style="font-size: 20px;">AWS</a> <a href="/tags/Fast-api%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" style="font-size: 10px;">Fast api的基础知识</a> <a href="/tags/Fast-api%E7%9A%84%E8%BF%9B%E9%98%B6%E7%9F%A5%E8%AF%86/" style="font-size: 10px;">Fast api的进阶知识</a> <a href="/tags/LLM/" style="font-size: 20px;">LLM</a> <a href="/tags/ai-agent/" style="font-size: 10px;">ai agent</a> <a href="/tags/ai-assistant/" style="font-size: 10px;">ai_assistant</a> <a href="/tags/ai-assistant-2/" style="font-size: 10px;">ai_assistant(2)</a> <a href="/tags/ai-assistant-3/" style="font-size: 10px;">ai_assistant(3)</a> <a href="/tags/chatting-robot/" style="font-size: 10px;">chatting robot</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/smolagents/" style="font-size: 10px;">smolagents</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/08/">August 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/07/">July 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/06/">June 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/05/">May 2026</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2026/08/14/ollama%E7%9A%84%E5%9F%BA%E7%A1%80/">ollama基础</a>
+          </li>
+        
+          <li>
+            <a href="/2026/08/13/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%9F%BA%E7%A1%80/">大模型基础第一章</a>
+          </li>
+        
+          <li>
+            <a href="/2026/07/09/Courier%20Helper/">Courier Helper</a>
+          </li>
+        
+          <li>
+            <a href="/2026/06/29/AWS%E4%BA%91%E6%8A%80%E6%9C%AF%E4%B8%8E%E6%9C%8D%E5%8A%A1%E6%A6%82%E5%BF%B5/">AWS云技术与服务概念</a>
+          </li>
+        
+          <li>
+            <a href="/2026/06/26/AWS%E5%9F%BA%E7%A1%80/">AWS基础</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 wn<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
