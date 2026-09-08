@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>RAG、微调、续训与智能体选型 | WN</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="RAG、微调、续训与智能体选型 本文从真实项目中”要不要微调、要不要上 Agent”这类常见问题出发，系统梳理 RAG、微调、续训三种手段的定位与选择逻辑，并介绍智能体与工作流的开发方式，帮你建立一套”先诊断、再选型”的工程判断框架。   1 问题诊断真实项目里，AI 应用回答不好时，最容易犯的错误是：还没判断问题根因，就直接说”要不要微调””要不要上 Agent”。 先问四个问题会稳很多：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RAG、微调、续训与智能体选型">
+<meta property="og:url" content="https://wenjiajun-wn.github.io/2026/09/06/RAG%E3%80%81%E5%BE%AE%E8%B0%83%E3%80%81%E7%BB%AD%E8%AE%AD%E4%B8%8E%E6%99%BA%E8%83%BD%E4%BD%93%E9%80%89%E5%9E%8B/index.html">
+<meta property="og:site_name" content="WN">
+<meta property="og:description" content="RAG、微调、续训与智能体选型 本文从真实项目中”要不要微调、要不要上 Agent”这类常见问题出发，系统梳理 RAG、微调、续训三种手段的定位与选择逻辑，并介绍智能体与工作流的开发方式，帮你建立一套”先诊断、再选型”的工程判断框架。   1 问题诊断真实项目里，AI 应用回答不好时，最容易犯的错误是：还没判断问题根因，就直接说”要不要微调””要不要上 Agent”。 先问四个问题会稳很多：">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-09-05T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-09-08T10:40:31.061Z">
+<meta property="article:author" content="wn">
+<meta property="article:tag" content="LLM">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="WN" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">WN</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://wenjiajun-wn.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-RAG、微调、续训与智能体选型" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/09/06/RAG%E3%80%81%E5%BE%AE%E8%B0%83%E3%80%81%E7%BB%AD%E8%AE%AD%E4%B8%8E%E6%99%BA%E8%83%BD%E4%BD%93%E9%80%89%E5%9E%8B/" class="article-date">
+  <time class="dt-published" datetime="2026-09-05T16:00:00.000Z" itemprop="datePublished">2026-09-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      RAG、微调、续训与智能体选型
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="RAG、微调、续训与智能体选型"><a href="#RAG、微调、续训与智能体选型" class="headerlink" title="RAG、微调、续训与智能体选型"></a>RAG、微调、续训与智能体选型</h1><blockquote>
+<p>本文从真实项目中”要不要微调、要不要上 Agent”这类常见问题出发，系统梳理 RAG、微调、续训三种手段的定位与选择逻辑，并介绍智能体与工作流的开发方式，帮你建立一套”先诊断、再选型”的工程判断框架。</p>
+</blockquote>
+<hr>
+<h2 id="1-问题诊断"><a href="#1-问题诊断" class="headerlink" title="1 问题诊断"></a>1 问题诊断</h2><p>真实项目里，AI 应用回答不好时，最容易犯的错误是：还没判断问题根因，就直接说”要不要微调””要不要上 Agent”。</p>
+<p>先问四个问题会稳很多：</p>
+<table>
+<thead>
+<tr>
+<th>诊断问题</th>
+<th>常见现象</th>
+<th>优先考虑</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>模型是不是没看到资料？</td>
+<td>不知道公司制度、产品手册、最新公告，回答没有引用依据</td>
+<td>RAG</td>
+</tr>
+<tr>
+<td>模型是不是行为不稳定？</td>
+<td>格式飘、话术不统一、分类标签不稳、JSON 经常错</td>
+<td>Prompt 优化，必要时微调</td>
+</tr>
+<tr>
+<td>模型是不是不懂这个领域的语言分布？</td>
+<td>拿到资料也读不懂，专业术语和行业逻辑经常错</td>
+<td>续训，通常再配合 RAG</td>
+</tr>
+<tr>
+<td>任务是不是需要多步执行？</td>
+<td>需要查资料、调接口、校验、重试、写入系统</td>
+<td>工作流或 Agent</td>
+</tr>
+</tbody></table>
+<p>按下面的顺序来判断：</p>
+<ol>
+<li><strong>先 Prompt</strong>：如果只是需求表达不清，先把输入、输出、约束写清楚。</li>
+<li><strong>RAG</strong>：如果缺的是资料、依据、最新信息或私有知识，优先建知识库。</li>
+<li><strong>再微调</strong>：如果长期行为不稳，并且有高质量样本和评测标准，再考虑微调。</li>
+<li><strong>慎用续训</strong>：只有当模型对领域语言和知识分布系统性陌生时，才考虑续训。</li>
+<li><strong>流程固定先工作流</strong>：步骤明确、需要稳定可审计时，优先 Workflow。</li>
+<li><strong>流程开放再 Agent</strong>：步骤会变化、需要动态选工具和根据中间结果调整路线时，再上 Agent。</li>
+</ol>
+<blockquote>
+<p>后面的方案不是”不高级”，只是成本、风险和维护压力更高。能用轻方案稳定解决的问题，就不要过早引入重方案。</p>
+</blockquote>
+<hr>
+<h2 id="2-RAG"><a href="#2-RAG" class="headerlink" title="2 RAG"></a>2 RAG</h2><h3 id="2-1-什么是-RAG"><a href="#2-1-什么是-RAG" class="headerlink" title="2.1 什么是 RAG"></a>2.1 什么是 RAG</h3><p>RAG（Retrieval-Augmented Generation，检索增强生成）是一种把信息检索与大模型生成结合起来的应用架构。</p>
+<p>基本流程并不复杂：</p>
+<ol>
+<li>用户先提问。</li>
+<li>系统先去外部知识库里找相关资料。</li>
+<li>再把”问题 + 检索结果”一起发给大模型。</li>
+<li>由模型基于这些资料生成答案。</li>
+</ol>
+<p>RAG 的重点不是”修改模型参数”，而是在运行时给模型补充它当前需要的上下文。</p>
+<blockquote>
+<p>先记住这个最短定义：<strong>RAG &#x3D; 先查资料，再回答问题。</strong></p>
+</blockquote>
+<ul>
+<li><strong>提示词工程</strong>主要依赖你提前写好的 Prompt。</li>
+<li><strong>RAG</strong> 主要依赖系统在提问时实时检索到的外部资料。</li>
+</ul>
+<h3 id="2-2-为什么-RAG-往往是项目里的第一选择"><a href="#2-2-为什么-RAG-往往是项目里的第一选择" class="headerlink" title="2.2 为什么 RAG 往往是项目里的第一选择"></a>2.2 为什么 RAG 往往是项目里的第一选择</h3><p>从工程角度看，RAG 之所以常常先于微调和续训，不是因为它”最先进”，而是因为它最符合大量知识类业务问题的真实成因。</p>
+<p>真实项目里，大模型答不好，常见原因通常有三类：</p>
+<ul>
+<li><strong>知识过时</strong>：例如最新政策、最新产品说明、最新公告。</li>
+<li><strong>知识私有</strong>：例如企业制度、内部接口文档、项目手册、客户资料。</li>
+<li><strong>证据不足</strong>：模型有通用知识，但没有你当前要它参考的那份资料，因此容易幻觉。</li>
+</ul>
+<p>这三类问题，本质上都更像”模型没看到材料”，而不是”模型不会说话”。这时最先应该验证的，往往不是训练模型，而是能不能把资料喂对。RAG 正是解决这个问题的。</p>
+<p>它的现实优势主要有：</p>
+<ul>
+<li><strong>更新快</strong>：知识库更新后可以重新建索引，不必重新训练模型。</li>
+<li><strong>成本低</strong>：相比微调和续训，实施门槛和试错成本通常更低。</li>
+<li><strong>可追溯</strong>：检索结果可以保留来源、页码、文件名，方便核验。</li>
+<li><strong>更贴近业务系统</strong>：文档、数据库、FAQ、接口说明等都可以成为外部知识源。</li>
+</ul>
+<h3 id="2-3-RAG-的工作流程"><a href="#2-3-RAG-的工作流程" class="headerlink" title="2.3 RAG 的工作流程"></a>2.3 RAG 的工作流程</h3><p>虽然 RAG 常被一句话概括成”先检索，再生成”，但在工程上，它通常分成两个阶段：</p>
+<p><strong>阶段一：知识库构建（离线）</strong></p>
+<ol>
+<li>读取原始文档</li>
+<li>做清洗和切分</li>
+<li>用嵌入模型把文本块转成向量</li>
+<li>把文本块、向量和元数据写入向量数据库</li>
+</ol>
+<p><strong>阶段二：检索与生成（在线）</strong></p>
+<ol>
+<li>用户发起问题</li>
+<li>将问题向量化</li>
+<li>从知识库中召回相关片段</li>
+<li>把片段与问题一起组装进 Prompt</li>
+<li>交给大模型生成最终回答</li>
+</ol>
+<p>这条链可以拆成：</p>
+<ul>
+<li><strong>索引阶段</strong>解决”资料怎么准备好”</li>
+<li><strong>问答阶段</strong>解决”资料怎么在提问时被找出来并用上”</li>
+</ul>
+<p>因此，RAG 从来不只是”向量库 + 大模型”这么简单。文档质量、分块策略、召回方式、重排策略、Prompt 组织方式，都会影响最终效果。</p>
+<h3 id="2-4-何时需要-RAG"><a href="#2-4-何时需要-RAG" class="headerlink" title="2.4 何时需要 RAG"></a>2.4 何时需要 RAG</h3><p>当你遇到下面这些场景时，优先验证 RAG 通常是比较稳妥的：</p>
+<ul>
+<li>需要接入企业内部资料、产品文档、FAQ、制度手册、接口说明等私有知识</li>
+<li>需要回答最新信息、时效性很强的问题</li>
+<li>希望回答结果能附带依据和来源</li>
+<li>希望在不改模型参数的情况下，快速迭代知识内容</li>
+</ul>
+<p>典型场景包括：</p>
+<ul>
+<li>企业知识库问答</li>
+<li>智能客服与售后助手</li>
+<li>研发文档问答</li>
+<li>运维排障助手</li>
+<li>合同、制度、政策、课程讲义等文档问答</li>
+</ul>
+<h3 id="2-5-实现方式"><a href="#2-5-实现方式" class="headerlink" title="2.5 实现方式"></a>2.5 实现方式</h3><p>RAG 的实现方式大致可以分为三类：</p>
+<p><strong>（1）在线平台</strong></p>
+<p>例如 Cherry Studio、ima、Dify、FastGPT、RAGFlow 等。优点是上手快、可视化、验证快，适合入门或快速搭原型。</p>
+<p><strong>（2）离线客户端</strong></p>
+<p>例如本地知识库客户端、桌面 AI 工具，适合个人知识管理和轻量实验。</p>
+<p><strong>（3）借助框架或纯代码实现</strong></p>
+<p>例如基于 LangChain、LangGraph 或纯 Python 自己搭建完整的文档加载、切分、向量化、检索和生成流程。这种方式灵活度最高，也最接近真实项目开发。</p>
+<h3 id="2-6-RAG-的几个常见误区"><a href="#2-6-RAG-的几个常见误区" class="headerlink" title="2.6 RAG 的几个常见误区"></a>2.6 RAG 的几个常见误区</h3><p><strong>误区 1：有知识库就一定不会幻觉</strong></p>
+<p>不是。RAG 只能显著降低幻觉，不能保证 100% 正确。检索错了、召回噪声太多、Prompt 没约束好，模型仍然可能答错。</p>
+<p><strong>误区 2：文档全塞进去就行</strong></p>
+<p>不是。RAG 的关键不是”文档数量多”，而是”能不能把相关的那几段稳稳找出来”。</p>
+<p><strong>误区 3：RAG &#x3D; 向量检索</strong></p>
+<p>也不完全对。向量检索只是常用手段，真实项目里经常会结合关键词检索、过滤、重排、元数据约束一起使用。</p>
+<p><strong>误区 4：RAG 能替代一切训练</strong></p>
+<p>不能。RAG 解决的是”模型没看到知识”的问题，不擅长解决”模型不会按固定风格&#x2F;格式输出”的问题。</p>
+<h3 id="2-7-RAG-效果不好时，先看哪里"><a href="#2-7-RAG-效果不好时，先看哪里" class="headerlink" title="2.7 RAG 效果不好时，先看哪里"></a>2.7 RAG 效果不好时，先看哪里</h3><p>RAG 上线后效果不理想，不要马上得出”RAG 不行”或”必须微调”的结论。先沿着链路拆问题：</p>
+<table>
+<thead>
+<tr>
+<th>问题位置</th>
+<th>典型表现</th>
+<th>优先排查</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>文档质量</td>
+<td>原文过期、冲突、缺页、扫描件 OCR 错误</td>
+<td>更新资料、清洗文档、保留版本和来源</td>
+</tr>
+<tr>
+<td>文档解析</td>
+<td>表格、标题、层级、图片说明被解析乱</td>
+<td>更换解析器，必要时引入人工校验</td>
+</tr>
+<tr>
+<td>文本切分</td>
+<td>检索片段太碎或太长，答案上下文不完整</td>
+<td>调整 chunk size、overlap、按标题层级切分</td>
+</tr>
+<tr>
+<td>召回策略</td>
+<td>找不到正确片段，或者召回一堆无关内容</td>
+<td>调整 Embedding、Top-K、关键词检索、元数据过滤</td>
+</tr>
+<tr>
+<td>重排序</td>
+<td>正确片段被排到后面</td>
+<td>引入 Reranker 或调整重排模型</td>
+</tr>
+<tr>
+<td>Prompt 增强</td>
+<td>检索到了资料，但模型没按资料答</td>
+<td>明确要求引用资料、缺依据时说明”不确定”</td>
+</tr>
+<tr>
+<td>生成模型</td>
+<td>资料正确但推理仍错</td>
+<td>更换模型、加强约束，必要时再看微调或续训</td>
+</tr>
+</tbody></table>
+<p>这张表背后的原则是：</p>
+<blockquote>
+<p>RAG 失败先修检索链路，再看生成模型；不要把所有问题都归因于”模型不够强”。</p>
+</blockquote>
+<hr>
+<h2 id="3-微调（Fine-tuning）"><a href="#3-微调（Fine-tuning）" class="headerlink" title="3 微调（Fine-tuning）"></a>3 微调（Fine-tuning）</h2><h3 id="3-1-什么是微调"><a href="#3-1-什么是微调" class="headerlink" title="3.1 什么是微调"></a>3.1 什么是微调</h3><p>微调（Fine-tuning）是指在已经训练好的基础模型上，继续用特定数据做训练，使模型在某类任务、某种风格或某种输出形式上表现更稳定。</p>
+<blockquote>
+<p>在工程语境里，可以记住这句话：微调主要是在改模型的”行为方式”，而不是在给模型外挂一套知识库。</p>
+</blockquote>
+<p>它最常见的目标包括：</p>
+<ul>
+<li>让模型更稳定地遵循指令</li>
+<li>让模型输出固定格式，例如 JSON、SQL、标签、分类结果</li>
+<li>让模型更符合某种业务风格、品牌口吻或术语习惯</li>
+<li>让模型在某类任务上更稳，例如分类、抽取、代码补全、客服回复</li>
+</ul>
+<p>需要特别提醒的是，微调虽然也可能让模型”记住一些样例”，但它并不适合承载高频变化的知识。如果知识经常变，仍然应该优先考虑 RAG 或外部知识源。</p>
+<p><strong>微调是不是把企业资料”灌进模型里”？</strong></p>
+<p>更贴切的说法是：微调更擅长让模型”按你想要的方式做事”，而不是”记住所有最新资料”。知识经常变化的场景，优先考虑 RAG；风格、格式、任务习惯长期不稳的场景，再考虑微调。</p>
+<h3 id="3-2-何时需要微调"><a href="#3-2-何时需要微调" class="headerlink" title="3.2 何时需要微调"></a>3.2 何时需要微调</h3><p>当你遇到下面这些问题时，微调才更可能是对路的方案：</p>
+<p><strong>（1）模型行为不稳定</strong></p>
+<p>比如：</p>
+<ul>
+<li>明明已经写了输出格式，还是经常不按格式来</li>
+<li>JSON、SQL、分类标签这类输出经常飘</li>
+<li>多轮提示后仍然经常漏字段、漏步骤</li>
+</ul>
+<p><strong>（2）风格和话术需要长期固化</strong></p>
+<p>例如：</p>
+<ul>
+<li>客服回复要长期保持统一口吻</li>
+<li>某行业报告要始终遵循同一种写作规范</li>
+<li>品牌文案需要稳定体现品牌语气</li>
+</ul>
+<p><strong>（3）提示词已经很重，但效果还是不稳</strong></p>
+<p>如果你已经反复优化 Prompt、增加示例、做结构化约束，效果仍然不理想，说明问题可能不只是”提示没写好”，而是模型对这类任务的行为模式还不够稳定。</p>
+<h3 id="3-3-何时可以微调"><a href="#3-3-何时可以微调" class="headerlink" title="3.3 何时可以微调"></a>3.3 何时可以微调</h3><p>不是所有团队都适合上来就微调。一般至少要满足下面三个前提：</p>
+<p><strong>（1）数据足够</strong></p>
+<p>微调依赖的是高质量、任务相关、标注明确的数据。没有好数据，微调很容易沦为”把噪声训练进模型”。</p>
+<p><strong>（2）评测标准清楚</strong></p>
+<p>如果你连”什么叫变好了”都说不清，就很难知道微调到底有没有价值。真实项目里，先做清楚评测集和验收标准，往往比先开始训练更重要。</p>
+<p><strong>（3）算力与预算可接受</strong></p>
+<p>虽然微调远比续训便宜，但依然需要训练资源、数据清洗和评测成本。</p>
+<h3 id="3-4-微调的技术方法"><a href="#3-4-微调的技术方法" class="headerlink" title="3.4 微调的技术方法"></a>3.4 微调的技术方法</h3><p>随着模型越来越大，全参数微调并不是大多数团队的首选。工程上更常见的是参数高效微调。</p>
+<p><strong>（1）全参数微调（Full Fine-tuning）</strong></p>
+<p>更新模型全部参数，理论上上限更高，但训练资源和显存开销都很大，适合资源充足、目标明确的场景。</p>
+<p><strong>（2）参数高效微调（PEFT, Parameter-Efficient Fine-Tuning）</strong></p>
+<p>这类方法的核心思路是：尽量少改参数，用更低成本获得可接受的效果。</p>
+<p>最常见的两种是：</p>
+<ul>
+<li><strong>LoRA</strong>：冻结原模型大部分参数，只训练新增的低秩适配参数。</li>
+<li><strong>QLoRA</strong>：在 LoRA 基础上结合低比特量化，进一步降低显存占用。</li>
+</ul>
+<p><strong>（3）其他高效方法</strong></p>
+<ul>
+<li><strong>Adapter Tuning</strong>：在模型层间插入小型适配器模块</li>
+<li><strong>Prefix Tuning</strong>：在输入前添加可学习的虚拟前缀</li>
+<li><strong>P-Tuning v2</strong>：在模型每一层添加可训练的提示向量</li>
+</ul>
+<blockquote>
+<p>这些方法你在入门阶段不必死记公式，但要建立一个工程认知：今天大多数团队如果自己做微调，优先考虑的通常不是全参，而是 LoRA &#x2F; QLoRA 这类 PEFT 路线。</p>
+</blockquote>
+<h3 id="3-5-主要风险"><a href="#3-5-主要风险" class="headerlink" title="3.5 主要风险"></a>3.5 主要风险</h3><p>微调并不是”只要训一下就更强”，它的常见风险包括：</p>
+<ul>
+<li><strong>过拟合</strong>：训练集表现很好，真实场景一塌糊涂</li>
+<li><strong>灾难性遗忘</strong>：模型学了新任务，原有能力被冲掉</li>
+<li><strong>样本偏差</strong>：把团队自己的偏见、噪声、错误格式一起学进模型</li>
+<li><strong>评测幻觉</strong>：只看少量样例感觉”效果不错”，但没有系统评测</li>
+</ul>
+<blockquote>
+<p>所以微调前后都要问自己：我到底是在解决一个长期、稳定、可评测的行为问题，还是只是暂时觉得 Prompt 写得不够顺手？</p>
+</blockquote>
+<h3 id="3-6-RAG-vs-微调"><a href="#3-6-RAG-vs-微调" class="headerlink" title="3.6 RAG vs 微调"></a>3.6 RAG vs 微调</h3><p>RAG 和微调常被混在一起。工程上先看这条分工：</p>
+<ul>
+<li><strong>RAG</strong> 更偏补知识</li>
+<li><strong>微调</strong> 更偏改行为</li>
+</ul>
+<p>先用下面这张工程对照表来建立判断：</p>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>RAG</th>
+<th>微调（Fine-tuning）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>核心目标</td>
+<td>给模型补充外部知识</td>
+<td>让模型更稳定地按目标做事</td>
+</tr>
+<tr>
+<td>是否修改参数</td>
+<td>否</td>
+<td>是</td>
+</tr>
+<tr>
+<td>更适合解决什么</td>
+<td>私有知识、最新知识、可追溯</td>
+<td>风格、格式、指令遵循、分类</td>
+</tr>
+<tr>
+<td>更新速度</td>
+<td>快，改知识库即可</td>
+<td>慢，需要重新训练</td>
+</tr>
+<tr>
+<td>成本结构</td>
+<td>系统开发成本为主</td>
+<td>数据、训练、评测成本为主</td>
+</tr>
+<tr>
+<td>典型场景</td>
+<td>文档问答、知识库、客服知识</td>
+<td>结构化输出、统一话术</td>
+</tr>
+</tbody></table>
+<p>最常见的判断口诀是：</p>
+<ul>
+<li><strong>缺知识</strong>：先看 RAG</li>
+<li><strong>缺行为</strong>：再看微调</li>
+</ul>
+<hr>
+<h2 id="4-续训（Continued-Training）"><a href="#4-续训（Continued-Training）" class="headerlink" title="4 续训（Continued Training）"></a>4 续训（Continued Training）</h2><h3 id="4-1-什么是续训"><a href="#4-1-什么是续训" class="headerlink" title="4.1 什么是续训"></a>4.1 什么是续训</h3><p>续训通常对应的是 Continued Pretraining，也就是在模型已经完成通用预训练后，再用某一领域的大规模原始语料继续训练，让模型更熟悉该领域的语言分布、术语体系和知识结构。</p>
+<blockquote>
+<p>简要概括：<strong>续训是让模型”更懂某个世界”，微调是让模型”更会按要求做事”。</strong></p>
+</blockquote>
+<p>和微调相比，续训更接近预训练逻辑，通常使用的是海量无标注文本，而不是精心整理的”指令 - 答案”样本。</p>
+<h3 id="4-2-何时需要续训"><a href="#4-2-何时需要续训" class="headerlink" title="4.2 何时需要续训"></a>4.2 何时需要续训</h3><p>只有在下面这类场景里，续训才比较值得考虑：</p>
+<ul>
+<li>模型对某个领域语言分布存在明显系统性缺失</li>
+<li>不是只差几个术语，而是整套领域表达都”不像这个行业的人”</li>
+<li>RAG 和微调都无法很好弥补这种底层缺口</li>
+</ul>
+<p>例如：</p>
+<ul>
+<li>大规模法律、医疗、金融、代码语料的领域适配</li>
+<li>新语言、冷门编程语言、专业文献体系的长期能力增强</li>
+<li>需要让模型在某个垂直领域具有更自然的基础表达和理解能力</li>
+</ul>
+<h3 id="4-3-何时可以续训"><a href="#4-3-何时可以续训" class="headerlink" title="4.3 何时可以续训"></a>4.3 何时可以续训</h3><p>续训对资源要求比微调高得多，通常需要同时满足：</p>
+<p><strong>（1）数据充足</strong></p>
+<p>需要的是大量高质量原始文本，而不是少量指令样本。规模往往是 GB 到 TB 级。</p>
+<p><strong>（2）硬件充足</strong></p>
+<p>续训通常需要更长训练时间、更高显存、更强的数据处理能力。</p>
+<p><strong>（3）业务收益足够大</strong></p>
+<p>多数企业项目用不到续训。因为它成本高、风险高、迭代慢，很多问题用 RAG + Prompt 或 RAG + 微调已经能解决。</p>
+<h3 id="4-4-工程实践中的常见误区"><a href="#4-4-工程实践中的常见误区" class="headerlink" title="4.4 工程实践中的常见误区"></a>4.4 工程实践中的常见误区</h3><p><strong>误区 1：把 SFT 样本拿去做续训</strong></p>
+<p>续训更接近语言建模，不是拿”问答对”硬灌进去。</p>
+<p><strong>误区 2：把领域知识缺失问题全都交给微调</strong></p>
+<p>如果模型连该领域”说话方式”都不熟，单靠微调往往不够稳。</p>
+<p><strong>误区 3：企业项目动不动就想续训</strong></p>
+<p>这是最常见的误区。绝大多数业务问题，没必要一上来就碰续训。</p>
+<h3 id="4-5-微调-vs-续训"><a href="#4-5-微调-vs-续训" class="headerlink" title="4.5 微调 vs 续训"></a>4.5 微调 vs 续训</h3><p>很多团队之所以”做了训练但效果一般”，往往就是把本该续训的问题拿去微调，或者反过来。</p>
+<p><strong>1）先做区分</strong></p>
+<ul>
+<li><strong>微调</strong>：让模型”按你想要的方式做事”。具体的：行为对齐／风格对齐／任务对齐。</li>
+<li><strong>续训</strong>：让模型”知道它原来不知道的世界”。具体的：知识扩充／语言分布补全／能力下沉。</li>
+</ul>
+<p><strong>2）核心对比总览</strong></p>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>微调（Fine-tuning）</th>
+<th>续训（Continued Pre-training）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>训练目标</td>
+<td>改行为方式</td>
+<td>改知识分布 &#x2F; 语言分布</td>
+</tr>
+<tr>
+<td>数据形式</td>
+<td>指令数据、对话数据、标签</td>
+<td>大规模原始文本</td>
+</tr>
+<tr>
+<td>是否依赖标注</td>
+<td>强依赖</td>
+<td>通常不依赖</td>
+</tr>
+<tr>
+<td>数据规模</td>
+<td>千级、万级、十万级</td>
+<td>十万级、百万级、海量语料</td>
+</tr>
+<tr>
+<td>算力成本</td>
+<td>低到中</td>
+<td>高</td>
+</tr>
+<tr>
+<td>常见方法</td>
+<td>LoRA &#x2F; QLoRA &#x2F; PEFT</td>
+<td>更接近预训练流程</td>
+</tr>
+<tr>
+<td>典型问题</td>
+<td>格式、风格、指令遵循</td>
+<td>领域语言理解和分布偏差</td>
+</tr>
+</tbody></table>
+<p><strong>3）典型应用场景对照</strong></p>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>正确选择</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>客服机器人更像「某公司风格」</td>
+<td>微调</td>
+</tr>
+<tr>
+<td>模型学会某行业黑话</td>
+<td>续训</td>
+</tr>
+<tr>
+<td>提高 SQL 生成稳定性</td>
+<td>微调</td>
+</tr>
+<tr>
+<td>让模型理解行业文档</td>
+<td>通常先 RAG；模型读不懂领域语言时再评估续训</td>
+</tr>
+<tr>
+<td>新语言 &#x2F; 新编程语言</td>
+<td>续训</td>
+</tr>
+<tr>
+<td>工具调用意图和参数格式更稳定</td>
+<td>微调或更强工具调用模型</td>
+</tr>
+</tbody></table>
+<p><strong>4）工程上的组合拳</strong></p>
+<p>实际项目中，很少”二选一”，而是：</p>
+<blockquote>
+<p>一条常见训练路线可以理解为：通用基座模型 → 领域续训（补领域分布）→ 指令微调（对齐行为）→ RLHF &#x2F; RLAIF（优化偏好）</p>
+</blockquote>
+<p>这不是每个企业项目都要完整走一遍的固定流程，而是理解训练层次的参考路线。大多数应用团队更常见的路径是：先选合适基座模型，再用 Prompt + RAG + 工作流 &#x2F; Agent 做应用层增强；只有当行为稳定性、领域语言分布或工具调用数据确实成为瓶颈时，才进入微调或续训。</p>
+<p>如果确实要组合训练，顺序通常不能随意反过来。因为如果你先微调，再做大规模续训，前面学到的行为模式可能会被冲掉。</p>
+<blockquote>
+<p>记法：<strong>续训 &#x3D; 让模型更熟悉某个领域的语言和分布；微调 &#x3D; 让模型更稳定地按你想要的方式做事；RAG &#x3D; 在运行时把资料和证据补给模型。</strong>工程上多数知识类场景先用「RAG + 提示词」验证，行为类问题再评估微调，续训放在更重、更后的位置。</p>
+</blockquote>
+<hr>
+<h2 id="5-智能体开发"><a href="#5-智能体开发" class="headerlink" title="5 智能体开发"></a>5 智能体开发</h2><h3 id="5-1-什么是智能体？"><a href="#5-1-什么是智能体？" class="headerlink" title="5.1 什么是智能体？"></a>5.1 什么是智能体？</h3><p>在经典 AI 语境里，智能体（Agent）指能够感知环境、做出决策并执行动作，以实现目标的系统。</p>
+<p>放到大模型应用开发里，更工程化的定义是：</p>
+<blockquote>
+<p><strong>智能体 &#x3D; 大模型 + 工具 + 状态 + 执行流程</strong></p>
+</blockquote>
+<p>智能体并不只是”会聊天的模型”，而是一个能够：</p>
+<ol>
+<li>理解用户目标</li>
+<li>决定下一步做什么</li>
+<li>选择是否调用工具</li>
+<li>接收工具结果</li>
+<li>基于结果继续决策</li>
+<li>直到完成任务的系统</li>
+</ol>
+<p>五大核心要素通常包括：</p>
+<ul>
+<li><strong>大语言模型（LLM）</strong></li>
+<li><strong>记忆系统（Memory）</strong></li>
+<li><strong>工具调用（Tools）</strong></li>
+<li><strong>规划决策（Planning）</strong></li>
+<li><strong>行动执行（Action）</strong></li>
+</ul>
+<h3 id="5-2-何时需要智能体"><a href="#5-2-何时需要智能体" class="headerlink" title="5.2 何时需要智能体"></a>5.2 何时需要智能体</h3><p>当任务开始呈现下面这些特征时，就要认真考虑智能体：</p>
+<ul>
+<li>任务是多步骤的，而不是一句话能答完</li>
+<li>需要调用外部工具，例如天气、搜索、数据库、浏览器、发消息</li>
+<li>中间结果会影响后续动作，流程不是完全固定的</li>
+<li>需要一定的状态管理、规划、失败重试或反思机制</li>
+</ul>
+<p>例如：</p>
+<ul>
+<li>“先查知识库，再查数据库，再生成一份报告”</li>
+<li>“先查库存，再查价格，再决定推荐哪一款商品”</li>
+<li>“先检索用户资料，再调外部系统完成操作，再返回结果”</li>
+</ul>
+<p>总的来说，<strong>Prompt</strong> 更像”把问题问清楚”，<strong>RAG</strong> 更像”先给模型补资料”，<strong>Agent</strong> 更像”把一件事做完”。</p>
+<h3 id="5-3-工具调用的实现方式"><a href="#5-3-工具调用的实现方式" class="headerlink" title="5.3 工具调用的实现方式"></a>5.3 工具调用的实现方式</h3><h4 id="5-3-1-Tool-Calls-Function-Calling"><a href="#5-3-1-Tool-Calls-Function-Calling" class="headerlink" title="5.3.1 Tool Calls &#x2F; Function Calling"></a>5.3.1 Tool Calls &#x2F; Function Calling</h4><p>Tool Calls &#x2F; Function Calling（函数调用，也常写作 Function Call、Tool Calling、工具调用）是模型和外部工具交互的一种标准能力。模型不会自己真的调用天气接口、数据库或发邮件接口，而是会根据工具描述，先输出”应该调用哪个工具、传什么参数”，然后由你的代码真正执行。</p>
+<p>这里的分工是：</p>
+<ul>
+<li><strong>模型</strong>负责决定</li>
+<li><strong>程序</strong>负责执行</li>
+</ul>
+<blockquote>
+<p>这就是 Function Calling 的本质。</p>
+</blockquote>
+<p><strong>Function Calling 的不足</strong></p>
+<p><strong>（1）工具实现与复用成本高</strong></p>
+<p>很多工具是某个项目自己定义的，和业务环境耦合较重，不容易跨团队、跨客户端复用。</p>
+<p><strong>（2）规范碎片化</strong></p>
+<p>不同模型厂商的工具调用格式、字段命名、细节行为并不完全一致，维护成本会逐渐上升。</p>
+<p><strong>（3）可靠性依赖工具描述质量</strong></p>
+<p>工具描述不清、参数 schema 不完整时，模型就更容易调错工具或传错参数。</p>
+<h4 id="5-3-2-MCP"><a href="#5-3-2-MCP" class="headerlink" title="5.3.2 MCP"></a>5.3.2 MCP</h4><p>MCP（Model Context Protocol，模型上下文协议）是一套面向 AI 应用与外部能力连接的开放协议。它的核心含义是：</p>
+<blockquote>
+<p>MCP 是把”工具、资源、提示模板”等能力按统一方式暴露出来的一层标准接口。</p>
+</blockquote>
+<p>MCP 更关注的是”怎么统一接入和复用外部能力”，而不仅仅是”模型会不会调某个函数”。</p>
+<blockquote>
+<p>MCP 就像 AI 世界的 USB-C 接口。只要某个能力按 MCP 标准暴露出来，支持 MCP 的不同 AI 应用就可以更容易地发现和使用它。</p>
+</blockquote>
+<p><strong>Function Calling 与 MCP 的关系与区别</strong></p>
+<p>Function Calling 和 MCP 不是同一个东西，但经常会一起出现。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Function Calling</th>
+<th>MCP</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>是什么</td>
+<td>模型调用工具的能力</td>
+<td>一套标准化通讯协议</td>
+</tr>
+<tr>
+<td>关注点</td>
+<td>模型怎么表达”我要调哪个工具”</td>
+<td>工具和资源怎么统一暴露、发现和复用</td>
+</tr>
+<tr>
+<td>作用</td>
+<td>让模型能调用外部能力</td>
+<td>让外部能力能被不同 AI 应用统一接入</td>
+</tr>
+<tr>
+<td>适用层</td>
+<td>更偏模型调用层</td>
+<td>更偏应用接入层 &#x2F; 工具生态层</td>
+</tr>
+</tbody></table>
+<p>更容易记的方式是：</p>
+<ul>
+<li><strong>Function Calling</strong>：模型侧的调用能力</li>
+<li><strong>MCP</strong>：工具侧的标准化暴露方式</li>
+</ul>
+<p>MCP 本质上是对”工具接入”做了进一步标准化。除了 Tools，它还支持 Resources 和 Prompts。</p>
+<p>最常用的是 Tools，但它的设计范围比传统 Function Calling 更大。</p>
+<p><strong>MCP 使用理解（以 Cherry Studio + 天气为例）</strong></p>
+<p>可以按这个关系理解：</p>
+<ul>
+<li><strong>MCP</strong> 是协议</li>
+<li><strong>天气 MCP Server</strong> 是实现了该协议的服务</li>
+<li><strong>Cherry Studio</strong> 是支持该协议的客户端</li>
+<li><strong>DeepSeek &#x2F; 其他模型</strong>仍然在负责理解用户意图并决定是否调用工具</li>
+</ul>
+<p>所以当你在 Cherry Studio 里连接了天气 MCP Server，再问”北京天气怎么样”时，背后不是模型自己突然学会了天气接口，而是：</p>
+<ol>
+<li>客户端把可用工具列表告诉模型</li>
+<li>模型决定调用 get_weather</li>
+<li>客户端通过 MCP 调用对应 Server</li>
+<li>Server 返回天气结果</li>
+<li>模型再把结果组织成自然语言</li>
+</ol>
+<p><strong>大模型如何知道”什么时候调””调哪一个”？</strong></p>
+<ul>
+<li><strong>什么时候调？</strong> 因为客户端会把当前所有可用工具及其描述发给模型，模型根据用户问题和工具描述，判断是否需要调用。</li>
+<li><strong>调哪一个？</strong> 因为每个工具都有 name、description、parameters，模型会根据用户问题和工具描述进行匹配。</li>
+</ul>
+<blockquote>
+<p>所以模型并不是”认识 MCP”本身，而是认识”这次请求里有哪些可用工具”。</p>
+</blockquote>
+<p><strong>相较于 Function Calling 的优势</strong></p>
+<p>MCP 一定程度上弥补了 Function Calling 在生态层面的不足：</p>
+<ul>
+<li><strong>复用更强</strong>：一个 MCP Server 可以被多个客户端复用</li>
+<li><strong>适配更统一</strong>：不同 AI 应用按同一协议接能力</li>
+<li><strong>更利于形成工具生态</strong>：工具不再只服务某个单一应用</li>
+</ul>
+<h3 id="5-4-智能体开发方式"><a href="#5-4-智能体开发方式" class="headerlink" title="5.4 智能体开发方式"></a>5.4 智能体开发方式</h3><p>当前常见的智能体开发方式主要有两类：</p>
+<p><strong>（1）在线平台开发</strong></p>
+<p>例如 Dify、Coze。这类方式上手快，适合做可视化编排和快速原型。</p>
+<p><strong>（2）基于框架开发</strong></p>
+<p>例如 LangChain、LangGraph。这类方式自由度更高，更适合真实项目开发和复杂业务逻辑落地。</p>
+<h3 id="5-5-工作流（Workflow）"><a href="#5-5-工作流（Workflow）" class="headerlink" title="5.5 工作流（Workflow）"></a>5.5 工作流（Workflow）</h3><p><strong>1）什么是工作流</strong></p>
+<p>工作流（Workflow）是一种更强调固定步骤和可控执行的设计模式。它通常用于把复杂任务拆成一系列明确步骤，并按预设顺序执行。</p>
+<p>例如：先分类、再检索、再生成、再校验、再输出。</p>
+<p>这类场景不一定需要 Agent 临场自由决策，更适合工作流。</p>
+<p>比如：讯飞星辰 Agent 平台：<a target="_blank" rel="noopener" href="https://agent.xfyun.cn/home">https://agent.xfyun.cn/home</a></p>
+<p><strong>2）工作流（Workflow）和 Agent 怎么区分</strong></p>
+<p>这是实际项目里的常见判断。</p>
+<table>
+<thead>
+<tr>
+<th>场景特征</th>
+<th>更适合什么</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>步骤固定、顺序明确、强调可控和稳定</td>
+<td>工作流（Workflow）</td>
+</tr>
+<tr>
+<td>步骤不固定、需要动态选工具和持续决策</td>
+<td>Agent</td>
+</tr>
+</tbody></table>
+<p>所以很多真实系统并不是”只做 Agent”或者”只做工作流（Workflow）”，而是：</p>
+<blockquote>
+<p>固定部分用工作流（Workflow），动态部分再交给 Agent。</p>
+</blockquote>
+<p><strong>电商问数</strong>就很适合拿来理解这件事。它不是放任模型完全自由发挥，而是先做召回、再做生成、再做校验和执行，整体更接近<strong>工作流（Workflow）主导 + 大模型参与关键节点决策</strong>的工程思路。</p>
+<p><strong>3）工作流开发方式</strong></p>
+<ul>
+<li><strong>（1）Dify、Coze 等在线平台开发工作流</strong></li>
+<li><strong>（2）基于 LangChain &#x2F; LangGraph 等框架开发工作流</strong></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://wenjiajun-wn.github.io/2026/09/06/RAG%E3%80%81%E5%BE%AE%E8%B0%83%E3%80%81%E7%BB%AD%E8%AE%AD%E4%B8%8E%E6%99%BA%E8%83%BD%E4%BD%93%E9%80%89%E5%9E%8B/" data-id="cmtsjhq860001q87kgl3x1occ" data-title="RAG、微调、续训与智能体选型" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LLM/" rel="tag">LLM</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2026/09/03/%E6%8F%90%E7%A4%BA%E8%AF%8D%E5%B7%A5%E7%A8%8B%E5%9F%BA%E7%A1%80/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">提示词工程基础</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-Agent/" rel="tag">AI-Agent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AWS/" rel="tag">AWS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Fast-api%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" rel="tag">Fast api的基础知识</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Fast-api%E7%9A%84%E8%BF%9B%E9%98%B6%E7%9F%A5%E8%AF%86/" rel="tag">Fast api的进阶知识</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LLM/" rel="tag">LLM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-agent/" rel="tag">ai agent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-assistant/" rel="tag">ai_assistant</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-assistant-2/" rel="tag">ai_assistant(2)</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-assistant-3/" rel="tag">ai_assistant(3)</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/chatting-robot/" rel="tag">chatting robot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/smolagents/" rel="tag">smolagents</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AI-Agent/" style="font-size: 10px;">AI-Agent</a> <a href="/tags/AWS/" style="font-size: 15px;">AWS</a> <a href="/tags/Fast-api%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" style="font-size: 10px;">Fast api的基础知识</a> <a href="/tags/Fast-api%E7%9A%84%E8%BF%9B%E9%98%B6%E7%9F%A5%E8%AF%86/" style="font-size: 10px;">Fast api的进阶知识</a> <a href="/tags/LLM/" style="font-size: 20px;">LLM</a> <a href="/tags/ai-agent/" style="font-size: 10px;">ai agent</a> <a href="/tags/ai-assistant/" style="font-size: 10px;">ai_assistant</a> <a href="/tags/ai-assistant-2/" style="font-size: 10px;">ai_assistant(2)</a> <a href="/tags/ai-assistant-3/" style="font-size: 10px;">ai_assistant(3)</a> <a href="/tags/chatting-robot/" style="font-size: 10px;">chatting robot</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/smolagents/" style="font-size: 10px;">smolagents</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/09/">September 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/08/">August 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/07/">July 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/06/">June 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/05/">May 2026</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2026/09/06/RAG%E3%80%81%E5%BE%AE%E8%B0%83%E3%80%81%E7%BB%AD%E8%AE%AD%E4%B8%8E%E6%99%BA%E8%83%BD%E4%BD%93%E9%80%89%E5%9E%8B/">RAG、微调、续训与智能体选型</a>
+          </li>
+        
+          <li>
+            <a href="/2026/09/03/%E6%8F%90%E7%A4%BA%E8%AF%8D%E5%B7%A5%E7%A8%8B%E5%9F%BA%E7%A1%80/">提示词工程基础</a>
+          </li>
+        
+          <li>
+            <a href="/2026/08/31/%E9%93%BE%E5%BC%8F%E8%B0%83%E7%94%A8%E4%B8%8ELCE/">链式调用与LCE</a>
+          </li>
+        
+          <li>
+            <a href="/2026/08/14/ollama%E7%9A%84%E5%9F%BA%E7%A1%80/">ollama基础</a>
+          </li>
+        
+          <li>
+            <a href="/2026/08/14/prompt%E5%9F%BA%E7%A1%80/">prompt基础</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 wn<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

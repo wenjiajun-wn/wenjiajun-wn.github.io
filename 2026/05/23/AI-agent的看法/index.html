@@ -6,15 +6,15 @@
   
   <title>AI agent的看法 | WN</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="我认为agent主要就是一个可以进行思考，规划，使用工具且执行行动后从得到的结果中获取反馈的一个aiAgent &#x3D; LLM大模型(类似大脑) + 规划的能力 + 能使用工具 + 行动的接口 规划能力：是可以将我们提出的复杂问题拆分成解决问题的每一个优先级步骤 工具使用：能调用搜索引擎，API，等等外部的工具 执行行动：在我们规划好的范围内，人为不进行干预，让ai自主完成实现代码的运行 其">
+  <meta name="description" content="AI Agent 的看法 本文从个人理解出发，介绍 Agent 的基本构成，以及 ReAct 架构、TAO 循环两大重要理论和护栏机制在其中的作用。   1 什么是 Agent我认为 Agent 主要就是一个可以进行思考、规划、使用工具，且执行行动后能从得到的结果中获取反馈的一个 AI：  Agent &#x3D; LLM 大模型（类似大脑） + 规划的能力 + 能使用工具 + 行动的接口   规">
 <meta property="og:type" content="article">
 <meta property="og:title" content="AI agent的看法">
 <meta property="og:url" content="https://wenjiajun-wn.github.io/2026/05/23/AI-agent%E7%9A%84%E7%9C%8B%E6%B3%95/index.html">
 <meta property="og:site_name" content="WN">
-<meta property="og:description" content="我认为agent主要就是一个可以进行思考，规划，使用工具且执行行动后从得到的结果中获取反馈的一个aiAgent &#x3D; LLM大模型(类似大脑) + 规划的能力 + 能使用工具 + 行动的接口 规划能力：是可以将我们提出的复杂问题拆分成解决问题的每一个优先级步骤 工具使用：能调用搜索引擎，API，等等外部的工具 执行行动：在我们规划好的范围内，人为不进行干预，让ai自主完成实现代码的运行 其">
+<meta property="og:description" content="AI Agent 的看法 本文从个人理解出发，介绍 Agent 的基本构成，以及 ReAct 架构、TAO 循环两大重要理论和护栏机制在其中的作用。   1 什么是 Agent我认为 Agent 主要就是一个可以进行思考、规划、使用工具，且执行行动后能从得到的结果中获取反馈的一个 AI：  Agent &#x3D; LLM 大模型（类似大脑） + 规划的能力 + 能使用工具 + 行动的接口   规">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2026-05-23T13:09:26.000Z">
-<meta property="article:modified_time" content="2026-05-24T09:23:02.128Z">
+<meta property="article:modified_time" content="2026-09-08T11:14:55.982Z">
 <meta property="article:author" content="wn">
 <meta property="article:tag" content="ai agent">
 <meta name="twitter:card" content="summary">
@@ -96,10 +96,36 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>我认为agent主要就是一个可以进行思考，规划，使用工具且执行行动后从得到的结果中获取反馈的一个ai<br>Agent &#x3D; LLM大模型(类似大脑) + 规划的能力 + 能使用工具 + 行动的接口<br> 规划能力：是可以将我们提出的复杂问题拆分成解决问题的每一个优先级步骤<br> 工具使用：能调用搜索引擎，API，等等外部的工具<br> 执行行动：在我们规划好的范围内，人为不进行干预，让ai自主完成实现代码的运行</p>
-<p>其中agent有一些重要的理论比如：React架构，TAO循环<br> React架构：(reasoning + acting,推理加行动)，就是让ai不只是拥有文本输出，而是像人一样边思考边行动<br>TAO循环：拥有三个主要的模块Thought(思考)、Action(行动)、Observation(观测)<br> Thought(思考)：ai接受到人类指令时，会进行思考然后计划下一步开始做什么，并且分析当前的状况，推理出需要的信息，最后决定采取什么行动<br> Action(行动)：ai在思考中进行的决定，它会调用搜索工具，查询SQL，或者进行计算，与外部进行互动<br> Observation(观测) ：ai接收并分析行动的反馈结果，如果结果不理想，循环就会再次启动，进行新一轮的思考-行动-观测</p>
-<p> React架构的本质是推理-行动-观测三者的循环迭代<br> React架构的设计理念就是定义了一个让AI能够思考-行动-观测的行为模式<br> TAO循环是实现ReAct的具体运转步骤，是这个模式的代称</p>
-<p>Guardrails(护栏)：强大的ai需要设置安全的边界，防止ai失控<br> react-cycle-guard :它正是React循环与护栏概念在代码层面的结合,一个用来检测和防止React组件陷入无限渲染循环的护栏，而且能能确保UI的稳定<br>总结：TAO循环是让AI变“活”的运转模式，护栏是确保AI变“稳”的安全机制。</p>
+        <h1 id="AI-Agent-的看法"><a href="#AI-Agent-的看法" class="headerlink" title="AI Agent 的看法"></a>AI Agent 的看法</h1><blockquote>
+<p>本文从个人理解出发，介绍 Agent 的基本构成，以及 ReAct 架构、TAO 循环两大重要理论和护栏机制在其中的作用。</p>
+</blockquote>
+<hr>
+<h2 id="1-什么是-Agent"><a href="#1-什么是-Agent" class="headerlink" title="1 什么是 Agent"></a>1 什么是 Agent</h2><p>我认为 Agent 主要就是一个可以进行思考、规划、使用工具，且执行行动后能从得到的结果中获取反馈的一个 AI：</p>
+<blockquote>
+<p>Agent &#x3D; LLM 大模型（类似大脑） + 规划的能力 + 能使用工具 + 行动的接口</p>
+</blockquote>
+<ul>
+<li><strong>规划能力</strong>：可以将我们提出的复杂问题拆分成解决问题的每一个优先级步骤</li>
+<li><strong>工具使用</strong>：能调用搜索引擎、API 等等外部的工具</li>
+<li><strong>执行行动</strong>：在我们规划好的范围内，人为不进行干预，让 AI 自主完成实现代码的运行</li>
+</ul>
+<hr>
+<h2 id="2-重要理论"><a href="#2-重要理论" class="headerlink" title="2 重要理论"></a>2 重要理论</h2><p>其中 Agent 有一些重要的理论，比如：ReAct 架构、TAO 循环。</p>
+<h3 id="2-1-ReAct-架构"><a href="#2-1-ReAct-架构" class="headerlink" title="2.1 ReAct 架构"></a>2.1 ReAct 架构</h3><p>ReAct 架构（reasoning + acting，推理加行动），就是让 AI 不只是拥有文本输出，而是像人一样边思考边行动。</p>
+<h3 id="2-2-TAO-循环"><a href="#2-2-TAO-循环" class="headerlink" title="2.2 TAO 循环"></a>2.2 TAO 循环</h3><p>TAO 循环拥有三个主要的模块：Thought（思考）、Action（行动）、Observation（观测）</p>
+<ul>
+<li><strong>Thought（思考）</strong>：AI 接受到人类指令时，会进行思考然后计划下一步开始做什么，并且分析当前的状况，推理出需要的信息，最后决定采取什么行动</li>
+<li><strong>Action（行动）</strong>：AI 在思考中进行的决定，它会调用搜索工具，查询 SQL，或者进行计算，与外部进行互动</li>
+<li><strong>Observation（观测）</strong>：AI 接收并分析行动的反馈结果，如果结果不理想，循环就会再次启动，进行新一轮的思考-行动-观测</li>
+</ul>
+<p>ReAct 架构的本质是推理-行动-观测三者的循环迭代。ReAct 架构的设计理念就是定义了一个让 AI 能够思考-行动-观测的行为模式。TAO 循环是实现 ReAct 的具体运转步骤，是这个模式的代称。</p>
+<hr>
+<h2 id="3-护栏（Guardrails）"><a href="#3-护栏（Guardrails）" class="headerlink" title="3 护栏（Guardrails）"></a>3 护栏（Guardrails）</h2><p>护栏（Guardrails）：强大的 AI 需要设置安全的边界，防止 AI 失控。</p>
+<p>react-cycle-guard：它正是 ReAct 循环与护栏概念在代码层面的结合，一个用来检测和防止 React 组件陷入无限渲染循环的护栏，而且能确保 UI 的稳定。</p>
+<hr>
+<h2 id="4-总结"><a href="#4-总结" class="headerlink" title="4 总结"></a>4 总结</h2><blockquote>
+<p>总结：TAO 循环是让 AI 变”活”的运转模式，护栏是确保 AI 变”稳”的安全机制。</p>
+</blockquote>
 
       
     </div>
@@ -167,7 +193,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/08/">August 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/07/">July 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/06/">June 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/05/">May 2026</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/09/">September 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/08/">August 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/07/">July 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/06/">June 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/05/">May 2026</a></li></ul>
     </div>
   </div>
 
@@ -180,23 +206,23 @@
       <ul>
         
           <li>
+            <a href="/2026/09/06/RAG%E3%80%81%E5%BE%AE%E8%B0%83%E3%80%81%E7%BB%AD%E8%AE%AD%E4%B8%8E%E6%99%BA%E8%83%BD%E4%BD%93%E9%80%89%E5%9E%8B/">RAG、微调、续训与智能体选型</a>
+          </li>
+        
+          <li>
+            <a href="/2026/09/03/%E6%8F%90%E7%A4%BA%E8%AF%8D%E5%B7%A5%E7%A8%8B%E5%9F%BA%E7%A1%80/">提示词工程基础</a>
+          </li>
+        
+          <li>
+            <a href="/2026/08/31/%E9%93%BE%E5%BC%8F%E8%B0%83%E7%94%A8%E4%B8%8ELCE/">链式调用与LCE</a>
+          </li>
+        
+          <li>
             <a href="/2026/08/14/ollama%E7%9A%84%E5%9F%BA%E7%A1%80/">ollama基础</a>
           </li>
         
           <li>
             <a href="/2026/08/14/prompt%E5%9F%BA%E7%A1%80/">prompt基础</a>
-          </li>
-        
-          <li>
-            <a href="/2026/08/13/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%9F%BA%E7%A1%80/">大模型基础第一章</a>
-          </li>
-        
-          <li>
-            <a href="/2026/07/09/Courier%20Helper/">Courier Helper</a>
-          </li>
-        
-          <li>
-            <a href="/2026/06/29/AWS%E4%BA%91%E6%8A%80%E6%9C%AF%E4%B8%8E%E6%9C%8D%E5%8A%A1%E6%A6%82%E5%BF%B5/">AWS云技术与服务概念</a>
           </li>
         
       </ul>
