@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
   <meta charset="utf-8">
   
@@ -36,73 +36,80 @@
   
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
 
-<meta name="generator" content="Hexo 7.3.0"></head>
+<!-- hexo injector head_end start --><link rel="stylesheet" href="/css/responsive.css"><link rel="stylesheet" href="/css/blog-refresh.css"><link rel="stylesheet" href="/css/reference-exact.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
 
-<body>
+<body class="page-reading">
+  <a class="skip-link" href="#main">跳到正文</a>
   <div id="container">
     <div id="wrap">
       <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">WN</a>
-      </h1>
+  <div id="banner" aria-hidden="true"></div>
+  <div class="site-toolbar outer">
+    
+    
+    <nav class="desktop-nav" aria-label="主导航">
       
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        <a href="/">首页</a>
+      
+        <a href="/archives">归档</a>
+      
+    </nav>
+    <details class="mobile-menu site-disclosure">
+      <summary>菜单 <span aria-hidden="true">⌄</span></summary>
+      <nav class="disclosure-panel" aria-label="手机主导航">
         
-          <a class="main-nav-link" href="/">Home</a>
+          <a href="/">首页</a>
         
-          <a class="main-nav-link" href="/archives">Archives</a>
+          <a href="/archives">归档</a>
         
       </nav>
-      <nav id="sub-nav">
-        
-        
-          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
-        
-        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://wenjiajun-wn.github.io"></form>
-      </div>
+    </details>
+    <div class="toolbar-actions">
+      
+      <details class="site-search site-disclosure">
+        <summary>搜索 <span aria-hidden="true">⌄</span></summary>
+        <form class="disclosure-panel site-search-form" action="https://www.google.com/search" method="get" role="search">
+          <label for="site-query">搜索本站文章</label>
+          <div class="search-controls">
+            <input id="site-query" type="search" name="q" placeholder="输入文章关键词" required>
+            <button type="submit">搜索</button>
+          </div>
+          <input type="hidden" name="sitesearch" value="https://wenjiajun-wn.github.io">
+          <p>通过 Google 搜索本站内容</p>
+        </form>
+      </details>
     </div>
   </div>
 </header>
 
-      <div class="outer">
-        <section id="main"><article id="post-RAG、微调、续训与智能体选型" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2026/09/06/RAG%E3%80%81%E5%BE%AE%E8%B0%83%E3%80%81%E7%BB%AD%E8%AE%AD%E4%B8%8E%E6%99%BA%E8%83%BD%E4%BD%93%E9%80%89%E5%9E%8B/" class="article-date">
-  <time class="dt-published" datetime="2026-09-05T16:00:00.000Z" itemprop="datePublished">2026-09-06</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="p-name article-title" itemprop="headline name">
-      RAG、微调、续训与智能体选型
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
       
-        <h1 id="RAG、微调、续训与智能体选型"><a href="#RAG、微调、续训与智能体选型" class="headerlink" title="RAG、微调、续训与智能体选型"></a>RAG、微调、续训与智能体选型</h1><blockquote>
+      <div class="outer site-content site-content--reading">
+        
+          <main id="main" class="reference-reading" tabindex="-1">
+<div class="reference-article-shell">
+  <article id="post-RAG、微调、续训与智能体选型" class="reference-article h-entry" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <header class="reference-article__header">
+      <a class="reference-article__back" href="/archives">← 返回文章列表</a>
+      
+        <h1 class="p-name" itemprop="headline">RAG、微调、续训与智能体选型</h1>
+      
+      <div class="reference-article__meta">
+        <time datetime="2026-09-06">2026年09月06日</time>
+        
+          <span aria-hidden="true">·</span>
+          <span>
+            <a href="/tags/LLM/">LLM</a>
+          </span>
+        
+      </div>
+    </header>
+    <div class="reference-article__body e-content" itemprop="articleBody"><h1 id="RAG、微调、续训与智能体选型"><a href="#RAG、微调、续训与智能体选型" class="headerlink" title="RAG、微调、续训与智能体选型"></a>RAG、微调、续训与智能体选型</h1><blockquote>
 <p>本文从真实项目中”要不要微调、要不要上 Agent”这类常见问题出发，系统梳理 RAG、微调、续训三种手段的定位与选择逻辑，并介绍智能体与工作流的开发方式，帮你建立一套”先诊断、再选型”的工程判断框架。</p>
 </blockquote>
 <hr>
 <h2 id="1-问题诊断"><a href="#1-问题诊断" class="headerlink" title="1 问题诊断"></a>1 问题诊断</h2><p>真实项目里，AI 应用回答不好时，最容易犯的错误是：还没判断问题根因，就直接说”要不要微调””要不要上 Agent”。</p>
 <p>先问四个问题会稳很多：</p>
-<table>
+<div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
 <thead>
 <tr>
 <th>诊断问题</th>
@@ -130,7 +137,7 @@
 <td>需要查资料、调接口、校验、重试、写入系统</td>
 <td>工作流或 Agent</td>
 </tr>
-</tbody></table>
+</tbody></table></div>
 <p>按下面的顺序来判断：</p>
 <ol>
 <li><strong>先 Prompt</strong>：如果只是需求表达不清，先把输入、输出、约束写清楚。</li>
@@ -228,7 +235,7 @@
 <p><strong>误区 4：RAG 能替代一切训练</strong></p>
 <p>不能。RAG 解决的是”模型没看到知识”的问题，不擅长解决”模型不会按固定风格&#x2F;格式输出”的问题。</p>
 <h3 id="2-7-RAG-效果不好时，先看哪里"><a href="#2-7-RAG-效果不好时，先看哪里" class="headerlink" title="2.7 RAG 效果不好时，先看哪里"></a>2.7 RAG 效果不好时，先看哪里</h3><p>RAG 上线后效果不理想，不要马上得出”RAG 不行”或”必须微调”的结论。先沿着链路拆问题：</p>
-<table>
+<div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
 <thead>
 <tr>
 <th>问题位置</th>
@@ -271,7 +278,7 @@
 <td>资料正确但推理仍错</td>
 <td>更换模型、加强约束，必要时再看微调或续训</td>
 </tr>
-</tbody></table>
+</tbody></table></div>
 <p>这张表背后的原则是：</p>
 <blockquote>
 <p>RAG 失败先修检索链路，再看生成模型；不要把所有问题都归因于”模型不够强”。</p>
@@ -350,7 +357,7 @@
 <li><strong>微调</strong> 更偏改行为</li>
 </ul>
 <p>先用下面这张工程对照表来建立判断：</p>
-<table>
+<div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -388,7 +395,7 @@
 <td>文档问答、知识库、客服知识</td>
 <td>结构化输出、统一话术</td>
 </tr>
-</tbody></table>
+</tbody></table></div>
 <p>最常见的判断口诀是：</p>
 <ul>
 <li><strong>缺知识</strong>：先看 RAG</li>
@@ -432,7 +439,7 @@
 <li><strong>续训</strong>：让模型”知道它原来不知道的世界”。具体的：知识扩充／语言分布补全／能力下沉。</li>
 </ul>
 <p><strong>2）核心对比总览</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -475,9 +482,9 @@
 <td>格式、风格、指令遵循</td>
 <td>领域语言理解和分布偏差</td>
 </tr>
-</tbody></table>
+</tbody></table></div>
 <p><strong>3）典型应用场景对照</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
 <thead>
 <tr>
 <th>场景</th>
@@ -508,7 +515,7 @@
 <td>工具调用意图和参数格式更稳定</td>
 <td>微调或更强工具调用模型</td>
 </tr>
-</tbody></table>
+</tbody></table></div>
 <p><strong>4）工程上的组合拳</strong></p>
 <p>实际项目中，很少”二选一”，而是：</p>
 <blockquote>
@@ -582,7 +589,7 @@
 </blockquote>
 <p><strong>Function Calling 与 MCP 的关系与区别</strong></p>
 <p>Function Calling 和 MCP 不是同一个东西，但经常会一起出现。</p>
-<table>
+<div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
 <thead>
 <tr>
 <th></th>
@@ -610,7 +617,7 @@
 <td>更偏模型调用层</td>
 <td>更偏应用接入层 &#x2F; 工具生态层</td>
 </tr>
-</tbody></table>
+</tbody></table></div>
 <p>更容易记的方式是：</p>
 <ul>
 <li><strong>Function Calling</strong>：模型侧的调用能力</li>
@@ -661,7 +668,7 @@
 <p>比如：讯飞星辰 Agent 平台：<a target="_blank" rel="noopener" href="https://agent.xfyun.cn/home">https://agent.xfyun.cn/home</a></p>
 <p><strong>2）工作流（Workflow）和 Agent 怎么区分</strong></p>
 <p>这是实际项目里的常见判断。</p>
-<table>
+<div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
 <thead>
 <tr>
 <th>场景特征</th>
@@ -676,7 +683,7 @@
 <td>步骤不固定、需要动态选工具和持续决策</td>
 <td>Agent</td>
 </tr>
-</tbody></table>
+</tbody></table></div>
 <p>所以很多真实系统并不是”只做 Agent”或者”只做工作流（Workflow）”，而是：</p>
 <blockquote>
 <p>固定部分用工作流（Workflow），动态部分再交给 Agent。</p>
@@ -687,123 +694,54 @@
 <li><strong>（1）Dify、Coze 等在线平台开发工作流</strong></li>
 <li><strong>（2）基于 LangChain &#x2F; LangGraph 等框架开发工作流</strong></li>
 </ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://wenjiajun-wn.github.io/2026/09/06/RAG%E3%80%81%E5%BE%AE%E8%B0%83%E3%80%81%E7%BB%AD%E8%AE%AD%E4%B8%8E%E6%99%BA%E8%83%BD%E4%BD%93%E9%80%89%E5%9E%8B/" data-id="cmtsjhq860001q87kgl3x1occ" data-title="RAG、微调、续训与智能体选型" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LLM/" rel="tag">LLM</a></li></ul>
-
+</div>
+    <footer class="reference-article__footer">
+      <span>标签</span><a href="/tags/LLM/">LLM</a>
     </footer>
-  </div>
+  </article>
   
-    
-<nav id="article-nav">
+    <aside class="reference-toc" aria-label="本页目录"><p>本页目录</p><ol class="reference-toc__list"><li class="reference-toc__list-item reference-toc__list-level-1"><a class="reference-toc__list-link" href="#RAG%E3%80%81%E5%BE%AE%E8%B0%83%E3%80%81%E7%BB%AD%E8%AE%AD%E4%B8%8E%E6%99%BA%E8%83%BD%E4%BD%93%E9%80%89%E5%9E%8B"><span class="reference-toc__list-text">RAG、微调、续训与智能体选型</span></a><ol class="reference-toc__list-child"><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#1-%E9%97%AE%E9%A2%98%E8%AF%8A%E6%96%AD"><span class="reference-toc__list-text">1 问题诊断</span></a></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#2-RAG"><span class="reference-toc__list-text">2 RAG</span></a><ol class="reference-toc__list-child"><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#2-1-%E4%BB%80%E4%B9%88%E6%98%AF-RAG"><span class="reference-toc__list-text">2.1 什么是 RAG</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#2-2-%E4%B8%BA%E4%BB%80%E4%B9%88-RAG-%E5%BE%80%E5%BE%80%E6%98%AF%E9%A1%B9%E7%9B%AE%E9%87%8C%E7%9A%84%E7%AC%AC%E4%B8%80%E9%80%89%E6%8B%A9"><span class="reference-toc__list-text">2.2 为什么 RAG 往往是项目里的第一选择</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#2-3-RAG-%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="reference-toc__list-text">2.3 RAG 的工作流程</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#2-4-%E4%BD%95%E6%97%B6%E9%9C%80%E8%A6%81-RAG"><span class="reference-toc__list-text">2.4 何时需要 RAG</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#2-5-%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F"><span class="reference-toc__list-text">2.5 实现方式</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#2-6-RAG-%E7%9A%84%E5%87%A0%E4%B8%AA%E5%B8%B8%E8%A7%81%E8%AF%AF%E5%8C%BA"><span class="reference-toc__list-text">2.6 RAG 的几个常见误区</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#2-7-RAG-%E6%95%88%E6%9E%9C%E4%B8%8D%E5%A5%BD%E6%97%B6%EF%BC%8C%E5%85%88%E7%9C%8B%E5%93%AA%E9%87%8C"><span class="reference-toc__list-text">2.7 RAG 效果不好时，先看哪里</span></a></li></ol></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#3-%E5%BE%AE%E8%B0%83%EF%BC%88Fine-tuning%EF%BC%89"><span class="reference-toc__list-text">3 微调（Fine-tuning）</span></a><ol class="reference-toc__list-child"><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#3-1-%E4%BB%80%E4%B9%88%E6%98%AF%E5%BE%AE%E8%B0%83"><span class="reference-toc__list-text">3.1 什么是微调</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#3-2-%E4%BD%95%E6%97%B6%E9%9C%80%E8%A6%81%E5%BE%AE%E8%B0%83"><span class="reference-toc__list-text">3.2 何时需要微调</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#3-3-%E4%BD%95%E6%97%B6%E5%8F%AF%E4%BB%A5%E5%BE%AE%E8%B0%83"><span class="reference-toc__list-text">3.3 何时可以微调</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#3-4-%E5%BE%AE%E8%B0%83%E7%9A%84%E6%8A%80%E6%9C%AF%E6%96%B9%E6%B3%95"><span class="reference-toc__list-text">3.4 微调的技术方法</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#3-5-%E4%B8%BB%E8%A6%81%E9%A3%8E%E9%99%A9"><span class="reference-toc__list-text">3.5 主要风险</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#3-6-RAG-vs-%E5%BE%AE%E8%B0%83"><span class="reference-toc__list-text">3.6 RAG vs 微调</span></a></li></ol></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#4-%E7%BB%AD%E8%AE%AD%EF%BC%88Continued-Training%EF%BC%89"><span class="reference-toc__list-text">4 续训（Continued Training）</span></a><ol class="reference-toc__list-child"><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#4-1-%E4%BB%80%E4%B9%88%E6%98%AF%E7%BB%AD%E8%AE%AD"><span class="reference-toc__list-text">4.1 什么是续训</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#4-2-%E4%BD%95%E6%97%B6%E9%9C%80%E8%A6%81%E7%BB%AD%E8%AE%AD"><span class="reference-toc__list-text">4.2 何时需要续训</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#4-3-%E4%BD%95%E6%97%B6%E5%8F%AF%E4%BB%A5%E7%BB%AD%E8%AE%AD"><span class="reference-toc__list-text">4.3 何时可以续训</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#4-4-%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5%E4%B8%AD%E7%9A%84%E5%B8%B8%E8%A7%81%E8%AF%AF%E5%8C%BA"><span class="reference-toc__list-text">4.4 工程实践中的常见误区</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#4-5-%E5%BE%AE%E8%B0%83-vs-%E7%BB%AD%E8%AE%AD"><span class="reference-toc__list-text">4.5 微调 vs 续训</span></a></li></ol></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#5-%E6%99%BA%E8%83%BD%E4%BD%93%E5%BC%80%E5%8F%91"><span class="reference-toc__list-text">5 智能体开发</span></a><ol class="reference-toc__list-child"><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#5-1-%E4%BB%80%E4%B9%88%E6%98%AF%E6%99%BA%E8%83%BD%E4%BD%93%EF%BC%9F"><span class="reference-toc__list-text">5.1 什么是智能体？</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#5-2-%E4%BD%95%E6%97%B6%E9%9C%80%E8%A6%81%E6%99%BA%E8%83%BD%E4%BD%93"><span class="reference-toc__list-text">5.2 何时需要智能体</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#5-3-%E5%B7%A5%E5%85%B7%E8%B0%83%E7%94%A8%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F"><span class="reference-toc__list-text">5.3 工具调用的实现方式</span></a><ol class="reference-toc__list-child"><li class="reference-toc__list-item reference-toc__list-level-4"><a class="reference-toc__list-link" href="#5-3-1-Tool-Calls-Function-Calling"><span class="reference-toc__list-text">5.3.1 Tool Calls &#x2F; Function Calling</span></a></li><li class="reference-toc__list-item reference-toc__list-level-4"><a class="reference-toc__list-link" href="#5-3-2-MCP"><span class="reference-toc__list-text">5.3.2 MCP</span></a></li></ol></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#5-4-%E6%99%BA%E8%83%BD%E4%BD%93%E5%BC%80%E5%8F%91%E6%96%B9%E5%BC%8F"><span class="reference-toc__list-text">5.4 智能体开发方式</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#5-5-%E5%B7%A5%E4%BD%9C%E6%B5%81%EF%BC%88Workflow%EF%BC%89"><span class="reference-toc__list-text">5.5 工作流（Workflow）</span></a></li></ol></li></ol></li></ol></aside>
   
-  
-    <a href="/2026/09/03/%E6%8F%90%E7%A4%BA%E8%AF%8D%E5%B7%A5%E7%A8%8B%E5%9F%BA%E7%A1%80/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">提示词工程基础</div>
-    </a>
-  
-</nav>
-
-  
-</article>
-
-
-</section>
-        
-          <aside id="sidebar">
-  
-    
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-Agent/" rel="tag">AI-Agent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AWS/" rel="tag">AWS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Fast-api%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" rel="tag">Fast api的基础知识</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Fast-api%E7%9A%84%E8%BF%9B%E9%98%B6%E7%9F%A5%E8%AF%86/" rel="tag">Fast api的进阶知识</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LLM/" rel="tag">LLM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-agent/" rel="tag">ai agent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-assistant/" rel="tag">ai_assistant</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-assistant-2/" rel="tag">ai_assistant(2)</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-assistant-3/" rel="tag">ai_assistant(3)</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/chatting-robot/" rel="tag">chatting robot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/smolagents/" rel="tag">smolagents</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/AI-Agent/" style="font-size: 10px;">AI-Agent</a> <a href="/tags/AWS/" style="font-size: 15px;">AWS</a> <a href="/tags/Fast-api%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" style="font-size: 10px;">Fast api的基础知识</a> <a href="/tags/Fast-api%E7%9A%84%E8%BF%9B%E9%98%B6%E7%9F%A5%E8%AF%86/" style="font-size: 10px;">Fast api的进阶知识</a> <a href="/tags/LLM/" style="font-size: 20px;">LLM</a> <a href="/tags/ai-agent/" style="font-size: 10px;">ai agent</a> <a href="/tags/ai-assistant/" style="font-size: 10px;">ai_assistant</a> <a href="/tags/ai-assistant-2/" style="font-size: 10px;">ai_assistant(2)</a> <a href="/tags/ai-assistant-3/" style="font-size: 10px;">ai_assistant(3)</a> <a href="/tags/chatting-robot/" style="font-size: 10px;">chatting robot</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/smolagents/" style="font-size: 10px;">smolagents</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/09/">September 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/08/">August 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/07/">July 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/06/">June 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/05/">May 2026</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2026/09/06/RAG%E3%80%81%E5%BE%AE%E8%B0%83%E3%80%81%E7%BB%AD%E8%AE%AD%E4%B8%8E%E6%99%BA%E8%83%BD%E4%BD%93%E9%80%89%E5%9E%8B/">RAG、微调、续训与智能体选型</a>
-          </li>
-        
-          <li>
-            <a href="/2026/09/03/%E6%8F%90%E7%A4%BA%E8%AF%8D%E5%B7%A5%E7%A8%8B%E5%9F%BA%E7%A1%80/">提示词工程基础</a>
-          </li>
-        
-          <li>
-            <a href="/2026/08/31/%E9%93%BE%E5%BC%8F%E8%B0%83%E7%94%A8%E4%B8%8ELCE/">链式调用与LCE</a>
-          </li>
-        
-          <li>
-            <a href="/2026/08/14/ollama%E7%9A%84%E5%9F%BA%E7%A1%80/">ollama基础</a>
-          </li>
-        
-          <li>
-            <a href="/2026/08/14/prompt%E5%9F%BA%E7%A1%80/">prompt基础</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
+</div>
+</main>
         
       </div>
       <footer id="footer">
-  
+  <div class="outer reference-footer-grid">
+    <section>
+      <h2>快速阅读</h2>
+      <a href="/archives">全部文章</a>
+      <a href="/tags/LLM">大模型与 RAG</a>
+      <a href="/tags/AI-Agent">Agent 实战</a>
+    </section>
+    <section>
+      <h2>技术专题</h2>
+      <a href="/tags/Fast-api%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86">Python 与 FastAPI</a>
+      <a href="/tags/AWS">AWS 云服务</a>
+      <a href="/archives">项目复盘</a>
+    </section>
+    <section>
+      <h2>站内索引</h2>
+      <a href="/tags/LLM">标签：LLM</a>
+      <a href="/tags/AI-Agent">标签：AI Agent</a>
+      <a href="/archives">按时间浏览</a>
+    </section>
+    <section>
+      <h2>关于本站</h2>
+      <a href="/">首页</a>
+      <a href="/archives">文章归档</a>
+      <span>记录学习，也分享实践。</span>
+    </section>
+  </div>
   <div class="outer">
     <div id="footer-info" class="inner">
       
-      &copy; 2026 wn<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+      Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>
     </div>
   </div>
 </footer>
 
     </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
     
 
 
@@ -824,5 +762,6 @@
 
 
   </div>
+  <script src="/js/responsive.js" defer></script>
 </body>
 </html>

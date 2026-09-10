@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
   <meta charset="utf-8">
   
@@ -37,70 +37,77 @@
   
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
 
-<meta name="generator" content="Hexo 7.3.0"></head>
+<!-- hexo injector head_end start --><link rel="stylesheet" href="/css/responsive.css"><link rel="stylesheet" href="/css/blog-refresh.css"><link rel="stylesheet" href="/css/reference-exact.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
 
-<body>
+<body class="page-reading">
+  <a class="skip-link" href="#main">跳到正文</a>
   <div id="container">
     <div id="wrap">
       <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">WN</a>
-      </h1>
+  <div id="banner" aria-hidden="true"></div>
+  <div class="site-toolbar outer">
+    
+    
+    <nav class="desktop-nav" aria-label="主导航">
       
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        <a href="/">首页</a>
+      
+        <a href="/archives">归档</a>
+      
+    </nav>
+    <details class="mobile-menu site-disclosure">
+      <summary>菜单 <span aria-hidden="true">⌄</span></summary>
+      <nav class="disclosure-panel" aria-label="手机主导航">
         
-          <a class="main-nav-link" href="/">Home</a>
+          <a href="/">首页</a>
         
-          <a class="main-nav-link" href="/archives">Archives</a>
+          <a href="/archives">归档</a>
         
       </nav>
-      <nav id="sub-nav">
-        
-        
-          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
-        
-        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://wenjiajun-wn.github.io"></form>
-      </div>
+    </details>
+    <div class="toolbar-actions">
+      
+      <details class="site-search site-disclosure">
+        <summary>搜索 <span aria-hidden="true">⌄</span></summary>
+        <form class="disclosure-panel site-search-form" action="https://www.google.com/search" method="get" role="search">
+          <label for="site-query">搜索本站文章</label>
+          <div class="search-controls">
+            <input id="site-query" type="search" name="q" placeholder="输入文章关键词" required>
+            <button type="submit">搜索</button>
+          </div>
+          <input type="hidden" name="sitesearch" value="https://wenjiajun-wn.github.io">
+          <p>通过 Google 搜索本站内容</p>
+        </form>
+      </details>
     </div>
   </div>
 </header>
 
-      <div class="outer">
-        <section id="main"><article id="post-AI Agents with Hugging Face smolagents" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2026/06/12/AI%20Agents%20with%20Hugging%20Face%20smolagents/" class="article-date">
-  <time class="dt-published" datetime="2026-06-11T16:00:00.000Z" itemprop="datePublished">2026-06-12</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="p-name article-title" itemprop="headline name">
-      用 Hugging Face smolagents 打造智能 AI Agent
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>AI Agent（AI 代理）正在改变我们与软件互动的方式。过去，我们给 LLM 一个问题，它回答；现在，Agent 能够搜索数据、推理、执行代码，甚至主动完成复杂任务。本篇博客整理 <strong>smolagents</strong> 框架的四大核心主题并学习多代理系统的设计</p>
+      <div class="outer site-content site-content--reading">
+        
+          <main id="main" class="reference-reading" tabindex="-1">
+<div class="reference-article-shell">
+  <article id="post-AI Agents with Hugging Face smolagents" class="reference-article h-entry" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <header class="reference-article__header">
+      <a class="reference-article__back" href="/archives">← 返回文章列表</a>
+      
+        <h1 class="p-name" itemprop="headline">用 Hugging Face smolagents 打造智能 AI Agent</h1>
+      
+      <div class="reference-article__meta">
+        <time datetime="2026-06-12">2026年06月12日</time>
+        
+          <span aria-hidden="true">·</span>
+          <span>
+            <a href="/tags/smolagents/">smolagents</a>、<a href="/tags/AI-Agent/">AI-Agent</a>
+          </span>
+        
+      </div>
+    </header>
+    <div class="reference-article__body e-content" itemprop="articleBody"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>AI Agent（AI 代理）正在改变我们与软件互动的方式。过去，我们给 LLM 一个问题，它回答；现在，Agent 能够搜索数据、推理、执行代码，甚至主动完成复杂任务。本篇博客整理 <strong>smolagents</strong> 框架的四大核心主题并学习多代理系统的设计</p>
 <h2 id="一、Introduction-to-Hugging-Face-smolagents"><a href="#一、Introduction-to-Hugging-Face-smolagents" class="headerlink" title="一、Introduction to Hugging Face smolagents"></a>一、Introduction to Hugging Face smolagents</h2><p>具体网址：<a target="_blank" rel="noopener" href="https://huggingface.co/docs/hub/index">Hugging Face Hub 文档</a></p>
 <h3 id="什么是-smolagents？"><a href="#什么是-smolagents？" class="headerlink" title="什么是 smolagents？"></a>什么是 smolagents？</h3><p>smolagents 是 Hugging Face 开发的<strong>轻量级 Python 框架</strong>，专为构建能够推理与行动的 AI Agent 而设计。它的核心理念是让 LLM 不只是”回答问题”，而是能够<strong>生成并执行 Python 代码</strong>来完成任务。</p>
-<h3 id="两种核心-Agent-类型"><a href="#两种核心-Agent-类型" class="headerlink" title="两种核心 Agent 类型"></a>两种核心 Agent 类型</h3><table>
+<h3 id="两种核心-Agent-类型"><a href="#两种核心-Agent-类型" class="headerlink" title="两种核心 Agent 类型"></a>两种核心 Agent 类型</h3><div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
 <thead>
 <tr>
 <th>类型</th>
@@ -118,7 +125,7 @@
 <td>第二种 Agent 类型</td>
 <td>输出 JSON&#x2F;文本格式，由系统解析后执行</td>
 </tr>
-</tbody></table>
+</tbody></table></div>
 <p>CodeAgent 的优势在于它直接输出可执行的代码，逻辑更灵活、更强大；ToolCallingAgent 则更适合需要严格结构化输出的场景。</p>
 <h3 id="Tools（工具）：Agent-的行动工具"><a href="#Tools（工具）：Agent-的行动工具" class="headerlink" title="Tools（工具）：Agent 的行动工具"></a>Tools（工具）：Agent 的行动工具</h3><p>Tool是 Agent 能够调用的函数，是 Agent 的基本组成。smolagents 提供三种方式定义工具：</p>
 <ol>
@@ -190,7 +197,7 @@
 </ol>
 <p><strong>错误恢复：</strong></p>
 <p>smolagents 内置错误日志与重试机制，让 Agent 在遇到工具调用失败或结果不佳时，能自动尝试替代方案，而不是直接中断任务。</p>
-<h2 id="总结：smolagents-的核心设计哲学"><a href="#总结：smolagents-的核心设计哲学" class="headerlink" title="总结：smolagents 的核心设计哲学"></a>总结：smolagents 的核心设计哲学</h2><table>
+<h2 id="总结：smolagents-的核心设计哲学"><a href="#总结：smolagents-的核心设计哲学" class="headerlink" title="总结：smolagents 的核心设计哲学"></a>总结：smolagents 的核心设计哲学</h2><div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
 <thead>
 <tr>
 <th>主题</th>
@@ -213,136 +220,58 @@
 <td><strong>记忆与验证</strong></td>
 <td>跨轮次记忆 + 执行追踪 + 验证策略，确保可靠输出</td>
 </tr>
-</tbody></table>
+</tbody></table></div>
 <p>smolagents 的设计是框架本身保持轻量，让开发者能够完全理解其运作原理，同时通过工具生态与多代理协作，支撑起现实中的复杂应用场景。</p>
 <p>无论是自动化数据的工作流还是智能文档问答系统，或者跨领域的研究助理，smolagents 都可以提供一个清晰、灵活、可扩展的起点。</p>
 <hr>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://wenjiajun-wn.github.io/2026/06/12/AI%20Agents%20with%20Hugging%20Face%20smolagents/" data-id="cmqaskkua00009k7kbkn866zc" data-title="用 Hugging Face smolagents 打造智能 AI Agent" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AI-Agent/" rel="tag">AI-Agent</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/smolagents/" rel="tag">smolagents</a></li></ul>
-
+</div>
+    <footer class="reference-article__footer">
+      <span>标签</span><a href="/tags/smolagents/">smolagents</a><a href="/tags/AI-Agent/">AI-Agent</a>
     </footer>
-  </div>
+  </article>
   
-    
-<nav id="article-nav">
+    <aside class="reference-toc" aria-label="本页目录"><p>本页目录</p><ol class="reference-toc__list"><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#%E5%89%8D%E8%A8%80"><span class="reference-toc__list-text">前言</span></a></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#%E4%B8%80%E3%80%81Introduction-to-Hugging-Face-smolagents"><span class="reference-toc__list-text">一、Introduction to Hugging Face smolagents</span></a><ol class="reference-toc__list-child"><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF-smolagents%EF%BC%9F"><span class="reference-toc__list-text">什么是 smolagents？</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#%E4%B8%A4%E7%A7%8D%E6%A0%B8%E5%BF%83-Agent-%E7%B1%BB%E5%9E%8B"><span class="reference-toc__list-text">两种核心 Agent 类型</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#Tools%EF%BC%88%E5%B7%A5%E5%85%B7%EF%BC%89%EF%BC%9AAgent-%E7%9A%84%E8%A1%8C%E5%8A%A8%E5%B7%A5%E5%85%B7"><span class="reference-toc__list-text">Tools（工具）：Agent 的行动工具</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%80%89%E6%8B%A9-smolagents%EF%BC%9F"><span class="reference-toc__list-text">为什么选择 smolagents？</span></a></li></ol></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#%E4%BA%8C%E3%80%81Agenti-RAG-and-Multi-Step-Agents"><span class="reference-toc__list-text">二、Agenti RAG and Multi-Step Agents</span></a><ol class="reference-toc__list-child"><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#%E4%BC%A0%E7%BB%9F%E7%9A%84-RAG-%E9%99%90%E5%88%B6"><span class="reference-toc__list-text">传统的 RAG 限制</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#Agent-RAG%EF%BC%9A%E8%AE%A9-Agent-%E4%B8%BB%E5%8A%A8%E6%A3%80%E7%B4%A2"><span class="reference-toc__list-text">Agent RAG：让 Agent 主动检索</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#%E8%A7%84%E5%88%92%E9%97%B4%E9%9A%94%EF%BC%88Planning-Intervals%EF%BC%89"><span class="reference-toc__list-text">规划间隔（Planning Intervals）</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#%E5%9B%9E%E6%BA%AF%E6%9C%BA%E5%88%B6-Callbacks-%EF%BC%9A%E5%AE%9E%E6%97%B6%E7%9B%91%E6%8E%A7-Agent-%E8%A1%8C%E4%B8%BA"><span class="reference-toc__list-text">回溯机制(Callbacks)：实时监控 Agent 行为</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#Stateful-Tools%EF%BC%88%E6%9C%89%E7%8A%B6%E6%80%81%E5%B7%A5%E5%85%B7%EF%BC%89"><span class="reference-toc__list-text">Stateful Tools（有状态工具）</span></a></li></ol></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#%E4%B8%89%E3%80%81Multi-Agent-Systems"><span class="reference-toc__list-text">三、Multi-Agent Systems</span></a><ol class="reference-toc__list-child"><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E5%A4%9A%E4%BB%A3%E7%90%86%E7%B3%BB%E7%BB%9F%EF%BC%9F"><span class="reference-toc__list-text">为什么需要多代理系统？</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%EF%BC%9AManager-%E7%AE%A1%E7%90%86-Specialist-%E4%B8%93%E5%AE%B6"><span class="reference-toc__list-text">架构设计：Manager(管理) + Specialist(专家)</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#%E5%85%B8%E5%9E%8B%E7%9A%84%E5%A4%9A%E4%BB%A3%E7%90%86-RAG-%E7%B3%BB%E7%BB%9F"><span class="reference-toc__list-text">典型的多代理 RAG 系统</span></a></li></ol></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#%E5%9B%9B%E3%80%81Memory-and-Validation"><span class="reference-toc__list-text">四、Memory and Validation</span></a><ol class="reference-toc__list-child"><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#Memory%EF%BC%9A%E8%AE%A9-Agent-%E8%AE%B0%E4%BD%8F%E5%AF%B9%E8%AF%9D%E7%9A%84%E4%B8%8A%E4%B8%8B%E6%96%87"><span class="reference-toc__list-text">Memory：让 Agent 记住对话的上下文</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#%E6%89%A7%E8%A1%8C%E8%BF%BD%E8%B8%AA%EF%BC%88Execution-Traces%EF%BC%89"><span class="reference-toc__list-text">执行追踪（Execution Traces）</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#Validation%EF%BC%88%E8%BE%93%E5%87%BA%E9%AA%8C%E8%AF%81%EF%BC%89"><span class="reference-toc__list-text">Validation（输出验证）</span></a></li></ol></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#%E6%80%BB%E7%BB%93%EF%BC%9Asmolagents-%E7%9A%84%E6%A0%B8%E5%BF%83%E8%AE%BE%E8%AE%A1%E5%93%B2%E5%AD%A6"><span class="reference-toc__list-text">总结：smolagents 的核心设计哲学</span></a></li></ol></aside>
   
-    <a href="/2026/06/15/Fast%20api/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          Fast api
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2026/06/04/ai_assistant(3)/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">一个可以提取图片中重要信息并分成优先级的ai助手</div>
-    </a>
-  
-</nav>
-
-  
-</article>
-
-
-</section>
-        
-          <aside id="sidebar">
-  
-    
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-Agent/" rel="tag">AI-Agent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AWS/" rel="tag">AWS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Fast-api%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" rel="tag">Fast api的基础知识</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Fast-api%E7%9A%84%E8%BF%9B%E9%98%B6%E7%9F%A5%E8%AF%86/" rel="tag">Fast api的进阶知识</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LLM/" rel="tag">LLM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-agent/" rel="tag">ai agent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-assistant/" rel="tag">ai_assistant</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-assistant-2/" rel="tag">ai_assistant(2)</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-assistant-3/" rel="tag">ai_assistant(3)</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/chatting-robot/" rel="tag">chatting robot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/smolagents/" rel="tag">smolagents</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/AI-Agent/" style="font-size: 10px;">AI-Agent</a> <a href="/tags/AWS/" style="font-size: 15px;">AWS</a> <a href="/tags/Fast-api%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" style="font-size: 10px;">Fast api的基础知识</a> <a href="/tags/Fast-api%E7%9A%84%E8%BF%9B%E9%98%B6%E7%9F%A5%E8%AF%86/" style="font-size: 10px;">Fast api的进阶知识</a> <a href="/tags/LLM/" style="font-size: 20px;">LLM</a> <a href="/tags/ai-agent/" style="font-size: 10px;">ai agent</a> <a href="/tags/ai-assistant/" style="font-size: 10px;">ai_assistant</a> <a href="/tags/ai-assistant-2/" style="font-size: 10px;">ai_assistant(2)</a> <a href="/tags/ai-assistant-3/" style="font-size: 10px;">ai_assistant(3)</a> <a href="/tags/chatting-robot/" style="font-size: 10px;">chatting robot</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/smolagents/" style="font-size: 10px;">smolagents</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/09/">September 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/08/">August 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/07/">July 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/06/">June 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/05/">May 2026</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2026/09/06/RAG%E3%80%81%E5%BE%AE%E8%B0%83%E3%80%81%E7%BB%AD%E8%AE%AD%E4%B8%8E%E6%99%BA%E8%83%BD%E4%BD%93%E9%80%89%E5%9E%8B/">RAG、微调、续训与智能体选型</a>
-          </li>
-        
-          <li>
-            <a href="/2026/09/03/%E6%8F%90%E7%A4%BA%E8%AF%8D%E5%B7%A5%E7%A8%8B%E5%9F%BA%E7%A1%80/">提示词工程基础</a>
-          </li>
-        
-          <li>
-            <a href="/2026/08/31/%E9%93%BE%E5%BC%8F%E8%B0%83%E7%94%A8%E4%B8%8ELCE/">链式调用与LCE</a>
-          </li>
-        
-          <li>
-            <a href="/2026/08/14/ollama%E7%9A%84%E5%9F%BA%E7%A1%80/">ollama基础</a>
-          </li>
-        
-          <li>
-            <a href="/2026/08/14/prompt%E5%9F%BA%E7%A1%80/">prompt基础</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
+</div>
+</main>
         
       </div>
       <footer id="footer">
-  
+  <div class="outer reference-footer-grid">
+    <section>
+      <h2>快速阅读</h2>
+      <a href="/archives">全部文章</a>
+      <a href="/tags/LLM">大模型与 RAG</a>
+      <a href="/tags/AI-Agent">Agent 实战</a>
+    </section>
+    <section>
+      <h2>技术专题</h2>
+      <a href="/tags/Fast-api%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86">Python 与 FastAPI</a>
+      <a href="/tags/AWS">AWS 云服务</a>
+      <a href="/archives">项目复盘</a>
+    </section>
+    <section>
+      <h2>站内索引</h2>
+      <a href="/tags/LLM">标签：LLM</a>
+      <a href="/tags/AI-Agent">标签：AI Agent</a>
+      <a href="/archives">按时间浏览</a>
+    </section>
+    <section>
+      <h2>关于本站</h2>
+      <a href="/">首页</a>
+      <a href="/archives">文章归档</a>
+      <span>记录学习，也分享实践。</span>
+    </section>
+  </div>
   <div class="outer">
     <div id="footer-info" class="inner">
       
-      &copy; 2026 wn<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+      Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>
     </div>
   </div>
 </footer>
 
     </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
     
 
 
@@ -363,5 +292,6 @@
 
 
   </div>
+  <script src="/js/responsive.js" defer></script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
   <meta charset="utf-8">
   
@@ -38,67 +38,74 @@
   
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
 
-<meta name="generator" content="Hexo 7.3.0"></head>
+<!-- hexo injector head_end start --><link rel="stylesheet" href="/css/responsive.css"><link rel="stylesheet" href="/css/blog-refresh.css"><link rel="stylesheet" href="/css/reference-exact.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
 
-<body>
+<body class="page-reading">
+  <a class="skip-link" href="#main">跳到正文</a>
   <div id="container">
     <div id="wrap">
       <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">WN</a>
-      </h1>
+  <div id="banner" aria-hidden="true"></div>
+  <div class="site-toolbar outer">
+    
+    
+    <nav class="desktop-nav" aria-label="主导航">
       
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        <a href="/">首页</a>
+      
+        <a href="/archives">归档</a>
+      
+    </nav>
+    <details class="mobile-menu site-disclosure">
+      <summary>菜单 <span aria-hidden="true">⌄</span></summary>
+      <nav class="disclosure-panel" aria-label="手机主导航">
         
-          <a class="main-nav-link" href="/">Home</a>
+          <a href="/">首页</a>
         
-          <a class="main-nav-link" href="/archives">Archives</a>
+          <a href="/archives">归档</a>
         
       </nav>
-      <nav id="sub-nav">
-        
-        
-          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
-        
-        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://wenjiajun-wn.github.io"></form>
-      </div>
+    </details>
+    <div class="toolbar-actions">
+      
+      <details class="site-search site-disclosure">
+        <summary>搜索 <span aria-hidden="true">⌄</span></summary>
+        <form class="disclosure-panel site-search-form" action="https://www.google.com/search" method="get" role="search">
+          <label for="site-query">搜索本站文章</label>
+          <div class="search-controls">
+            <input id="site-query" type="search" name="q" placeholder="输入文章关键词" required>
+            <button type="submit">搜索</button>
+          </div>
+          <input type="hidden" name="sitesearch" value="https://wenjiajun-wn.github.io">
+          <p>通过 Google 搜索本站内容</p>
+        </form>
+      </details>
     </div>
   </div>
 </header>
 
-      <div class="outer">
-        <section id="main"><article id="post-ai_assistant" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2026/05/25/ai_assistant/" class="article-date">
-  <time class="dt-published" datetime="2026-05-24T16:00:00.000Z" itemprop="datePublished">2026-05-25</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="p-name article-title" itemprop="headline name">
-      一个可以提取图片中重要信息并分成优先级的ai助手
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
       
-        <h2 id="项目概述"><a href="#项目概述" class="headerlink" title="项目概述"></a>项目概述</h2><p>日常工作中截图里有很多待办信息，手动录入日历太麻烦，所以想用 AI 自动化。</p>
+      <div class="outer site-content site-content--reading">
+        
+          <main id="main" class="reference-reading" tabindex="-1">
+<div class="reference-article-shell">
+  <article id="post-ai_assistant" class="reference-article h-entry" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <header class="reference-article__header">
+      <a class="reference-article__back" href="/archives">← 返回文章列表</a>
+      
+        <h1 class="p-name" itemprop="headline">一个可以提取图片中重要信息并分成优先级的ai助手</h1>
+      
+      <div class="reference-article__meta">
+        <time datetime="2026-05-25">2026年05月25日</time>
+        
+          <span aria-hidden="true">·</span>
+          <span>
+            <a href="/tags/ai-assistant/">ai_assistant</a>
+          </span>
+        
+      </div>
+    </header>
+    <div class="reference-article__body e-content" itemprop="articleBody"><h2 id="项目概述"><a href="#项目概述" class="headerlink" title="项目概述"></a>项目概述</h2><p>日常工作中截图里有很多待办信息，手动录入日历太麻烦，所以想用 AI 自动化。</p>
 <p>项目的本质是：用户截图或上传图片 → OCR 提取文字 → 交给 AI 大模型分析总结 → 最终提取出待办事项。</p>
 <h2 id="技术选型"><a href="#技术选型" class="headerlink" title="技术选型"></a>技术选型</h2><p><strong>OCR</strong>（光学字符识别，Optical Character Recognition）是一种能把图片、扫描件或纸质文档上的文字”翻译”成电子设备可以编辑、搜索的文本的技术。</p>
 <p>我们需要强大的 OCR 来处理图片，因此选择了 PaddleOCR。相比传统 OCR 工具，PaddleOCR 的优势在于：</p>
@@ -159,132 +166,54 @@
 <li><strong>渐进降级</strong>：Outlook COM → <code>.ics</code> 文件 → 下载按钮。每条路径都有兜底，没有单点故障</li>
 <li><strong>模块复用</strong>：<code>calendar_sync.py</code> 的 <code>add_to_calendar()</code> 同时服务于 <code>hotkey_screenshot.py</code>（后台监听）和 <code>app.py</code>（Web UI），一套逻辑两处复用</li>
 </ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://wenjiajun-wn.github.io/2026/05/25/ai_assistant/" data-id="cmqdst9un0001mo7k1tp012ow" data-title="一个可以提取图片中重要信息并分成优先级的ai助手" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ai-assistant/" rel="tag">ai_assistant</a></li></ul>
-
+</div>
+    <footer class="reference-article__footer">
+      <span>标签</span><a href="/tags/ai-assistant/">ai_assistant</a>
     </footer>
-  </div>
+  </article>
   
-    
-<nav id="article-nav">
+    <aside class="reference-toc" aria-label="本页目录"><p>本页目录</p><ol class="reference-toc__list"><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#%E9%A1%B9%E7%9B%AE%E6%A6%82%E8%BF%B0"><span class="reference-toc__list-text">项目概述</span></a></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B"><span class="reference-toc__list-text">技术选型</span></a></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#%E7%AC%AC%E4%B8%80%E7%89%88%EF%BC%9A%E6%89%8B%E5%8A%A8%E4%B8%8A%E4%BC%A0%E6%88%AA%E5%9B%BE"><span class="reference-toc__list-text">第一版：手动上传截图</span></a></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#%E7%AC%AC%E4%BA%8C%E7%89%88%EF%BC%9A%E6%88%AA%E5%9B%BE%E8%87%AA%E5%8A%A8%E8%AF%86%E5%88%AB"><span class="reference-toc__list-text">第二版：截图自动识别</span></a><ol class="reference-toc__list-child"><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#%E5%89%AA%E8%B4%B4%E6%9D%BF%E4%B8%8E%E5%9B%BE%E7%89%87%E9%A2%84%E5%A4%84%E7%90%86"><span class="reference-toc__list-text">剪贴板与图片预处理</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#Vision-LLM-%E4%B8%8E-Prompt"><span class="reference-toc__list-text">Vision LLM 与 Prompt</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#%E6%97%A5%E5%8E%86%E5%90%8C%E6%AD%A5"><span class="reference-toc__list-text">日历同步</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99"><span class="reference-toc__list-text">设计原则</span></a></li></ol></li></ol></aside>
   
-    <a href="/2026/06/03/ai_assistant(2)/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          一个可以提取图片中重要信息并分成优先级的ai助手
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2026/05/24/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">Hello World</div>
-    </a>
-  
-</nav>
-
-  
-</article>
-
-
-</section>
-        
-          <aside id="sidebar">
-  
-    
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-Agent/" rel="tag">AI-Agent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AWS/" rel="tag">AWS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Fast-api%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" rel="tag">Fast api的基础知识</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Fast-api%E7%9A%84%E8%BF%9B%E9%98%B6%E7%9F%A5%E8%AF%86/" rel="tag">Fast api的进阶知识</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LLM/" rel="tag">LLM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-agent/" rel="tag">ai agent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-assistant/" rel="tag">ai_assistant</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-assistant-2/" rel="tag">ai_assistant(2)</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-assistant-3/" rel="tag">ai_assistant(3)</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/chatting-robot/" rel="tag">chatting robot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/smolagents/" rel="tag">smolagents</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/AI-Agent/" style="font-size: 10px;">AI-Agent</a> <a href="/tags/AWS/" style="font-size: 15px;">AWS</a> <a href="/tags/Fast-api%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" style="font-size: 10px;">Fast api的基础知识</a> <a href="/tags/Fast-api%E7%9A%84%E8%BF%9B%E9%98%B6%E7%9F%A5%E8%AF%86/" style="font-size: 10px;">Fast api的进阶知识</a> <a href="/tags/LLM/" style="font-size: 20px;">LLM</a> <a href="/tags/ai-agent/" style="font-size: 10px;">ai agent</a> <a href="/tags/ai-assistant/" style="font-size: 10px;">ai_assistant</a> <a href="/tags/ai-assistant-2/" style="font-size: 10px;">ai_assistant(2)</a> <a href="/tags/ai-assistant-3/" style="font-size: 10px;">ai_assistant(3)</a> <a href="/tags/chatting-robot/" style="font-size: 10px;">chatting robot</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/smolagents/" style="font-size: 10px;">smolagents</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/09/">September 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/08/">August 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/07/">July 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/06/">June 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/05/">May 2026</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2026/09/06/RAG%E3%80%81%E5%BE%AE%E8%B0%83%E3%80%81%E7%BB%AD%E8%AE%AD%E4%B8%8E%E6%99%BA%E8%83%BD%E4%BD%93%E9%80%89%E5%9E%8B/">RAG、微调、续训与智能体选型</a>
-          </li>
-        
-          <li>
-            <a href="/2026/09/03/%E6%8F%90%E7%A4%BA%E8%AF%8D%E5%B7%A5%E7%A8%8B%E5%9F%BA%E7%A1%80/">提示词工程基础</a>
-          </li>
-        
-          <li>
-            <a href="/2026/08/31/%E9%93%BE%E5%BC%8F%E8%B0%83%E7%94%A8%E4%B8%8ELCE/">链式调用与LCE</a>
-          </li>
-        
-          <li>
-            <a href="/2026/08/14/ollama%E7%9A%84%E5%9F%BA%E7%A1%80/">ollama基础</a>
-          </li>
-        
-          <li>
-            <a href="/2026/08/14/prompt%E5%9F%BA%E7%A1%80/">prompt基础</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
+</div>
+</main>
         
       </div>
       <footer id="footer">
-  
+  <div class="outer reference-footer-grid">
+    <section>
+      <h2>快速阅读</h2>
+      <a href="/archives">全部文章</a>
+      <a href="/tags/LLM">大模型与 RAG</a>
+      <a href="/tags/AI-Agent">Agent 实战</a>
+    </section>
+    <section>
+      <h2>技术专题</h2>
+      <a href="/tags/Fast-api%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86">Python 与 FastAPI</a>
+      <a href="/tags/AWS">AWS 云服务</a>
+      <a href="/archives">项目复盘</a>
+    </section>
+    <section>
+      <h2>站内索引</h2>
+      <a href="/tags/LLM">标签：LLM</a>
+      <a href="/tags/AI-Agent">标签：AI Agent</a>
+      <a href="/archives">按时间浏览</a>
+    </section>
+    <section>
+      <h2>关于本站</h2>
+      <a href="/">首页</a>
+      <a href="/archives">文章归档</a>
+      <span>记录学习，也分享实践。</span>
+    </section>
+  </div>
   <div class="outer">
     <div id="footer-info" class="inner">
       
-      &copy; 2026 wn<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+      Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>
     </div>
   </div>
 </footer>
 
     </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
     
 
 
@@ -305,5 +234,6 @@
 
 
   </div>
+  <script src="/js/responsive.js" defer></script>
 </body>
 </html>

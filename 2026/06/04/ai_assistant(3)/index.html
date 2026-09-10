@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
   <meta charset="utf-8">
   
@@ -38,67 +38,74 @@
   
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
 
-<meta name="generator" content="Hexo 7.3.0"></head>
+<!-- hexo injector head_end start --><link rel="stylesheet" href="/css/responsive.css"><link rel="stylesheet" href="/css/blog-refresh.css"><link rel="stylesheet" href="/css/reference-exact.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
 
-<body>
+<body class="page-reading">
+  <a class="skip-link" href="#main">跳到正文</a>
   <div id="container">
     <div id="wrap">
       <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">WN</a>
-      </h1>
+  <div id="banner" aria-hidden="true"></div>
+  <div class="site-toolbar outer">
+    
+    
+    <nav class="desktop-nav" aria-label="主导航">
       
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        <a href="/">首页</a>
+      
+        <a href="/archives">归档</a>
+      
+    </nav>
+    <details class="mobile-menu site-disclosure">
+      <summary>菜单 <span aria-hidden="true">⌄</span></summary>
+      <nav class="disclosure-panel" aria-label="手机主导航">
         
-          <a class="main-nav-link" href="/">Home</a>
+          <a href="/">首页</a>
         
-          <a class="main-nav-link" href="/archives">Archives</a>
+          <a href="/archives">归档</a>
         
       </nav>
-      <nav id="sub-nav">
-        
-        
-          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
-        
-        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://wenjiajun-wn.github.io"></form>
-      </div>
+    </details>
+    <div class="toolbar-actions">
+      
+      <details class="site-search site-disclosure">
+        <summary>搜索 <span aria-hidden="true">⌄</span></summary>
+        <form class="disclosure-panel site-search-form" action="https://www.google.com/search" method="get" role="search">
+          <label for="site-query">搜索本站文章</label>
+          <div class="search-controls">
+            <input id="site-query" type="search" name="q" placeholder="输入文章关键词" required>
+            <button type="submit">搜索</button>
+          </div>
+          <input type="hidden" name="sitesearch" value="https://wenjiajun-wn.github.io">
+          <p>通过 Google 搜索本站内容</p>
+        </form>
+      </details>
     </div>
   </div>
 </header>
 
-      <div class="outer">
-        <section id="main"><article id="post-ai_assistant(3)" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2026/06/04/ai_assistant(3)/" class="article-date">
-  <time class="dt-published" datetime="2026-06-03T16:00:00.000Z" itemprop="datePublished">2026-06-04</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="p-name article-title" itemprop="headline name">
-      一个可以提取图片中重要信息并分成优先级的ai助手
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
       
-        <h2 id="第四版"><a href="#第四版" class="headerlink" title="第四版"></a>第四版</h2><h3 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h3><h4 id="云服务器-47-84-108-154-8080"><a href="#云服务器-47-84-108-154-8080" class="headerlink" title="云服务器 47.84.108.154:8080"></a>云服务器 <code>47.84.108.154:8080</code></h4><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">calendar_server.py              Flask Web 服务</span><br><span class="line">├── /                           日历主页（Session 认证）</span><br><span class="line">├── /login                      登录/注册页</span><br><span class="line">├── /api/auth/register          注册 API → users 表</span><br><span class="line">├── /api/auth/login             登录 API → Session</span><br><span class="line">├── /api/auth/me                查询当前用户</span><br><span class="line">├── /api/auth/save-config       保存 user_config.json（本地用）</span><br><span class="line">├── /api/events                 CRUD 日历事件 → events 表</span><br><span class="line">├── /api/events/batch           批量导入（截图 AI 用）</span><br><span class="line">├── /api/import/ics             导入 .ics 文件</span><br><span class="line">└── /api/scan-temp              扫描临时目录 AI 生成文件</span><br><span class="line"></span><br><span class="line">database.py                     SQLite 数据层</span><br><span class="line">├── _get_db()                   数据库连接（WAL 模式）</span><br><span class="line">├── init_db()                   建表 + JSON 自动迁移</span><br><span class="line">├── load_events(email)          读事件</span><br><span class="line">├── save_events(email, evts)    写事件（DELETE + INSERT）</span><br><span class="line">├── hash_password(pw)           SHA-256 哈希</span><br><span class="line">├── create_user(email, pw)      注册 → 返回 api_token</span><br><span class="line">├── verify_password(email, pw)  验证 → 返回状态 + token</span><br><span class="line">└── get_user_by_token(tk)       Token → 用户邮箱</span><br><span class="line"></span><br><span class="line">data/calendar_data.db           SQLite 数据库</span><br><span class="line">├── events 表                   (id, user_id, title, date, ...)</span><br><span class="line">└── users 表                    (email, password_hash, api_token)</span><br></pre></td></tr></table></figure>
+      <div class="outer site-content site-content--reading">
+        
+          <main id="main" class="reference-reading" tabindex="-1">
+<div class="reference-article-shell">
+  <article id="post-ai_assistant(3)" class="reference-article h-entry" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <header class="reference-article__header">
+      <a class="reference-article__back" href="/archives">← 返回文章列表</a>
+      
+        <h1 class="p-name" itemprop="headline">一个可以提取图片中重要信息并分成优先级的ai助手</h1>
+      
+      <div class="reference-article__meta">
+        <time datetime="2026-06-04">2026年06月04日</time>
+        
+          <span aria-hidden="true">·</span>
+          <span>
+            <a href="/tags/ai-assistant-3/">ai_assistant(3)</a>
+          </span>
+        
+      </div>
+    </header>
+    <div class="reference-article__body e-content" itemprop="articleBody"><h2 id="第四版"><a href="#第四版" class="headerlink" title="第四版"></a>第四版</h2><h3 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h3><h4 id="云服务器-47-84-108-154-8080"><a href="#云服务器-47-84-108-154-8080" class="headerlink" title="云服务器 47.84.108.154:8080"></a>云服务器 <code>47.84.108.154:8080</code></h4><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">calendar_server.py              Flask Web 服务</span><br><span class="line">├── /                           日历主页（Session 认证）</span><br><span class="line">├── /login                      登录/注册页</span><br><span class="line">├── /api/auth/register          注册 API → users 表</span><br><span class="line">├── /api/auth/login             登录 API → Session</span><br><span class="line">├── /api/auth/me                查询当前用户</span><br><span class="line">├── /api/auth/save-config       保存 user_config.json（本地用）</span><br><span class="line">├── /api/events                 CRUD 日历事件 → events 表</span><br><span class="line">├── /api/events/batch           批量导入（截图 AI 用）</span><br><span class="line">├── /api/import/ics             导入 .ics 文件</span><br><span class="line">└── /api/scan-temp              扫描临时目录 AI 生成文件</span><br><span class="line"></span><br><span class="line">database.py                     SQLite 数据层</span><br><span class="line">├── _get_db()                   数据库连接（WAL 模式）</span><br><span class="line">├── init_db()                   建表 + JSON 自动迁移</span><br><span class="line">├── load_events(email)          读事件</span><br><span class="line">├── save_events(email, evts)    写事件（DELETE + INSERT）</span><br><span class="line">├── hash_password(pw)           SHA-256 哈希</span><br><span class="line">├── create_user(email, pw)      注册 → 返回 api_token</span><br><span class="line">├── verify_password(email, pw)  验证 → 返回状态 + token</span><br><span class="line">└── get_user_by_token(tk)       Token → 用户邮箱</span><br><span class="line"></span><br><span class="line">data/calendar_data.db           SQLite 数据库</span><br><span class="line">├── events 表                   (id, user_id, title, date, ...)</span><br><span class="line">└── users 表                    (email, password_hash, api_token)</span><br></pre></td></tr></table></figure>
 
 <h4 id="用户电脑"><a href="#用户电脑" class="headerlink" title="用户电脑"></a>用户电脑</h4><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">hotkey_screenshot.py            截图监听程序</span><br><span class="line">├── 启动后读取文件user_config.json</span><br><span class="line">├── 无 Token则打开浏览器注册页 → 等网页保存配置</span><br><span class="line">├── 有 Token则轮询剪贴板</span><br><span class="line">├── 检测到图片 → Pillow 处理 → DashScope AI 分析</span><br><span class="line">├── POST /api/events/batch（X-API-Token 认证）</span><br><span class="line">└── 成功 → 自动打开浏览器日历</span><br><span class="line"></span><br><span class="line">user_config.json                配置文件（自动生成）</span><br><span class="line">.env                            API Key（不上传 Git）</span><br><span class="line">env_template                    .env 模板（可分发）</span><br><span class="line">run.bat                         本地一键启动</span><br><span class="line">build_exe.bat                   PyInstaller 打包脚本</span><br></pre></td></tr></table></figure>
 
@@ -136,7 +143,7 @@
 </ol>
 <h4 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h4><p>Redis 是一个<strong>内存数据库</strong>，数据存在内存里而不是硬盘上，所以读写极快。</p>
 <p>Session 的存储方式之一就是 Redis：</p>
-<table>
+<div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
 <thead>
 <tr>
 <th>存储方式</th>
@@ -155,7 +162,7 @@
 <td>SQLite&#x2F;MySQL</td>
 <td>持久化，但比 Redis 慢</td>
 </tr>
-</tbody></table>
+</tbody></table></div>
 <p>简单记住：<strong>Cookie 是浏览器存的通行证，Session 是服务器存的用户档案，Redis 是存放这些档案的高速柜子。</strong><br>注册一次 → exe 后台跑 → 截图 → AI 分析 → 自动推送到云端 → 浏览器实时看到</p>
 <h4 id="新增-Mac-使用步骤"><a href="#新增-Mac-使用步骤" class="headerlink" title="新增 Mac 使用步骤"></a>新增 Mac 使用步骤</h4><p>Mac 用户不能运行 exe 文件，因此提供了一个 <code>run_mac.command</code> 启动脚本，双击即可使用。</p>
 <p>使用前需先安装依赖：</p>
@@ -171,132 +178,54 @@
 <li><code>&gt; calendar.log 2&gt;&amp;1</code>：把输出和错误日志都写入 <code>calendar.log</code>，方便排查问题</li>
 </ul>
 <p>更新流程：本地改代码 → SFTP 上传到服务器 → 执行上面两条命令重启服务。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://wenjiajun-wn.github.io/2026/06/04/ai_assistant(3)/" data-id="cmqdst9uq0003mo7kajkh23pp" data-title="一个可以提取图片中重要信息并分成优先级的ai助手" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ai-assistant-3/" rel="tag">ai_assistant(3)</a></li></ul>
-
+</div>
+    <footer class="reference-article__footer">
+      <span>标签</span><a href="/tags/ai-assistant-3/">ai_assistant(3)</a>
     </footer>
-  </div>
+  </article>
   
-    
-<nav id="article-nav">
+    <aside class="reference-toc" aria-label="本页目录"><p>本页目录</p><ol class="reference-toc__list"><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#%E7%AC%AC%E5%9B%9B%E7%89%88"><span class="reference-toc__list-text">第四版</span></a><ol class="reference-toc__list-child"><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84"><span class="reference-toc__list-text">项目结构</span></a><ol class="reference-toc__list-child"><li class="reference-toc__list-item reference-toc__list-level-4"><a class="reference-toc__list-link" href="#%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8-47-84-108-154-8080"><span class="reference-toc__list-text">云服务器 47.84.108.154:8080</span></a></li><li class="reference-toc__list-item reference-toc__list-level-4"><a class="reference-toc__list-link" href="#%E7%94%A8%E6%88%B7%E7%94%B5%E8%84%91"><span class="reference-toc__list-text">用户电脑</span></a></li></ol></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#%E8%AE%A4%E8%AF%81%E6%96%B9%E5%BC%8F"><span class="reference-toc__list-text">认证方式</span></a><ol class="reference-toc__list-child"><li class="reference-toc__list-item reference-toc__list-level-4"><a class="reference-toc__list-link" href="#Cookie"><span class="reference-toc__list-text">Cookie</span></a></li><li class="reference-toc__list-item reference-toc__list-level-4"><a class="reference-toc__list-link" href="#Session"><span class="reference-toc__list-text">Session</span></a></li><li class="reference-toc__list-item reference-toc__list-level-4"><a class="reference-toc__list-link" href="#Redis"><span class="reference-toc__list-text">Redis</span></a></li><li class="reference-toc__list-item reference-toc__list-level-4"><a class="reference-toc__list-link" href="#%E6%96%B0%E5%A2%9E-Mac-%E4%BD%BF%E7%94%A8%E6%AD%A5%E9%AA%A4"><span class="reference-toc__list-text">新增 Mac 使用步骤</span></a></li><li class="reference-toc__list-item reference-toc__list-level-4"><a class="reference-toc__list-link" href="#%E6%9C%8D%E5%8A%A1%E7%AB%AF%E9%83%A8%E7%BD%B2%EF%BC%88Termius%EF%BC%89"><span class="reference-toc__list-text">服务端部署（Termius）</span></a></li></ol></li></ol></li></ol></aside>
   
-    <a href="/2026/06/12/AI%20Agents%20with%20Hugging%20Face%20smolagents/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          用 Hugging Face smolagents 打造智能 AI Agent
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2026/06/03/ai_assistant(2)/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">一个可以提取图片中重要信息并分成优先级的ai助手</div>
-    </a>
-  
-</nav>
-
-  
-</article>
-
-
-</section>
-        
-          <aside id="sidebar">
-  
-    
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-Agent/" rel="tag">AI-Agent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AWS/" rel="tag">AWS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Fast-api%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" rel="tag">Fast api的基础知识</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Fast-api%E7%9A%84%E8%BF%9B%E9%98%B6%E7%9F%A5%E8%AF%86/" rel="tag">Fast api的进阶知识</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LLM/" rel="tag">LLM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-agent/" rel="tag">ai agent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-assistant/" rel="tag">ai_assistant</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-assistant-2/" rel="tag">ai_assistant(2)</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-assistant-3/" rel="tag">ai_assistant(3)</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/chatting-robot/" rel="tag">chatting robot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/smolagents/" rel="tag">smolagents</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/AI-Agent/" style="font-size: 10px;">AI-Agent</a> <a href="/tags/AWS/" style="font-size: 15px;">AWS</a> <a href="/tags/Fast-api%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" style="font-size: 10px;">Fast api的基础知识</a> <a href="/tags/Fast-api%E7%9A%84%E8%BF%9B%E9%98%B6%E7%9F%A5%E8%AF%86/" style="font-size: 10px;">Fast api的进阶知识</a> <a href="/tags/LLM/" style="font-size: 20px;">LLM</a> <a href="/tags/ai-agent/" style="font-size: 10px;">ai agent</a> <a href="/tags/ai-assistant/" style="font-size: 10px;">ai_assistant</a> <a href="/tags/ai-assistant-2/" style="font-size: 10px;">ai_assistant(2)</a> <a href="/tags/ai-assistant-3/" style="font-size: 10px;">ai_assistant(3)</a> <a href="/tags/chatting-robot/" style="font-size: 10px;">chatting robot</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/smolagents/" style="font-size: 10px;">smolagents</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/09/">September 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/08/">August 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/07/">July 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/06/">June 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/05/">May 2026</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2026/09/06/RAG%E3%80%81%E5%BE%AE%E8%B0%83%E3%80%81%E7%BB%AD%E8%AE%AD%E4%B8%8E%E6%99%BA%E8%83%BD%E4%BD%93%E9%80%89%E5%9E%8B/">RAG、微调、续训与智能体选型</a>
-          </li>
-        
-          <li>
-            <a href="/2026/09/03/%E6%8F%90%E7%A4%BA%E8%AF%8D%E5%B7%A5%E7%A8%8B%E5%9F%BA%E7%A1%80/">提示词工程基础</a>
-          </li>
-        
-          <li>
-            <a href="/2026/08/31/%E9%93%BE%E5%BC%8F%E8%B0%83%E7%94%A8%E4%B8%8ELCE/">链式调用与LCE</a>
-          </li>
-        
-          <li>
-            <a href="/2026/08/14/ollama%E7%9A%84%E5%9F%BA%E7%A1%80/">ollama基础</a>
-          </li>
-        
-          <li>
-            <a href="/2026/08/14/prompt%E5%9F%BA%E7%A1%80/">prompt基础</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
+</div>
+</main>
         
       </div>
       <footer id="footer">
-  
+  <div class="outer reference-footer-grid">
+    <section>
+      <h2>快速阅读</h2>
+      <a href="/archives">全部文章</a>
+      <a href="/tags/LLM">大模型与 RAG</a>
+      <a href="/tags/AI-Agent">Agent 实战</a>
+    </section>
+    <section>
+      <h2>技术专题</h2>
+      <a href="/tags/Fast-api%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86">Python 与 FastAPI</a>
+      <a href="/tags/AWS">AWS 云服务</a>
+      <a href="/archives">项目复盘</a>
+    </section>
+    <section>
+      <h2>站内索引</h2>
+      <a href="/tags/LLM">标签：LLM</a>
+      <a href="/tags/AI-Agent">标签：AI Agent</a>
+      <a href="/archives">按时间浏览</a>
+    </section>
+    <section>
+      <h2>关于本站</h2>
+      <a href="/">首页</a>
+      <a href="/archives">文章归档</a>
+      <span>记录学习，也分享实践。</span>
+    </section>
+  </div>
   <div class="outer">
     <div id="footer-info" class="inner">
       
-      &copy; 2026 wn<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+      Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>
     </div>
   </div>
 </footer>
 
     </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
     
 
 
@@ -317,5 +246,6 @@
 
 
   </div>
+  <script src="/js/responsive.js" defer></script>
 </body>
 </html>

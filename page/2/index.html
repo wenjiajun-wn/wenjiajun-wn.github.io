@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
   <meta charset="utf-8">
   
@@ -31,1579 +31,184 @@
   
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
 
-<meta name="generator" content="Hexo 7.3.0"></head>
+<!-- hexo injector head_end start --><link rel="stylesheet" href="/css/responsive.css"><link rel="stylesheet" href="/css/blog-refresh.css"><link rel="stylesheet" href="/css/reference-exact.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
 
-<body>
+<body class="page-home">
+  <a class="skip-link" href="#main">跳到正文</a>
   <div id="container">
     <div id="wrap">
       <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">WN</a>
-      </h1>
+  <div id="banner" aria-hidden="true"></div>
+  <div class="site-toolbar outer">
+    
+    
+    <nav class="desktop-nav" aria-label="主导航">
       
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        <a href="/">首页</a>
+      
+        <a href="/archives">归档</a>
+      
+    </nav>
+    <details class="mobile-menu site-disclosure">
+      <summary>菜单 <span aria-hidden="true">⌄</span></summary>
+      <nav class="disclosure-panel" aria-label="手机主导航">
         
-          <a class="main-nav-link" href="/">Home</a>
+          <a href="/">首页</a>
         
-          <a class="main-nav-link" href="/archives">Archives</a>
+          <a href="/archives">归档</a>
         
       </nav>
-      <nav id="sub-nav">
-        
-        
-          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
-        
-        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://wenjiajun-wn.github.io"></form>
-      </div>
+    </details>
+    <div class="toolbar-actions">
+      
+      <details class="site-search site-disclosure">
+        <summary>搜索 <span aria-hidden="true">⌄</span></summary>
+        <form class="disclosure-panel site-search-form" action="https://www.google.com/search" method="get" role="search">
+          <label for="site-query">搜索本站文章</label>
+          <div class="search-controls">
+            <input id="site-query" type="search" name="q" placeholder="输入文章关键词" required>
+            <button type="submit">搜索</button>
+          </div>
+          <input type="hidden" name="sitesearch" value="https://wenjiajun-wn.github.io">
+          <p>通过 Google 搜索本站内容</p>
+        </form>
+      </details>
     </div>
   </div>
 </header>
 
-      <div class="outer">
-        <section id="main">
-  
-    <article id="post-Fast api" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2026/06/15/Fast%20api/" class="article-date">
-  <time class="dt-published" datetime="2026-06-14T16:00:00.000Z" itemprop="datePublished">2026-06-15</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
+      
+        <div class="reference-wave" aria-hidden="true">
+          <svg viewBox="0 0 1440 170" preserveAspectRatio="none" focusable="false">
+            <path class="reference-wave__back" d="M0 78 C180 130 324 18 514 72 S820 144 1016 70 S1284 21 1440 66 V170 H0Z" />
+            <path class="reference-wave__front" d="M0 101 C190 32 362 148 564 87 S891 19 1085 86 S1304 146 1440 91 V170 H0Z" />
+          </svg>
+        </div>
+      
+      <div class="outer site-content site-content--home">
         
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/06/15/Fast%20api/">Fast api</a>
-    </h1>
-  
+          
 
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="FastAPI"><a href="#FastAPI" class="headerlink" title="FastAPI"></a>FastAPI</h1><blockquote>
-<p>学习来源：DataCamp《Introduction to FastAPI》课程  </p>
-</blockquote>
-<hr>
-<h2 id="什么是-FastAPI？"><a href="#什么是-FastAPI？" class="headerlink" title="什么是 FastAPI？"></a>什么是 FastAPI？</h2><p>FastAPI 是一个现代、高性能的 Python Web 框架，专门用于构建 API。它由 Sebastián Ramírez 开发，基于以下两个强大的库：</p>
-<ul>
-<li><strong>Starlette</strong>：提供异步 Web 框架的核心能力</li>
-<li><strong>Pydantic</strong>：负责数据验证与序列化</li>
-</ul>
-<p>FastAPI 的名字本身就说明了它的两大特点：<strong>Fast</strong>（快速）—— 既指运行速度快，也指开发速度快。</p>
-<hr>
-<h2 id="为什么选择-FastAPI？"><a href="#为什么选择-FastAPI？" class="headerlink" title="为什么选择 FastAPI？"></a>为什么选择 FastAPI？</h2><table>
-<thead>
-<tr>
-<th>特性</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>高性能</td>
-<td>性能可与 Node.js 和 Go 媲美</td>
-</tr>
-<tr>
-<td>自动数据验证</td>
-<td>基于 Python 类型提示自动校验请求数据</td>
-</tr>
-<tr>
-<td>自动生成文档</td>
-<td>内置 Swagger UI 和 ReDoc，无需手写文档</td>
-</tr>
-<tr>
-<td>Python 类型提示</td>
-<td>充分利用 Python 3.6+ 的类型系统</td>
-</tr>
-<tr>
-<td>易于上手</td>
-<td>代码简洁直观，</td>
-</tr>
-</tbody></table>
-<hr>
-<h2 id="第一个-FastAPI-应用"><a href="#第一个-FastAPI-应用" class="headerlink" title="第一个 FastAPI 应用"></a>第一个 FastAPI 应用</h2><h3 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install fastapi uvicorn</span><br></pre></td></tr></table></figure>
 
-<h3 id="创建应用"><a href="#创建应用" class="headerlink" title="创建应用"></a>创建应用</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> fastapi <span class="keyword">import</span> FastAPI</span><br><span class="line"></span><br><span class="line">app = FastAPI()</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.get(<span class="params"><span class="string">&quot;/&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">read_root</span>():</span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">&quot;message&quot;</span>: <span class="string">&quot;Hello, FastAPI!&quot;</span>&#125;</span><br></pre></td></tr></table></figure>
+<main id="main" class="reference-home" tabindex="-1">
+  <div class="reference-home__grid">
+    <div class="reference-home__feed">
+      <section class="reference-section" aria-labelledby="pinned-title">
+        <div class="reference-section__title"><h1 id="pinned-title">置顶文章</h1><span class="reference-layout-icons" aria-hidden="true">☰　⊞</span></div>
+        <div class="reference-post-list">
+          
+            <a class="reference-post" href="/2026/06/20/Fast%20api%E8%BF%9B%E9%98%B6/"><h2>Fast api</h2><span><b>置顶</b><i aria-hidden="true">★</i></span></a>
+          
+            <a class="reference-post" href="/2026/06/15/Fast%20api/"><h2>Fast api</h2><span><b>置顶</b><i aria-hidden="true">★</i></span></a>
+          
+            <a class="reference-post" href="/2026/06/12/AI%20Agents%20with%20Hugging%20Face%20smolagents/"><h2>用 Hugging Face smolagents 打造智能 AI Agent</h2><span><b>置顶</b><i aria-hidden="true">★</i></span></a>
+          
+            <a class="reference-post" href="/2026/06/04/ai_assistant(3)/"><h2>一个可以提取图片中重要信息并分成优先级的ai助手</h2><span><b>置顶</b><i aria-hidden="true">★</i></span></a>
+          
+        </div>
+      </section>
 
-<h3 id="启动服务"><a href="#启动服务" class="headerlink" title="启动服务"></a>启动服务</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uvicorn main:app --reload</span><br></pre></td></tr></table></figure>
+      <section class="reference-section" aria-labelledby="columns-title">
+        <div class="reference-section__title"><h2 id="columns-title">精选专栏</h2></div>
+        <nav class="reference-subject-list" aria-label="精选专栏">
+          <a href="/tags/LLM"><span class="subject-symbol subject-symbol--llm">LLM</span><span><strong>大模型基础</strong><small>从模型能力、提示词到上下文构建。</small></span></a>
+          <a href="/tags/LLM"><span class="subject-symbol subject-symbol--rag">RAG</span><span><strong>RAG 知识库</strong><small>检索、分块、向量库与效果优化。</small></span></a>
+          <a href="/tags/AI-Agent"><span class="subject-symbol subject-symbol--agent">AG</span><span><strong>Agent 实战</strong><small>工具调用、工作流与智能体设计。</small></span></a>
+          <a href="/tags/Fast-api%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="subject-symbol subject-symbol--python">PY</span><span><strong>Python 工程</strong><small>接口开发、工程组织与可维护性。</small></span></a>
+          <a href="/tags/AWS"><span class="subject-symbol subject-symbol--aws">AWS</span><span><strong>云服务入门</strong><small>AWS 基础服务与应用部署思路。</small></span></a>
+          <a href="/archives"><span class="subject-symbol subject-symbol--review">↗</span><span><strong>项目复盘</strong><small>从实际项目中记录判断和踩坑。</small></span></a>
+        </nav>
+      </section>
 
-<p>访问 <code>http://127.0.0.1:8000</code>，你就能看到 API 的返回结果</p>
-<hr>
-<h2 id="核心概念：路径的操作"><a href="#核心概念：路径的操作" class="headerlink" title="核心概念：路径的操作"></a>核心概念：路径的操作</h2><p>FastAPI 使用<strong>装饰器</strong>来定义路由，对应 HTTP 的不同请求方法：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.get(<span class="params"><span class="string">&quot;/items&quot;</span></span>)       </span><span class="comment"># 获取资源</span></span><br><span class="line"><span class="meta">@app.post(<span class="params"><span class="string">&quot;/items&quot;</span></span>)      </span><span class="comment"># 创建资源</span></span><br><span class="line"><span class="meta">@app.put(<span class="params"><span class="string">&quot;/items/&#123;id&#125;&quot;</span></span>)  </span><span class="comment"># 更新资源</span></span><br><span class="line"><span class="meta">@app.delete(<span class="params"><span class="string">&quot;/items/&#123;id&#125;&quot;</span></span>) </span><span class="comment"># 删除资源</span></span><br></pre></td></tr></table></figure>
+      <section class="reference-section" aria-labelledby="latest-title">
+        <div class="reference-section__title"><h2 id="latest-title">最新文章</h2><span class="reference-layout-icons" aria-hidden="true">☰　⊞</span></div>
+        <div class="reference-post-list">
+          
+            <a class="reference-post reference-post--latest" href="/2026/06/20/Fast%20api%E8%BF%9B%E9%98%B6/"><h3>Fast api</h3><span><time datetime="2026-06-20">2026/06/20</time><i aria-hidden="true">📝</i></span></a>
+          
+            <a class="reference-post reference-post--latest" href="/2026/06/15/Fast%20api/"><h3>Fast api</h3><span><time datetime="2026-06-15">2026/06/15</time><i aria-hidden="true">📝</i></span></a>
+          
+            <a class="reference-post reference-post--latest" href="/2026/06/12/AI%20Agents%20with%20Hugging%20Face%20smolagents/"><h3>用 Hugging Face smolagents 打造智能 AI Agent</h3><span><time datetime="2026-06-12">2026/06/12</time><i aria-hidden="true">📝</i></span></a>
+          
+            <a class="reference-post reference-post--latest" href="/2026/06/04/ai_assistant(3)/"><h3>一个可以提取图片中重要信息并分成优先级的ai助手</h3><span><time datetime="2026-06-04">2026/06/04</time><i aria-hidden="true">📝</i></span></a>
+          
+            <a class="reference-post reference-post--latest" href="/2026/06/03/ai_assistant(2)/"><h3>一个可以提取图片中重要信息并分成优先级的ai助手</h3><span><time datetime="2026-06-03">2026/06/03</time><i aria-hidden="true">📝</i></span></a>
+          
+            <a class="reference-post reference-post--latest" href="/2026/05/25/ai_assistant/"><h3>一个可以提取图片中重要信息并分成优先级的ai助手</h3><span><time datetime="2026-05-25">2026/05/25</time><i aria-hidden="true">📝</i></span></a>
+          
+            <a class="reference-post reference-post--latest" href="/2026/05/24/hello-world/"><h3>Hello World</h3><span><time datetime="2026-05-24">2026/05/24</time><i aria-hidden="true">📝</i></span></a>
+          
+            <a class="reference-post reference-post--latest" href="/2026/05/24/%E5%9F%BA%E4%BA%8Eagent%E7%94%9F%E6%88%90%E4%B8%80%E4%B8%AA%E5%8F%AF%E4%BB%A5%E8%81%94%E7%BD%91%E5%9B%9E%E7%AD%94%E9%97%AE%E9%A2%98%E7%9A%84%E6%9C%BA%E5%99%A8%E4%BA%BA/"><h3>基于agent生成一个联网回答问题的机器人</h3><span><time datetime="2026-05-24">2026/05/24</time><i aria-hidden="true">📝</i></span></a>
+          
+            <a class="reference-post reference-post--latest" href="/2026/05/23/AI-agent%E7%9A%84%E7%9C%8B%E6%B3%95/"><h3>AI agent的看法</h3><span><time datetime="2026-05-23">2026/05/23</time><i aria-hidden="true">📝</i></span></a>
+          
+            <a class="reference-post reference-post--latest" href="/2026/05/23/git%E7%9A%84%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/"><h3>git的基础语法</h3><span><time datetime="2026-05-23">2026/05/23</time><i aria-hidden="true">📝</i></span></a>
+          
+        </div>
+        <a class="reference-all-posts" href="/archives">浏览全部文章 →</a>
+      </section>
 
-<p>这些装饰器直接对应 RESTful API 的设计规范，语义更清晰</p>
-<hr>
-<h2 id="路径参数与查询参数"><a href="#路径参数与查询参数" class="headerlink" title="路径参数与查询参数"></a>路径参数与查询参数</h2><h3 id="路径参数（Path-Parameters）"><a href="#路径参数（Path-Parameters）" class="headerlink" title="路径参数（Path Parameters）"></a>路径参数（Path Parameters）</h3><p>路径参数写在 URL 路径中，用花括号 <code>&#123;&#125;</code> 包裹：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.get(<span class="params"><span class="string">&quot;/users/&#123;user_id&#125;&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_user</span>(<span class="params">user_id: <span class="built_in">int</span></span>):</span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">&quot;user_id&quot;</span>: user_id&#125;</span><br></pre></td></tr></table></figure>
-
-<p>访问 <code>/users/42</code> 时，<code>user_id</code> 会自动被解析为整数 <code>42</code>。</p>
-<h3 id="查询参数（Query-Parameters）"><a href="#查询参数（Query-Parameters）" class="headerlink" title="查询参数（Query Parameters）"></a>查询参数（Query Parameters）</h3><p>函数中未被路径捕获的参数，会自动成为查询参数：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.get(<span class="params"><span class="string">&quot;/items&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_items</span>(<span class="params">skip: <span class="built_in">int</span> = <span class="number">0</span>, limit: <span class="built_in">int</span> = <span class="number">10</span></span>):</span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">&quot;skip&quot;</span>: skip, <span class="string">&quot;limit&quot;</span>: limit&#125;</span><br></pre></td></tr></table></figure>
-
-<p>访问 <code>/items?skip=5&amp;limit=20</code> 即可传入参数。</p>
-<hr>
-<h2 id="POST-请求与请求体"><a href="#POST-请求与请求体" class="headerlink" title="POST 请求与请求体"></a>POST 请求与请求体</h2><p>利用 <strong>Pydantic</strong> 模型，定义请求非常简单：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pydantic <span class="keyword">import</span> BaseModel</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Item</span>(<span class="title class_ inherited__">BaseModel</span>):</span><br><span class="line">    name: <span class="built_in">str</span></span><br><span class="line">    price: <span class="built_in">float</span></span><br><span class="line">    is_available: <span class="built_in">bool</span> = <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.post(<span class="params"><span class="string">&quot;/items&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">create_item</span>(<span class="params">item: Item</span>):</span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">&quot;message&quot;</span>: <span class="string">f&quot;Item &#x27;<span class="subst">&#123;item.name&#125;</span>&#x27; created!&quot;</span>, <span class="string">&quot;data&quot;</span>: item&#125;</span><br></pre></td></tr></table></figure>
-
-<p>Pydantic 会自动完成：</p>
-<ul>
-<li>类型校验（如 price 必须是数字）</li>
-<li>默认值处理</li>
-<li>错误提示（数据不符合要求时返回详细报错）</li>
-</ul>
-<hr>
-<h2 id="自动生成的交互式文档"><a href="#自动生成的交互式文档" class="headerlink" title="自动生成的交互式文档"></a>自动生成的交互式文档</h2><p>这是 FastAPI 的功能之一。启动服务后，直接访问：</p>
-<ul>
-<li><strong>Swagger UI</strong>：<code>http://127.0.0.1:8000/docs</code></li>
-<li><strong>ReDoc</strong>：<code>http://127.0.0.1:8000/redoc</code></li>
-</ul>
-<p>不需要写任何额外代码，FastAPI 会根据你的路由和数据模型<strong>自动生成</strong>完整的 API 文档，并且支持在线调试</p>
-<hr>
-<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><ol>
-<li><strong>FastAPI 的定位</strong>：现代 Python API 框架，性能强、开发效率高</li>
-<li><strong>基本路由定义</strong>：用装饰器绑定 HTTP 方法和路径</li>
-<li><strong>参数处理</strong>：路径参数、查询参数的声明方式</li>
-<li><strong>数据验证</strong>：通过 Pydantic BaseModel 处理请求体</li>
-<li><strong>自动文档</strong>：零配置获得 Swagger UI</li>
-</ol>
-<h2 id="FastAPI-把”写-API”这件事变得非常优雅。Python-类型提示不再只是注释，而是真正参与到数据验证、文档生成和编辑器智能提示中。对于习惯-Flask-或-Django-的开发者来说，FastAPI-的体验会让你更便捷"><a href="#FastAPI-把”写-API”这件事变得非常优雅。Python-类型提示不再只是注释，而是真正参与到数据验证、文档生成和编辑器智能提示中。对于习惯-Flask-或-Django-的开发者来说，FastAPI-的体验会让你更便捷" class="headerlink" title="FastAPI 把”写 API”这件事变得非常优雅。Python 类型提示不再只是注释，而是真正参与到数据验证、文档生成和编辑器智能提示中。对于习惯 Flask 或 Django 的开发者来说，FastAPI 的体验会让你更便捷"></a>FastAPI 把”写 API”这件事变得非常优雅。Python 类型提示不再只是注释，而是真正参与到数据验证、文档生成和编辑器智能提示中。对于习惯 Flask 或 Django 的开发者来说，FastAPI 的体验会让你更便捷</h2><h1 id="FastAPI-入门（二）：GET-与-POST-请求详解"><a href="#FastAPI-入门（二）：GET-与-POST-请求详解" class="headerlink" title="FastAPI 入门（二）：GET 与 POST 请求详解"></a>FastAPI 入门（二）：GET 与 POST 请求详解</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在 Web 开发中，API 是前后端通信的核心桥梁。上一篇我们完成了 FastAPI 的环境搭建和基本概念入门，本篇将深入学习两种最常用的 HTTP 请求方式：</p>
-<ul>
-<li><strong>GET 请求</strong> + 查询参数（Query Parameters）</li>
-<li><strong>POST 请求</strong> + 请求体（Request Body）</li>
-<li><strong>Pydantic 数据模型</strong> 的定义与嵌套</li>
-<li><strong>cURL</strong> 命令行测试接口</li>
-</ul>
-<hr>
-<h2 id="一、HTTP-GET-请求"><a href="#一、HTTP-GET-请求" class="headerlink" title="一、HTTP GET 请求"></a>一、HTTP GET 请求</h2><p>GET 是最常见的 HTTP 方法，主要用于<strong>查询</strong>和<strong>获取</strong>资源，参数直接附在 URL 后面。</p>
-<p>以 Google 搜索为例：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://www.google.com/search?q=fastapi</span><br></pre></td></tr></table></figure>
-
-<table>
-<thead>
-<tr>
-<th>组成部分</th>
-<th>示例</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Host</td>
-<td>google.com</td>
-</tr>
-<tr>
-<td>Port</td>
-<td>80（默认）</td>
-</tr>
-<tr>
-<td>Path</td>
-<td>&#x2F;search</td>
-</tr>
-<tr>
-<td>Query String</td>
-<td>?q&#x3D;fastapi</td>
-</tr>
-</tbody></table>
-<p>其中 <code>?q=fastapi</code> 就是一个查询参数，键为 <code>q</code>，值为 <code>&quot;fastapi&quot;</code>。</p>
-<h3 id="第一个-GET-接口"><a href="#第一个-GET-接口" class="headerlink" title="第一个 GET 接口"></a>第一个 GET 接口</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> fastapi <span class="keyword">import</span> FastAPI</span><br><span class="line"></span><br><span class="line">app = FastAPI()</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.get(<span class="params"><span class="string">&quot;/&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">root</span>():</span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">&quot;message&quot;</span>: <span class="string">&quot;Hello World&quot;</span>&#125;</span><br></pre></td></tr></table></figure>
-
-<p>启动后访问 <code>http://localhost:8000</code>，返回：</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span> <span class="attr">&quot;message&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Hello World&quot;</span> <span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
-
-<hr>
-<h2 id="二、使用-cURL-测试接口"><a href="#二、使用-cURL-测试接口" class="headerlink" title="二、使用 cURL 测试接口"></a>二、使用 cURL 测试接口</h2><p>除了浏览器，<strong>cURL</strong> 是测试 API 的利器，尤其适合 POST 等非 GET 请求。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 基础请求</span></span><br><span class="line">curl http://localhost:8000</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看详细请求过程（请求头、响应头）</span></span><br><span class="line">curl -v http://localhost:8000</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>💡 在没有 Postman 的环境下，cURL 是快速验证接口的首选工具。</p>
-</blockquote>
-<hr>
-<h2 id="三、查询参数（Query-Parameters）"><a href="#三、查询参数（Query-Parameters）" class="headerlink" title="三、查询参数（Query Parameters）"></a>三、查询参数（Query Parameters）</h2><p>FastAPI 中，<strong>函数参数默认就是查询参数</strong>，无需任何额外配置：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.get(<span class="params"><span class="string">&quot;/hello&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">hello</span>(<span class="params">name: <span class="built_in">str</span> = <span class="string">&quot;Alan&quot;</span></span>):</span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">&quot;message&quot;</span>: <span class="string">f&quot;Hello <span class="subst">&#123;name&#125;</span>&quot;</span>&#125;</span><br></pre></td></tr></table></figure>
-
-<table>
-<thead>
-<tr>
-<th>访问 URL</th>
-<th>返回结果</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>/hello</code></td>
-<td><code>&#123;&quot;message&quot;: &quot;Hello Alan&quot;&#125;</code></td>
-</tr>
-<tr>
-<td><code>/hello?name=Steve</code></td>
-<td><code>&#123;&quot;message&quot;: &quot;Hello Steve&quot;&#125;</code></td>
-</tr>
-</tbody></table>
-<p>FastAPI 会自动完成：</p>
-<ul>
-<li>读取 URL 参数</li>
-<li>类型转换（如 <code>str</code> → <code>int</code>）</li>
-<li>参数合法性校验</li>
-<li>缺省值处理</li>
-</ul>
-<hr>
-<h2 id="四、GET-vs-POST：核心区别"><a href="#四、GET-vs-POST：核心区别" class="headerlink" title="四、GET vs POST：核心区别"></a>四、GET vs POST：核心区别</h2><table>
-<thead>
-<tr>
-<th>特性</th>
-<th>GET</th>
-<th>POST</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>用途</td>
-<td>查询 &#x2F; 获取数据</td>
-<td>创建 &#x2F; 提交数据</td>
-</tr>
-<tr>
-<td>参数位置</td>
-<td>URL 查询字符串</td>
-<td>请求体（Body）</td>
-</tr>
-<tr>
-<td>参数是否可见</td>
-<td>可见</td>
-<td>不可见</td>
-</tr>
-<tr>
-<td>支持数据量</td>
-<td>较小（受 URL 长度限制）</td>
-<td>较大</td>
-</tr>
-<tr>
-<td>浏览器直接访问</td>
-<td>支持</td>
-<td>不支持</td>
-</tr>
-<tr>
-<td>支持复杂数据结构</td>
-<td>不支持</td>
-<td>（JSON 嵌套、数组等）</td>
-</tr>
-</tbody></table>
-<hr>
-<h2 id="五、HTTP-请求"><a href="#五、HTTP-请求" class="headerlink" title="五、HTTP 请求"></a>五、HTTP 请求</h2><p>POST 请求通过 <strong>Request Body</strong> 传递数据，支持复杂的 JSON 结构：</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;movie&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Interstellar&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;review&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;num_stars&quot;</span><span class="punctuation">:</span> <span class="number">5</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;text&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Amazing movie!&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;public&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
-
-<p>这种嵌套结构是 GET 查询参数做不到的，非常适合创建资源的场景。</p>
-<hr>
-<h2 id="六、Pydantic-模型"><a href="#六、Pydantic-模型" class="headerlink" title="六、Pydantic 模型"></a>六、Pydantic 模型</h2><p>为了让 FastAPI 能自动校验请求体，我们使用 <strong>Pydantic</strong> 来定义数据结构。</p>
-<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install pydantic</span><br></pre></td></tr></table></figure>
-
-<h3 id="定义模型"><a href="#定义模型" class="headerlink" title="定义模型"></a>定义模型</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pydantic <span class="keyword">import</span> BaseModel</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Review</span>(<span class="title class_ inherited__">BaseModel</span>):</span><br><span class="line">    num_stars: <span class="built_in">int</span>      <span class="comment"># 评分（必填）</span></span><br><span class="line">    text: <span class="built_in">str</span>           <span class="comment"># 评论内容（必填）</span></span><br><span class="line">    public: <span class="built_in">bool</span> = <span class="literal">False</span>  <span class="comment"># 是否公开（选填，默认 False）</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="嵌套模型"><a href="#嵌套模型" class="headerlink" title="嵌套模型"></a>嵌套模型</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MovieReview</span>(<span class="title class_ inherited__">BaseModel</span>):</span><br><span class="line">    movie: <span class="built_in">str</span></span><br><span class="line">    review: Review      <span class="comment"># 嵌套 Review 模型</span></span><br></pre></td></tr></table></figure>
-
-<p>Pydantic 的优势：</p>
-<ul>
-<li>自动类型校验（传错类型会返回清晰的错误信息）</li>
-<li>支持默认值</li>
-<li>支持嵌套结构</li>
-<li>配合 FastAPI 自动生成文档</li>
-</ul>
-<hr>
-<h2 id="七、创建-POST-接口"><a href="#七、创建-POST-接口" class="headerlink" title="七、创建 POST 接口"></a>七、创建 POST 接口</h2><p>将 Pydantic 模型与 POST 路由结合：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> fastapi <span class="keyword">import</span> FastAPI</span><br><span class="line"><span class="keyword">from</span> pydantic <span class="keyword">import</span> BaseModel</span><br><span class="line"></span><br><span class="line">app = FastAPI()</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Review</span>(<span class="title class_ inherited__">BaseModel</span>):</span><br><span class="line">    num_stars: <span class="built_in">int</span></span><br><span class="line">    text: <span class="built_in">str</span></span><br><span class="line">    public: <span class="built_in">bool</span> = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MovieReview</span>(<span class="title class_ inherited__">BaseModel</span>):</span><br><span class="line">    movie: <span class="built_in">str</span></span><br><span class="line">    review: Review</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.post(<span class="params"><span class="string">&quot;/reviews&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">create_review</span>(<span class="params">review: MovieReview</span>):</span><br><span class="line">    <span class="keyword">return</span> review</span><br></pre></td></tr></table></figure>
-
-<p>FastAPI 会自动将 JSON 请求体解析为 <code>MovieReview</code> 对象，无需手动 <code>json.loads()</code>。</p>
-<hr>
-<h2 id="八、用-CURL-发送-POST-请求"><a href="#八、用-CURL-发送-POST-请求" class="headerlink" title="八、用 CURL 发送 POST 请求"></a>八、用 CURL 发送 POST 请求</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">curl -X POST \</span><br><span class="line">  -H <span class="string">&quot;Content-Type: application/json&quot;</span> \</span><br><span class="line">  -d <span class="string">&#x27;&#123;</span></span><br><span class="line"><span class="string">    &quot;movie&quot;: &quot;Interstellar&quot;,</span></span><br><span class="line"><span class="string">    &quot;review&quot;: &#123;</span></span><br><span class="line"><span class="string">      &quot;num_stars&quot;: 5,</span></span><br><span class="line"><span class="string">      &quot;text&quot;: &quot;Amazing movie!&quot;,</span></span><br><span class="line"><span class="string">      &quot;public&quot;: true</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">  &#125;&#x27;</span> \</span><br><span class="line">  http://localhost:8000/reviews</span><br></pre></td></tr></table></figure>
-
-<p>返回：</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;movie&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Interstellar&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;review&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;num_stars&quot;</span><span class="punctuation">:</span> <span class="number">5</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;text&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Amazing movie!&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;public&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>关键参数说明：</p>
-<ul>
-<li><code>-X POST</code>：指定请求方法为 POST</li>
-<li><code>-H &quot;Content-Type: application/json&quot;</code>：声明请求体格式为 JSON</li>
-<li><code>-d &#39;&#123;...&#125;&#39;</code>：请求体数据</li>
-</ul>
-</blockquote>
-<hr>
-<h2 id="九、核心概念"><a href="#九、核心概念" class="headerlink" title="九、核心概念"></a>九、核心概念</h2><table>
-<thead>
-<tr>
-<th>概念</th>
-<th>代码示例</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>GET 路由</td>
-<td><code>@app.get(&quot;/path&quot;)</code></td>
-<td>查询数据</td>
-</tr>
-<tr>
-<td>查询参数</td>
-<td><code>def fn(name: str = &quot;默认值&quot;)</code></td>
-<td>自动解析 URL 参数</td>
-</tr>
-<tr>
-<td>POST 路由</td>
-<td><code>@app.post(&quot;/path&quot;)</code></td>
-<td>创建资源</td>
-</tr>
-<tr>
-<td>Pydantic 模型</td>
-<td><code>class Item(BaseModel)</code></td>
-<td>定义并校验请求体</td>
-</tr>
-<tr>
-<td>嵌套模型</td>
-<td>模型中引用另一个模型</td>
-<td>支持复杂 JSON 结构</td>
-</tr>
-<tr>
-<td>cURL 测试</td>
-<td><code>curl -X POST -d &#39;&#123;...&#125;&#39;</code></td>
-<td>命令行调试接口</td>
-</tr>
-</tbody></table>
-<hr>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>FastAPI 最大的魅力在于：<strong>用最少的代码，做最多的事</strong>。</p>
-<p>只需定义路由函数 + Pydantic 模型，FastAPI 自动搞定：</p>
-<ul>
-<li>参数解析 &amp; 类型转换</li>
-<li>数据合法性校验</li>
-<li>JSON 序列化 &#x2F; 反序列化<br>(在 FastAPI 里你不需要手动做这些——你返回一个 dict，它自动序列化成 JSON；前端发来 JSON，它自动反序列化成 Pydantic 对象。简单说就是”打包发送、拆包接收”，FastAPI 帮你全自动搞定。)</li>
-<li>Swagger（现在叫 OpenAPI） 文档自动生成(简单说就是自动给你的接口生成一个可视化页面能在浏览器里查看和测试所有 API。)</li>
-</ul>
-<hr>
-<h1 id="FastAPI-进阶：从-PUT-DELETE-到-CRUD-API-测试"><a href="#FastAPI-进阶：从-PUT-DELETE-到-CRUD-API-测试" class="headerlink" title="FastAPI 进阶：从 PUT&#x2F;DELETE 到 CRUD API 测试"></a>FastAPI 进阶：从 PUT&#x2F;DELETE 到 CRUD API 测试</h1><blockquote>
-<p>本文对应 DataCamp《Introduction to FastAPI》课程第二节（FastAPI 进阶主题）与第三节（构建并测试 JSON CRUD API）的核心内容，帮助你在掌握基础 GET&#x2F;POST 操作之后，进一步构建生产级别的 API。</p>
-</blockquote>
-<hr>
-<h2 id="第二节：FastAPI-进阶主题"><a href="#第二节：FastAPI-进阶主题" class="headerlink" title="第二节：FastAPI 进阶主题"></a>第二节：FastAPI 进阶主题</h2><h3 id="一、PUT-与-DELETE-操作"><a href="#一、PUT-与-DELETE-操作" class="headerlink" title="一、PUT 与 DELETE 操作"></a>一、PUT 与 DELETE 操作</h3><p>在第一节里，我们学会了用 GET 读取数据、用 POST 创建数据。现在有另外两种 HTTP 操作：</p>
-<ul>
-<li><strong>PUT</strong>：更新已有对象</li>
-<li><strong>DELETE</strong>：删除已有对象</li>
-</ul>
-<p>和 POST 一样，它们都可以从查询字符串（query string）和请求体（request body）中接收参数。关键区别在于——这两种操作需要<strong>引用一个已存在的对象</strong>。</p>
-<h4 id="引用已有对象"><a href="#引用已有对象" class="headerlink" title="引用已有对象"></a>引用已有对象</h4><p>FastAPI 没有内置 ORM，这意味着把 API 请求映射到数据库对象是应用本身的责任。惯例做法是在参数名里包含列名，例如 <code>review_id</code> 表示 <code>reviews</code> 表的主键 ID。</p>
-<p>先定义一个包含数据库标识符的 Pydantic 模型：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pydantic <span class="keyword">import</span> BaseModel</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">DbReview</span>(<span class="title class_ inherited__">BaseModel</span>):</span><br><span class="line">    review_id: <span class="built_in">int</span></span><br><span class="line">    movie_title: <span class="built_in">str</span></span><br><span class="line">    rating: <span class="built_in">float</span></span><br><span class="line">    review_text: <span class="built_in">str</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="实现-PUT-功能"><a href="#实现-PUT-功能" class="headerlink" title="实现 PUT 功能"></a>实现 PUT 功能</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> fastapi <span class="keyword">import</span> FastAPI</span><br><span class="line"></span><br><span class="line">app = FastAPI()</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.put(<span class="params"><span class="string">&quot;/reviews&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">update_review</span>(<span class="params">review: DbReview</span>) -&gt; DbReview:</span><br><span class="line">    <span class="comment"># 将 review 数据更新到数据库</span></span><br><span class="line">    updated = update_review_in_db(review)</span><br><span class="line">    <span class="keyword">return</span> updated</span><br></pre></td></tr></table></figure>
-
-<p><code>@app.put</code> 装饰器告诉 FastAPI 这是一个 PUT 操作。函数接受 <code>DbReview</code> 作为请求体，更新完成后返回同一模型。</p>
-<h4 id="实现-DELETE-功能"><a href="#实现-DELETE-功能" class="headerlink" title="实现 DELETE 功能"></a>实现 DELETE 功能</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.delete(<span class="params"><span class="string">&quot;/reviews&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">delete_review</span>(<span class="params">review: DbReview</span>):</span><br><span class="line">    <span class="comment"># 从数据库中删除对应记录</span></span><br><span class="line">    delete_review_from_db(review)</span><br><span class="line">    <span class="comment"># 删除操作不返回数据，对象已不存在</span></span><br></pre></td></tr></table></figure>
-
-<p>DELETE 端点不返回数据——对象删除之后已经消失了，没有什么可返回的。</p>
-<hr>
-<h3 id="二、错误处理与-HTTP-状态码"><a href="#二、错误处理与-HTTP-状态码" class="headerlink" title="二、错误处理与 HTTP 状态码"></a>二、错误处理与 HTTP 状态码</h3><p>一个好的的 API 不能只处理顺利的操作，还必须要处理各种错误，并始终返回恰当的 HTTP 状态码。</p>
-<h4 id="状态码"><a href="#状态码" class="headerlink" title="状态码"></a>状态码</h4><table>
-<thead>
-<tr>
-<th>范围</th>
-<th>含义</th>
-<th>典型示例</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>2xx</td>
-<td>成功</td>
-<td>200 OK、201 Created、204 No Content</td>
-</tr>
-<tr>
-<td>4xx</td>
-<td>客户端错误</td>
-<td>400 Bad Request、404 Not Found、422 Unprocessable Entity</td>
-</tr>
-<tr>
-<td>5xx</td>
-<td>服务器错误</td>
-<td>500 Internal Server Error</td>
-</tr>
-</tbody></table>
-<h4 id="使用-HTTPException-引出错误"><a href="#使用-HTTPException-引出错误" class="headerlink" title="使用 HTTPException 引出错误"></a>使用 HTTPException 引出错误</h4><p>FastAPI 提供了 <code>HTTPException</code>，让你在任何地方都能轻松返回带有状态码和说明的错误响应：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> fastapi <span class="keyword">import</span> FastAPI, HTTPException</span><br><span class="line"></span><br><span class="line">app = FastAPI()</span><br><span class="line"></span><br><span class="line">fake_db = &#123;<span class="number">1</span>: &#123;<span class="string">&quot;title&quot;</span>: <span class="string">&quot;Inception&quot;</span>, <span class="string">&quot;rating&quot;</span>: <span class="number">9.0</span>&#125;&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.get(<span class="params"><span class="string">&quot;/movies/&#123;movie_id&#125;&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_movie</span>(<span class="params">movie_id: <span class="built_in">int</span></span>):</span><br><span class="line">    <span class="keyword">if</span> movie_id <span class="keyword">not</span> <span class="keyword">in</span> fake_db:</span><br><span class="line">        <span class="keyword">raise</span> HTTPException(</span><br><span class="line">            status_code=<span class="number">404</span>,</span><br><span class="line">            detail=<span class="string">f&quot;Movie with ID <span class="subst">&#123;movie_id&#125;</span> not found.&quot;</span></span><br><span class="line">        )</span><br><span class="line">    <span class="keyword">return</span> fake_db[movie_id]</span><br></pre></td></tr></table></figure>
-
-<p>当请求一个不存在的 ID 时，FastAPI 会自动返回：</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;detail&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Movie with ID 99 not found.&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
-
-<p>这比返回一个 200 状态码但内容为空要更好理解，也让 API 能清楚地知道出了什么问题。</p>
-<hr>
-<h3 id="三、使用-async-处理并发请求"><a href="#三、使用-async-处理并发请求" class="headerlink" title="三、使用 async 处理并发请求"></a>三、使用 async 处理并发请求</h3><p>现代 API 往往需要同时处理大量请求。FastAPI 支持 Python 的 <code>async/await</code> 语法，让你的应用能以更低的消耗应对更高的并发。</p>
-<h4 id="什么时候用-async？"><a href="#什么时候用-async？" class="headerlink" title="什么时候用 async？"></a>什么时候用 async？</h4><ul>
-<li>调用外部 API 或数据库时（I&#x2F;O 密集型操作）</li>
-<li>操作本身有等待时间，而 CPU 其实处于空闲状态时</li>
-</ul>
-<p>如果函数只做纯 CPU 计算（不涉及 I&#x2F;O 等待），则不需要 async。</p>
-<h4 id="异步-DELETE-功能"><a href="#异步-DELETE-功能" class="headerlink" title="异步 DELETE 功能"></a>异步 DELETE 功能</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"><span class="keyword">from</span> fastapi <span class="keyword">import</span> FastAPI</span><br><span class="line"></span><br><span class="line">app = FastAPI()</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.delete(<span class="params"><span class="string">&quot;/reviews&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">delete_review</span>(<span class="params">review: DbReview</span>):</span><br><span class="line">    <span class="comment"># 假设 db_delete 是一个异步数据库操作</span></span><br><span class="line">    <span class="keyword">await</span> db_delete(review.review_id)</span><br></pre></td></tr></table></figure>
-
-<p>加上 <code>async def</code> 和 <code>await</code>，FastAPI 就能在等待数据库响应时继续处理其他请求，显著提升吞吐量。</p>
-<hr>
-<h2 id="第三节：构建并测试-JSON-CRUD-API"><a href="#第三节：构建并测试-JSON-CRUD-API" class="headerlink" title="第三节：构建并测试 JSON CRUD API"></a>第三节：构建并测试 JSON CRUD API</h2><p>掌握了四种 HTTP 操作（GET、POST、PUT、DELETE）和错误处理之后，并组合成一个完整的 <strong>CRUD API</strong>，并学习如何用自动化测试来保障质量。</p>
-<h3 id="一、FastAPI-自动化测试"><a href="#一、FastAPI-自动化测试" class="headerlink" title="一、FastAPI 自动化测试"></a>一、FastAPI 自动化测试</h3><h4 id="单元测试和系统测试"><a href="#单元测试和系统测试" class="headerlink" title="单元测试和系统测试"></a>单元测试和系统测试</h4><table>
-<thead>
-<tr>
-<th>测试类型</th>
-<th>测试范围</th>
-<th>特点</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>单元测试</td>
-<td>单个函数&#x2F;模块</td>
-<td>快速、隔离，不涉及网络</td>
-</tr>
-<tr>
-<td>系统测试</td>
-<td>单个 API 端点</td>
-<td>真实 HTTP 请求，验证端到端行为</td>
-</tr>
-<tr>
-<td>功能测试</td>
-<td>多个端点协作</td>
-<td>模拟真实用户操作流程</td>
-</tr>
-</tbody></table>
-<p>对于 FastAPI，<strong>系统测试</strong>是最常用的测试方式。FastAPI 官方提供了 <code>TestClient</code>（基于 <code>httpx</code>），可以在不启动服务器的情况下发送真实 HTTP 请求。</p>
-<h4 id="编写系统测试"><a href="#编写系统测试" class="headerlink" title="编写系统测试"></a>编写系统测试</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> fastapi.testclient <span class="keyword">import</span> TestClient</span><br><span class="line"><span class="keyword">from</span> main <span class="keyword">import</span> app  <span class="comment"># 导入你的 FastAPI 应用</span></span><br><span class="line"></span><br><span class="line">client = TestClient(app)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_get_movie</span>():</span><br><span class="line">    response = client.get(<span class="string">&quot;/movies/1&quot;</span>)</span><br><span class="line">    <span class="keyword">assert</span> response.status_code == <span class="number">200</span></span><br><span class="line">    <span class="keyword">assert</span> response.json()[<span class="string">&quot;title&quot;</span>] == <span class="string">&quot;Inception&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_get_movie_not_found</span>():</span><br><span class="line">    response = client.get(<span class="string">&quot;/movies/999&quot;</span>)</span><br><span class="line">    <span class="keyword">assert</span> response.status_code == <span class="number">404</span></span><br></pre></td></tr></table></figure>
-
-<p>运行方式：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pytest test_main.py</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h3 id="二、构建完整的-JSON-CRUD-API"><a href="#二、构建完整的-JSON-CRUD-API" class="headerlink" title="二、构建完整的 JSON CRUD API"></a>二、构建完整的 JSON CRUD API</h3><p>以”电影评论”为例子，实现一套完整的 CRUD API。</p>
-<h4 id="定义数据模型"><a href="#定义数据模型" class="headerlink" title="定义数据模型"></a>定义数据模型</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pydantic <span class="keyword">import</span> BaseModel</span><br><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> <span class="type">Optional</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Review</span>(<span class="title class_ inherited__">BaseModel</span>):</span><br><span class="line">    movie_title: <span class="built_in">str</span></span><br><span class="line">    rating: <span class="built_in">float</span></span><br><span class="line">    review_text: <span class="built_in">str</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">DbReview</span>(<span class="title class_ inherited__">Review</span>):</span><br><span class="line">    review_id: <span class="built_in">int</span>  <span class="comment"># 数据库生成的唯一标识</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="四个核心端点"><a href="#四个核心端点" class="headerlink" title="四个核心端点"></a>四个核心端点</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> fastapi <span class="keyword">import</span> FastAPI, HTTPException</span><br><span class="line"></span><br><span class="line">app = FastAPI()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 模拟数据库</span></span><br><span class="line">db: <span class="built_in">dict</span>[<span class="built_in">int</span>, DbReview] = &#123;&#125;</span><br><span class="line">next_id = <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># CREATE — 创建新评论</span></span><br><span class="line"><span class="meta">@app.post(<span class="params"><span class="string">&quot;/reviews&quot;</span>, status_code=<span class="number">201</span></span>)</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">create_review</span>(<span class="params">review: Review</span>) -&gt; DbReview:</span><br><span class="line">    <span class="keyword">global</span> next_id</span><br><span class="line">    new_review = DbReview(review_id=next_id, **review.<span class="built_in">dict</span>())</span><br><span class="line">    db[next_id] = new_review</span><br><span class="line">    next_id += <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> new_review</span><br><span class="line"></span><br><span class="line"><span class="comment"># READ — 读取单条评论</span></span><br><span class="line"><span class="meta">@app.get(<span class="params"><span class="string">&quot;/reviews/&#123;review_id&#125;&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">get_review</span>(<span class="params">review_id: <span class="built_in">int</span></span>) -&gt; DbReview:</span><br><span class="line">    <span class="keyword">if</span> review_id <span class="keyword">not</span> <span class="keyword">in</span> db:</span><br><span class="line">        <span class="keyword">raise</span> HTTPException(status_code=<span class="number">404</span>, detail=<span class="string">&quot;Review not found.&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> db[review_id]</span><br><span class="line"></span><br><span class="line"><span class="comment"># UPDATE — 更新已有的评论</span></span><br><span class="line"><span class="meta">@app.put(<span class="params"><span class="string">&quot;/reviews&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">update_review</span>(<span class="params">review: DbReview</span>) -&gt; DbReview:</span><br><span class="line">    <span class="keyword">if</span> review.review_id <span class="keyword">not</span> <span class="keyword">in</span> db:</span><br><span class="line">        <span class="keyword">raise</span> HTTPException(status_code=<span class="number">404</span>, detail=<span class="string">&quot;Review not found.&quot;</span>)</span><br><span class="line">    db[review.review_id] = review</span><br><span class="line">    <span class="keyword">return</span> review</span><br><span class="line"></span><br><span class="line"><span class="comment"># DELETE — 删除评论</span></span><br><span class="line"><span class="meta">@app.delete(<span class="params"><span class="string">&quot;/reviews&quot;</span>, status_code=<span class="number">204</span></span>)</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">delete_review</span>(<span class="params">review: DbReview</span>):</span><br><span class="line">    <span class="keyword">if</span> review.review_id <span class="keyword">not</span> <span class="keyword">in</span> db:</span><br><span class="line">        <span class="keyword">raise</span> HTTPException(status_code=<span class="number">404</span>, detail=<span class="string">&quot;Review not found.&quot;</span>)</span><br><span class="line">    <span class="keyword">del</span> db[review.review_id]</span><br></pre></td></tr></table></figure>
-
-<p>HTTP 操作与 CRUD 步骤的对应关系：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">POST   → Create（创建）</span><br><span class="line">GET    → Read  （读取）</span><br><span class="line">PUT    → Update（更新）</span><br><span class="line">DELETE → Delete（删除）</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h3 id="三、手动功能测试"><a href="#三、手动功能测试" class="headerlink" title="三、手动功能测试"></a>三、手动功能测试</h3><p>系统测试验证单个端点，而<strong>功能测试</strong>模拟真实用户的完整操作流程——例如”先创建一条评论，再更新它，最后删除它”。</p>
-<p>功能测试通常用 Python 的 <code>requests</code> 库手动编写：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">BASE_URL = <span class="string">&quot;http://localhost:8000&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 步骤 1：创建评论</span></span><br><span class="line">response = requests.post(<span class="string">f&quot;<span class="subst">&#123;BASE_URL&#125;</span>/reviews&quot;</span>, json=&#123;</span><br><span class="line">    <span class="string">&quot;movie_title&quot;</span>: <span class="string">&quot;Inception&quot;</span>,</span><br><span class="line">    <span class="string">&quot;rating&quot;</span>: <span class="number">9.5</span>,</span><br><span class="line">    <span class="string">&quot;review_text&quot;</span>: <span class="string">&quot;一部烧脑的神作&quot;</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">assert</span> response.status_code == <span class="number">201</span></span><br><span class="line">review_id = response.json()[<span class="string">&quot;review_id&quot;</span>]</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot; 创建成功，ID = <span class="subst">&#123;review_id&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 步骤 2：读取评论</span></span><br><span class="line">response = requests.get(<span class="string">f&quot;<span class="subst">&#123;BASE_URL&#125;</span>/reviews/<span class="subst">&#123;review_id&#125;</span>&quot;</span>)</span><br><span class="line"><span class="keyword">assert</span> response.status_code == <span class="number">200</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot; 读取成功：<span class="subst">&#123;response.json()&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 步骤 3：更新评论</span></span><br><span class="line">response = requests.put(<span class="string">f&quot;<span class="subst">&#123;BASE_URL&#125;</span>/reviews&quot;</span>, json=&#123;</span><br><span class="line">    <span class="string">&quot;review_id&quot;</span>: review_id,</span><br><span class="line">    <span class="string">&quot;movie_title&quot;</span>: <span class="string">&quot;Inception&quot;</span>,</span><br><span class="line">    <span class="string">&quot;rating&quot;</span>: <span class="number">9.0</span>,</span><br><span class="line">    <span class="string">&quot;review_text&quot;</span>: <span class="string">&quot;再刷一遍，依然精彩。&quot;</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">assert</span> response.status_code == <span class="number">200</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot; 更新成功：<span class="subst">&#123;response.json()&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 步骤 4：删除评论</span></span><br><span class="line">response = requests.delete(<span class="string">f&quot;<span class="subst">&#123;BASE_URL&#125;</span>/reviews&quot;</span>, json=&#123;</span><br><span class="line">    <span class="string">&quot;review_id&quot;</span>: review_id,</span><br><span class="line">    <span class="string">&quot;movie_title&quot;</span>: <span class="string">&quot;Inception&quot;</span>,</span><br><span class="line">    <span class="string">&quot;rating&quot;</span>: <span class="number">9.0</span>,</span><br><span class="line">    <span class="string">&quot;review_text&quot;</span>: <span class="string">&quot;再刷一遍，依然精彩。&quot;</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">assert</span> response.status_code == <span class="number">204</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot; 删除成功&quot;</span>)</span><br></pre></td></tr></table></figure>
-
-<h4 id="系统测试-vs-功能测试"><a href="#系统测试-vs-功能测试" class="headerlink" title="系统测试 vs 功能测试"></a>系统测试 vs 功能测试</h4><table>
-<thead>
-<tr>
-<th>对比维度</th>
-<th>系统测试</th>
-<th>功能测试</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>测试粒度</td>
-<td>单个端点</td>
-<td>多个端点协作</td>
-</tr>
-<tr>
-<td>工具</td>
-<td><code>TestClient</code> (pytest)</td>
-<td><code>requests</code> (手动运行)</td>
-</tr>
-<tr>
-<td>速度</td>
-<td>快</td>
-<td>相对慢</td>
-</tr>
-<tr>
-<td>适用场景</td>
-<td>CI&#x2F;CD 自动化</td>
-<td>验证真实业务流程</td>
-</tr>
-</tbody></table>
-<hr>
-<h2 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h2><ol>
-<li><strong>PUT &amp; DELETE</strong>：掌握更新和删除操作，理解对象引用的重要性</li>
-<li><strong>错误处理</strong>：用 <code>HTTPException</code> 返回语义明确的状态码，让 API 更健壮</li>
-<li><strong>async</strong>：用异步编程提升并发处理能力，应对高负载场景</li>
-<li><strong>系统测试</strong>：用 <code>TestClient</code> 自动化验证每个端点</li>
-<li><strong>完整 CRUD API</strong>：将四种 HTTP 操作串联成一个完整的数据生命周期管理系统</li>
-<li><strong>功能测试</strong>：模拟真实用户流程，验证端点之间的协作</li>
-</ol>
-<hr>
-<p>*参考资料：DataCamp《Introduction to FastAPI》课程 · FastAPI 官方文档 </p>
-
-      
+      <section class="reference-section reference-features" aria-labelledby="traits-title">
+        <div class="reference-section__title"><h2 id="traits-title">个人特点</h2></div>
+        <div class="reference-feature-grid">
+          <article><span class="reference-feature-icon" aria-hidden="true">⌘</span><h3>探索驱动</h3><p>持续关注 AI 与大模型应用，从新工具、新框架和真实问题中寻找答案。</p></article>
+          <article><span class="reference-feature-icon" aria-hidden="true">◇</span><h3>动手实践</h3><p>把抽象概念放进代码和项目里验证，记录能复用的思路，也记录失败与取舍。</p></article>
+          <article><span class="reference-feature-icon" aria-hidden="true">✎</span><h3>技术写作</h3><p>把 RAG、Agent、Python 与云服务拆成清晰的学习路径。</p></article>
+          <article><span class="reference-feature-icon" aria-hidden="true">∴</span><h3>工程思维</h3><p>关心代码的可维护性、产品体验，以及每一个方案背后的取舍。</p></article>
+          <article><span class="reference-feature-icon" aria-hidden="true">↗</span><h3>开放分享</h3><p>把实战中的经验、问题和解决过程留下来，方便后来者少走弯路。</p></article>
+          <article><span class="reference-feature-icon" aria-hidden="true">∞</span><h3>持续学习</h3><p>保持对新知识的好奇，认真理解原理，也关心它如何落地。</p></article>
+        </div>
+      </section>
     </div>
-    <footer class="article-footer">
-      <a data-url="https://wenjiajun-wn.github.io/2026/06/15/Fast%20api/" data-id="cmqgien2d00008c7k6oix389i" data-title="Fast api" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Fast-api%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" rel="tag">Fast api的基础知识</a></li></ul>
 
-    </footer>
+    <aside class="reference-aside" aria-label="作者信息">
+      <section class="reference-author"><figure><img src="/images/author-photo.jpg" alt="作者头像"></figure><h2>WN</h2><p>喜欢探索 AI，愿意分享实战经验的开发者。</p></section>
+      <section class="reference-stats" aria-label="站点数据"><a href="/archives"><strong>20</strong><span>文章</span></a><a href="/archives"><strong>5</strong><span>专题</span></a><a href="/tags/LLM"><strong>AI</strong><span>探索</span></a></section>
+      <section class="reference-skills"><h2>我的技能</h2><div><span>AI 应用开发</span><span>RAG 与 Agent</span><span>Python</span><span>FastAPI</span><span>AWS 云服务</span><span>技术写作</span></div></section>
+      <section class="reference-calendar" aria-label="今年进度"><time datetime="2026-09-10">2026年9月10日（星期四）</time><p>今年已过去 <strong>69.28%</strong></p><span aria-hidden="true"><i style="width:69.28%"></i></span></section>
+      <section class="reference-quick"><h2>快速阅读</h2><a href="/archives">文章归档 <span>→</span></a><a href="/tags/LLM">大模型与 RAG <span>→</span></a><a href="/tags/AI-Agent">Agent 实战 <span>→</span></a><a href="/tags/AWS">云服务笔记 <span>→</span></a></section>
+    </aside>
   </div>
-  
-</article>
+</main>
 
-
-
-  
-    <article id="post-AI Agents with Hugging Face smolagents" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2026/06/12/AI%20Agents%20with%20Hugging%20Face%20smolagents/" class="article-date">
-  <time class="dt-published" datetime="2026-06-11T16:00:00.000Z" itemprop="datePublished">2026-06-12</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/06/12/AI%20Agents%20with%20Hugging%20Face%20smolagents/">用 Hugging Face smolagents 打造智能 AI Agent</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>AI Agent（AI 代理）正在改变我们与软件互动的方式。过去，我们给 LLM 一个问题，它回答；现在，Agent 能够搜索数据、推理、执行代码，甚至主动完成复杂任务。本篇博客整理 <strong>smolagents</strong> 框架的四大核心主题并学习多代理系统的设计</p>
-<h2 id="一、Introduction-to-Hugging-Face-smolagents"><a href="#一、Introduction-to-Hugging-Face-smolagents" class="headerlink" title="一、Introduction to Hugging Face smolagents"></a>一、Introduction to Hugging Face smolagents</h2><p>具体网址：<a target="_blank" rel="noopener" href="https://huggingface.co/docs/hub/index">Hugging Face Hub 文档</a></p>
-<h3 id="什么是-smolagents？"><a href="#什么是-smolagents？" class="headerlink" title="什么是 smolagents？"></a>什么是 smolagents？</h3><p>smolagents 是 Hugging Face 开发的<strong>轻量级 Python 框架</strong>，专为构建能够推理与行动的 AI Agent 而设计。它的核心理念是让 LLM 不只是”回答问题”，而是能够<strong>生成并执行 Python 代码</strong>来完成任务。</p>
-<h3 id="两种核心-Agent-类型"><a href="#两种核心-Agent-类型" class="headerlink" title="两种核心 Agent 类型"></a>两种核心 Agent 类型</h3><table>
-<thead>
-<tr>
-<th>类型</th>
-<th>说明</th>
-<th>行动方式</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>CodeAgent</strong></td>
-<td>smolagents 的主要 Agent 类型</td>
-<td>生成并执行 Python 代码</td>
-</tr>
-<tr>
-<td><strong>ToolCallingAgent</strong></td>
-<td>第二种 Agent 类型</td>
-<td>输出 JSON&#x2F;文本格式，由系统解析后执行</td>
-</tr>
-</tbody></table>
-<p>CodeAgent 的优势在于它直接输出可执行的代码，逻辑更灵活、更强大；ToolCallingAgent 则更适合需要严格结构化输出的场景。</p>
-<h3 id="Tools（工具）：Agent-的行动工具"><a href="#Tools（工具）：Agent-的行动工具" class="headerlink" title="Tools（工具）：Agent 的行动工具"></a>Tools（工具）：Agent 的行动工具</h3><p>Tool是 Agent 能够调用的函数，是 Agent 的基本组成。smolagents 提供三种方式定义工具：</p>
-<ol>
-<li><strong>内置工具箱</strong>：如 <code>DuckDuckGoSearchTool</code>、<code>VisitWebpageTool</code> 等DuckDuckGoSearchTool：调用 DuckDuckGo 搜索引擎，帮 Agent 上网搜东西。相当于 Agent 的”百度一下”，不用 API Key，免费用<br>VisitWebpageTool：打开一个网页，把里面的文字内容抓回来。搜到结果后点进去看具体内容，相当于 Agent 的”打开网页看一眼”</li>
-<li><strong><code>@tool</code> 装饰器</strong>：把一般函数变成 Agent 可调用的工具</li>
-<li><strong>继承 <code>Tool</code> 类</strong>：更完整的自定义工具实现</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> smolagents <span class="keyword">import</span> CodeAgent, DuckDuckGoSearchTool, InferenceClientModel</span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化工具与模型</span></span><br><span class="line">search_tool = DuckDuckGoSearchTool()</span><br><span class="line">model = InferenceClientModel()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建 Agent</span></span><br><span class="line">agent = CodeAgent(</span><br><span class="line">    model=model,</span><br><span class="line">    tools=[search_tool],</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行任务</span></span><br><span class="line">response = agent.run(<span class="string">&quot;帮我找最新的 AI 代理技术发展&quot;</span>)</span><br></pre></td></tr></table></figure>
-
-<p>工具也可以分享到 Hugging Face Hub，或加载社区贡献的工具，形成开放的工具生态系统。</p>
-<h3 id="为什么选择-smolagents？"><a href="#为什么选择-smolagents？" class="headerlink" title="为什么选择 smolagents？"></a>为什么选择 smolagents？</h3><ul>
-<li><strong>轻量</strong>：核心逻辑精简，容易理解与修改</li>
-<li><strong>与模型无关</strong>：支持 HF Inference、OpenAI、Ollama、vLLM 等多种后端，一行切换</li>
-<li><strong>安全执行</strong>：代码可以在 Docker、E2B、WebAssembly sandbox 沙箱中隔离执行</li>
-<li><strong>生态完整</strong>：深度整合 Hugging Face Hub，工具与模型唾手可得</li>
-</ul>
-<h2 id="二、Agenti-RAG-and-Multi-Step-Agents"><a href="#二、Agenti-RAG-and-Multi-Step-Agents" class="headerlink" title="二、Agenti RAG and Multi-Step Agents"></a>二、Agenti RAG and Multi-Step Agents</h2><h3 id="传统的-RAG-限制"><a href="#传统的-RAG-限制" class="headerlink" title="传统的 RAG 限制"></a>传统的 RAG 限制</h3><p>传统 RAG 的流程是：一次查询 → 一次检索 → 生成答案。这在面对复杂问题时容易出现”检索不够精准”或”信息不足”的困境，因为它无法根据中间结果动态调整搜索策略。</p>
-<h3 id="Agent-RAG：让-Agent-主动检索"><a href="#Agent-RAG：让-Agent-主动检索" class="headerlink" title="Agent RAG：让 Agent 主动检索"></a>Agent RAG：让 Agent 主动检索</h3><p>Agentic RAG 赋予 Agent 自主决策的能力：</p>
-<ul>
-<li><strong>自主重构查询</strong>：根据问题语义，自动生成更精确的搜索词</li>
-<li><strong>迭代式检索</strong>：分多步骤从不同来源获取信息</li>
-<li><strong>批判性评估</strong>：自动判断检索结果是否足够，决定是否再次搜索</li>
-<li><strong>多来源整合</strong>：同时结合网络搜索与本地知识库</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> smolagents <span class="keyword">import</span> CodeAgent, DuckDuckGoSearchTool, InferenceClientModel</span><br><span class="line"></span><br><span class="line">agent = CodeAgent(</span><br><span class="line">    model=InferenceClientModel(),</span><br><span class="line">    tools=[DuckDuckGoSearchTool()],</span><br><span class="line">    max_steps=<span class="number">4</span>,          <span class="comment"># 允许多步推理</span></span><br><span class="line">    verbosity_level=<span class="number">2</span>,    <span class="comment"># 显示详细推理过程</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-
-<h3 id="规划间隔（Planning-Intervals）"><a href="#规划间隔（Planning-Intervals）" class="headerlink" title="规划间隔（Planning Intervals）"></a>规划间隔（Planning Intervals）</h3><p>在多步骤任务中，可以设定让 Agent 定期”停下来想一想”——评估目前进度、调整接下来的行动策略，避免一直盲目执行而偏离目标。</p>
-<h3 id="回溯机制-Callbacks-：实时监控-Agent-行为"><a href="#回溯机制-Callbacks-：实时监控-Agent-行为" class="headerlink" title="回溯机制(Callbacks)：实时监控 Agent 行为"></a>回溯机制(Callbacks)：实时监控 Agent 行为</h3><p>通过 Callback 机制，可以在 Agent 执行的每个步骤插入自定义逻辑，用于：</p>
-<ul>
-<li>实时追踪执行状态</li>
-<li>记录 Token 使用量与延迟</li>
-<li>在特定条件下中断或修改行为</li>
-</ul>
-<h3 id="Stateful-Tools（有状态工具）"><a href="#Stateful-Tools（有状态工具）" class="headerlink" title="Stateful Tools（有状态工具）"></a>Stateful Tools（有状态工具）</h3><p>有别于一般无状态函数，Stateful Tool 能在多步骤任务中维持内部状态，例如记住上一步的检索结果，让后续步骤可以接续使用，大幅提升复杂任务的效率。</p>
-<h2 id="三、Multi-Agent-Systems"><a href="#三、Multi-Agent-Systems" class="headerlink" title="三、Multi-Agent Systems"></a>三、Multi-Agent Systems</h2><h3 id="为什么需要多代理系统？"><a href="#为什么需要多代理系统？" class="headerlink" title="为什么需要多代理系统？"></a>为什么需要多代理系统？</h3><p>单一 Agent 处理复杂任务时能力有限，以及 Context 窗口有限。多代理系统通过<strong>分工合作</strong>解决这个问题：把复杂任务拆分给专业 Agent，各司其职，再由 Manager Agent 协调整合。</p>
-<h3 id="架构设计：Manager-管理-Specialist-专家"><a href="#架构设计：Manager-管理-Specialist-专家" class="headerlink" title="架构设计：Manager(管理) + Specialist(专家)"></a>架构设计：Manager(管理) + Specialist(专家)</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Manager Agent</span><br><span class="line">├── Web Search Agent（网络搜索）</span><br><span class="line">│   ├── DuckDuckGoSearchTool</span><br><span class="line">│   └── VisitWebpageTool</span><br><span class="line">├── Code Interpreter（代码执行）</span><br><span class="line">└── Retriever Agent（知识库查询）</span><br></pre></td></tr></table></figure>
-
-<p>Manager Agent 负责拆解任务、指派子任务给各专业 Agent，并整合最终结果。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> smolagents <span class="keyword">import</span> CodeAgent, InferenceClientModel</span><br><span class="line"></span><br><span class="line">model = InferenceClientModel(<span class="string">&quot;Qwen/Qwen2.5-Coder-32B-Instruct&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建专业子 Agent</span></span><br><span class="line">web_agent = CodeAgent(</span><br><span class="line">    model=model,</span><br><span class="line">    tools=[GoogleSearchTool(), VisitWebpageTool()],</span><br><span class="line">    name=<span class="string">&quot;web_agent&quot;</span>,</span><br><span class="line">    description=<span class="string">&quot;负责浏览网络并搜集信息&quot;</span>,</span><br><span class="line">    max_steps=<span class="number">10</span>,</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Manager Agent 管理子 Agent</span></span><br><span class="line">manager_agent = CodeAgent(</span><br><span class="line">    model=model,</span><br><span class="line">    tools=[web_agent],  <span class="comment"># 子 Agent 作为工具</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-
-<h3 id="典型的多代理-RAG-系统"><a href="#典型的多代理-RAG-系统" class="headerlink" title="典型的多代理 RAG 系统"></a>典型的多代理 RAG 系统</h3><p>一个完整的多代理 RAG 系统可能包含：</p>
-<ul>
-<li><strong>Web Agent</strong>：负责搜索网络最新信息</li>
-<li><strong>Retriever Agent</strong>：查询本地知识库或向量数据库</li>
-<li><strong>Image Generation Agent</strong>：按需求生成图像</li>
-<li><strong>Manager Agent</strong>：整合所有子 Agent 的输出</li>
-</ul>
-<p>这种架构适合需要跨领域知识整合的复杂任务。</p>
-<h2 id="四、Memory-and-Validation"><a href="#四、Memory-and-Validation" class="headerlink" title="四、Memory and Validation"></a>四、Memory and Validation</h2><h3 id="Memory：让-Agent-记住对话的上下文"><a href="#Memory：让-Agent-记住对话的上下文" class="headerlink" title="Memory：让 Agent 记住对话的上下文"></a>Memory：让 Agent 记住对话的上下文</h3><p>没有记忆的 Agent 每次对话都是”从零开始”，无法处理追问或多轮任务。smolagents 的记忆系统让 Agent 能够：</p>
-<ul>
-<li>保留对话历史，自然处理追问</li>
-<li>记住已完成的步骤，避免重复工作</li>
-<li>根据过往互动调整策略</li>
-</ul>
-<p>Memory 以步骤形式序列化存储，包含时间戳与 Token 使用量等元数据，方便后续分析。</p>
-<h3 id="执行追踪（Execution-Traces）"><a href="#执行追踪（Execution-Traces）" class="headerlink" title="执行追踪（Execution Traces）"></a>执行追踪（Execution Traces）</h3><p>除了记忆，smolagents 还提供详细的执行追踪：</p>
-<ul>
-<li><strong>推理步骤记录</strong>：完整保留 Agent 每一步的思考过程</li>
-<li><strong>Debug 辅助</strong>：当 Agent 行为异常时，可以逐步回放推理过程找出问题</li>
-<li><strong>性能分析</strong>：了解哪些步骤耗时、哪些工具调用最频繁</li>
-</ul>
-<h3 id="Validation（输出验证）"><a href="#Validation（输出验证）" class="headerlink" title="Validation（输出验证）"></a>Validation（输出验证）</h3><p>Agent 的输出不一定永远正确，验证机制是确保可靠性的关键环节：</p>
-<p><strong>常见验证方法：</strong></p>
-<ol>
-<li><strong>结果相关性验证</strong>：确认检索到的信息确实回答了问题</li>
-<li><strong>格式验证</strong>：确保输出符合预期的数据结构</li>
-<li><strong>事实一致性检查</strong>：交叉比对多个来源的信息</li>
-<li><strong>Fallback 机制</strong>：当主要方法失败时，启动备用策略</li>
-</ol>
-<p><strong>错误恢复：</strong></p>
-<p>smolagents 内置错误日志与重试机制，让 Agent 在遇到工具调用失败或结果不佳时，能自动尝试替代方案，而不是直接中断任务。</p>
-<h2 id="总结：smolagents-的核心设计哲学"><a href="#总结：smolagents-的核心设计哲学" class="headerlink" title="总结：smolagents 的核心设计哲学"></a>总结：smolagents 的核心设计哲学</h2><table>
-<thead>
-<tr>
-<th>主题</th>
-<th>核心概念</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>基础框架</strong></td>
-<td>CodeAgent 以 Python 代码为行动语言，Tool 是行为积木</td>
-</tr>
-<tr>
-<td><strong>Agentic RAG</strong></td>
-<td>迭代式、多步骤的智能检索，取代一次性的静态查询</td>
-</tr>
-<tr>
-<td><strong>多代理系统</strong></td>
-<td>Manager 协调 Specialist，分工合作处理复杂工作流</td>
-</tr>
-<tr>
-<td><strong>记忆与验证</strong></td>
-<td>跨轮次记忆 + 执行追踪 + 验证策略，确保可靠输出</td>
-</tr>
-</tbody></table>
-<p>smolagents 的设计是框架本身保持轻量，让开发者能够完全理解其运作原理，同时通过工具生态与多代理协作，支撑起现实中的复杂应用场景。</p>
-<p>无论是自动化数据的工作流还是智能文档问答系统，或者跨领域的研究助理，smolagents 都可以提供一个清晰、灵活、可扩展的起点。</p>
-<hr>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://wenjiajun-wn.github.io/2026/06/12/AI%20Agents%20with%20Hugging%20Face%20smolagents/" data-id="cmqaskkua00009k7kbkn866zc" data-title="用 Hugging Face smolagents 打造智能 AI Agent" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AI-Agent/" rel="tag">AI-Agent</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/smolagents/" rel="tag">smolagents</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-ai_assistant(3)" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2026/06/04/ai_assistant(3)/" class="article-date">
-  <time class="dt-published" datetime="2026-06-03T16:00:00.000Z" itemprop="datePublished">2026-06-04</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/06/04/ai_assistant(3)/">一个可以提取图片中重要信息并分成优先级的ai助手</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="第四版"><a href="#第四版" class="headerlink" title="第四版"></a>第四版</h2><h3 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h3><h4 id="云服务器-47-84-108-154-8080"><a href="#云服务器-47-84-108-154-8080" class="headerlink" title="云服务器 47.84.108.154:8080"></a>云服务器 <code>47.84.108.154:8080</code></h4><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">calendar_server.py              Flask Web 服务</span><br><span class="line">├── /                           日历主页（Session 认证）</span><br><span class="line">├── /login                      登录/注册页</span><br><span class="line">├── /api/auth/register          注册 API → users 表</span><br><span class="line">├── /api/auth/login             登录 API → Session</span><br><span class="line">├── /api/auth/me                查询当前用户</span><br><span class="line">├── /api/auth/save-config       保存 user_config.json（本地用）</span><br><span class="line">├── /api/events                 CRUD 日历事件 → events 表</span><br><span class="line">├── /api/events/batch           批量导入（截图 AI 用）</span><br><span class="line">├── /api/import/ics             导入 .ics 文件</span><br><span class="line">└── /api/scan-temp              扫描临时目录 AI 生成文件</span><br><span class="line"></span><br><span class="line">database.py                     SQLite 数据层</span><br><span class="line">├── _get_db()                   数据库连接（WAL 模式）</span><br><span class="line">├── init_db()                   建表 + JSON 自动迁移</span><br><span class="line">├── load_events(email)          读事件</span><br><span class="line">├── save_events(email, evts)    写事件（DELETE + INSERT）</span><br><span class="line">├── hash_password(pw)           SHA-256 哈希</span><br><span class="line">├── create_user(email, pw)      注册 → 返回 api_token</span><br><span class="line">├── verify_password(email, pw)  验证 → 返回状态 + token</span><br><span class="line">└── get_user_by_token(tk)       Token → 用户邮箱</span><br><span class="line"></span><br><span class="line">data/calendar_data.db           SQLite 数据库</span><br><span class="line">├── events 表                   (id, user_id, title, date, ...)</span><br><span class="line">└── users 表                    (email, password_hash, api_token)</span><br></pre></td></tr></table></figure>
-
-<h4 id="用户电脑"><a href="#用户电脑" class="headerlink" title="用户电脑"></a>用户电脑</h4><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">hotkey_screenshot.py            截图监听程序</span><br><span class="line">├── 启动后读取文件user_config.json</span><br><span class="line">├── 无 Token则打开浏览器注册页 → 等网页保存配置</span><br><span class="line">├── 有 Token则轮询剪贴板</span><br><span class="line">├── 检测到图片 → Pillow 处理 → DashScope AI 分析</span><br><span class="line">├── POST /api/events/batch（X-API-Token 认证）</span><br><span class="line">└── 成功 → 自动打开浏览器日历</span><br><span class="line"></span><br><span class="line">user_config.json                配置文件（自动生成）</span><br><span class="line">.env                            API Key（不上传 Git）</span><br><span class="line">env_template                    .env 模板（可分发）</span><br><span class="line">run.bat                         本地一键启动</span><br><span class="line">build_exe.bat                   PyInstaller 打包脚本</span><br></pre></td></tr></table></figure>
-
-<h3 id="认证方式"><a href="#认证方式" class="headerlink" title="认证方式"></a>认证方式</h3><p>项目中有两种认证方式：</p>
-<ul>
-<li><strong>浏览器</strong> → Cookie + Session（登录后自动）</li>
-<li><strong>exe 客户端</strong> → <code>X-API-Token</code> Header（注册时自动获取并保存）</li>
-<li>注册界面<br><img src="/images/screenshot-register.png" alt="注册界面"></li>
-</ul>
-<h4 id="Cookie"><a href="#Cookie" class="headerlink" title="Cookie"></a>Cookie</h4><p>Cookie 是浏览器里存的一小段数据，每次发请求时自动带在 HTTP Header 里。例如：</p>
-<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Cookie: session_id=a8f3c9d2e1...</span><br></pre></td></tr></table></figure>
-
-<p>特点：</p>
-<ul>
-<li>存在<strong>用户浏览器</strong>端</li>
-<li>每次请求自动携带，不需要代码手动加</li>
-<li>可以设置过期时间</li>
-</ul>
-<h4 id="Session"><a href="#Session" class="headerlink" title="Session"></a>Session</h4><p>Session 是<strong>服务端</strong>存的数据，用来记住”这个用户是谁、登录了没有”。例如：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">session[<span class="string">&#x27;user&#x27;</span>] = <span class="string">&#x27;zhangsan@example.com&#x27;</span>  <span class="comment"># 登录后存进去</span></span><br></pre></td></tr></table></figure>
-
-<p>特点：</p>
-<ul>
-<li>存在服务器端（Flask 默认加密存在 Cookie 里，也可以存 Redis&#x2F;数据库）</li>
-<li>用户拿不到、改不了，安全</li>
-<li>登出时 <code>session.clear()</code> 删掉即可</li>
-</ul>
-<p><strong>Cookie + Session 的配合流程：</strong></p>
-<ol>
-<li>用户输入密码登录</li>
-<li>服务器验证通过 → 创建 Session（存用户信息）→ 返回一个 Session ID</li>
-<li>浏览器把 Session ID 存到 Cookie 里</li>
-<li>之后每次请求，浏览器自动在 Cookie 里带上 Session ID</li>
-<li>服务器根据 Session ID 查到 Session 数据 → 知道是谁在操作</li>
-</ol>
-<h4 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h4><p>Redis 是一个<strong>内存数据库</strong>，数据存在内存里而不是硬盘上，所以读写极快。</p>
-<p>Session 的存储方式之一就是 Redis：</p>
-<table>
-<thead>
-<tr>
-<th>存储方式</th>
-<th>特点</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Flask 默认（加密 Cookie）</td>
-<td>简单，但数据量受限</td>
-</tr>
-<tr>
-<td>Redis</td>
-<td>快、支持分布式、服务器重启数据不丢</td>
-</tr>
-<tr>
-<td>SQLite&#x2F;MySQL</td>
-<td>持久化，但比 Redis 慢</td>
-</tr>
-</tbody></table>
-<p>简单记住：<strong>Cookie 是浏览器存的通行证，Session 是服务器存的用户档案，Redis 是存放这些档案的高速柜子。</strong><br>注册一次 → exe 后台跑 → 截图 → AI 分析 → 自动推送到云端 → 浏览器实时看到</p>
-<h4 id="新增-Mac-使用步骤"><a href="#新增-Mac-使用步骤" class="headerlink" title="新增 Mac 使用步骤"></a>新增 Mac 使用步骤</h4><p>Mac 用户不能运行 exe 文件，因此提供了一个 <code>run_mac.command</code> 启动脚本，双击即可使用。</p>
-<p>使用前需先安装依赖：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install pillow python-dotenv openai</span><br></pre></td></tr></table></figure>
-
-<p>这相当于 Windows 上的 <code>pip install</code>——从 PyPI 下载安装所需的 Python 包（类似 App Store 装软件）。装完之后双击 <code>run_mac.command</code> 就能启动截图监听。</p>
-<h4 id="服务端部署（Termius）"><a href="#服务端部署（Termius）" class="headerlink" title="服务端部署（Termius）"></a>服务端部署（Termius）</h4><p>使用 <strong>Termius</strong>（SSH 客户端）连接阿里云服务器进行部署。每次更新代码后，需要重新上传并重启服务：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 停止旧服务</span></span><br><span class="line">pkill -f calendar_server.py</span><br><span class="line"></span><br><span class="line"><span class="comment"># 后台启动新服务</span></span><br><span class="line"><span class="built_in">nohup</span> python3 calendar_server.py 0.0.0.0 8080 &gt; calendar.log 2&gt;&amp;1 &amp;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><code>pkill -f</code>：根据进程名杀掉旧的 calendar_server 进程</li>
-<li><code>nohup ... &amp;</code>：后台运行服务，关闭终端也不会中断</li>
-<li><code>&gt; calendar.log 2&gt;&amp;1</code>：把输出和错误日志都写入 <code>calendar.log</code>，方便排查问题</li>
-</ul>
-<p>更新流程：本地改代码 → SFTP 上传到服务器 → 执行上面两条命令重启服务。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://wenjiajun-wn.github.io/2026/06/04/ai_assistant(3)/" data-id="cmqdst9uq0003mo7kajkh23pp" data-title="一个可以提取图片中重要信息并分成优先级的ai助手" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ai-assistant-3/" rel="tag">ai_assistant(3)</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-ai_assistant(2)" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2026/06/03/ai_assistant(2)/" class="article-date">
-  <time class="dt-published" datetime="2026-06-02T16:00:00.000Z" itemprop="datePublished">2026-06-03</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/06/03/ai_assistant(2)/">一个可以提取图片中重要信息并分成优先级的ai助手</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="第三版：日历网页"><a href="#第三版：日历网页" class="headerlink" title="第三版：日历网页"></a>第三版：日历网页</h2><h3 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h3><p>第三版的项目目录如下：</p>
-<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">assitant_vision/</span><br><span class="line">├── calendar_server.py    # Flask 日历网页 + API（前后端一体）</span><br><span class="line">├── hotkey_screenshot.py  # 截图监听（Win+Shift+S → AI → 日历）</span><br><span class="line">├── app.py                # Streamlit 手动上传界面</span><br><span class="line">├── run.bat               # 一键启动脚本</span><br><span class="line">└── .env                  # API 密钥</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/screenshot-streamlit-upload.png" alt="截图"></p>
-<p>Streamlit 手动上传界面</p>
-<p><img src="/images/screenshot-streamlit-ui.png" alt="截图"></p>
-<h3 id="架构流程图"><a href="#架构流程图" class="headerlink" title="架构流程图"></a>架构流程图</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">graph TB</span><br><span class="line">    subgraph 输入层</span><br><span class="line">        A[Win+Shift+S 截图] --&gt; B[keyboard 热键监听]</span><br><span class="line">        C[Streamlit 上传] --&gt; D[app.py]</span><br><span class="line">    end</span><br><span class="line"></span><br><span class="line">    subgraph AI层</span><br><span class="line">        B --&gt; E[win32clipboard 读剪贴板]</span><br><span class="line">        E --&gt; F[Qwen-VL-Max&lt;br/&gt;视觉大模型]</span><br><span class="line">        D --&gt; F</span><br><span class="line">        F --&gt; G[一段话总结&lt;br/&gt;+ 截止日提取]</span><br><span class="line">    end</span><br><span class="line"></span><br><span class="line">    subgraph 存储层</span><br><span class="line">        G --&gt; H[push_to_calendar_server]</span><br><span class="line">        H --&gt; I[&quot;POST /api/events/batch&quot;]</span><br><span class="line">        I --&gt; J[(calendar_data.json)]</span><br><span class="line">        J -.-&gt; K[(pending_todos.json&lt;br/&gt;离线兜底)]</span><br><span class="line">    end</span><br><span class="line"></span><br><span class="line">    subgraph 展示层</span><br><span class="line">        J --&gt; L[&quot;GET /api/events&quot;]</span><br><span class="line">        L --&gt; M[calendar_server.py&lt;br/&gt;Flask + 原生 HTML/CSS/JS]</span><br><span class="line">        M --&gt; N[月/周/日视图&lt;br/&gt;左侧栏事项列表&lt;br/&gt;优先级切换 + 批量删除]</span><br><span class="line">        H --&gt; O[首次自动打开浏览器]</span><br><span class="line">    end</span><br></pre></td></tr></table></figure>
-
-<p>整体流程：截图 → 剪贴板 → AI 总结（80字内）→ 提取截止日 → POST JSON → 日历网页 ≤3秒自动刷新。</p>
-<p>项目提供两个入口：</p>
-<ul>
-<li>**<code>run.bat</code>**：双击日常使用，后台截图监听</li>
-<li>**<code>streamlit run app.py</code>**：终端手动上传已有图片</li>
-</ul>
-<h3 id="功能效果"><a href="#功能效果" class="headerlink" title="功能效果"></a>功能效果</h3><ul>
-<li><strong>截图触发</strong>：Win+Shift+S → 键盘钩子检测 → 读剪贴板选区</li>
-<li><strong>AI 总结</strong>：一张截图 → 一段 80 字内的简洁总结</li>
-<li><strong>截止日识别</strong>：自动从总结中提取日期（6月20日 &#x2F; 明天 &#x2F; 下周五等），放到对应日历格子</li>
-<li><strong>日历网页</strong>：月&#x2F;周&#x2F;日视图，左侧边栏当天事项，全屏自适应</li>
-<li><strong>自动推送</strong>：AI 分析完直接推送到日历，无需任何手动操作</li>
-<li><strong>浏览器唤醒</strong>：首次推送自动打开日历网页</li>
-<li><strong>优先级切换</strong>：点击圆点循环切换 普通&#x2F;重要&#x2F;紧急，颜色+标签同步</li>
-<li><strong>批量删除</strong>：侧边栏复选框 + 删除所选</li>
-<li><strong>去重防重复</strong>：哈希 + 尺寸去重 + 5秒冷却 + 单实例文件锁</li>
-</ul>
-<p>完整流程：Win+Shift+S 截图选区域 → AI 一句总结 → 提取截止日 → 自动推送到日历 → 浏览器弹出显示。</p>
-<h2 id="关键技术概念"><a href="#关键技术概念" class="headerlink" title="关键技术概念"></a>关键技术概念</h2><h3 id="哈希"><a href="#哈希" class="headerlink" title="哈希"></a>哈希</h3><p>哈希是一种将任意长度的数据（比如文件、文本、数字）转换成固定长度短字符串的算法。这个短字符串通常被称为哈希值，相当于给数据一个独一无二的”指纹”——相同的数据永远返回相同的哈希值，而且计算速度很快。</p>
-<p>哈希的主要用途：</p>
-<ul>
-<li><strong>数据去重</strong>：比较哈希值判断内容是否重复</li>
-<li><strong>密码储存</strong>：只存哈希值，不存明文密码</li>
-<li><strong>文件完整性校验</strong>：对比下载前后哈希值是否一致</li>
-<li><strong>哈希表&#x2F;字典</strong>：编程语言中的 Map、Object、Dict 都用哈希来快速定位键值对</li>
-</ul>
-<h3 id="单实例文件锁"><a href="#单实例文件锁" class="headerlink" title="单实例文件锁"></a>单实例文件锁</h3><p>单实例文件锁是一种并发控制&#x2F;互斥机制，确保同一时间整个系统<strong>只有一个进程（或线程）</strong>在执行核心的去重+处理逻辑。它使用操作系统提供的文件锁（flock、LockFile 等）来锁住一个约定的锁文件。</p>
-<p>进程启动时尝试获取锁：</p>
-<ul>
-<li>成功获取 → 成为<strong>单实例</strong>，继续执行</li>
-<li>获取失败 → 说明已经有另一个实例在运行，当前进程直接退出或等待</li>
-</ul>
-<p>在分布式或多进程环境下，文件锁能防止多个进程同时修改状态、同时处理同一个内容，导致重复处理或数据错乱。它是一种<strong>轻量级的单实例保障</strong>。</p>
-<h3 id="防重复流程"><a href="#防重复流程" class="headerlink" title="防重复流程"></a>防重复流程</h3><p>一个典型的完整防重复流程如下：</p>
-<ol>
-<li><p><strong>获取单实例文件锁</strong><br>确保同一时间只有一个处理实例在运行。如果拿不到锁，直接退出。</p>
-</li>
-<li><p><strong>检查尺寸 + 哈希</strong><br>计算文件的尺寸和哈希值，在去重记录表（比如 Redis、数据库、本地缓存）中查找是否存在该组合。</p>
-<ul>
-<li>若存在 → 判定为重复，结束处理</li>
-<li>若不存在 → 记录该尺寸+哈希，然后继续处理</li>
-</ul>
-</li>
-<li><p><strong>5秒冷却检查</strong><br>对于刚刚处理过的内容，在去重记录表里额外记录一个”处理时间戳”。如果当前时间与上次处理时间差 &lt; 5 秒，则直接拒绝（即使尺寸+哈希相同）。<br>实际中常把冷却时间整合到去重记录的过期时间中（例如键值对设置 TTL &#x3D; 5 秒）。</p>
-</li>
-<li><p><strong>执行业务处理</strong>（如下载、入库、通知等）</p>
-</li>
-<li><p><strong>更新冷却标记</strong><br>设置该内容的最后处理时间为当前时间，并保留 5 秒。</p>
-</li>
-</ol>
-<h3 id="API-设计"><a href="#API-设计" class="headerlink" title="API 设计"></a>API 设计</h3><p>采用 RESTful 风格设计：</p>
-<table>
-<thead>
-<tr>
-<th>方法</th>
-<th>路径</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>GET</td>
-<td><code>/api/events</code></td>
-<td>获取所有事件</td>
-</tr>
-<tr>
-<td>POST</td>
-<td><code>/api/events</code></td>
-<td>创建单个事件</td>
-</tr>
-<tr>
-<td>POST</td>
-<td><code>/api/events/batch</code></td>
-<td>批量导入（AI 推送入口）</td>
-</tr>
-<tr>
-<td>PUT</td>
-<td><code>/api/events/&lt;id&gt;</code></td>
-<td>更新事件（改颜色&#x2F;优先级）</td>
-</tr>
-<tr>
-<td>DELETE</td>
-<td><code>/api/events/&lt;id&gt;</code></td>
-<td>删除单个事件</td>
-</tr>
-<tr>
-<td>DELETE</td>
-<td><code>/api/events/batch</code></td>
-<td>批量删除（传 IDs）</td>
-</tr>
-<tr>
-<td>POST</td>
-<td><code>/api/pending/import</code></td>
-<td>导入离线暂存</td>
-</tr>
-</tbody></table>
-<h3 id="核心函数调用链"><a href="#核心函数调用链" class="headerlink" title="核心函数调用链"></a>核心函数调用链</h3><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">main()</span><br><span class="line">└─ keyboard.add_hotkey(&#x27;win+shift+s&#x27;, process_screenshot)</span><br><span class="line">     └─ win32clipboard 读图</span><br><span class="line">           └─ pil_to_base64()</span><br><span class="line">               └─ client.chat.completions.create()  ← Qwen-VL</span><br><span class="line">                     └─ parse_chinese_date()  ← 提取截止日</span><br><span class="line">                          └─ push_to_calendar_server()</span><br><span class="line">                               └─ POST /api/events/batch</span><br><span class="line">                                   └─ open_calendar()  ← 唤醒浏览器</span><br></pre></td></tr></table></figure>
-
-<p><code>win32clipboard</code> 是 pywin32 库的剪贴板模块，直接调用 Windows 底层 API 读取剪贴板里的图片数据。之前用 PIL 自带的 <code>ImageGrab.grabclipboard()</code> 在后台进程里读不到剪贴板，换成 <code>win32clipboard</code> 才解决。核心逻辑就三行：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">win32clipboard.OpenClipboard()                              <span class="comment"># 打开剪贴板</span></span><br><span class="line">data = win32clipboard.GetClipboardData(CF_DIB)              <span class="comment"># 读取图片原始数据</span></span><br><span class="line">win32clipboard.CloseClipboard()                             <span class="comment"># 关闭</span></span><br><span class="line">img = Image.<span class="built_in">open</span>(BytesIO(data))                             <span class="comment"># 转成 PIL 图片</span></span><br></pre></td></tr></table></figure>
-
-<p>PIL（Pillow）是 Python 最常用的图像处理库，用来做图片的读取、压缩、格式转换：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Image.<span class="built_in">open</span>(BytesIO(data))                    <span class="comment"># 读取剪贴板原始数据转图片</span></span><br><span class="line">image.save(buf, <span class="built_in">format</span>=<span class="string">&quot;JPEG&quot;</span>, quality=<span class="number">85</span>)   <span class="comment"># 图片压缩转 base64 发给 AI</span></span><br><span class="line">img.tobytes()                                <span class="comment"># 计算图片 MD5 去重</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="新增多用户支持"><a href="#新增多用户支持" class="headerlink" title="新增多用户支持"></a>新增多用户支持</h3><p>数据层上，JSON 结构从 <code>[&#123;event&#125;]</code> 升级为 <code>&#123;&quot;events&quot;:&#123;&quot;userA&quot;:[],&quot;userB&quot;:[]&#125;&#125;</code>，旧数据自动迁移。API 加上 <code>?user=</code> 参数隔离不同用户。</p>
-<p>前端 JS 添加 <code>USER_ID</code> 常量，<code>fetch()</code> URL 追加 <code>?user=</code>，页面标题显示用户名。</p>
-<p>客户端 <code>hotkey_screenshot.py</code> 读取 <code>user_config.json</code>，推送和浏览器 URL 带用户参数。</p>
-<h3 id="打包与部署"><a href="#打包与部署" class="headerlink" title="打包与部署"></a>打包与部署</h3><ul>
-<li>**<code>build_exe.bat</code>**：PyInstaller 一键打包脚本</li>
-<li>**<code>user_config.json</code>**：用户配置模板（用户名 + 服务器地址）</li>
-<li><strong><code>.env</code> 模板</strong>：不含 API Key，用户自己申请</li>
-</ul>
-<p>部署使用阿里云轻量服务器，通过 Termius 连接，SFTP 上传文件。</p>
-<h3 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h3><p>使用 SQLite 轻量数据库（Python 内置），替换了原来的 JSON 存储方案。新增两个核心函数：</p>
-<ul>
-<li>**<code>_get_db()</code>**：创建数据库连接，开启 WAL 模式（允许并发读写）</li>
-<li>**<code>_init_db()</code>**：建表 + 检测旧的 <code>calendar_data.json</code> 自动迁移</li>
-</ul>
-<p>自动迁移机制：<code>_init_db()</code> 启动时会检查是否存在旧文件 <code>calendar_data.json</code>。如果存在，自动把数据导入 SQLite，然后把 JSON 文件重命名为 <code>calendar_data.json.migrated</code>，不会重复迁移。</p>
-<h3 id="新增登录界面（-login）"><a href="#新增登录界面（-login）" class="headerlink" title="新增登录界面（/login）"></a>新增登录界面（<code>/login</code>）</h3><p>新增 <code>users</code> 表 + 注册&#x2F;登录 API：</p>
-<table>
-<thead>
-<tr>
-<th>方法</th>
-<th>路径</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>POST</td>
-<td><code>/api/auth/register</code></td>
-<td>注册：输入用户名+密码，创建账号</td>
-</tr>
-<tr>
-<td>POST</td>
-<td><code>/api/auth/login</code></td>
-<td>登录：验证密码，写入 Session</td>
-</tr>
-<tr>
-<td>POST</td>
-<td><code>/api/auth/logout</code></td>
-<td>登出：清除 Session</td>
-</tr>
-<tr>
-<td>GET</td>
-<td><code>/api/auth/me</code></td>
-<td>查询当前登录状态</td>
-</tr>
-</tbody></table>
-<p><strong>Session</strong> 数据存在服务端（Flask 默认存在加密的 Cookie 里，也可以存 Redis&#x2F;数据库），浏览器只持有一个 Session ID（一串随机字符），不存实际数据，因此安全。</p>
-<p>权限控制：</p>
-<ul>
-<li>没登录 → 自动跳转到 <code>/login</code></li>
-<li>已登录 → 显示自己的日历</li>
-</ul>
-<p>每个 API 原来从 URL <code>?user=xxx</code> 读用户，现在从 Session 读取：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 原来</span></span><br><span class="line">user = request.args.get(<span class="string">&quot;user&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 现在</span></span><br><span class="line">user = session[<span class="string">&#x27;user&#x27;</span>]  <span class="comment"># 浏览器登录后自动携带</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="exe-客户端怎么认证？"><a href="#exe-客户端怎么认证？" class="headerlink" title="exe 客户端怎么认证？"></a>exe 客户端怎么认证？</h3><p>浏览器用 Cookie&#x2F;Session，exe 用 API Token：</p>
-<ol>
-<li>注册成功后会给一个 32 位随机 Token，写在 <code>user_config.json</code> 里</li>
-<li>exe 每次请求在 HTTP Header 里带上 <code>X-API-Token: xxx</code></li>
-<li>服务端就能识别是谁在推送</li>
-</ol>
-<h2 id="用户使用流程"><a href="#用户使用流程" class="headerlink" title="用户使用流程"></a>用户使用流程</h2><h3 id="首次使用"><a href="#首次使用" class="headerlink" title="首次使用"></a>首次使用</h3><ol>
-<li>打开网页 → 自动跳转登录页 → 点击”注册”</li>
-<li>输入用户名 + 密码 → 注册成功</li>
-<li>复制 API Token → 填到 exe 的 <code>user_config.json</code> 中</li>
-<li>之后打开网页就自动登录了</li>
-</ol>
-<p>拿到 exe 后的操作：</p>
-<ol>
-<li>双击 <code>AI-TODO-Assistant.exe</code></li>
-<li>首次运行弹出提示，输入用户名 + 密码</li>
-<li>自动尝试登录 → 没账号就自动注册 → Token 自动保存</li>
-<li>窗口显示 “Setup complete! Starting…”</li>
-<li>按 <code>Win+Shift+S</code> 截图即可使用</li>
-</ol>
-<h3 id="日常使用"><a href="#日常使用" class="headerlink" title="日常使用"></a>日常使用</h3><ul>
-<li>打开网页 → 已登录，直接看到日历</li>
-<li>截图 → exe 用 Token 推送 → 日历自动刷新</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://wenjiajun-wn.github.io/2026/06/03/ai_assistant(2)/" data-id="cmqdst9uj0000mo7k7voz84dh" data-title="一个可以提取图片中重要信息并分成优先级的ai助手" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ai-assistant-2/" rel="tag">ai_assistant(2)</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-ai_assistant" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2026/05/25/ai_assistant/" class="article-date">
-  <time class="dt-published" datetime="2026-05-24T16:00:00.000Z" itemprop="datePublished">2026-05-25</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/05/25/ai_assistant/">一个可以提取图片中重要信息并分成优先级的ai助手</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="项目概述"><a href="#项目概述" class="headerlink" title="项目概述"></a>项目概述</h2><p>日常工作中截图里有很多待办信息，手动录入日历太麻烦，所以想用 AI 自动化。</p>
-<p>项目的本质是：用户截图或上传图片 → OCR 提取文字 → 交给 AI 大模型分析总结 → 最终提取出待办事项。</p>
-<h2 id="技术选型"><a href="#技术选型" class="headerlink" title="技术选型"></a>技术选型</h2><p><strong>OCR</strong>（光学字符识别，Optical Character Recognition）是一种能把图片、扫描件或纸质文档上的文字”翻译”成电子设备可以编辑、搜索的文本的技术。</p>
-<p>我们需要强大的 OCR 来处理图片，因此选择了 PaddleOCR。相比传统 OCR 工具，PaddleOCR 的优势在于：</p>
-<ul>
-<li>基于深度学习架构，识别精度很高</li>
-<li>支持的语言库庞大</li>
-<li>传统的 OCR 只能逐字读出文字，而 PaddleOCR-VL 系列模型可以看懂文档的复杂排版</li>
-<li>极其轻量化，部署成本低</li>
-</ul>
-<p>下一步就是把提取出来的文字交给 AI 大模型分析，比如 DeepSeek、ChatGPT 等。需要注意的是，如果使用 ChatGPT 可以简化 OCR 步骤，因为它具有 Vision（视觉）模型，能直接从图片中识别文字。AI 分析后会返回 JSON 格式的结构化数据，例如：</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">[</span></span><br><span class="line">  <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;task&quot;</span><span class="punctuation">:</span><span class="string">&quot;提交毕业论文&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;priority&quot;</span><span class="punctuation">:</span><span class="string">&quot;high&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;deadline&quot;</span><span class="punctuation">:</span><span class="string">&quot;2026-05-26&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;category&quot;</span><span class="punctuation">:</span><span class="string">&quot;学习&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">]</span></span><br></pre></td></tr></table></figure>
-
-<p>返回 JSON 的好处是结构化——程序可以直接用 <code>对象.属性</code> 或 <code>数组[索引]</code> 的方式读取数据，前后端都能轻松处理，更加轻量化。</p>
-<p>前端使用 <strong>Streamlit</strong>，它是一个开源的 Python 框架，可以快速将 Python 脚本转化为交互式 Web 应用。只需 <code>pip install streamlit</code>，然后使用内置函数就能创建页面和交互组件：</p>
-<ul>
-<li><code>st.title</code>：定义页面标题</li>
-<li><code>st.button</code>：触发交互操作</li>
-<li><code>st.dataframe</code>：展示核心数据表格</li>
-</ul>
-<h2 id="第一版：手动上传截图"><a href="#第一版：手动上传截图" class="headerlink" title="第一版：手动上传截图"></a>第一版：手动上传截图</h2><p>初代 ai_assitant 的流程框架：</p>
-<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">用户上传截图</span><br><span class="line">    ↓</span><br><span class="line">OCR 识别文字</span><br><span class="line">    ↓</span><br><span class="line">大模型分析内容</span><br><span class="line">    ↓</span><br><span class="line">提取 TODO</span><br><span class="line">    ↓</span><br><span class="line">生成 JSON</span><br><span class="line">    ↓</span><br><span class="line">保存 SQLite</span><br><span class="line">    ↓</span><br><span class="line">Web 界面展示</span><br></pre></td></tr></table></figure>
-
-<h2 id="第二版：截图自动识别"><a href="#第二版：截图自动识别" class="headerlink" title="第二版：截图自动识别"></a>第二版：截图自动识别</h2><p>第二版本的架构：</p>
-<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">截图 (Win+Shift+S)</span><br><span class="line">        │</span><br><span class="line">        ▼</span><br><span class="line">┌─────────────────────────┐</span><br><span class="line">│  hotkey_screenshot.py   │  ← 主力入口，后台常驻</span><br><span class="line">│  · 轮询剪贴板 (1s)       │</span><br><span class="line">│  · MD5 去重 + 互斥锁     │</span><br><span class="line">│  · 图片压缩 base64       │</span><br><span class="line">└───────────┬─────────────┘</span><br><span class="line">            │ base64 + prompt</span><br><span class="line">            ▼</span><br><span class="line">┌─────────────────────────┐</span><br><span class="line">│  DashScope qwen-vl-max  │  ← AI 视觉分析</span><br><span class="line">│  · 截图 → 待办列表       │</span><br><span class="line">└───────────┬─────────────┘</span><br><span class="line">            │ Markdown</span><br><span class="line">            ▼</span><br><span class="line">┌─────────────────────────┐</span><br><span class="line">│  parse_todos_from_md()  │  ← 解析层</span><br><span class="line">│  · 正则提取 优先级/任务   │</span><br><span class="line">│  · 中文日期 → ISO 格式   │</span><br><span class="line">└───────────┬─────────────┘</span><br><span class="line">            │ [&#123;title, date, priority&#125;]</span><br><span class="line">            ▼</span><br><span class="line">┌─────────────────────────┐</span><br><span class="line">│  calendar_sync.py       │  ← 日历同步</span><br><span class="line">│  ① Outlook COM 静默写入  │     主路径</span><br><span class="line">│  ② .ics 文件兜底        │     降级</span><br><span class="line">└───────────┬─────────────┘</span><br><span class="line">            │</span><br><span class="line">            ▼</span><br><span class="line">    📅 Outlook 日历 → 📱 手机同步</span><br></pre></td></tr></table></figure>
-
-<p>─────────────────────</p>
-<p><img src="/images/screenshot-2026-05-28.png" alt="截图"></p>
-<p>自动提取后导入到日历中的效果图</p>
-<h3 id="剪贴板与图片预处理"><a href="#剪贴板与图片预处理" class="headerlink" title="剪贴板与图片预处理"></a>剪贴板与图片预处理</h3><p><code>ImageGrab.grabclipboard()</code> 是 Windows 专有 API，能直接从剪贴板拿到 PIL Image 对象——不需要保存文件到磁盘，也不需要用户选择路径。</p>
-<p><strong>MD5 去重</strong>：MD5 是一种哈希算法，能将任意长度的数据（比如一张图片、一段文字）计算成一个固定 128 位（32 个十六进制字符）的”指纹”。Windows 截图工具对同一张图不会重复放入剪贴板，但微信&#x2F;QQ 截图可能会。对整张图的 <code>tobytes()</code> 做 MD5，比存 PIL Image 对象更省内存。</p>
-<p><strong>图片预处理</strong>（<code>pil_to_base64</code>）：</p>
-<ul>
-<li>长边超过 2048px 等比缩放，控制传输体积</li>
-<li>RGBA&#x2F;P 模式转 RGB，避免 JPEG 编码报错</li>
-<li><code>quality=85</code>，在体积和清晰度之间取平衡</li>
-</ul>
-<p><strong>processing 标志</strong>：防止 AI 分析期间（可能 5-10 秒）重复触发。外层 <code>while True</code> 捕获所有异常，内层 <code>last_hash = None</code> 重置确保出错后下一次能重新尝试。</p>
-<h3 id="Vision-LLM-与-Prompt"><a href="#Vision-LLM-与-Prompt" class="headerlink" title="Vision LLM 与 Prompt"></a>Vision LLM 与 Prompt</h3><p>关于 Vision LLM 的选择：刚开始试用的是 DeepSeek，后来发现它不是多模态模型，于是换成了阿里云的 <strong>qwen-vl-max</strong>。也可以使用 GPT-4V 等，但需要注意 GPT 的 Vision 模型需要网络代理，而且成本较高。</p>
-<p>Prompt 的设计思路：</p>
-<ul>
-<li>逐区域扫描 → 列出每个任务 &#x2F; @提及 &#x2F; 会议 &#x2F; 截止日期 &#x2F; 代码 TODO</li>
-<li>即使只有模糊线索也要列出（对抗模型”偷懒”倾向）</li>
-<li>按 紧急 → 重要 → 普通 三级分类</li>
-<li>统一 Markdown 输出格式</li>
-</ul>
-<p>后续在 Prompt 设计上更新了一些指令——“逐区域扫描”、”即使只有一条模糊的任务线索也要列出来”。这些指令是对模型”偷懒”倾向的对抗，实际测试中发现不加这些约束，模型经常直接回复”没有待办事项”。</p>
-<h3 id="日历同步"><a href="#日历同步" class="headerlink" title="日历同步"></a>日历同步</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">outlook = win32com.client.Dispatch(<span class="string">&quot;Outlook.Application&quot;</span>)</span><br><span class="line">appt = outlook.CreateItem(<span class="number">1</span>)           <span class="comment"># olAppointmentItem</span></span><br><span class="line">appt.Subject = <span class="string">f&quot;[<span class="subst">&#123;priority&#125;</span>] <span class="subst">&#123;title&#125;</span>&quot;</span></span><br><span class="line">appt.Start = <span class="string">&quot;2026-05-28 00:00&quot;</span></span><br><span class="line">appt.End   = <span class="string">&quot;2026-05-28 23:59&quot;</span></span><br><span class="line">appt.AllDayEvent = <span class="literal">True</span></span><br><span class="line">appt.ReminderSet = <span class="literal">True</span></span><br><span class="line">appt.ReminderMinutesBeforeStart = <span class="number">15</span>   <span class="comment"># 提前15分钟提醒</span></span><br><span class="line">appt.Save()</span><br></pre></td></tr></table></figure>
-
-<p>写入默认日历，无弹窗。</p>
-<p><code>appt.Save()</code> 直接入库，不像 <code>.ics</code> 方案需要弹出日历窗口让用户确认。事件会自动同步到手机——只要 iPhone&#x2F;Android 上登录了同一个 Outlook&#x2F;Exchange 账号。</p>
-<p><code>add_to_calendar()</code> 先通过 <code>outlook.Name</code> 探测 COM 是否真正可用，任何异常都静默降级到 <code>.ics</code> 方案。</p>
-<blockquote>
-<p>COM 是微软的一套二进制接口标准，Windows 剪贴板、OLE 拖放、自动化等都建立在它之上。</p>
-</blockquote>
-<h3 id="设计原则"><a href="#设计原则" class="headerlink" title="设计原则"></a>设计原则</h3><ul>
-<li><strong>零依赖云服务</strong>：不依赖任何外部账号体系。唯一的外部 API 是 DashScope（AI 分析）</li>
-<li><strong>静默优先</strong>：后台运行时不弹控制台（<code>clipboard_watcher.vbs</code> 用 <code>pythonw.exe</code> 启动），成功&#x2F;失败都走 Toast 通知，不打断用户工作流</li>
-<li><strong>渐进降级</strong>：Outlook COM → <code>.ics</code> 文件 → 下载按钮。每条路径都有兜底，没有单点故障</li>
-<li><strong>模块复用</strong>：<code>calendar_sync.py</code> 的 <code>add_to_calendar()</code> 同时服务于 <code>hotkey_screenshot.py</code>（后台监听）和 <code>app.py</code>（Web UI），一套逻辑两处复用</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://wenjiajun-wn.github.io/2026/05/25/ai_assistant/" data-id="cmqdst9un0001mo7k1tp012ow" data-title="一个可以提取图片中重要信息并分成优先级的ai助手" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ai-assistant/" rel="tag">ai_assistant</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-hello-world" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2026/05/24/hello-world/" class="article-date">
-  <time class="dt-published" datetime="2026-05-24T09:23:02.129Z" itemprop="datePublished">2026-05-24</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/05/24/hello-world/">Hello World</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://wenjiajun-wn.github.io/2026/05/24/hello-world/" data-id="cmpjoqhp400019g7k15thhb65" data-title="Hello World" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-基于agent生成一个可以联网回答问题的机器人" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2026/05/24/%E5%9F%BA%E4%BA%8Eagent%E7%94%9F%E6%88%90%E4%B8%80%E4%B8%AA%E5%8F%AF%E4%BB%A5%E8%81%94%E7%BD%91%E5%9B%9E%E7%AD%94%E9%97%AE%E9%A2%98%E7%9A%84%E6%9C%BA%E5%99%A8%E4%BA%BA/" class="article-date">
-  <time class="dt-published" datetime="2026-05-23T16:00:00.000Z" itemprop="datePublished">2026-05-24</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/05/24/%E5%9F%BA%E4%BA%8Eagent%E7%94%9F%E6%88%90%E4%B8%80%E4%B8%AA%E5%8F%AF%E4%BB%A5%E8%81%94%E7%BD%91%E5%9B%9E%E7%AD%94%E9%97%AE%E9%A2%98%E7%9A%84%E6%9C%BA%E5%99%A8%E4%BA%BA/">基于agent生成一个联网回答问题的机器人</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>首先是导入好需要的模块</p>
-<pre><code class="import">import io
-import os
-import requests
-from dotenv import load_dotenv
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding=&#39;utf-8&#39;)```
-其中sys,io,os是python中的标准库，用于系统操作，文件路径，输入输出等等
-requests：用于发送HTTP的请求，本质上是用来调用百度搜索的API
-dotenv：是读取.env中的环境变量，就是API密钥
-sys.stdout：这个是为了强制把控制台输出编码设置为UTF-8
-
-
-```from langchain_openai import ChatOpenAI
-from langchain.agents import create_agent
-from langchain.tools import tool```
-ChatOpenAI：是用来接入OpenAI 格式的 API
-create_agent：是LangChain 1.0 中创建智能体的函数
-tool：是把普通函数变为LangChain的可用工具，是一个装饰器
-
-```load_dotenv()```
-是从.env文件中读取密钥的东西
-
-两个工具：calculator(数学计算表达式)和web_search(通过百度 AI 搜索 API 获取实时信息)，其中LangChain 的 create_agent，负责调用模型和工具，具体流程就是用户问“上海天气如何” → Agent 把问题发给 DeepSeek → 模型根据 system_prompt 判断需要搜索 → 调用     web_search 工具 → 百度 API 返回天气信息 → 模型组织回答 → 用户收到结果
-
-其中有些注意事项：
-1、百度的API每天只有100次的免费额度
-2、假如模型不调用工具时可以在命令行更改强制调用工具，也可以调整system_prompt或者更换更强力的模型
-3、.env中的密钥在自己上传代码前需要忽略掉避免自己的API泄露
-
-怎么成功忽略? 
-第一步先初始化Git仓库： git init
-第二步： 创建 .gitignore 文件(一定是在根目录下创建)，然后再里面添加
-``` .env
-   __pycache__/
-   *.pyc
-   .vscode/
-   .idea/```
-第三部：创建 .env.example 文件，其中要包含
-     DEEPSEEK_API_KEY=your_deepseek_api_key_here
-     BAIDU_API_KEY=your_baidu_api_key_here
-</code></pre>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://wenjiajun-wn.github.io/2026/05/24/%E5%9F%BA%E4%BA%8Eagent%E7%94%9F%E6%88%90%E4%B8%80%E4%B8%AA%E5%8F%AF%E4%BB%A5%E8%81%94%E7%BD%91%E5%9B%9E%E7%AD%94%E9%97%AE%E9%A2%98%E7%9A%84%E6%9C%BA%E5%99%A8%E4%BA%BA/" data-id="cmqaskkuk00059k7kbfx6dc67" data-title="基于agent生成一个联网回答问题的机器人" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/chatting-robot/" rel="tag">chatting robot</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-AI-agent的看法" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2026/05/23/AI-agent%E7%9A%84%E7%9C%8B%E6%B3%95/" class="article-date">
-  <time class="dt-published" datetime="2026-05-23T13:09:26.000Z" itemprop="datePublished">2026-05-23</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/05/23/AI-agent%E7%9A%84%E7%9C%8B%E6%B3%95/">AI agent的看法</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="AI-Agent-的看法"><a href="#AI-Agent-的看法" class="headerlink" title="AI Agent 的看法"></a>AI Agent 的看法</h1><blockquote>
-<p>本文从个人理解出发，介绍 Agent 的基本构成，以及 ReAct 架构、TAO 循环两大重要理论和护栏机制在其中的作用。</p>
-</blockquote>
-<hr>
-<h2 id="1-什么是-Agent"><a href="#1-什么是-Agent" class="headerlink" title="1 什么是 Agent"></a>1 什么是 Agent</h2><p>我认为 Agent 主要就是一个可以进行思考、规划、使用工具，且执行行动后能从得到的结果中获取反馈的一个 AI：</p>
-<blockquote>
-<p>Agent &#x3D; LLM 大模型（类似大脑） + 规划的能力 + 能使用工具 + 行动的接口</p>
-</blockquote>
-<ul>
-<li><strong>规划能力</strong>：可以将我们提出的复杂问题拆分成解决问题的每一个优先级步骤</li>
-<li><strong>工具使用</strong>：能调用搜索引擎、API 等等外部的工具</li>
-<li><strong>执行行动</strong>：在我们规划好的范围内，人为不进行干预，让 AI 自主完成实现代码的运行</li>
-</ul>
-<hr>
-<h2 id="2-重要理论"><a href="#2-重要理论" class="headerlink" title="2 重要理论"></a>2 重要理论</h2><p>其中 Agent 有一些重要的理论，比如：ReAct 架构、TAO 循环。</p>
-<h3 id="2-1-ReAct-架构"><a href="#2-1-ReAct-架构" class="headerlink" title="2.1 ReAct 架构"></a>2.1 ReAct 架构</h3><p>ReAct 架构（reasoning + acting，推理加行动），就是让 AI 不只是拥有文本输出，而是像人一样边思考边行动。</p>
-<h3 id="2-2-TAO-循环"><a href="#2-2-TAO-循环" class="headerlink" title="2.2 TAO 循环"></a>2.2 TAO 循环</h3><p>TAO 循环拥有三个主要的模块：Thought（思考）、Action（行动）、Observation（观测）</p>
-<ul>
-<li><strong>Thought（思考）</strong>：AI 接受到人类指令时，会进行思考然后计划下一步开始做什么，并且分析当前的状况，推理出需要的信息，最后决定采取什么行动</li>
-<li><strong>Action（行动）</strong>：AI 在思考中进行的决定，它会调用搜索工具，查询 SQL，或者进行计算，与外部进行互动</li>
-<li><strong>Observation（观测）</strong>：AI 接收并分析行动的反馈结果，如果结果不理想，循环就会再次启动，进行新一轮的思考-行动-观测</li>
-</ul>
-<p>ReAct 架构的本质是推理-行动-观测三者的循环迭代。ReAct 架构的设计理念就是定义了一个让 AI 能够思考-行动-观测的行为模式。TAO 循环是实现 ReAct 的具体运转步骤，是这个模式的代称。</p>
-<hr>
-<h2 id="3-护栏（Guardrails）"><a href="#3-护栏（Guardrails）" class="headerlink" title="3 护栏（Guardrails）"></a>3 护栏（Guardrails）</h2><p>护栏（Guardrails）：强大的 AI 需要设置安全的边界，防止 AI 失控。</p>
-<p>react-cycle-guard：它正是 ReAct 循环与护栏概念在代码层面的结合，一个用来检测和防止 React 组件陷入无限渲染循环的护栏，而且能确保 UI 的稳定。</p>
-<hr>
-<h2 id="4-总结"><a href="#4-总结" class="headerlink" title="4 总结"></a>4 总结</h2><blockquote>
-<p>总结：TAO 循环是让 AI 变”活”的运转模式，护栏是确保 AI 变”稳”的安全机制。</p>
-</blockquote>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://wenjiajun-wn.github.io/2026/05/23/AI-agent%E7%9A%84%E7%9C%8B%E6%B3%95/" data-id="cmpjoqhp000009g7k1pci84wa" data-title="AI agent的看法" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ai-agent/" rel="tag">ai agent</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-git的基础语法" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2026/05/23/git%E7%9A%84%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/" class="article-date">
-  <time class="dt-published" datetime="2026-05-22T16:00:00.000Z" itemprop="datePublished">2026-05-23</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/05/23/git%E7%9A%84%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/">git的基础语法</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="git-的基础语法"><a href="#git-的基础语法" class="headerlink" title="git 的基础语法"></a>git 的基础语法</h1><blockquote>
-<p>本文整理 git 最常用的基础命令，涵盖目录查看、仓库初始化、暂存与提交、差异比较以及撤销与恢复，适合作为日常使用的速查参考。</p>
-</blockquote>
-<hr>
-<h2 id="1-基本操作"><a href="#1-基本操作" class="headerlink" title="1 基本操作"></a>1 基本操作</h2><h3 id="1-1-目录与版本查看"><a href="#1-1-目录与版本查看" class="headerlink" title="1.1 目录与版本查看"></a>1.1 目录与版本查看</h3><table>
-<thead>
-<tr>
-<th>命令</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>pwd</code></td>
-<td>打印当前的工作目录</td>
-</tr>
-<tr>
-<td><code>cd</code></td>
-<td>移动到指定目录</td>
-</tr>
-<tr>
-<td><code>ls</code></td>
-<td>列出目录下的文件</td>
-</tr>
-<tr>
-<td><code>git --version</code></td>
-<td>查看 git 的版本</td>
-</tr>
-<tr>
-<td><code>git status</code></td>
-<td>查看当前仓库的状态</td>
-</tr>
-<tr>
-<td><code>git log</code></td>
-<td>查看提交历史</td>
-</tr>
-<tr>
-<td><code>git log -2</code></td>
-<td>仅查看最近两个提交的信息</td>
-</tr>
-<tr>
-<td><code>git log --since</code></td>
-<td>查看自某个日期以来的提交</td>
-</tr>
-</tbody></table>
-<h3 id="1-2-初始化、暂存与提交"><a href="#1-2-初始化、暂存与提交" class="headerlink" title="1.2 初始化、暂存与提交"></a>1.2 初始化、暂存与提交</h3><table>
-<thead>
-<tr>
-<th>命令</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>git init</code></td>
-<td>初始化一个 git 仓库</td>
-</tr>
-<tr>
-<td><code>git add .</code></td>
-<td>只需一个命令，将两个修改过的文件添加到暂存区</td>
-</tr>
-<tr>
-<td><code>git commit -m</code></td>
-<td>提交变更，并在命令中附带日志消息</td>
-</tr>
-</tbody></table>
-<h3 id="1-3-查看差异"><a href="#1-3-查看差异" class="headerlink" title="1.3 查看差异"></a>1.3 查看差异</h3><table>
-<thead>
-<tr>
-<th>命令</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>git diff</code></td>
-<td>查看文件的修改内容</td>
-</tr>
-<tr>
-<td><code>git diff --staged</code></td>
-<td>将最后提交的版本与暂存区的版本进行比较</td>
-</tr>
-<tr>
-<td><code>git diff report.md</code></td>
-<td>查看 report.md 文件的修改内容</td>
-</tr>
-<tr>
-<td><code>git diff HEAD~1 HEAD~2</code></td>
-<td>比较最近两次提交之间的差异</td>
-</tr>
-</tbody></table>
-<h3 id="1-4-撤销与恢复"><a href="#1-4-撤销与恢复" class="headerlink" title="1.4 撤销与恢复"></a>1.4 撤销与恢复</h3><table>
-<thead>
-<tr>
-<th>命令</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>git revert</code></td>
-<td>撤销一个提交</td>
-</tr>
-<tr>
-<td><code>git checkout</code></td>
-<td>切换分支或恢复工作树文件</td>
-</tr>
-<tr>
-<td><code>git restore --staged</code></td>
-<td>将文件从暂存区恢复到工作区</td>
-</tr>
-<tr>
-<td><code>git revert HEAD --no-edit</code></td>
-<td>撤销最近的提交，并使用默认的提交消息</td>
-</tr>
-</tbody></table>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://wenjiajun-wn.github.io/2026/05/23/git%E7%9A%84%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/" data-id="cmpjoqhp900049g7kabd6f3h8" data-title="git的基础语法" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/" rel="tag">git</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-
-
-  <nav id="page-nav">
-    
-    <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
-  </nav>
-
-</section>
-        
-          <aside id="sidebar">
-  
-    
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-Agent/" rel="tag">AI-Agent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AWS/" rel="tag">AWS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Fast-api%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" rel="tag">Fast api的基础知识</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Fast-api%E7%9A%84%E8%BF%9B%E9%98%B6%E7%9F%A5%E8%AF%86/" rel="tag">Fast api的进阶知识</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LLM/" rel="tag">LLM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-agent/" rel="tag">ai agent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-assistant/" rel="tag">ai_assistant</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-assistant-2/" rel="tag">ai_assistant(2)</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-assistant-3/" rel="tag">ai_assistant(3)</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/chatting-robot/" rel="tag">chatting robot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/smolagents/" rel="tag">smolagents</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/AI-Agent/" style="font-size: 10px;">AI-Agent</a> <a href="/tags/AWS/" style="font-size: 15px;">AWS</a> <a href="/tags/Fast-api%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" style="font-size: 10px;">Fast api的基础知识</a> <a href="/tags/Fast-api%E7%9A%84%E8%BF%9B%E9%98%B6%E7%9F%A5%E8%AF%86/" style="font-size: 10px;">Fast api的进阶知识</a> <a href="/tags/LLM/" style="font-size: 20px;">LLM</a> <a href="/tags/ai-agent/" style="font-size: 10px;">ai agent</a> <a href="/tags/ai-assistant/" style="font-size: 10px;">ai_assistant</a> <a href="/tags/ai-assistant-2/" style="font-size: 10px;">ai_assistant(2)</a> <a href="/tags/ai-assistant-3/" style="font-size: 10px;">ai_assistant(3)</a> <a href="/tags/chatting-robot/" style="font-size: 10px;">chatting robot</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/smolagents/" style="font-size: 10px;">smolagents</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/09/">September 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/08/">August 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/07/">July 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/06/">June 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/05/">May 2026</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2026/09/06/RAG%E3%80%81%E5%BE%AE%E8%B0%83%E3%80%81%E7%BB%AD%E8%AE%AD%E4%B8%8E%E6%99%BA%E8%83%BD%E4%BD%93%E9%80%89%E5%9E%8B/">RAG、微调、续训与智能体选型</a>
-          </li>
-        
-          <li>
-            <a href="/2026/09/03/%E6%8F%90%E7%A4%BA%E8%AF%8D%E5%B7%A5%E7%A8%8B%E5%9F%BA%E7%A1%80/">提示词工程基础</a>
-          </li>
-        
-          <li>
-            <a href="/2026/08/31/%E9%93%BE%E5%BC%8F%E8%B0%83%E7%94%A8%E4%B8%8ELCE/">链式调用与LCE</a>
-          </li>
-        
-          <li>
-            <a href="/2026/08/14/ollama%E7%9A%84%E5%9F%BA%E7%A1%80/">ollama基础</a>
-          </li>
-        
-          <li>
-            <a href="/2026/08/14/prompt%E5%9F%BA%E7%A1%80/">prompt基础</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
         
       </div>
       <footer id="footer">
-  
+  <div class="outer reference-footer-grid">
+    <section>
+      <h2>快速阅读</h2>
+      <a href="/archives">全部文章</a>
+      <a href="/tags/LLM">大模型与 RAG</a>
+      <a href="/tags/AI-Agent">Agent 实战</a>
+    </section>
+    <section>
+      <h2>技术专题</h2>
+      <a href="/tags/Fast-api%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86">Python 与 FastAPI</a>
+      <a href="/tags/AWS">AWS 云服务</a>
+      <a href="/archives">项目复盘</a>
+    </section>
+    <section>
+      <h2>站内索引</h2>
+      <a href="/tags/LLM">标签：LLM</a>
+      <a href="/tags/AI-Agent">标签：AI Agent</a>
+      <a href="/archives">按时间浏览</a>
+    </section>
+    <section>
+      <h2>关于本站</h2>
+      <a href="/">首页</a>
+      <a href="/archives">文章归档</a>
+      <span>记录学习，也分享实践。</span>
+    </section>
+  </div>
   <div class="outer">
     <div id="footer-info" class="inner">
       
-      &copy; 2026 wn<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+      Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>
     </div>
   </div>
 </footer>
 
     </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
     
 
 
@@ -1624,5 +229,6 @@ tool：是把普通函数变为LangChain的可用工具，是一个装饰器
 
 
   </div>
+  <script src="/js/responsive.js" defer></script>
 </body>
 </html>

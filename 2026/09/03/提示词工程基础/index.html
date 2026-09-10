@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
   <meta charset="utf-8">
   
@@ -36,67 +36,74 @@
   
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
 
-<meta name="generator" content="Hexo 7.3.0"></head>
+<!-- hexo injector head_end start --><link rel="stylesheet" href="/css/responsive.css"><link rel="stylesheet" href="/css/blog-refresh.css"><link rel="stylesheet" href="/css/reference-exact.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
 
-<body>
+<body class="page-reading">
+  <a class="skip-link" href="#main">跳到正文</a>
   <div id="container">
     <div id="wrap">
       <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">WN</a>
-      </h1>
+  <div id="banner" aria-hidden="true"></div>
+  <div class="site-toolbar outer">
+    
+    
+    <nav class="desktop-nav" aria-label="主导航">
       
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        <a href="/">首页</a>
+      
+        <a href="/archives">归档</a>
+      
+    </nav>
+    <details class="mobile-menu site-disclosure">
+      <summary>菜单 <span aria-hidden="true">⌄</span></summary>
+      <nav class="disclosure-panel" aria-label="手机主导航">
         
-          <a class="main-nav-link" href="/">Home</a>
+          <a href="/">首页</a>
         
-          <a class="main-nav-link" href="/archives">Archives</a>
+          <a href="/archives">归档</a>
         
       </nav>
-      <nav id="sub-nav">
-        
-        
-          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
-        
-        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://wenjiajun-wn.github.io"></form>
-      </div>
+    </details>
+    <div class="toolbar-actions">
+      
+      <details class="site-search site-disclosure">
+        <summary>搜索 <span aria-hidden="true">⌄</span></summary>
+        <form class="disclosure-panel site-search-form" action="https://www.google.com/search" method="get" role="search">
+          <label for="site-query">搜索本站文章</label>
+          <div class="search-controls">
+            <input id="site-query" type="search" name="q" placeholder="输入文章关键词" required>
+            <button type="submit">搜索</button>
+          </div>
+          <input type="hidden" name="sitesearch" value="https://wenjiajun-wn.github.io">
+          <p>通过 Google 搜索本站内容</p>
+        </form>
+      </details>
     </div>
   </div>
 </header>
 
-      <div class="outer">
-        <section id="main"><article id="post-提示词工程基础" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2026/09/03/%E6%8F%90%E7%A4%BA%E8%AF%8D%E5%B7%A5%E7%A8%8B%E5%9F%BA%E7%A1%80/" class="article-date">
-  <time class="dt-published" datetime="2026-09-02T16:00:00.000Z" itemprop="datePublished">2026-09-03</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="p-name article-title" itemprop="headline name">
-      提示词工程基础
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
       
-        <h1 id="提示词工程基础"><a href="#提示词工程基础" class="headerlink" title="提示词工程基础"></a>提示词工程基础</h1><blockquote>
+      <div class="outer site-content site-content--reading">
+        
+          <main id="main" class="reference-reading" tabindex="-1">
+<div class="reference-article-shell">
+  <article id="post-提示词工程基础" class="reference-article h-entry" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <header class="reference-article__header">
+      <a class="reference-article__back" href="/archives">← 返回文章列表</a>
+      
+        <h1 class="p-name" itemprop="headline">提示词工程基础</h1>
+      
+      <div class="reference-article__meta">
+        <time datetime="2026-09-03">2026年09月03日</time>
+        
+          <span aria-hidden="true">·</span>
+          <span>
+            <a href="/tags/LLM/">LLM</a>
+          </span>
+        
+      </div>
+    </header>
+    <div class="reference-article__body e-content" itemprop="articleBody"><h1 id="提示词工程基础"><a href="#提示词工程基础" class="headerlink" title="提示词工程基础"></a>提示词工程基础</h1><blockquote>
 <p>本文从提示词的定义出发，介绍提示词工程的核心六要素、Zero-shot &#x2F; Few-shot 与结构化组织方式，并讨论提示词工程的边界和常见注意点，帮你建立稳定、可复用、可验收的 Prompt 写作方法。</p>
 </blockquote>
 <hr>
@@ -266,7 +273,7 @@
 <li><strong>消息结构</strong>：把不同性质的信息放进 System、User、Assistant 等消息里。</li>
 </ul>
 <p>它们不是三套互相竞争的方法，而是同一件事的三个层次：</p>
-<table>
+<div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
 <thead>
 <tr>
 <th>层次</th>
@@ -289,7 +296,7 @@
 <td>运行时放到哪类消息里</td>
 <td>哪些放 System？哪些放 User？历史怎么追加？</td>
 </tr>
-</tbody></table>
+</tbody></table></div>
 <p>它们的关系可以压缩成一句：</p>
 <blockquote>
 <p>六要素回答”写什么”，模板回答”怎么复用”，消息结构回答”运行时怎么装配”。</p>
@@ -363,132 +370,54 @@
 <blockquote>
 <p>Prompt 调优本质上仍然是一种实验性工作。它既有方法，也有试错。但有效的试错，不是无意义地反复换词，而是基于结构、目标和评测来迭代。</p>
 </blockquote>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://wenjiajun-wn.github.io/2026/09/03/%E6%8F%90%E7%A4%BA%E8%AF%8D%E5%B7%A5%E7%A8%8B%E5%9F%BA%E7%A1%80/" data-id="cmtsjhq840000q87k33p4ga3q" data-title="提示词工程基础" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LLM/" rel="tag">LLM</a></li></ul>
-
+</div>
+    <footer class="reference-article__footer">
+      <span>标签</span><a href="/tags/LLM/">LLM</a>
     </footer>
-  </div>
+  </article>
   
-    
-<nav id="article-nav">
+    <aside class="reference-toc" aria-label="本页目录"><p>本页目录</p><ol class="reference-toc__list"><li class="reference-toc__list-item reference-toc__list-level-1"><a class="reference-toc__list-link" href="#%E6%8F%90%E7%A4%BA%E8%AF%8D%E5%B7%A5%E7%A8%8B%E5%9F%BA%E7%A1%80"><span class="reference-toc__list-text">提示词工程基础</span></a><ol class="reference-toc__list-child"><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#1-%E6%8F%90%E7%A4%BA%E8%AF%8D%E4%B8%8E%E6%8F%90%E7%A4%BA%E8%AF%8D%E5%B7%A5%E7%A8%8B"><span class="reference-toc__list-text">1 提示词与提示词工程</span></a><ol class="reference-toc__list-child"><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#1-1-%E6%8F%90%E7%A4%BA%E8%AF%8D%E5%AE%9A%E4%B9%89"><span class="reference-toc__list-text">1.1 提示词定义</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#1-2-%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E6%8F%90%E7%A4%BA%E8%AF%8D"><span class="reference-toc__list-text">1.2 为什么需要提示词</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#1-3-%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E4%BC%98%E5%8C%96%E6%8F%90%E7%A4%BA%E8%AF%8D"><span class="reference-toc__list-text">1.3 为什么需要优化提示词</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#1-4-Prompt-Engineering"><span class="reference-toc__list-text">1.4 Prompt Engineering</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#1-5-%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5"><span class="reference-toc__list-text">1.5 基础概念</span></a><ol class="reference-toc__list-child"><li class="reference-toc__list-item reference-toc__list-level-4"><a class="reference-toc__list-link" href="#1-5-1-Context"><span class="reference-toc__list-text">1.5.1 Context</span></a></li><li class="reference-toc__list-item reference-toc__list-level-4"><a class="reference-toc__list-link" href="#1-5-2-%E4%B8%8A%E4%B8%8B%E6%96%87%E7%AA%97%E5%8F%A3"><span class="reference-toc__list-text">1.5.2 上下文窗口</span></a></li></ol></li></ol></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#2-%E6%8F%90%E7%A4%BA%E8%AF%8D%E6%80%8E%E4%B9%88%E5%86%99"><span class="reference-toc__list-text">2 提示词怎么写</span></a><ol class="reference-toc__list-child"><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#2-1-%E6%8F%90%E7%A4%BA%E8%AF%8D%E5%B7%A5%E7%A8%8B%E7%9A%84%E5%8F%98%E5%8C%96"><span class="reference-toc__list-text">2.1 提示词工程的变化</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#2-2-%E6%A0%B8%E5%BF%83%E5%85%AD%E8%A6%81%E7%B4%A0%E4%B8%8E%E5%85%B8%E5%9E%8B%E6%9E%84%E6%88%90"><span class="reference-toc__list-text">2.2 核心六要素与典型构成</span></a><ol class="reference-toc__list-child"><li class="reference-toc__list-item reference-toc__list-level-4"><a class="reference-toc__list-link" href="#2-2-1-%E8%A6%81%E7%B4%A0%E4%B8%80%EF%BC%9A%E8%A7%92%E8%89%B2"><span class="reference-toc__list-text">2.2.1 要素一：角色</span></a></li><li class="reference-toc__list-item reference-toc__list-level-4"><a class="reference-toc__list-link" href="#2-2-2-%E8%A6%81%E7%B4%A0%E4%BA%8C%EF%BC%9A%E4%BB%BB%E5%8A%A1"><span class="reference-toc__list-text">2.2.2 要素二：任务</span></a></li><li class="reference-toc__list-item reference-toc__list-level-4"><a class="reference-toc__list-link" href="#2-2-3-%E8%A6%81%E7%B4%A0%E4%B8%89%EF%BC%9A%E8%83%8C%E6%99%AF-%E4%B8%8A%E4%B8%8B%E6%96%87"><span class="reference-toc__list-text">2.2.3 要素三：背景&#x2F;上下文</span></a></li><li class="reference-toc__list-item reference-toc__list-level-4"><a class="reference-toc__list-link" href="#2-2-4-%E8%A6%81%E7%B4%A0%E5%9B%9B%EF%BC%9A%E8%BE%93%E5%85%A5%E6%95%B0%E6%8D%AE"><span class="reference-toc__list-text">2.2.4 要素四：输入数据</span></a></li><li class="reference-toc__list-item reference-toc__list-level-4"><a class="reference-toc__list-link" href="#2-2-5-%E8%A6%81%E7%B4%A0%E4%BA%94%EF%BC%9A%E8%BE%93%E5%87%BA%E6%A0%BC%E5%BC%8F"><span class="reference-toc__list-text">2.2.5 要素五：输出格式</span></a></li><li class="reference-toc__list-item reference-toc__list-level-4"><a class="reference-toc__list-link" href="#2-2-6-%E8%A6%81%E7%B4%A0%E5%85%AD%EF%BC%9A%E8%B4%A8%E9%87%8F%E4%B8%8E%E7%BA%A6%E6%9D%9F"><span class="reference-toc__list-text">2.2.6 要素六：质量与约束</span></a></li><li class="reference-toc__list-item reference-toc__list-level-4"><a class="reference-toc__list-link" href="#2-2-7-%E5%AE%9E%E6%93%8D"><span class="reference-toc__list-text">2.2.7 实操</span></a></li></ol></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#2-3-Zero-shot-%E4%B8%8E-Few-shot"><span class="reference-toc__list-text">2.3 Zero-shot 与 Few-shot</span></a><ol class="reference-toc__list-child"><li class="reference-toc__list-item reference-toc__list-level-4"><a class="reference-toc__list-link" href="#2-3-1-Zero-shot"><span class="reference-toc__list-text">2.3.1 Zero-shot</span></a></li><li class="reference-toc__list-item reference-toc__list-level-4"><a class="reference-toc__list-link" href="#2-3-2-Few-shot"><span class="reference-toc__list-text">2.3.2 Few-shot</span></a></li></ol></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#2-4-%E7%BB%93%E6%9E%84%E5%8C%96%E7%BB%84%E7%BB%87%E6%96%B9%E5%BC%8F"><span class="reference-toc__list-text">2.4 结构化组织方式</span></a><ol class="reference-toc__list-child"><li class="reference-toc__list-item reference-toc__list-level-4"><a class="reference-toc__list-link" href="#2-4-1-%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E7%BB%93%E6%9E%84%E5%8C%96%E7%BB%84%E7%BB%87%E6%8F%90%E7%A4%BA%E8%AF%8D"><span class="reference-toc__list-text">2.4.1 为什么要结构化组织提示词</span></a></li><li class="reference-toc__list-item reference-toc__list-level-4"><a class="reference-toc__list-link" href="#2-4-2-%E5%A6%82%E4%BD%95%E7%BB%93%E6%9E%84%E5%8C%96%E7%BB%84%E7%BB%87%E6%8F%90%E7%A4%BA%E8%AF%8D"><span class="reference-toc__list-text">2.4.2 如何结构化组织提示词</span></a></li><li class="reference-toc__list-item reference-toc__list-level-4"><a class="reference-toc__list-link" href="#2-4-3-%E6%8F%90%E7%A4%BA%E8%AF%8D%E8%A6%81%E7%B4%A0%E3%80%81%E6%A8%A1%E6%9D%BF%E5%92%8C%E6%B6%88%E6%81%AF%E7%BB%93%E6%9E%84%E7%9A%84%E7%BB%9F%E4%B8%80%E5%85%B3%E7%B3%BB"><span class="reference-toc__list-text">2.4.3 提示词要素、模板和消息结构的统一关系</span></a></li><li class="reference-toc__list-item reference-toc__list-level-4"><a class="reference-toc__list-link" href="#2-4-4-%E5%AE%9E%E6%93%8D"><span class="reference-toc__list-text">2.4.4 实操</span></a></li></ol></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#2-5-%E5%B0%8F%E7%BB%93"><span class="reference-toc__list-text">2.5 小结</span></a></li></ol></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#3-%E6%8F%90%E7%A4%BA%E8%AF%8D%E5%B7%A5%E7%A8%8B%E7%9A%84%E8%BE%B9%E7%95%8C"><span class="reference-toc__list-text">3 提示词工程的边界</span></a><ol class="reference-toc__list-child"><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#3-1-%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99%E5%A4%AA%E5%A4%9A"><span class="reference-toc__list-text">3.1 参考资料太多</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#3-2-%E5%A4%9A%E6%AD%A5%E9%AA%A4%E5%A4%8D%E6%9D%82%E6%B5%81%E7%A8%8B"><span class="reference-toc__list-text">3.2 多步骤复杂流程</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#3-3-%E6%8C%87%E4%BB%A4%E9%81%B5%E5%BE%AA%E8%83%BD%E5%8A%9B%E4%B8%8D%E8%B6%B3"><span class="reference-toc__list-text">3.3 指令遵循能力不足</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#3-4-%E7%BC%BA%E5%B0%91%E9%A2%86%E5%9F%9F%E7%9F%A5%E8%AF%86"><span class="reference-toc__list-text">3.4 缺少领域知识</span></a></li></ol></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#4-%E6%8F%90%E7%A4%BA%E8%AF%8D%E5%B7%A5%E7%A8%8B%E7%9A%84%E5%87%A0%E4%B8%AA%E6%B3%A8%E6%84%8F%E7%82%B9"><span class="reference-toc__list-text">4 提示词工程的几个注意点</span></a><ol class="reference-toc__list-child"><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#4-1-%E4%B8%8D%E8%A6%81%E6%8A%8A%E7%A4%BC%E8%B2%8C%E5%BD%93%E6%88%90%E4%BC%98%E5%8C%96%E6%A0%B8%E5%BF%83"><span class="reference-toc__list-text">4.1 不要把礼貌当成优化核心</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#4-2-%E5%A4%9A%E4%B8%AA%E4%BB%BB%E5%8A%A1%E4%B8%8D%E8%A6%81%E6%B7%B7%E5%9C%A8%E4%B8%80%E8%B5%B7"><span class="reference-toc__list-text">4.2 多个任务不要混在一起</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#4-3-%E5%85%81%E8%AE%B8-LLM-%E8%AF%B4%E2%80%9D%E6%88%91%E4%B8%8D%E7%9F%A5%E9%81%93%E2%80%9D"><span class="reference-toc__list-text">4.3 允许 LLM 说”我不知道”</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#4-4-%E8%BF%87%E5%BA%A6%E4%BC%98%E5%8C%96%E9%99%B7%E9%98%B1"><span class="reference-toc__list-text">4.4 过度优化陷阱</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#4-5-%E6%8C%87%E4%BB%A4%E8%87%AA%E7%9B%B8%E7%9F%9B%E7%9B%BE"><span class="reference-toc__list-text">4.5 指令自相矛盾</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#4-6-%E4%B8%8D%E8%A6%81%E8%BF%B7%E4%BF%A1%E2%80%9D%E9%AD%94%E6%B3%95%E8%AF%8D%E2%80%9D"><span class="reference-toc__list-text">4.6 不要迷信”魔法词”</span></a></li></ol></li></ol></li></ol></aside>
   
-    <a href="/2026/09/06/RAG%E3%80%81%E5%BE%AE%E8%B0%83%E3%80%81%E7%BB%AD%E8%AE%AD%E4%B8%8E%E6%99%BA%E8%83%BD%E4%BD%93%E9%80%89%E5%9E%8B/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          RAG、微调、续训与智能体选型
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2026/08/31/%E9%93%BE%E5%BC%8F%E8%B0%83%E7%94%A8%E4%B8%8ELCE/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">链式调用与LCE</div>
-    </a>
-  
-</nav>
-
-  
-</article>
-
-
-</section>
-        
-          <aside id="sidebar">
-  
-    
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-Agent/" rel="tag">AI-Agent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AWS/" rel="tag">AWS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Fast-api%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" rel="tag">Fast api的基础知识</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Fast-api%E7%9A%84%E8%BF%9B%E9%98%B6%E7%9F%A5%E8%AF%86/" rel="tag">Fast api的进阶知识</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LLM/" rel="tag">LLM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-agent/" rel="tag">ai agent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-assistant/" rel="tag">ai_assistant</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-assistant-2/" rel="tag">ai_assistant(2)</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai-assistant-3/" rel="tag">ai_assistant(3)</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/chatting-robot/" rel="tag">chatting robot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/smolagents/" rel="tag">smolagents</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/AI-Agent/" style="font-size: 10px;">AI-Agent</a> <a href="/tags/AWS/" style="font-size: 15px;">AWS</a> <a href="/tags/Fast-api%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" style="font-size: 10px;">Fast api的基础知识</a> <a href="/tags/Fast-api%E7%9A%84%E8%BF%9B%E9%98%B6%E7%9F%A5%E8%AF%86/" style="font-size: 10px;">Fast api的进阶知识</a> <a href="/tags/LLM/" style="font-size: 20px;">LLM</a> <a href="/tags/ai-agent/" style="font-size: 10px;">ai agent</a> <a href="/tags/ai-assistant/" style="font-size: 10px;">ai_assistant</a> <a href="/tags/ai-assistant-2/" style="font-size: 10px;">ai_assistant(2)</a> <a href="/tags/ai-assistant-3/" style="font-size: 10px;">ai_assistant(3)</a> <a href="/tags/chatting-robot/" style="font-size: 10px;">chatting robot</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/smolagents/" style="font-size: 10px;">smolagents</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/09/">September 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/08/">August 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/07/">July 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/06/">June 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/05/">May 2026</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2026/09/06/RAG%E3%80%81%E5%BE%AE%E8%B0%83%E3%80%81%E7%BB%AD%E8%AE%AD%E4%B8%8E%E6%99%BA%E8%83%BD%E4%BD%93%E9%80%89%E5%9E%8B/">RAG、微调、续训与智能体选型</a>
-          </li>
-        
-          <li>
-            <a href="/2026/09/03/%E6%8F%90%E7%A4%BA%E8%AF%8D%E5%B7%A5%E7%A8%8B%E5%9F%BA%E7%A1%80/">提示词工程基础</a>
-          </li>
-        
-          <li>
-            <a href="/2026/08/31/%E9%93%BE%E5%BC%8F%E8%B0%83%E7%94%A8%E4%B8%8ELCE/">链式调用与LCE</a>
-          </li>
-        
-          <li>
-            <a href="/2026/08/14/ollama%E7%9A%84%E5%9F%BA%E7%A1%80/">ollama基础</a>
-          </li>
-        
-          <li>
-            <a href="/2026/08/14/prompt%E5%9F%BA%E7%A1%80/">prompt基础</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
+</div>
+</main>
         
       </div>
       <footer id="footer">
-  
+  <div class="outer reference-footer-grid">
+    <section>
+      <h2>快速阅读</h2>
+      <a href="/archives">全部文章</a>
+      <a href="/tags/LLM">大模型与 RAG</a>
+      <a href="/tags/AI-Agent">Agent 实战</a>
+    </section>
+    <section>
+      <h2>技术专题</h2>
+      <a href="/tags/Fast-api%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86">Python 与 FastAPI</a>
+      <a href="/tags/AWS">AWS 云服务</a>
+      <a href="/archives">项目复盘</a>
+    </section>
+    <section>
+      <h2>站内索引</h2>
+      <a href="/tags/LLM">标签：LLM</a>
+      <a href="/tags/AI-Agent">标签：AI Agent</a>
+      <a href="/archives">按时间浏览</a>
+    </section>
+    <section>
+      <h2>关于本站</h2>
+      <a href="/">首页</a>
+      <a href="/archives">文章归档</a>
+      <span>记录学习，也分享实践。</span>
+    </section>
+  </div>
   <div class="outer">
     <div id="footer-info" class="inner">
       
-      &copy; 2026 wn<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+      Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>
     </div>
   </div>
 </footer>
 
     </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
     
 
 
@@ -509,5 +438,6 @@
 
 
   </div>
+  <script src="/js/responsive.js" defer></script>
 </body>
 </html>
