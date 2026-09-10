@@ -93,6 +93,34 @@ body.page-reading {
   background: var(--ref-primary);
 }
 
+.github-header-link {
+  display: inline-flex;
+  width: 44px;
+  min-width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  margin-left: 4px;
+  color: var(--ref-ink);
+  border-radius: 6px;
+  text-decoration: none;
+}
+
+.github-header-link svg {
+  width: 23px;
+  height: 23px;
+}
+
+.github-header-link:hover {
+  color: var(--ref-primary-darkest);
+  background: #6f4e371a;
+}
+
+.github-header-link:focus-visible {
+  outline: 3px solid var(--ref-primary-darkest);
+  outline-offset: 2px;
+}
+
 .reference-wave {
   position: relative;
   width: 100%;
