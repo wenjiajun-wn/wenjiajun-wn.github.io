@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>向量数据库与 Embedding | WN</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="向量数据库与 Embedding 本文围绕”文本先向量化，再写入向量库，再做相似性检索”这条主线，讲清向量、Embedding 与向量数据库三者的定义和关系，并介绍 Redis Stack 向量存储、Embedding 实践规则与相似度计算，帮你建立 RAG 底层能力的完整认知。   1 向量与向量化需要了解的是：向量（Vector）、向量化（Embedding）、向量数据库（Vector Sto">
+<meta property="og:type" content="article">
+<meta property="og:title" content="向量数据库与 Embedding">
+<meta property="og:url" content="https://wenjiajun-wn.github.io/2026/09/11/%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8EEmbdding/index.html">
+<meta property="og:site_name" content="WN">
+<meta property="og:description" content="向量数据库与 Embedding 本文围绕”文本先向量化，再写入向量库，再做相似性检索”这条主线，讲清向量、Embedding 与向量数据库三者的定义和关系，并介绍 Redis Stack 向量存储、Embedding 实践规则与相似度计算，帮你建立 RAG 底层能力的完整认知。   1 向量与向量化需要了解的是：向量（Vector）、向量化（Embedding）、向量数据库（Vector Sto">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-09-10T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-09-11T11:10:25.832Z">
+<meta property="article:author" content="wn">
+<meta property="article:tag" content="LLM">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="WN" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<!-- hexo injector head_end start --><link rel="stylesheet" href="/css/responsive.css"><link rel="stylesheet" href="/css/blog-refresh.css"><link rel="stylesheet" href="/css/reference-exact.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="page-reading">
+  <a class="skip-link" href="#main">跳到正文</a>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner" aria-hidden="true"></div>
+  <div class="site-toolbar outer">
+    
+    
+    <nav class="desktop-nav" aria-label="主导航">
+      
+        <a href="/">首页</a>
+      
+        <a href="/archives">归档</a>
+      
+    </nav>
+    <details class="mobile-menu site-disclosure">
+      <summary>菜单 <span aria-hidden="true">⌄</span></summary>
+      <nav class="disclosure-panel" aria-label="手机主导航">
+        
+          <a href="/">首页</a>
+        
+          <a href="/archives">归档</a>
+        
+      </nav>
+    </details>
+    <div class="toolbar-actions">
+      
+      <details class="site-search site-disclosure">
+        <summary>搜索 <span aria-hidden="true">⌄</span></summary>
+        <form class="disclosure-panel site-search-form" action="https://www.google.com/search" method="get" role="search">
+          <label for="site-query">搜索本站文章</label>
+          <div class="search-controls">
+            <input id="site-query" type="search" name="q" placeholder="输入文章关键词" required>
+            <button type="submit">搜索</button>
+          </div>
+          <input type="hidden" name="sitesearch" value="https://wenjiajun-wn.github.io">
+          <p>通过 Google 搜索本站内容</p>
+        </form>
+      </details>
+      <a class="github-header-link" href="https://github.com/wenjiajun-wn" target="_blank" rel="noopener noreferrer" aria-label="访问 WN 的 GitHub 主页">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path fill="currentColor" d="M12 .7a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2.23c-3.22.7-3.9-1.37-3.9-1.37-.52-1.34-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.57-.29-5.28-1.29-5.28-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.47.11-3.06 0 0 .97-.31 3.16 1.18a10.98 10.98 0 0 1 5.76 0c2.2-1.49 3.16-1.18 3.16-1.18.63 1.59.23 2.77.11 3.06.74.81 1.19 1.84 1.19 3.1 0 4.41-2.71 5.39-5.29 5.68.42.36.79 1.07.79 2.16v3.2c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .7Z"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</header>
+
+      
+      <div class="outer site-content site-content--reading">
+        
+          <main id="main" class="reference-reading" tabindex="-1">
+<div class="reference-article-shell">
+  <article id="post-向量数据库与Embdding" class="reference-article h-entry" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <header class="reference-article__header">
+      <a class="reference-article__back" href="/archives">← 返回文章列表</a>
+      
+        <h1 class="p-name" itemprop="headline">向量数据库与 Embedding</h1>
+      
+      <div class="reference-article__meta">
+        <time datetime="2026-09-11">2026年09月11日</time>
+        
+          <span aria-hidden="true">·</span>
+          <span>
+            <a href="/tags/LLM/">LLM</a>
+          </span>
+        
+      </div>
+    </header>
+    <div class="reference-article__body e-content" itemprop="articleBody"><h1 id="向量数据库与-Embedding"><a href="#向量数据库与-Embedding" class="headerlink" title="向量数据库与 Embedding"></a>向量数据库与 Embedding</h1><blockquote>
+<p>本文围绕”文本先向量化，再写入向量库，再做相似性检索”这条主线，讲清向量、Embedding 与向量数据库三者的定义和关系，并介绍 Redis Stack 向量存储、Embedding 实践规则与相似度计算，帮你建立 RAG 底层能力的完整认知。</p>
+</blockquote>
+<hr>
+<h2 id="1-向量与向量化"><a href="#1-向量与向量化" class="headerlink" title="1 向量与向量化"></a>1 向量与向量化</h2><p>需要了解的是：<strong>向量（Vector）</strong>、<strong>向量化（Embedding）</strong>、<strong>向量数据库（Vector Store &#x2F; Vector Database）</strong> 这三件事分别是什么，以及它们之间的关系。</p>
+<p>主线：文本先向量化，再写入向量库，再做相似性检索。</p>
+<p>先画链路，再看代码：文本经过 Embedding 模型变成向量，向量进入数据库，查询时再用相似度找回来。API 名称可以后记，但要弄清”存进去的是什么、查出来的是什么、相似度为什么能代表相关性”。</p>
+<h3 id="1-1-向量的定义"><a href="#1-1-向量的定义" class="headerlink" title="1.1 向量的定义"></a>1.1 向量的定义</h3><p>向量（Vector）本来是数学概念，指的是：用一组有顺序的数字来表示某个对象在空间中的位置或特征。</p>
+<p>比如：</p>
+<ul>
+<li>二维向量可以写成 (x, y)</li>
+<li>三维向量可以写成 (x, y, z)</li>
+<li>在 AI 场景里，常见的是几百维、上千维的高维向量，例如 1024 维、1536 维</li>
+</ul>
+<p>向量就是一串数字，而这串数字可以拿来表示一段文本、一张图片，或者其他对象的”特征”。</p>
+<h3 id="1-2-向量化的定义"><a href="#1-2-向量化的定义" class="headerlink" title="1.2 向量化的定义"></a>1.2 向量化的定义</h3><p>把文本、图片、音频等原始内容转换成向量的过程，通常叫向量化；在大模型与检索领域里，更常见的名字是 Embedding（嵌入）。</p>
+<p>平时说 Embedding，有时指”向量化这个过程”，有时也指”向量化之后得到的向量表示”。结合上下文判断即可，不需要把它们拆成两个完全无关的概念。</p>
+<p>LangChain 官方文档把文本 Embedding 说得很清楚：Embedding 模型会把句子、段落等原始文本转换成固定长度的数字向量，并尽量让语义相近的文本在向量空间里靠得更近。</p>
+<p>更直白的话说，Embedding 解决的是：</p>
+<ul>
+<li>文本本身不能直接做”语义上的数学比较”</li>
+<li>向量可以做距离和相似度计算</li>
+<li>所以只要把文本变成向量，就能做”按意思查找相近内容”</li>
+</ul>
+<p>这也是为什么 Embedding 常被用在：语义搜索、推荐系统、文本聚类、去重与相似内容识别、RAG 检索增强生成。</p>
+<h3 id="1-3-语义相近与向量相近"><a href="#1-3-语义相近与向量相近" class="headerlink" title="1.3 语义相近与向量相近"></a>1.3 语义相近与向量相近</h3><p>Embedding 的核心价值，不是”把文本编码成数字”这么简单，而是：它希望把”语义关系”映射成”空间关系”。</p>
+<p>也就是说：语义接近的文本，向量更接近；语义差异大的文本，向量更远。比如：”我喜欢吃苹果”、”苹果是我最喜欢吃的水果”。</p>
+<p>这两句话虽然字面不完全一样，但语义接近，所以向量通常也会更接近。</p>
+<p>而”我喜欢用苹果手机”虽然也有”苹果”两个字，但语义已经部分转向”手机品牌”，和前两句的关系就没那么近。</p>
+<blockquote>
+<p>这正是向量检索比关键词检索更强的地方：它找的是”意思接近”，不只是”词面一致”。</p>
+</blockquote>
+<h3 id="1-4-向量维度的定义"><a href="#1-4-向量维度的定义" class="headerlink" title="1.4 向量维度的定义"></a>1.4 向量维度的定义</h3><p>Embedding 输出的向量，一般是固定长度的浮点数列表。这个长度就叫维度（dimension）。</p>
+<p>例如：</p>
+<ul>
+<li>某个模型输出 1024 维向量</li>
+<li>就意味着每段文本最终会变成一个长度为 1024 的数组</li>
+</ul>
+<p>这里先记住两个结论：</p>
+<ul>
+<li>不同 Embedding 模型输出维度可能不同。</li>
+<li>即便维度相同，不同模型的向量空间通常也不能直接混用。</li>
+</ul>
+<p>所以真实项目里要保证：建库时用的 Embedding 模型，和查询时用的 Embedding 模型保持一致。</p>
+<p>否则要么维度不匹配直接报错，要么即使能算，相似度结果也没有意义。</p>
+<h3 id="1-5-进一步建立直觉"><a href="#1-5-进一步建立直觉" class="headerlink" title="1.5 进一步建立直觉"></a>1.5 进一步建立直觉</h3><p>高维 Embedding 可理解为「更多维度的特征轴」；维度与模型设计相关，检索效果依赖模型与索引质量，而非单看维数高低。</p>
+<blockquote>
+<p>这一节先记住一句话：Embedding 不是为了”把文本变难懂”，而是为了让计算机能在数学空间里比较语义。</p>
+</blockquote>
+<hr>
+<h2 id="2-向量数据库"><a href="#2-向量数据库" class="headerlink" title="2 向量数据库"></a>2 向量数据库</h2><p>当文本已经变成向量后，下一个问题就来了：<strong>这些向量存到哪里？又怎么高效地查”谁和我最像”？</strong> 这就是向量数据库存在的原因。</p>
+<h3 id="2-1-定义"><a href="#2-1-定义" class="headerlink" title="2.1 定义"></a>2.1 定义</h3><p>LangChain 官方概括非常直接：<strong>向量存储（Vector Store）就是存储嵌入后的数据，并支持相似性搜索。</strong> Redis 官方文档则强调了另一个重点：向量检索不是只存向量，而是围绕向量建立索引，并结合元数据做搜索与过滤。</p>
+<blockquote>
+<p>所以，可以先把”向量数据库”理解成：一种专门面向”相似度检索”的存储系统。</p>
+</blockquote>
+<h3 id="2-2-与传统数据库的区别"><a href="#2-2-与传统数据库的区别" class="headerlink" title="2.2 与传统数据库的区别"></a>2.2 与传统数据库的区别</h3><p>最核心的区别不在”能不能存数据”，而在”怎么查数据”。</p>
+<div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
+<thead>
+<tr>
+<th>对比维度</th>
+<th>传统关系型数据库 &#x2F; 普通 KV 存储</th>
+<th>向量数据库</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>核心查询方式</td>
+<td>精确匹配、范围查询、条件过滤</td>
+<td>相似性搜索、最近邻检索</td>
+</tr>
+<tr>
+<td>典型问题</td>
+<td>“id&#x3D;1001 的记录是什么？”</td>
+<td>“和这段文本语义最接近的内容是什么？”</td>
+</tr>
+<tr>
+<td>主要依据</td>
+<td>字段值相等、大小、排序</td>
+<td>向量距离 &#x2F; 相似度</td>
+</tr>
+<tr>
+<td>常见用途</td>
+<td>订单、用户、交易、配置</td>
+<td>RAG、搜索、推荐、去重、聚类</td>
+</tr>
+</tbody></table></div>
+<p>这并不代表传统数据库没用，而是说：当你的问题从”查字段”变成”查意思”时，就要引入向量数据库。</p>
+<h3 id="2-3-向量数据库里存什么"><a href="#2-3-向量数据库里存什么" class="headerlink" title="2.3 向量数据库里存什么"></a>2.3 向量数据库里存什么</h3><p>这是很多人第一次学时最容易混淆的地方。向量数据库里通常不只是”一个向量数组”，而是至少会包含下面几类信息：</p>
+<ul>
+<li><strong>原始内容</strong>：例如文本正文 page_content</li>
+<li><strong>向量值</strong>：Embedding 模型算出来的高维数组</li>
+<li><strong>元数据</strong>：例如 source、page、segment_id、业务标签等</li>
+<li><strong>索引结构</strong>：用于加速相似度检索</li>
+</ul>
+<p>也就是说，向量数据库真正做的是：把”内容 + 向量 + 元数据”组织起来，并支持按相似度查最相关内容。</p>
+<p>这件事对 RAG 非常关键，因为检索阶段不仅要拿到”最像的向量”，还要拿回对应的文本片段和元数据，最后才能交给大模型生成答案。</p>
+<h3 id="2-4-稠密向量、稀疏向量、标量字段定义"><a href="#2-4-稠密向量、稀疏向量、标量字段定义" class="headerlink" title="2.4 稠密向量、稀疏向量、标量字段定义"></a>2.4 稠密向量、稀疏向量、标量字段定义</h3><p>很多人会以为：向量数据库里只存”一个文本向量字段”。真实项目里当然可以这么做，但更完整的理解是：一个可检索的数据对象，往往同时包含稠密向量、标量字段，某些系统里还会额外使用稀疏向量。</p>
+<ul>
+<li><strong>稠密向量（Dense Vector）</strong>：最常见，就是 Embedding 模型输出的一长串浮点数。它擅长表达整体语义，所以”意思相近”的文本通常会更接近。</li>
+<li><strong>稀疏向量（Sparse Vector）</strong>：不是每一维都有值，而是只有少数维度非零。它更像”关键词及权重”的表达方式，常和词项匹配、倒排索引、BM25 一类思路联系在一起。</li>
+<li><strong>标量字段（Scalar Fields）</strong>：例如 source、author、category、created_at、doc_id 这类普通字段。它们不参与语义向量计算，但常用于过滤、排序、权限控制和结果展示。</li>
+</ul>
+<p>可以先把它们看成三类互补能力：</p>
+<ul>
+<li>稠密向量负责”按语义找相近内容”</li>
+<li>稀疏向量更偏”按关键词和词权重找相关内容”</li>
+<li>标量字段负责”按业务条件过滤结果”</li>
+</ul>
+<p><strong>扩展：BGE-M3 与混合检索</strong></p>
+<p>以 BGE-M3 这类 Embedding 模型为例，它可以同时支持稠密向量、稀疏向量等多种表示方式。放到检索系统里，就可以形成这样的搭配：</p>
+<div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
+<thead>
+<tr>
+<th>检索信号</th>
+<th>更擅长解决的问题</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>稠密向量</td>
+<td>用户换一种说法提问时，仍然能按语义找到相关内容</td>
+</tr>
+<tr>
+<td>稀疏向量</td>
+<td>产品型号、错误码、专有名词、精确关键词匹配</td>
+</tr>
+<tr>
+<td>标量字段</td>
+<td>权限、分类、时间、来源、业务标签过滤</td>
+</tr>
+</tbody></table></div>
+<p>所以生产 RAG 里经常会看到”稠密检索 + 稀疏检索 + metadata filter + rerank”的组合。它不是为了把系统做复杂，而是因为单一路径很难同时兼顾语义、关键词和业务约束。</p>
+<p>本章的 Redis 案例主线，主要聚焦在文本 Embedding 生成的稠密向量 + 元数据字段。这样已经足够搭建一条清晰的入门链路。</p>
+<h3 id="2-5-常见的向量数据库分类"><a href="#2-5-常见的向量数据库分类" class="headerlink" title="2.5 常见的向量数据库分类"></a>2.5 常见的向量数据库分类</h3><p>入门阶段不需要全学，但至少要知道生态里有哪些常见方案：</p>
+<div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>简要说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>FAISS</td>
+<td>偏本地、偏算法库，适合快速做向量检索实验</td>
+</tr>
+<tr>
+<td>Chroma</td>
+<td>轻量、好上手，适合本地原型验证</td>
+</tr>
+<tr>
+<td>Milvus</td>
+<td>开源专业向量数据库，适合大规模生产环境</td>
+</tr>
+<tr>
+<td>Pgvector</td>
+<td>PostgreSQL 扩展，适合已有 PG 体系的项目</td>
+</tr>
+<tr>
+<td>Redis &#x2F; Redis Stack</td>
+<td>既能做缓存，也能做向量检索，适合工程整合</td>
+</tr>
+<tr>
+<td>Elasticsearch &#x2F; OpenSearch</td>
+<td>搜索体系成熟，也支持向量搜索</td>
+</tr>
+</tbody></table></div>
+<h3 id="2-6-RAG-与向量数据库的关系"><a href="#2-6-RAG-与向量数据库的关系" class="headerlink" title="2.6 RAG 与向量数据库的关系"></a>2.6 RAG 与向量数据库的关系</h3><p>RAG 的底层链路通常是：</p>
+<ol>
+<li>把文档切成片段</li>
+<li>用 Embedding 模型把片段转成向量</li>
+<li>把”片段 + 向量 + 元数据”写入向量数据库</li>
+<li>用户提问时，把问题也转成向量</li>
+<li>在向量数据库里查最相关片段</li>
+<li>把片段和问题一起交给大模型生成答案</li>
+</ol>
+<p>也就是说，向量数据库是 RAG 的底层基础设施之一，但它本身不等于完整 RAG。</p>
+<h3 id="2-7-Redis-与-Milvus-怎么选"><a href="#2-7-Redis-与-Milvus-怎么选" class="headerlink" title="2.7 Redis 与 Milvus 怎么选"></a>2.7 Redis 与 Milvus 怎么选</h3><p>选 Redis Stack，是因为它容易和缓存、会话、队列等工程场景放在一起，安装和演示成本也低。用它理解”写入向量、建立索引、相似检索”非常合适。</p>
+<p>但如果项目进入更大规模，例如数据量很大、索引策略复杂、混合检索和高并发检索要求更高，就可以把 Milvus 作为生产级扩展方向。先记一个简单判断：</p>
+<div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
+<thead>
+<tr>
+<th>场景</th>
+<th>更适合</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>课程学习、个人项目、和 Redis 生态整合</td>
+<td>Redis Stack</td>
+</tr>
+<tr>
+<td>大规模向量检索、专业索引管理、生产级检索平台</td>
+<td>Milvus</td>
+</tr>
+</tbody></table></div>
+<hr>
+<h2 id="3-用-Redis-Stack-作为向量存储"><a href="#3-用-Redis-Stack-作为向量存储" class="headerlink" title="3 用 Redis Stack 作为向量存储"></a>3 用 Redis Stack 作为向量存储</h2><ul>
+<li>Redis Stack 在 Redis 基础上集成了搜索与向量检索能力</li>
+<li>一套环境就能同时覆盖缓存、消息、历史记录、向量检索，工程连贯性会更强</li>
+</ul>
+<blockquote>
+<p>注意：Redis 是高性能键值存储本体，Redis Stack 则是在 Redis 基础上补上更多增强能力，并带来更友好的工具链。</p>
+</blockquote>
+<div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
+<thead>
+<tr>
+<th>功能维度</th>
+<th>原生 Redis</th>
+<th>Redis Stack 增强功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>数据结构</td>
+<td>字符串、列表、集合、哈希等</td>
+<td>增加 JSON、图、时间序列、概率结构等高级类型</td>
+</tr>
+<tr>
+<td>查询能力</td>
+<td>仅限键值查询</td>
+<td>支持全文搜索、向量搜索、图查询、JSON 查询</td>
+</tr>
+<tr>
+<td>使用场景</td>
+<td>缓存、消息队列、计数器等</td>
+<td>实时推荐、时序分析、知识图谱、文档数据库、AI 向量检索</td>
+</tr>
+<tr>
+<td>开发体验</td>
+<td>命令行操作，需手动拼装逻辑</td>
+<td>提供 RedisInsight 和对象映射库，开发效率更高</td>
+</tr>
+</tbody></table></div>
+<h3 id="3-1-Redis、Redis-Stack、RediSearch-三者关系"><a href="#3-1-Redis、Redis-Stack、RediSearch-三者关系" class="headerlink" title="3.1 Redis、Redis Stack、RediSearch 三者关系"></a>3.1 Redis、Redis Stack、RediSearch 三者关系</h3><ul>
+<li><strong>Redis</strong>：基础内存数据库 &#x2F; 键值存储</li>
+<li><strong>Redis Stack</strong>：在 Redis 基础上打包了搜索、JSON、时间序列、布隆过滤器等扩展能力</li>
+<li><strong>RediSearch</strong>：Redis Stack 中和搜索、全文检索、向量检索强相关的模块</li>
+</ul>
+<p>从本章角度看，直接记住一句话就够了：我们之所以能用 Redis 做向量检索，关键是 Redis Stack &#x2F; RediSearch 提供了向量字段、索引和 KNN 搜索能力。</p>
+<p>Redis 官方文档里也明确提到，Redis 可以：</p>
+<ul>
+<li>创建向量索引</li>
+<li>存储向量和元数据</li>
+<li>做 KNN（最近邻）向量搜索</li>
+<li>结合元数据过滤做混合检索</li>
+</ul>
+<h3 id="3-2-为什么选-Redis"><a href="#3-2-为什么选-Redis" class="headerlink" title="3.2 为什么选 Redis"></a>3.2 为什么选 Redis</h3><p>从真实项目角度看，Redis 作为向量存储有几个很实用的优点：</p>
+<ul>
+<li><strong>上手成本低</strong>：很多团队本来就已经有 Redis</li>
+<li><strong>工程整合方便</strong>：缓存、会话、历史记录、向量检索可以放在同一套基础设施里</li>
+<li><strong>适合中小型知识库</strong>：做课程演示、内部工具、轻量 RAG 很顺手</li>
+</ul>
+<p>当然，工程里也要知道它的边界：如果向量规模非常大、检索需求非常复杂，团队也可能选择 Milvus、Weaviate、Pinecone 等更专门的方案。</p>
+<p><strong>区分一个容易误解的点</strong></p>
+<p>做向量检索时，真正写入 Redis 的不是”裸向量”而已，通常是：文本内容、文本对应的向量、元数据、与索引相关的结构信息。</p>
+<p>所以你在 RedisInsight 里看到的记录，往往不是一个简单数字数组，而是多个字段组成的结构化数据。</p>
+<hr>
+<h2 id="4-Embedding-文本向量化"><a href="#4-Embedding-文本向量化" class="headerlink" title="4 Embedding 文本向量化"></a>4 Embedding 文本向量化</h2><p>不管是算相似度，还是写入 Redis，本质上都依赖同一步：先把文本变成向量。</p>
+<h3 id="4-1-定义"><a href="#4-1-定义" class="headerlink" title="4.1 定义"></a>4.1 定义</h3><p>Embedding（嵌入）是将文本字符串表示为<strong>向量（浮点数列表）</strong>的过程。通过计算向量之间的距离或相似度，可以衡量文本之间的相关性：距离越小（或相似度越高），相关性越高；距离越大，相关性越低。</p>
+<blockquote>
+<p>一句话概括：Embeddings 用来衡量文本之间的相关性。</p>
+</blockquote>
+<p>常见应用包括：</p>
+<ul>
+<li><strong>搜索</strong>：按与查询的相关性对结果排序</li>
+<li><strong>聚类</strong>：按文本相似性分组</li>
+<li><strong>推荐</strong>：根据相关文本推荐内容</li>
+<li><strong>异常检测</strong>：找出与多数内容相关性较低的异常点</li>
+<li><strong>多样性测量</strong>：分析相似性分布</li>
+<li><strong>分类</strong>：按与标签的相似性对文本分类</li>
+</ul>
+<p>LangChain 官方则进一步强调了两个 API：</p>
+<ul>
+<li>**<code>embed_query(text)</code>**：把单条查询文本转成向量</li>
+<li>**<code>embed_documents(texts)</code>**：把多条文档文本批量转成向量</li>
+</ul>
+<p>这一组区分正好对应真实项目里的两个阶段：</p>
+<ul>
+<li><strong>索引阶段</strong>：把文档片段批量向量化，通常用 embed_documents</li>
+<li><strong>查询阶段</strong>：把用户问题向量化，通常用 embed_query</li>
+</ul>
+<h3 id="4-2-重要实践规则"><a href="#4-2-重要实践规则" class="headerlink" title="4.2 重要实践规则"></a>4.2 重要实践规则</h3><p>先看清这几条经验：</p>
+<ul>
+<li>Embedding 模型输出的是向量，不是自然语言。</li>
+<li>不同 Embedding 模型的维度可能不同。</li>
+<li>建索引和查询必须使用同一套 Embedding 模型。</li>
+<li>Embedding 适合做语义相似度计算，但它本身不负责”回答问题”。</li>
+<li>本章主要是文本 Embedding；多模态 Embedding 属于进阶扩展。</li>
+</ul>
+<p>对于第五条，LangChain 当前官方 Embeddings 总览页主要聚焦文本 Embedding；本文保留的多模态案例是通过 DashScope 原生 SDK 来展示扩展能力，目的是帮助你建立”Embedding 不只可用于文本”的认知，但学习主线仍然是文本向量化。</p>
+<hr>
+<h2 id="5-通过向量计算语义相似度"><a href="#5-通过向量计算语义相似度" class="headerlink" title="5 通过向量计算语义相似度"></a>5 通过向量计算语义相似度</h2><p>当我们已经能把文本变成向量之后，就可以继续做下一步：比较两段文本在语义上有多接近。</p>
+<h3 id="5-1-为什么常用余弦相似度"><a href="#5-1-为什么常用余弦相似度" class="headerlink" title="5.1 为什么常用余弦相似度"></a>5.1 为什么常用余弦相似度</h3><p>在向量相似度计算里，常见指标有：</p>
+<ul>
+<li>余弦相似度（Cosine Similarity）</li>
+<li>欧氏距离（Euclidean Distance）</li>
+<li>点积（Dot Product）</li>
+</ul>
+<p>其中最适合入门先建立直觉的，通常是余弦相似度。它关注的重点不是”两个向量长度有多像”，而是”两个向量方向有多接近”。对语义检索来说，这通常很有价值，因为我们更关心”意思是否接近”。</p>
+<p>余弦相似度公式：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cos(theta) = (A · B) / (|A| |B|)</span><br></pre></td></tr></table></figure>
+
+<p>它的结果通常在 [-1, 1] 范围内：</p>
+<ul>
+<li>越接近 1，通常表示越相似</li>
+<li>越接近 0，表示相关性较弱</li>
+<li>越接近 -1，表示方向相反</li>
+</ul>
+<p>OpenAI 官方文档里也明确提到：在很多 Embedding 场景里，余弦相似度是非常常见、非常实用的选择。</p>
+<h3 id="5-2-检索里常见的距离度量怎么选"><a href="#5-2-检索里常见的距离度量怎么选" class="headerlink" title="5.2 检索里常见的距离度量怎么选"></a>5.2 检索里常见的距离度量怎么选</h3><p>前面我们用余弦相似度建立了直觉，但真实项目里，你在向量库、索引或 SDK 参数中还会经常看到这几个名字：</p>
+<ul>
+<li><strong>COSINE</strong>：更关注向量方向是否接近，是文本语义检索里最常见、也最容易理解的一类度量。</li>
+<li><strong>L2</strong>：欧氏距离，关注两个点在空间里的直线距离。距离越小，通常表示越接近。</li>
+<li><strong>IP（Inner Product）</strong>：内积。某些模型或系统会直接用它做相似度计算；在向量已归一化时，它和余弦相似度往往会非常接近。</li>
+</ul>
+<p>这里不要纠结”谁永远最好”，先看这条规则：</p>
+<blockquote>
+<p>Embedding 模型的特性、索引建立时选择的度量方式、查询时传入的 metric，三者必须保持一致。</p>
+</blockquote>
+<p>否则常见问题有两个：轻则结果变差，明明是相关内容却排不上来；重则索引配置和查询配置不匹配，直接报错。</p>
+<p>所以当你看到某个向量库示例里写的是 COSINE、L2 或 IP，不要把它当成无关紧要的参数；它本质上决定了系统如何理解”相似”。</p>
+<h3 id="5-3-精确检索、近似检索与索引"><a href="#5-3-精确检索、近似检索与索引" class="headerlink" title="5.3 精确检索、近似检索与索引"></a>5.3 精确检索、近似检索与索引</h3><p>另一个很值得尽早建立的工程概念是：不是所有相似度检索，都会老老实实把查询向量和库里每一个向量逐个比较。</p>
+<p>从思路上看，大致可以分成两类：</p>
+<ul>
+<li><strong>精确检索（Exact KNN &#x2F; FLAT）</strong>：把查询向量和库里的所有向量都算一遍，结果最直接，也最容易理解。</li>
+<li><strong>近似检索（ANN, Approximate Nearest Neighbor）</strong>：通过索引结构加速搜索，只近似地找到”最可能接近”的一批结果。</li>
+</ul>
+<p>为什么需要近似检索？因为数据一旦上规模，逐个比较会越来越慢。于是很多向量数据库会建立索引，用空间换时间。你在不同系统里经常会见到：</p>
+<ul>
+<li><strong>FLAT</strong>：更偏暴力搜索，准确但慢</li>
+<li><strong>HNSW</strong>：工程里很常见的 ANN 索引，通常能在召回率和延迟之间取得较好平衡</li>
+</ul>
+<blockquote>
+<p>先记住一句话：索引的作用不是改变”语义相似”的定义，而是让”找最相似内容”这件事在大规模数据下也能跑得动。</p>
+</blockquote>
+<p>这也是为什么本文前面一直强调：检索效果不只取决于 Embedding 模型，还和索引质量、参数配置、数据切分方式一起决定最终结果。</p>
+<hr>
+<h2 id="6-向量库的写入与检索（RAG-的底层能力）"><a href="#6-向量库的写入与检索（RAG-的底层能力）" class="headerlink" title="6 向量库的写入与检索（RAG 的底层能力）"></a>6 向量库的写入与检索（RAG 的底层能力）</h2><p>前面我们完成了两件事：1. 把文本转成向量；2. 学会了计算向量之间的相似度。</p>
+<p>这一节把这两件事往前再推一步，进入真正的工程链路：把文本和向量写入 Redis，然后按相似度做检索。</p>
+<p>先强调一个边界：<strong>这一节还不是完整 RAG。</strong> 这里演示的是 RAG 的底层能力，也就是：建索引，做相似度检索。但还没有加入：文档加载器，文本切分器，检索结果交给大模型生成最终答案。</p>
+<h3 id="6-1-元数据过滤、混合检索与重排序"><a href="#6-1-元数据过滤、混合检索与重排序" class="headerlink" title="6.1 元数据过滤、混合检索与重排序"></a>6.1 元数据过滤、混合检索与重排序</h3><p>很多人在跑完第一个向量检索后，会误以为”检索 &#x3D; 把问题转成向量，然后直接搜 top-k”。这条主线当然没错，但真实项目里，通常还会再叠加三类能力：</p>
+<ul>
+<li><strong>元数据过滤（metadata filter）</strong>：先用 source、category、时间范围、权限字段等条件缩小候选范围，再做向量检索。</li>
+<li><strong>混合检索（hybrid retrieval）</strong>：同时结合语义向量检索和关键词检索，或者结合不同类型的召回路径。</li>
+<li><strong>重排序（rerank）</strong>：先召回一批候选结果，再用更精细的模型或策略重新排序。</li>
+</ul>
+<p>三者各自解决的问题很清楚：</p>
+<ul>
+<li>过滤，解决”只在某个业务范围内找”</li>
+<li>混合，解决”既想看语义，也不想丢掉关键词命中”</li>
+<li>重排序，解决”已经找回来了，但顺序还不够好”</li>
+</ul>
+<p>其中”重排序”可以单独看一下。它并不是重新去全库里搜索，而是对已经召回的一小批候选结果做二次排序优化。很多系统里，向量检索负责第一阶段召回，reranker 负责第二阶段排序，这样往往能兼顾速度和效果。</p>
+<p>本章的 Redis 实战主要演示的是稠密向量检索的第一阶段能力。你后面在更完整的 RAG 系统里，如果发现”能搜到，但排序不够稳”或者”关键词信息丢了”，就可以优先从这三类增强手段入手。</p>
+<h3 id="6-2-from-documents-和-add-texts-怎么理解"><a href="#6-2-from-documents-和-add-texts-怎么理解" class="headerlink" title="6.2 from_documents 和 add_texts 怎么理解"></a>6.2 from_documents 和 add_texts 怎么理解</h3><p>这两个方法都能”把内容写入向量库”，但适合的场景不完全一样：</p>
+<div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>更适合什么场景</th>
+<th>直观理解</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>from_documents(...)</code></td>
+<td>你手里已经有一批 Document 对象，想一次性建库</td>
+<td>更像”一步到位建索引”</td>
+</tr>
+<tr>
+<td><code>add_texts(...)</code></td>
+<td>你有字符串列表，或想持续追加数据</td>
+<td>更像”在已有向量库上增量写入”</td>
+</tr>
+</tbody></table></div>
+<p>初学阶段不用纠结谁绝对更高级，只要知道：</p>
+<ul>
+<li>它们都在做”文本向量化 + 写入向量库”</li>
+<li>区别主要是入参结构和工程组织方式</li>
+</ul>
+<h3 id="6-3-生产级扩展方向"><a href="#6-3-生产级扩展方向" class="headerlink" title="6.3 生产级扩展方向"></a>6.3 生产级扩展方向</h3><p>学完 Redis 向量检索后，可以把后续提升分成三条线：</p>
+<ul>
+<li><strong>数据线</strong>：增量写入、删除更新、索引重建、版本管理。</li>
+<li><strong>检索线</strong>：metadata filter、混合检索、rerank、阈值策略。</li>
+<li><strong>平台线</strong>：从轻量 Redis &#x2F; Chroma 过渡到 Milvus、OpenSearch 等更专业的检索平台。</li>
+</ul>
+</div>
+    <footer class="reference-article__footer">
+      <span>标签</span><a href="/tags/LLM/">LLM</a>
+    </footer>
+  </article>
+  
+    <aside class="reference-toc" aria-label="本页目录"><p>本页目录</p><ol class="reference-toc__list"><li class="reference-toc__list-item reference-toc__list-level-1"><a class="reference-toc__list-link" href="#%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E-Embedding"><span class="reference-toc__list-text">向量数据库与 Embedding</span></a><ol class="reference-toc__list-child"><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#1-%E5%90%91%E9%87%8F%E4%B8%8E%E5%90%91%E9%87%8F%E5%8C%96"><span class="reference-toc__list-text">1 向量与向量化</span></a><ol class="reference-toc__list-child"><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#1-1-%E5%90%91%E9%87%8F%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="reference-toc__list-text">1.1 向量的定义</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#1-2-%E5%90%91%E9%87%8F%E5%8C%96%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="reference-toc__list-text">1.2 向量化的定义</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#1-3-%E8%AF%AD%E4%B9%89%E7%9B%B8%E8%BF%91%E4%B8%8E%E5%90%91%E9%87%8F%E7%9B%B8%E8%BF%91"><span class="reference-toc__list-text">1.3 语义相近与向量相近</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#1-4-%E5%90%91%E9%87%8F%E7%BB%B4%E5%BA%A6%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="reference-toc__list-text">1.4 向量维度的定义</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#1-5-%E8%BF%9B%E4%B8%80%E6%AD%A5%E5%BB%BA%E7%AB%8B%E7%9B%B4%E8%A7%89"><span class="reference-toc__list-text">1.5 进一步建立直觉</span></a></li></ol></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#2-%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="reference-toc__list-text">2 向量数据库</span></a><ol class="reference-toc__list-child"><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#2-1-%E5%AE%9A%E4%B9%89"><span class="reference-toc__list-text">2.1 定义</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#2-2-%E4%B8%8E%E4%BC%A0%E7%BB%9F%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="reference-toc__list-text">2.2 与传统数据库的区别</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#2-3-%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93%E9%87%8C%E5%AD%98%E4%BB%80%E4%B9%88"><span class="reference-toc__list-text">2.3 向量数据库里存什么</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#2-4-%E7%A8%A0%E5%AF%86%E5%90%91%E9%87%8F%E3%80%81%E7%A8%80%E7%96%8F%E5%90%91%E9%87%8F%E3%80%81%E6%A0%87%E9%87%8F%E5%AD%97%E6%AE%B5%E5%AE%9A%E4%B9%89"><span class="reference-toc__list-text">2.4 稠密向量、稀疏向量、标量字段定义</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#2-5-%E5%B8%B8%E8%A7%81%E7%9A%84%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93%E5%88%86%E7%B1%BB"><span class="reference-toc__list-text">2.5 常见的向量数据库分类</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#2-6-RAG-%E4%B8%8E%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="reference-toc__list-text">2.6 RAG 与向量数据库的关系</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#2-7-Redis-%E4%B8%8E-Milvus-%E6%80%8E%E4%B9%88%E9%80%89"><span class="reference-toc__list-text">2.7 Redis 与 Milvus 怎么选</span></a></li></ol></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#3-%E7%94%A8-Redis-Stack-%E4%BD%9C%E4%B8%BA%E5%90%91%E9%87%8F%E5%AD%98%E5%82%A8"><span class="reference-toc__list-text">3 用 Redis Stack 作为向量存储</span></a><ol class="reference-toc__list-child"><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#3-1-Redis%E3%80%81Redis-Stack%E3%80%81RediSearch-%E4%B8%89%E8%80%85%E5%85%B3%E7%B3%BB"><span class="reference-toc__list-text">3.1 Redis、Redis Stack、RediSearch 三者关系</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#3-2-%E4%B8%BA%E4%BB%80%E4%B9%88%E9%80%89-Redis"><span class="reference-toc__list-text">3.2 为什么选 Redis</span></a></li></ol></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#4-Embedding-%E6%96%87%E6%9C%AC%E5%90%91%E9%87%8F%E5%8C%96"><span class="reference-toc__list-text">4 Embedding 文本向量化</span></a><ol class="reference-toc__list-child"><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#4-1-%E5%AE%9A%E4%B9%89"><span class="reference-toc__list-text">4.1 定义</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#4-2-%E9%87%8D%E8%A6%81%E5%AE%9E%E8%B7%B5%E8%A7%84%E5%88%99"><span class="reference-toc__list-text">4.2 重要实践规则</span></a></li></ol></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#5-%E9%80%9A%E8%BF%87%E5%90%91%E9%87%8F%E8%AE%A1%E7%AE%97%E8%AF%AD%E4%B9%89%E7%9B%B8%E4%BC%BC%E5%BA%A6"><span class="reference-toc__list-text">5 通过向量计算语义相似度</span></a><ol class="reference-toc__list-child"><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#5-1-%E4%B8%BA%E4%BB%80%E4%B9%88%E5%B8%B8%E7%94%A8%E4%BD%99%E5%BC%A6%E7%9B%B8%E4%BC%BC%E5%BA%A6"><span class="reference-toc__list-text">5.1 为什么常用余弦相似度</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#5-2-%E6%A3%80%E7%B4%A2%E9%87%8C%E5%B8%B8%E8%A7%81%E7%9A%84%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F%E6%80%8E%E4%B9%88%E9%80%89"><span class="reference-toc__list-text">5.2 检索里常见的距离度量怎么选</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#5-3-%E7%B2%BE%E7%A1%AE%E6%A3%80%E7%B4%A2%E3%80%81%E8%BF%91%E4%BC%BC%E6%A3%80%E7%B4%A2%E4%B8%8E%E7%B4%A2%E5%BC%95"><span class="reference-toc__list-text">5.3 精确检索、近似检索与索引</span></a></li></ol></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#6-%E5%90%91%E9%87%8F%E5%BA%93%E7%9A%84%E5%86%99%E5%85%A5%E4%B8%8E%E6%A3%80%E7%B4%A2%EF%BC%88RAG-%E7%9A%84%E5%BA%95%E5%B1%82%E8%83%BD%E5%8A%9B%EF%BC%89"><span class="reference-toc__list-text">6 向量库的写入与检索（RAG 的底层能力）</span></a><ol class="reference-toc__list-child"><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#6-1-%E5%85%83%E6%95%B0%E6%8D%AE%E8%BF%87%E6%BB%A4%E3%80%81%E6%B7%B7%E5%90%88%E6%A3%80%E7%B4%A2%E4%B8%8E%E9%87%8D%E6%8E%92%E5%BA%8F"><span class="reference-toc__list-text">6.1 元数据过滤、混合检索与重排序</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#6-2-from-documents-%E5%92%8C-add-texts-%E6%80%8E%E4%B9%88%E7%90%86%E8%A7%A3"><span class="reference-toc__list-text">6.2 from_documents 和 add_texts 怎么理解</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#6-3-%E7%94%9F%E4%BA%A7%E7%BA%A7%E6%89%A9%E5%B1%95%E6%96%B9%E5%90%91"><span class="reference-toc__list-text">6.3 生产级扩展方向</span></a></li></ol></li></ol></li></ol></aside>
+  
+</div>
+</main>
+        
+      </div>
+      <footer id="footer">
+  <div class="outer reference-footer-grid">
+    <section>
+      <h2>快速阅读</h2>
+      <a href="/archives/">全部文章</a>
+      <a href="/tags/LLM/">大模型与 RAG</a>
+      <a href="/tags/ai-agent/">Agent 实战</a>
+    </section>
+    <section>
+      <h2>技术专题</h2>
+      <a href="/tags/Fast-api%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86">Python 与 FastAPI</a>
+      <a href="/tags/AWS">AWS 云服务</a>
+      <a href="/archives">项目复盘</a>
+    </section>
+    <section>
+      <h2>站内索引</h2>
+      <a href="/tags/LLM/">标签：LLM</a>
+      <a href="/tags/ai-agent/">标签：AI Agent</a>
+      <a href="/archives/">按时间浏览</a>
+    </section>
+    <section>
+      <h2>关于本站</h2>
+      <a href="/">首页</a>
+      <a href="/archives">文章归档</a>
+      <span>记录学习，也分享实践。</span>
+    </section>
+  </div>
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+  <script src="/js/responsive.js" defer></script>
+</body>
+</html>
