@@ -1,0 +1,2069 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Docker 快速入门与 Dify 部署排障 | WN</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Docker 快速入门与 Dify 部署排障 本文从环境一致性问题出发，介绍 Docker 的核心概念、安装与常用命令，再逐步过渡到 Compose 多服务编排、数据持久化与迁移，最后落到 Dify 的部署结构、排障路径和升级备份，帮你建立”先稳定环境、再定位问题”的工程习惯。   1 学习 Docker1.1 环境不一致的问题在没有 Docker 之前，部署一个项目往往不是”把代码放到服务器上”">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker 快速入门与 Dify 部署排障">
+<meta property="og:url" content="https://wenjiajun-wn.github.io/2026/09/14/Docker%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%E4%B8%8EDify%E9%83%A8%E7%BD%B2%E6%8E%92%E9%9A%9C/index.html">
+<meta property="og:site_name" content="WN">
+<meta property="og:description" content="Docker 快速入门与 Dify 部署排障 本文从环境一致性问题出发，介绍 Docker 的核心概念、安装与常用命令，再逐步过渡到 Compose 多服务编排、数据持久化与迁移，最后落到 Dify 的部署结构、排障路径和升级备份，帮你建立”先稳定环境、再定位问题”的工程习惯。   1 学习 Docker1.1 环境不一致的问题在没有 Docker 之前，部署一个项目往往不是”把代码放到服务器上”">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-09-13T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-09-14T07:53:43.959Z">
+<meta property="article:author" content="wn">
+<meta property="article:tag" content="Docker">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="WN" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<!-- hexo injector head_end start --><link rel="stylesheet" href="/css/responsive.css"><link rel="stylesheet" href="/css/blog-refresh.css"><link rel="stylesheet" href="/css/reference-exact.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="page-reading">
+  <a class="skip-link" href="#main">跳到正文</a>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner" aria-hidden="true"></div>
+  <div class="site-toolbar outer">
+    
+    
+    <nav class="desktop-nav" aria-label="主导航">
+      
+        <a href="/">首页</a>
+      
+        <a href="/archives">归档</a>
+      
+    </nav>
+    <details class="mobile-menu site-disclosure">
+      <summary>菜单 <span aria-hidden="true">⌄</span></summary>
+      <nav class="disclosure-panel" aria-label="手机主导航">
+        
+          <a href="/">首页</a>
+        
+          <a href="/archives">归档</a>
+        
+      </nav>
+    </details>
+    <div class="toolbar-actions">
+      
+      <details class="site-search site-disclosure">
+        <summary>搜索 <span aria-hidden="true">⌄</span></summary>
+        <form class="disclosure-panel site-search-form" action="https://www.google.com/search" method="get" role="search">
+          <label for="site-query">搜索本站文章</label>
+          <div class="search-controls">
+            <input id="site-query" type="search" name="q" placeholder="输入文章关键词" required>
+            <button type="submit">搜索</button>
+          </div>
+          <input type="hidden" name="sitesearch" value="https://wenjiajun-wn.github.io">
+          <p>通过 Google 搜索本站内容</p>
+        </form>
+      </details>
+      <a class="github-header-link" href="https://github.com/wenjiajun-wn" target="_blank" rel="noopener noreferrer" aria-label="访问 WN 的 GitHub 主页">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path fill="currentColor" d="M12 .7a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2.23c-3.22.7-3.9-1.37-3.9-1.37-.52-1.34-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.57-.29-5.28-1.29-5.28-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.47.11-3.06 0 0 .97-.31 3.16 1.18a10.98 10.98 0 0 1 5.76 0c2.2-1.49 3.16-1.18 3.16-1.18.63 1.59.23 2.77.11 3.06.74.81 1.19 1.84 1.19 3.1 0 4.41-2.71 5.39-5.29 5.68.42.36.79 1.07.79 2.16v3.2c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .7Z"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</header>
+
+      
+      <div class="outer site-content site-content--reading">
+        
+          <main id="main" class="reference-reading" tabindex="-1">
+<div class="reference-article-shell">
+  <article id="post-Docker快速入门与Dify部署排障" class="reference-article h-entry" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <header class="reference-article__header">
+      <a class="reference-article__back" href="/archives">← 返回文章列表</a>
+      
+        <h1 class="p-name" itemprop="headline">Docker 快速入门与 Dify 部署排障</h1>
+      
+      <div class="reference-article__meta">
+        <time datetime="2026-09-14">2026年09月14日</time>
+        
+          <span aria-hidden="true">·</span>
+          <span>
+            <a href="/tags/Docker/">Docker</a>
+          </span>
+        
+      </div>
+    </header>
+    <div class="reference-article__body e-content" itemprop="articleBody"><h1 id="Docker-快速入门与-Dify-部署排障"><a href="#Docker-快速入门与-Dify-部署排障" class="headerlink" title="Docker 快速入门与 Dify 部署排障"></a>Docker 快速入门与 Dify 部署排障</h1><blockquote>
+<p>本文从环境一致性问题出发，介绍 Docker 的核心概念、安装与常用命令，再逐步过渡到 Compose 多服务编排、数据持久化与迁移，最后落到 Dify 的部署结构、排障路径和升级备份，帮你建立”先稳定环境、再定位问题”的工程习惯。</p>
+</blockquote>
+<hr>
+<h2 id="1-学习-Docker"><a href="#1-学习-Docker" class="headerlink" title="1 学习 Docker"></a>1 学习 Docker</h2><h3 id="1-1-环境不一致的问题"><a href="#1-1-环境不一致的问题" class="headerlink" title="1.1 环境不一致的问题"></a>1.1 环境不一致的问题</h3><p>在没有 Docker 之前，部署一个项目往往不是”把代码放到服务器上”这么简单。</p>
+<p>开发电脑上能跑，测试环境可能报错；测试环境能跑，生产服务器又缺少依赖；换一台机器，就要重新安装 Python、Node.js、数据库、系统库、驱动、配置文件。项目越多，版本越多，环境差异就越难控制。</p>
+<p>Docker 解决的就是这个老问题：把应用和运行环境一起打包，换一台机器也尽量按同一种方式运行。</p>
+<p>放到 Dify、RAG 或智能体项目里，这个问题会更具体。你在浏览器里看到的是一个页面，实际运行时还会涉及后端接口、后台任务、数据库、Redis、向量库、Nginx、Sandbox、插件服务等组件。它们的版本、端口、数据目录和启动顺序只要有一处没对上，排障就很容易跑偏。</p>
+<p>Docker 的价值在这里很明确：把这些组件放进一套相对固定的部署流程里。先让环境能稳定复现，再谈迁移、升级和排障。</p>
+<h3 id="1-2-Docker-是什么"><a href="#1-2-Docker-是什么" class="headerlink" title="1.2 Docker 是什么"></a>1.2 Docker 是什么</h3><p>Docker 是一个开源的应用容器引擎，底层主要基于 Go 语言开发。你可以把它理解成一个”打包并运行环境”的工具：把应用、依赖、配置和运行环境放进一个轻量、可移植、相对隔离的容器里。</p>
+<p>Docker 官方曾经用一句话概括它的目标：</p>
+<blockquote>
+<p>Build, Ship and Run Any App, Anywhere</p>
+</blockquote>
+<p>它强调的是构建、分发、运行这一整条链路。一些教程里说的”一次封装，到处运行”，讲的就是这个意思。</p>
+<p>和手工安装环境相比，Docker 的价值不只是少装几个软件，而是把应用交付从零散的安装步骤变成可复制的流程：</p>
+<div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
+<thead>
+<tr>
+<th>能力</th>
+<th>说明</th>
+<th>例子</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>可移植性</td>
+<td>同一套镜像可以在本地、测试环境、服务器上运行</td>
+<td>本地跑通的 MySQL &#x2F; Redis &#x2F; 向量库迁到 Ubuntu</td>
+</tr>
+<tr>
+<td>隔离性</td>
+<td>不同容器有各自的进程、文件系统和依赖</td>
+<td>Dify 的 api、worker、redis 互不直接污染环境</td>
+</tr>
+<tr>
+<td>低开销</td>
+<td>容器共享宿主机内核，通常比完整虚拟机更轻</td>
+<td>一台机器上同时跑多个基础服务</td>
+</tr>
+<tr>
+<td>可伸缩性</td>
+<td>多实例服务可以更容易复制和扩展</td>
+<td>后续生产部署中扩展 worker 处理后台任务</td>
+</tr>
+<tr>
+<td>可复现性</td>
+<td>环境由镜像、Compose、环境变量描述</td>
+<td>新同学拉起同一套 Dify 环境，排障口径一致</td>
+</tr>
+</tbody></table></div>
+<p>当然，Docker 不是万能药。数据库备份、显卡驱动、网络代理、数据权限、云服务器安全组，这些还是要自己处理。但它能把”应用怎么跑”这件事先稳住，这对后面部署 Dify、本地模型和企业级项目很关键。</p>
+<h3 id="1-3-Docker-和虚拟机的区别"><a href="#1-3-Docker-和虚拟机的区别" class="headerlink" title="1.3 Docker 和虚拟机的区别"></a>1.3 Docker 和虚拟机的区别</h3><p>刚接触 Docker 时，可以暂时把它理解成”比虚拟机更轻的运行环境”。这个说法方便入门，但不够准确。</p>
+<p>虚拟机会把操作系统也虚拟出来，每个虚拟机都有自己的完整系统；Docker 容器共享宿主机内核，只把应用运行需要的文件、依赖和隔离环境打包起来。</p>
+<p>主要看三个区别：</p>
+<div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
+<thead>
+<tr>
+<th>对比项</th>
+<th>虚拟机 VM</th>
+<th>Docker 容器</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>隔离方式</td>
+<td>虚拟化整套操作系统</td>
+<td>共享宿主机内核，隔离进程和文件系统</td>
+</tr>
+<tr>
+<td>启动速度</td>
+<td>通常较慢</td>
+<td>通常更快</td>
+</tr>
+<tr>
+<td>资源占用</td>
+<td>更高</td>
+<td>更低</td>
+</tr>
+<tr>
+<td>适合场景</td>
+<td>强隔离、多系统环境、传统基础设施</td>
+<td>应用交付、开发测试、微服务部署</td>
+</tr>
+</tbody></table></div>
+<p>因此，Docker 不是用来替代所有虚拟机的工具。它更适合解决应用交付、环境一致、多服务编排这类问题。</p>
+<h3 id="1-4-Docker-架构"><a href="#1-4-Docker-架构" class="headerlink" title="1.4 Docker 架构"></a>1.4 Docker 架构</h3><p>Docker 是典型的客户端和服务端架构。</p>
+<p>你在终端里执行的 docker 命令，是 Docker Client；负责创建容器、拉取镜像、管理网络和数据卷的是 Docker Daemon。镜像通常来自 Docker Hub 或其他镜像仓库。</p>
+<p>重点四个对象：客户端、Docker 主机、镜像仓库、容器。为了后面能读懂 Dify 的 Compose 文件，这里再把 volume 和 Compose 一起补进来：</p>
+<div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
+<thead>
+<tr>
+<th>对象</th>
+<th>和谁发生关系</th>
+<th>关系说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Docker Client（Docker 客户端）</td>
+<td>Docker Daemon</td>
+<td>终端里的 docker 命令会把操作请求发送给 Docker Daemon</td>
+</tr>
+<tr>
+<td>Docker Daemon（Docker 守护进程 &#x2F; 服务端）</td>
+<td>Registry、Image、Container、Volume</td>
+<td>负责拉取镜像、创建容器、管理网络和数据卷</td>
+</tr>
+<tr>
+<td>Registry（镜像仓库）</td>
+<td>Image</td>
+<td>存放和分发镜像，例如 Docker Hub 或企业私有仓库</td>
+</tr>
+<tr>
+<td>Image（镜像）</td>
+<td>Container</td>
+<td>容器基于镜像创建并运行；一个镜像可以启动多个容器</td>
+</tr>
+<tr>
+<td>Container（容器）</td>
+<td>Image、Volume、Network</td>
+<td>运行应用进程，并把需要持久化的数据写入 volume 或挂载目录</td>
+</tr>
+<tr>
+<td>Volume（数据卷）</td>
+<td>Container</td>
+<td>保存数据库、上传文件、索引等数据，通常独立于容器生命周期</td>
+</tr>
+<tr>
+<td>Docker Compose（多容器编排工具）</td>
+<td>Image、Container、Volume、Network</td>
+<td>用一份 YAML 把镜像、容器、数据卷、网络和环境变量统一描述出来</td>
+</tr>
+</tbody></table></div>
+<p>所以执行一条命令时，要知道它在操作谁：</p>
+<ul>
+<li><strong>docker pull</strong>：从仓库拉镜像。</li>
+<li><strong>docker run</strong>：基于镜像创建并启动容器。</li>
+<li><strong>docker ps</strong>：查看容器。</li>
+<li><strong>docker images</strong>：查看镜像。</li>
+<li><strong>docker volume ls</strong>：查看数据卷。</li>
+<li><strong>docker compose up -d</strong>：按配置启动一组服务。</li>
+</ul>
+<h3 id="1-5-镜像、容器、仓库、数据卷"><a href="#1-5-镜像、容器、仓库、数据卷" class="headerlink" title="1.5 镜像、容器、仓库、数据卷"></a>1.5 镜像、容器、仓库、数据卷</h3><div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
+<thead>
+<tr>
+<th>词</th>
+<th>可以这样理解</th>
+<th>常见例子</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Docker Engine</td>
+<td>运行容器的引擎</td>
+<td>Docker Desktop、服务器上的 Docker 服务</td>
+</tr>
+<tr>
+<td>镜像 Image</td>
+<td>应用的运行模板，像安装包</td>
+<td>mysql:8.0.45、postgres:15-alpine</td>
+</tr>
+<tr>
+<td>容器 Container</td>
+<td>镜像运行后的实例</td>
+<td>mysql-db、docker-api-1</td>
+</tr>
+<tr>
+<td>仓库 Repository</td>
+<td>存放和下载镜像的平台</td>
+<td>Docker Hub、企业私有镜像仓库</td>
+</tr>
+<tr>
+<td>数据卷 Volume</td>
+<td>独立于容器生命周期的数据存储</td>
+<td>mysql_data、postgres_data</td>
+</tr>
+<tr>
+<td>Dockerfile</td>
+<td>自定义镜像的构建脚本</td>
+<td>FROM python:3.12</td>
+</tr>
+<tr>
+<td>Docker Compose</td>
+<td>用一份 YAML 管理一组容器</td>
+<td>docker-compose.yaml</td>
+</tr>
+<tr>
+<td>bind mount</td>
+<td>把宿主机目录挂到容器里</td>
+<td>.&#x2F;volumes&#x2F;db&#x2F;data:&#x2F;var&#x2F;lib&#x2F;postgresql&#x2F;data</td>
+</tr>
+</tbody></table></div>
+<p>可以这样理解：镜像负责提供程序，容器负责把程序跑起来，仓库负责分发镜像，volume 负责保存数据，Compose 负责把一组容器编排起来。</p>
+<h3 id="1-6-Dockerfile-和-Compose"><a href="#1-6-Dockerfile-和-Compose" class="headerlink" title="1.6 Dockerfile 和 Compose"></a>1.6 Dockerfile 和 Compose</h3><p>Dockerfile 和 Compose 经常一起出现，但它们解决的问题不同。</p>
+<p>Dockerfile 负责构建镜像。比如你想做一个包含 Python 3.12、依赖包和业务脚本的环境，就写 Dockerfile，让 Docker 自动构建。</p>
+<p>Docker Compose 负责运行一组服务。比如一个项目需要同时启动 MySQL、Python 应用、Redis、Nginx，就用 docker-compose.yaml 把它们的镜像、端口、环境变量、网络和数据卷写清楚。</p>
+<p>后面 Dify 的部署正是这个思路：官方已经帮我们准备好镜像和 Compose 文件，我们执行 docker compose up -d，就能把 web、api、worker、数据库、Redis、向量库、nginx 等服务一起拉起来。</p>
+<hr>
+<h2 id="2-Docker-安装：本地-Windows-与服务器-Ubuntu"><a href="#2-Docker-安装：本地-Windows-与服务器-Ubuntu" class="headerlink" title="2 Docker 安装：本地 Windows 与服务器 Ubuntu"></a>2 Docker 安装：本地 Windows 与服务器 Ubuntu</h2><h3 id="2-1-先判断你要装在哪里"><a href="#2-1-先判断你要装在哪里" class="headerlink" title="2.1 先判断你要装在哪里"></a>2.1 先判断你要装在哪里</h3><p>学习 Docker 时，通常会碰到两种环境：</p>
+<div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
+<thead>
+<tr>
+<th>环境</th>
+<th>推荐安装方式</th>
+<th>适合场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Windows 本地电脑</td>
+<td>Docker Desktop + WSL 2</td>
+<td>学习、演示、跑 Dify &#x2F; Coze Studio 本地版</td>
+</tr>
+<tr>
+<td>Ubuntu 云服务器</td>
+<td>Docker Engine + Compose 插件</td>
+<td>企业部署、远程服务、后续项目上线</td>
+</tr>
+</tbody></table></div>
+<p>如果只是跟着本章学习，先装 Docker Desktop 就够了；如果已经在准备云服务器部署，可以直接跳到第 2.8 小节。</p>
+<p>两种环境里的常用命令差不多，差别主要在安装方式、文件路径、权限和镜像源配置。</p>
+<h3 id="2-2-Windows-安装前准备"><a href="#2-2-Windows-安装前准备" class="headerlink" title="2.2 Windows 安装前准备"></a>2.2 Windows 安装前准备</h3><p>Windows 本地部署 Coze Studio、Dify、Coze Loop 这类平台时，最常用的方案是 Docker Desktop + Docker Compose。</p>
+<p>安装前先看几件事：</p>
+<ul>
+<li>Windows 10 &#x2F; Windows 11 系统。</li>
+<li>已开启虚拟化功能。大部分新电脑默认开启，如果 Docker Desktop 启动时报虚拟化错误，再进入 BIOS 检查。</li>
+<li>可以正常使用 WSL 2。Docker Desktop 在 Windows 上通常依赖 WSL 2 来运行 Linux 容器。</li>
+<li>本机网络能访问 Docker 官网和镜像仓库。</li>
+</ul>
+<div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
+<thead>
+<tr>
+<th>检查项</th>
+<th>怎么看</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>系统版本</td>
+<td>Win + R 输入 winver</td>
+<td>建议 Windows 10 2004 及以上，Windows 11 更省心</td>
+</tr>
+<tr>
+<td>虚拟化</td>
+<td>任务管理器 -&gt; 性能 -&gt; CPU -&gt; 虚拟化</td>
+<td>如果未启用，需要进 BIOS 开启 Virtualization Technology</td>
+</tr>
+<tr>
+<td>WSL 功能</td>
+<td>“启用或关闭 Windows 功能”</td>
+<td>勾选”适用于 Linux 的 Windows 子系统”和”虚拟机平台”</td>
+</tr>
+<tr>
+<td>WSL 内核</td>
+<td>Docker Desktop 启动提示或 wsl –status</td>
+<td>旧环境可能需要更新 WSL 内核</td>
+</tr>
+</tbody></table></div>
+<p>WSL 2 相关功能可以在 Windows 功能里勾选。不同 Windows 版本的显示文字可能略有差异，重点是启用 Virtual Machine Platform 和 WSL。</p>
+<p>如果需要用命令启用 WSL 和虚拟机平台，可以用管理员 PowerShell 执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart</span><br><span class="line">dism.exe /online /enable-feature /featurename:VirtualMachinePlatform</span><br></pre></td></tr></table></figure>
+
+<p>执行后需要重启电脑。WSL 内核可从 Microsoft WSL 发布页下载更新包；如果是 ARM 架构设备，要选择对应架构的安装包。</p>
+<h3 id="2-3-下载-Docker-Desktop"><a href="#2-3-下载-Docker-Desktop" class="headerlink" title="2.3 下载 Docker Desktop"></a>2.3 下载 Docker Desktop</h3><p>进入 Docker Desktop 官方下载页：</p>
+<p><a target="_blank" rel="noopener" href="https://www.docker.com/products/docker-desktop/">https://www.docker.com/products/docker-desktop/</a></p>
+<p>选择 Windows 版本下载安装包。选择 AMD64 位的安装包。</p>
+<h3 id="2-4-安装并启动-Docker-Desktop"><a href="#2-4-安装并启动-Docker-Desktop" class="headerlink" title="2.4 安装并启动 Docker Desktop"></a>2.4 安装并启动 Docker Desktop</h3><p>双击安装包，按提示完成安装即可。安装过程中如果看到 WSL 2、桌面快捷方式等选项，保持默认配置即可。</p>
+<p>安装完成后打开 Docker Desktop，确认状态栏显示 Running。</p>
+<p>如果 Windows 提示需要安装”适用于 Linux 的 Windows 子系统”，按提示装完，再重新打开 Docker Desktop。</p>
+<h3 id="2-5-验证-Docker-环境"><a href="#2-5-验证-Docker-环境" class="headerlink" title="2.5 验证 Docker 环境"></a>2.5 验证 Docker 环境</h3><p>打开 PowerShell、CMD、Windows Terminal 或 Docker Desktop 自带终端，依次执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker --version</span><br><span class="line">docker compose version</span><br><span class="line">docker run hello-world</span><br></pre></td></tr></table></figure>
+
+<p>能正常输出版本，并且 hello-world 能运行，说明 Docker 基础环境可用。</p>
+<p>Windows + Docker Desktop 场景下，官方也建议把 Linux 容器使用的源码和挂载数据放在 WSL 的 Linux 文件系统里，而不是长期放在 Windows 文件系统路径下。这样通常会减少文件同步、权限和性能问题。</p>
+<p>如果 Docker Desktop 安装失败、启动异常，或者你想彻底重装，可以按下面思路清理。注意，这会删除 Docker Desktop 管理的镜像、容器和数据，执行前先确认没有重要数据：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 停止所有 WSL 实例</span></span><br><span class="line">wsl --shutdown</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 查看 WSL 发行版</span></span><br><span class="line">wsl --list --verbose</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 删除 Docker Desktop 相关发行版</span></span><br><span class="line">wsl --unregister docker-desktop</span><br><span class="line">wsl --unregister docker-desktop-data</span><br></pre></td></tr></table></figure>
+
+<p>还可以手动检查这些残留目录：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\你的用户名\.docker</span><br><span class="line">C:\Users\你的用户名\AppData\Local\Docker</span><br><span class="line">C:\Program Files\Docker</span><br></pre></td></tr></table></figure>
+
+<p>普通卸载只需要在 Windows “应用和功能”里卸载 Docker Desktop；前面这种清理更接近”彻底重装”，不要把它当成日常排障第一步。</p>
+<h3 id="2-6-启动-MySQL-容器"><a href="#2-6-启动-MySQL-容器" class="headerlink" title="2.6 启动 MySQL 容器"></a>2.6 启动 MySQL 容器</h3><p>先拉取 MySQL 镜像：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull mysql:8.0.45</span><br></pre></td></tr></table></figure>
+
+<p>查看本地镜像：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker images</span><br></pre></td></tr></table></figure>
+
+<p>启动一个 MySQL 容器：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --name mysql-db -p 9999:3306 -e MYSQL_ROOT_PASSWORD=123456 mysql:8.0.45</span><br></pre></td></tr></table></figure>
+
+<p>这条命令里最重要的是几个参数：</p>
+<div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>-d</code></td>
+<td>后台运行，不占用当前终端</td>
+</tr>
+<tr>
+<td><code>--name mysql-db</code></td>
+<td>给容器起名，后续可以用这个名字 stop、logs、exec</td>
+</tr>
+<tr>
+<td><code>-p 9999:3306</code></td>
+<td>宿主机 9999 端口映射到容器内 3306 端口</td>
+</tr>
+<tr>
+<td><code>-e MYSQL_ROOT_PASSWORD=123456</code></td>
+<td>给 MySQL 容器注入环境变量，设置 root 密码</td>
+</tr>
+<tr>
+<td><code>mysql:8.0.45</code></td>
+<td>要运行的镜像名和版本</td>
+</tr>
+</tbody></table></div>
+<p>查看容器：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker ps</span><br></pre></td></tr></table></figure>
+
+<p>这里有两个地址容易混：</p>
+<ul>
+<li>本机访问 MySQL：127.0.0.1:9999</li>
+<li>容器内部 MySQL 实际监听：3306</li>
+</ul>
+<p>也就是 -p 9999:3306 左边给宿主机访问，右边给容器内部服务使用。</p>
+<h3 id="2-7-从-docker-ps-区分镜像和容器"><a href="#2-7-从-docker-ps-区分镜像和容器" class="headerlink" title="2.7 从 docker ps 区分镜像和容器"></a>2.7 从 docker ps 区分镜像和容器</h3><p>执行：docker ps</p>
+<p>输出里常见两列：</p>
+<div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
+<thead>
+<tr>
+<th>列</th>
+<th>含义</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>IMAGE</td>
+<td>镜像名</td>
+<td>postgres:15-alpine、langgenius&#x2F;dify-api:&lt;version&gt;</td>
+</tr>
+<tr>
+<td>NAMES</td>
+<td>容器名</td>
+<td>docker-db_postgres-1、docker-api-1</td>
+</tr>
+</tbody></table></div>
+<p>看输出时可以先抓两个特征：</p>
+<ul>
+<li>带 :tag 的通常是镜像，例如 redis:6-alpine。</li>
+<li>像 docker-api-1、mysql-db、qdrant 这种运行中的名字通常是容器。</li>
+</ul>
+<p><strong>Docker Desktop 里也能直接区分</strong></p>
+<p>一个镜像可以启动多个容器。Dify 的 api、worker、worker_beat 就可能使用同一个后端镜像，只是启动模式不同。</p>
+<h3 id="2-8-基础命令速查"><a href="#2-8-基础命令速查" class="headerlink" title="2.8 基础命令速查"></a>2.8 基础命令速查</h3><div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
+<thead>
+<tr>
+<th>目的</th>
+<th>命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>查看 Docker 版本</td>
+<td>docker –version</td>
+<td>检查 Docker CLI 是否可用</td>
+</tr>
+<tr>
+<td>查看 Compose 版本</td>
+<td>docker compose version</td>
+<td>检查 Compose v2 是否可用</td>
+</tr>
+<tr>
+<td>拉取镜像</td>
+<td>docker pull mysql:8.0.45</td>
+<td>从镜像仓库下载镜像</td>
+</tr>
+<tr>
+<td>查看镜像</td>
+<td>docker images</td>
+<td>查看本地镜像</td>
+</tr>
+<tr>
+<td>启动容器</td>
+<td>docker run …</td>
+<td>基于镜像创建并启动容器</td>
+</tr>
+<tr>
+<td>查看运行中容器</td>
+<td>docker ps</td>
+<td>只看运行中的容器</td>
+</tr>
+<tr>
+<td>查看全部容器</td>
+<td>docker ps -a</td>
+<td>包括已停止容器</td>
+</tr>
+<tr>
+<td>查看日志</td>
+<td>docker logs -f mysql-db</td>
+<td>跟踪某个容器日志</td>
+</tr>
+<tr>
+<td>进入容器</td>
+<td>docker exec -it mysql-db sh</td>
+<td>进入容器内部</td>
+</tr>
+<tr>
+<td>停止容器</td>
+<td>docker stop mysql-db</td>
+<td>停止运行中的容器</td>
+</tr>
+<tr>
+<td>删除容器</td>
+<td>docker rm mysql-db</td>
+<td>删除已停止的容器</td>
+</tr>
+<tr>
+<td>删除镜像</td>
+<td>docker rmi mysql:8.0.45</td>
+<td>删除本地镜像</td>
+</tr>
+</tbody></table></div>
+<p>日常排障时，先看 docker ps，再看 docker logs。在没确认数据位置之前，先别急着删除容器或清理 volume。</p>
+<hr>
+<h2 id="3-从单容器到-Compose-多服务编排"><a href="#3-从单容器到-Compose-多服务编排" class="headerlink" title="3 从单容器到 Compose 多服务编排"></a>3 从单容器到 Compose 多服务编排</h2><p>第 2 部分的 MySQL 示例只用了 docker run，适合快速体验。到了真实项目里，一个容器通常不够。Dify 有 web、api、worker、数据库、Redis、向量库、nginx、sandbox、plugin_daemon 等服务；电商问数项目里也会同时依赖 MySQL、Qdrant、Elasticsearch 和后端服务。</p>
+<p>这一部分就往前走一步：不再手动敲一长串 docker run，而是用文件描述一组服务。</p>
+<div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>解决的问题</th>
+<th>典型文件或命令</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>docker run</td>
+<td>快速启动一个现成镜像</td>
+<td>docker run -d … mysql:8.0.45</td>
+</tr>
+<tr>
+<td>Dockerfile</td>
+<td>把自己的代码和依赖打成镜像</td>
+<td>FROM python:3.12</td>
+</tr>
+<tr>
+<td>Compose</td>
+<td>一次启动多容器项目</td>
+<td>docker compose up -d</td>
+</tr>
+</tbody></table></div>
+<p>Dify 的 docker&#x2F; 目录也可以按这个思路理解：它不是普通源码目录，更像一份多服务部署说明书。</p>
+<h3 id="3-1-Dockerfile"><a href="#3-1-Dockerfile" class="headerlink" title="3.1 Dockerfile"></a>3.1 Dockerfile</h3><p>刚才的 MySQL 是直接使用官方镜像。如果我们想把自己的 Python 脚本、依赖和运行环境也打包成镜像，就需要 Dockerfile。</p>
+<p>在项目目录里新建 Dockerfile：</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> python:<span class="number">3.12</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /app</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> . /app</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> pip install pymysql cryptography</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> [<span class="string">&quot;python&quot;</span>, <span class="string">&quot;test_mysql1.py&quot;</span>]</span></span><br></pre></td></tr></table></figure>
+
+<p>逐行理解：</p>
+<div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
+<thead>
+<tr>
+<th>指令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>FROM python:3.12</td>
+<td>以 Python 3.12 官方镜像为基础</td>
+</tr>
+<tr>
+<td>WORKDIR &#x2F;app</td>
+<td>设置容器内工作目录</td>
+</tr>
+<tr>
+<td>COPY . &#x2F;app</td>
+<td>把当前项目文件复制进镜像</td>
+</tr>
+<tr>
+<td>RUN pip install …</td>
+<td>构建镜像时安装依赖</td>
+</tr>
+<tr>
+<td>CMD […]</td>
+<td>容器启动时默认执行的命令</td>
+</tr>
+</tbody></table></div>
+<p>Dockerfile 解决的是”如何构建一个符合我项目需要的镜像”。它不是用来启动一组服务的，启动多服务要交给 Compose。</p>
+<h3 id="3-2-Compose"><a href="#3-2-Compose" class="headerlink" title="3.2 Compose"></a>3.2 Compose</h3><p>Docker Compose 用一份 YAML 文件描述多容器应用。Docker 官方文档也把 Compose 定义为管理多容器应用的工具，它可以在一个配置文件里统一管理 services、networks、volumes。</p>
+<p>常见部署文档会让你进入 docker 目录，然后执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker compose up -d</span><br></pre></td></tr></table></figure>
+
+<p>它会按 docker-compose.yaml 里的配置做几件事：</p>
+<ul>
+<li>拉取或构建镜像。</li>
+<li>创建容器。</li>
+<li>创建网络。</li>
+<li>挂载数据目录或 volume。</li>
+<li>后台启动服务。</li>
+</ul>
+<p>所以这条命令不是”启动一个程序”，而是”把一组互相依赖的服务一起拉起来”。</p>
+<h3 id="3-3-MySQL-Python-的-Compose-小案例"><a href="#3-3-MySQL-Python-的-Compose-小案例" class="headerlink" title="3.3 MySQL + Python 的 Compose 小案例"></a>3.3 MySQL + Python 的 Compose 小案例</h3><p>项目目录可以这样放：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker-python-mysql/</span><br><span class="line">├── docker-compose.yml</span><br><span class="line">├── Dockerfile</span><br><span class="line">└── test_mysql1.py</span><br></pre></td></tr></table></figure>
+
+<p>docker-compose.yml 示例：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">mysql-db:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">mysql:8.0.45</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="attr">MYSQL_ROOT_PASSWORD:</span> <span class="string">&quot;123456&quot;</span></span><br><span class="line">      <span class="attr">MYSQL_DATABASE:</span> <span class="string">&quot;test_db&quot;</span></span><br><span class="line">      <span class="attr">MYSQL_INITDB_ARGS:</span> <span class="string">&quot;--character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci&quot;</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;9999:3306&quot;</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">mysql_data:/var/lib/mysql</span></span><br><span class="line">    <span class="attr">networks:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">app-network</span></span><br><span class="line">    <span class="attr">healthcheck:</span></span><br><span class="line">      <span class="attr">test:</span></span><br><span class="line">        [<span class="string">&quot;CMD&quot;</span>, <span class="string">&quot;mysqladmin&quot;</span>, <span class="string">&quot;ping&quot;</span>, <span class="string">&quot;-h&quot;</span>, <span class="string">&quot;localhost&quot;</span>, <span class="string">&quot;-uroot&quot;</span>, <span class="string">&quot;-p123456&quot;</span>]</span><br><span class="line">      <span class="attr">interval:</span> <span class="string">3s</span></span><br><span class="line">      <span class="attr">timeout:</span> <span class="string">3s</span></span><br><span class="line">      <span class="attr">retries:</span> <span class="number">10</span></span><br><span class="line">      <span class="attr">start_period:</span> <span class="string">5s</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">python-app:</span></span><br><span class="line">    <span class="attr">build:</span> <span class="string">.</span></span><br><span class="line">    <span class="attr">depends_on:</span></span><br><span class="line">      <span class="attr">mysql-db:</span></span><br><span class="line">        <span class="attr">condition:</span> <span class="string">service_healthy</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="attr">MYSQL_HOST:</span> <span class="string">&quot;mysql-db&quot;</span></span><br><span class="line">      <span class="attr">MYSQL_PORT:</span> <span class="string">&quot;3306&quot;</span></span><br><span class="line">      <span class="attr">MYSQL_USER:</span> <span class="string">&quot;root&quot;</span></span><br><span class="line">      <span class="attr">MYSQL_PASSWORD:</span> <span class="string">&quot;123456&quot;</span></span><br><span class="line">      <span class="attr">MYSQL_DB:</span> <span class="string">&quot;test_db&quot;</span></span><br><span class="line">    <span class="attr">networks:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">app-network</span></span><br><span class="line"></span><br><span class="line"><span class="attr">networks:</span></span><br><span class="line">  <span class="attr">app-network:</span></span><br><span class="line">    <span class="attr">driver:</span> <span class="string">bridge</span></span><br><span class="line"></span><br><span class="line"><span class="attr">volumes:</span></span><br><span class="line">  <span class="attr">mysql_data:</span></span><br></pre></td></tr></table></figure>
+
+<p>这份 Compose 里有几处值得多看一眼：</p>
+<ul>
+<li>python-app 通过 build: . 使用当前目录的 Dockerfile 构建镜像。</li>
+<li>mysql-db 使用现成镜像 mysql:8.0.45。</li>
+<li>python-app 连接 MySQL 时，主机名写 mysql-db，不是 localhost。</li>
+<li>容器之间走 Docker 网络，端口用容器内部端口 3306。</li>
+<li>healthcheck 用来判断 MySQL 是否已经就绪。</li>
+<li>depends_on.condition: service_healthy 让 Python 容器等 MySQL 健康后再启动。</li>
+</ul>
+<p>这里特别容易误解的是：容器启动不等于服务就绪。MySQL 容器起来后，还需要初始化数据目录、启动数据库进程、准备账号和库。没有健康检查时，Python 可能抢先连接，结果就是 Connection refused。</p>
+<p>接着新建 test_mysql1.py，让 Python 容器通过环境变量读取 MySQL 连接信息：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> pymysql</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_mysql_conn</span>():</span><br><span class="line">    max_retries = <span class="number">10</span></span><br><span class="line">    retry_delay = <span class="number">2</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(max_retries):</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            conn = pymysql.connect(</span><br><span class="line">                host=os.getenv(<span class="string">&quot;MYSQL_HOST&quot;</span>, <span class="string">&quot;localhost&quot;</span>),</span><br><span class="line">                port=<span class="built_in">int</span>(os.getenv(<span class="string">&quot;MYSQL_PORT&quot;</span>, <span class="number">3306</span>)),</span><br><span class="line">                user=os.getenv(<span class="string">&quot;MYSQL_USER&quot;</span>, <span class="string">&quot;root&quot;</span>),</span><br><span class="line">                password=os.getenv(<span class="string">&quot;MYSQL_PASSWORD&quot;</span>, <span class="string">&quot;123456&quot;</span>),</span><br><span class="line">                database=os.getenv(<span class="string">&quot;MYSQL_DB&quot;</span>, <span class="string">&quot;test_db&quot;</span>),</span><br><span class="line">                charset=<span class="string">&quot;utf8mb4&quot;</span>,</span><br><span class="line">                connect_timeout=<span class="number">3</span>,</span><br><span class="line">            )</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;第 <span class="subst">&#123;i + <span class="number">1</span>&#125;</span> 次尝试：MySQL 连接成功&quot;</span>)</span><br><span class="line">            <span class="keyword">return</span> conn</span><br><span class="line">        <span class="keyword">except</span> pymysql.err.OperationalError <span class="keyword">as</span> e:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;第 <span class="subst">&#123;i + <span class="number">1</span>&#125;</span> 次尝试：MySQL 连接失败 - <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">            <span class="keyword">if</span> i &lt; max_retries - <span class="number">1</span>:</span><br><span class="line">                time.sleep(retry_delay)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">raise</span> RuntimeError(<span class="string">&quot;重试后仍无法连接 MySQL，请检查容器配置&quot;</span>) <span class="keyword">from</span> e</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    conn = <span class="literal">None</span></span><br><span class="line">    cursor = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        conn = get_mysql_conn()</span><br><span class="line">        cursor = conn.cursor()</span><br><span class="line">        cursor.execute(<span class="string">&quot;SELECT DATABASE()&quot;</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;当前连接的数据库：<span class="subst">&#123;cursor.fetchone()[<span class="number">0</span>]&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">        cursor.execute(</span><br><span class="line">            <span class="string">&quot;CREATE TABLE IF NOT EXISTS test_table &quot;</span></span><br><span class="line">            <span class="string">&quot;(id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(50))&quot;</span></span><br><span class="line">        )</span><br><span class="line">        cursor.execute(<span class="string">&quot;INSERT INTO test_table (name) VALUES (&#x27;Docker Compose test&#x27;)&quot;</span>)</span><br><span class="line">        conn.commit()</span><br><span class="line"></span><br><span class="line">        cursor.execute(<span class="string">&quot;SELECT * FROM test_table&quot;</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;test_table 中的测试数据：&quot;</span>, cursor.fetchall())</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;当前 Python 版本：<span class="subst">&#123;sys.version&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="keyword">except</span> Exception:</span><br><span class="line">        <span class="keyword">if</span> conn:</span><br><span class="line">            conn.rollback()</span><br><span class="line">        <span class="keyword">raise</span></span><br><span class="line">    <span class="keyword">finally</span>:</span><br><span class="line">        <span class="keyword">if</span> cursor:</span><br><span class="line">            cursor.close()</span><br><span class="line">        <span class="keyword">if</span> conn:</span><br><span class="line">            conn.close()</span><br></pre></td></tr></table></figure>
+
+<p>这段脚本主要看两点：</p>
+<ul>
+<li>连接信息来自 Compose 的 environment，而不是写死在代码里。</li>
+<li>即使已经有 healthcheck，代码层面保留短重试也更稳，因为数据库、网络、DNS 都可能短暂抖动。</li>
+</ul>
+<h3 id="3-4-运行和验证-Compose-小案例"><a href="#3-4-运行和验证-Compose-小案例" class="headerlink" title="3.4 运行和验证 Compose 小案例"></a>3.4 运行和验证 Compose 小案例</h3><p>如果前面第 2 部分已经启动过单独的 mysql-db 容器，需要先停掉并删除它，否则 9999 端口可能冲突：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker ps</span><br><span class="line">docker stop mysql-db</span><br><span class="line">docker <span class="built_in">rm</span> mysql-db</span><br></pre></td></tr></table></figure>
+
+<p>然后在包含 docker-compose.yml、Dockerfile、test_mysql1.py 的目录下启动：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker compose up -d</span><br><span class="line">docker compose ps</span><br><span class="line">docker compose logs python-app</span><br></pre></td></tr></table></figure>
+
+<p>如果修改了 Dockerfile 或 Python 依赖，重新构建并启动：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker compose up -d --build</span><br></pre></td></tr></table></figure>
+
+<p>如果只是想重新执行一次 Python 脚本，可以临时运行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker compose run --<span class="built_in">rm</span> python-app</span><br></pre></td></tr></table></figure>
+
+<p>想进入 MySQL 容器看数据，可以执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker compose <span class="built_in">exec</span> mysql-db mysql -uroot -p123456 test_db</span><br></pre></td></tr></table></figure>
+
+<p>这个案例跑通后，再看 Dify 的 Compose 文件会轻松很多。Dify 部署也是同样的思路：把一组服务按正确顺序拉起来。</p>
+<h3 id="3-5-Compose-配置阅读顺序"><a href="#3-5-Compose-配置阅读顺序" class="headerlink" title="3.5 Compose 配置阅读顺序"></a>3.5 Compose 配置阅读顺序</h3><p>读 compose 文件不要从第一行硬啃到最后一行。可以按这个顺序看：</p>
+<ul>
+<li>看 services：这套项目启动哪些服务。</li>
+<li>看 image &#x2F; build：服务是直接用镜像，还是本地构建。</li>
+<li>看 ports：哪些服务暴露给宿主机或浏览器。</li>
+<li>看 volumes：哪些数据、配置、模型目录会持久化或挂载。</li>
+<li>看 environment：服务启动依赖哪些环境变量。</li>
+<li>看 depends_on：服务之间的大致启动依赖。</li>
+<li>看 networks：哪些服务能互相访问，哪些被隔离。</li>
+</ul>
+<p>常见字段速查：</p>
+<div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>image</td>
+<td>使用现成镜像</td>
+</tr>
+<tr>
+<td>build</td>
+<td>从 Dockerfile 构建镜像</td>
+</tr>
+<tr>
+<td>container_name</td>
+<td>指定容器名</td>
+</tr>
+<tr>
+<td>restart</td>
+<td>容器异常停止后的重启策略</td>
+</tr>
+<tr>
+<td>environment</td>
+<td>注入环境变量</td>
+</tr>
+<tr>
+<td>ports</td>
+<td>宿主机端口到容器端口的映射</td>
+</tr>
+<tr>
+<td>volumes</td>
+<td>数据持久化或目录挂载</td>
+</tr>
+<tr>
+<td>depends_on</td>
+<td>启动顺序依赖</td>
+</tr>
+<tr>
+<td>networks</td>
+<td>容器网络隔离与互通</td>
+</tr>
+</tbody></table></div>
+<p>读 Dify 的 compose 文件时，可以先画一条线：nginx -&gt; web&#x2F;api -&gt; db&#x2F;redis&#x2F;vector store。先知道请求和数据大概怎么流动，再看具体变量，会比直接盯着几百行 YAML 更轻松。</p>
+<h3 id="3-6-Compose-命令速查"><a href="#3-6-Compose-命令速查" class="headerlink" title="3.6 Compose 命令速查"></a>3.6 Compose 命令速查</h3><p>下面命令默认在 docker-compose.yaml 所在目录执行。</p>
+<div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
+<thead>
+<tr>
+<th>目的</th>
+<th>命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>启动整套服务</td>
+<td>docker compose up -d</td>
+<td>后台启动</td>
+</tr>
+<tr>
+<td>查看服务状态</td>
+<td>docker compose ps</td>
+<td>看 Up、healthy、Exited</td>
+</tr>
+<tr>
+<td>查看服务日志</td>
+<td>docker compose logs -f &lt;服务名&gt;</td>
+<td>跟踪日志</td>
+</tr>
+<tr>
+<td>临时停止服务</td>
+<td>docker compose stop</td>
+<td>不删除容器</td>
+</tr>
+<tr>
+<td>启动已停止的服务</td>
+<td>docker compose start</td>
+<td>不重建容器</td>
+</tr>
+<tr>
+<td>停止并删除容器、网络</td>
+<td>docker compose down</td>
+<td>默认不删 volume</td>
+</tr>
+<tr>
+<td>停止并删除容器、网络、volume</td>
+<td>docker compose down -v</td>
+<td>会删除 volume，谨慎</td>
+</tr>
+<tr>
+<td>拉取镜像</td>
+<td>docker compose pull</td>
+<td>更新镜像</td>
+</tr>
+<tr>
+<td>重新构建镜像</td>
+<td>docker compose build &lt;服务名&gt;</td>
+<td>本地 build 场景使用</td>
+</tr>
+<tr>
+<td>查看最终配置</td>
+<td>docker compose config</td>
+<td>用于确认变量展开后配置</td>
+</tr>
+<tr>
+<td>查看服务清单</td>
+<td>docker compose config –services</td>
+<td>只列 service 名</td>
+</tr>
+</tbody></table></div>
+<p>最容易混的是 stop、down、down -v：</p>
+<ul>
+<li><strong>stop</strong>：只是暂停容器，容器还在。</li>
+<li><strong>down</strong>：删除容器和网络，但默认保留 volume。</li>
+<li><strong>down -v</strong>：连 volume 一起删，数据库、索引、向量库等数据可能随之消失。</li>
+</ul>
+<p>日常排障优先用 ps、logs、restart、up -d。除非明确要清空测试环境，否则不要把 -v 当成习惯性参数。</p>
+<hr>
+<h2 id="4-数据持久化、网络、迁移与危险边界"><a href="#4-数据持久化、网络、迁移与危险边界" class="headerlink" title="4 数据持久化、网络、迁移与危险边界"></a>4 数据持久化、网络、迁移与危险边界</h2><p>刚学 Docker 时，最容易低估的是数据问题。容器可以删了重建，数据库、向量索引、上传文件、插件数据、配置文件和备份不行。</p>
+<h3 id="4-1-端口映射"><a href="#4-1-端口映射" class="headerlink" title="4.1 端口映射"></a>4.1 端口映射</h3><p>Compose 中常见配置：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">ports:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">&quot;8080:80&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>左边是宿主机端口，右边是容器内端口。</p>
+<p>也就是：</p>
+<ul>
+<li>浏览器访问：<code>http://localhost:8080</code></li>
+<li>请求进入容器后：访问容器内部的 80 端口</li>
+</ul>
+<p>再看一个 Redis Stack 示例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --name redis-stack -p 26379:6379 -p 8001:8001 redis/redis-stack</span><br></pre></td></tr></table></figure>
+
+<p>含义是：</p>
+<ul>
+<li>本机 26379 -&gt; 容器内 Redis 6379</li>
+<li>本机 8001 -&gt; 容器内 RedisInsight 8001</li>
+</ul>
+<p>对 Dify 来说，浏览器访问的通常是 nginx 暴露出来的宿主机端口；而 api 访问 db_postgres、redis 这类依赖时，走的是 Docker 内部网络。外部访问和容器互访不是同一条路，排查时要分开看。</p>
+<h3 id="4-2-volume-和-bind-mount"><a href="#4-2-volume-和-bind-mount" class="headerlink" title="4.2 volume 和 bind mount"></a>4.2 volume 和 bind mount</h3><p>Compose 里最常见两种写法：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">volumes:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">mysql_data:/var/lib/mysql</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">./mysql:/docker-entrypoint-initdb.d</span></span><br></pre></td></tr></table></figure>
+
+<p>第一种是命名卷 named volume。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql_data:/var/lib/mysql</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>左边 mysql_data 是 Docker 管理的持久化存储。</li>
+<li>右边 &#x2F;var&#x2F;lib&#x2F;mysql 是容器内目录。</li>
+<li>适合保存数据库这类运行后产生的数据。</li>
+</ul>
+<p>第二种是目录挂载 bind mount。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./mysql:/docker-entrypoint-initdb.d</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>左边 .&#x2F;mysql 是宿主机当前目录下的真实文件夹。</li>
+<li>右边 &#x2F;docker-entrypoint-initdb.d 是容器内目录。</li>
+<li>适合把项目里的配置、脚本、模型文件交给容器使用。</li>
+</ul>
+<p>Windows 路径写法也遵循同一个规则：冒号左边是宿主机真实目录，右边是容器内目录。容器写入右边目录时，数据会落到左边目录。</p>
+<p>粗略判断可以这样看：</p>
+<ul>
+<li>左边是 .&#x2F;xxx、..&#x2F;xxx、&#x2F;绝对路径&#x2F;xxx，通常是 bind mount。</li>
+<li>左边只是 mysql_data、qdrant_data 这种名字，通常是 named volume。</li>
+</ul>
+<p>Docker 官方文档也把 volume 定义为由容器引擎管理的持久化数据存储。理解这一点以后，才能解释”为什么容器删了还能恢复数据”，也能解释”为什么新版本启动后像新环境”。</p>
+<h3 id="4-3-容器生命周期与数据边界"><a href="#4-3-容器生命周期与数据边界" class="headerlink" title="4.3 容器生命周期与数据边界"></a>4.3 容器生命周期与数据边界</h3><p>容器适合随时重建，重要数据不应该只放在容器自己的临时文件系统里。</p>
+<p>有 volume 或 bind mount 时：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">宿主机目录或 Docker volume</span><br><span class="line">        |</span><br><span class="line">        | 挂载</span><br><span class="line">        v</span><br><span class="line">容器内目录</span><br></pre></td></tr></table></figure>
+
+<p>程序看起来写入的是容器内目录，例如 &#x2F;var&#x2F;lib&#x2F;postgresql&#x2F;data，实际数据会落到外部 volume 或宿主机目录。</p>
+<p>所以：</p>
+<ul>
+<li>删除容器：通常不删除 volume 或宿主机挂载目录。</li>
+<li>删除 volume：会删除 Docker 管理的数据。</li>
+<li>手动删除宿主机挂载目录：也会删除数据。</li>
+</ul>
+<p>这也是为什么 docker compose down 通常不丢数据，而 docker compose down -v 要特别谨慎。</p>
+<p>不过”通常不丢”有前提：关键目录确实已经挂载到 volume 或宿主机目录。如果某个服务把数据写在容器自己的可写层里，删容器就会丢。这就是为什么排障时要用 docker inspect 看 Mounts，而不是只凭感觉判断。</p>
+<h3 id="4-4-网络慢或镜像拉取失败"><a href="#4-4-网络慢或镜像拉取失败" class="headerlink" title="4.4 网络慢或镜像拉取失败"></a>4.4 网络慢或镜像拉取失败</h3><p>镜像拉取失败通常不是代码问题，而是 Docker 访问镜像仓库不稳定。常见处理方式有两类：</p>
+<ul>
+<li>在 Windows &#x2F; macOS 的 Docker Desktop 里配置镜像加速或代理。</li>
+<li>在 Ubuntu 服务器的 Docker Engine 里配置 &#x2F;etc&#x2F;docker&#x2F;daemon.json。</li>
+</ul>
+<p>这里容易误判的一点是：浏览器能访问外网，不代表 Docker 引擎一定能拉镜像。Docker 有自己的网络配置。</p>
+<p>如果你使用的是 Docker Desktop，通常可以在设置中找到 Docker Engine 的配置区域，然后为 registry-mirrors 增加镜像地址。</p>
+<p>镜像源可参考 GitHub 上的汇总项目：dongyubin&#x2F;DockerHub 国内镜像加速列表。</p>
+<p>镜像源可用性会随时间变化。写文档时不要把某一个镜像源当成永久可用地址，实际环境以当时可访问为准。</p>
+<h3 id="4-5-跨机器迁移与离线同步"><a href="#4-5-跨机器迁移与离线同步" class="headerlink" title="4.5 跨机器迁移与离线同步"></a>4.5 跨机器迁移与离线同步</h3><p>Docker 学到后面，很可能会遇到迁移：本地 Windows 能跑了，要搬到 Ubuntu 服务器；有网环境能跑了，要搬到不能访问外网的内网机器。</p>
+<p>以本章的 MySQL + Python Compose 小案例为例，迁移时别想着”把容器复制过去”。先分清三类东西：</p>
+<div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
+<thead>
+<tr>
+<th>迁移对象</th>
+<th>作用</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>配置文件</td>
+<td>描述服务如何启动</td>
+<td>docker-compose.yml、.env</td>
+</tr>
+<tr>
+<td>镜像</td>
+<td>提供运行环境</td>
+<td>mysql:8.0.45、docker-python-mysql-python-app:latest</td>
+</tr>
+<tr>
+<td>数据</td>
+<td>保存业务状态</td>
+<td>MySQL 数据目录、Docker volume、备份 SQL</td>
+</tr>
+</tbody></table></div>
+<h4 id="4-5-1-在线迁移：目标服务器可以拉镜像"><a href="#4-5-1-在线迁移：目标服务器可以拉镜像" class="headerlink" title="4.5.1 在线迁移：目标服务器可以拉镜像"></a>4.5.1 在线迁移：目标服务器可以拉镜像</h4><p>如果 Ubuntu 服务器可以访问镜像仓库，这是最简单的方式。</p>
+<p>先在 Windows 本地项目目录停止服务：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker compose down</span><br></pre></td></tr></table></figure>
+
+<p>确认项目目录里至少有这些文件：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker-compose.yml</span><br><span class="line">Dockerfile</span><br><span class="line">test_mysql1.py</span><br></pre></td></tr></table></figure>
+
+<p>然后把整个项目目录上传到 Ubuntu，例如：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/home/你的用户名/docker-python-mysql</span><br></pre></td></tr></table></figure>
+
+<p>进入服务器目录后，重点修改数据卷路径。Windows 里常见写法可能是：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">volumes:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">D:/mysql-data:/var/lib/mysql</span></span><br></pre></td></tr></table></figure>
+
+<p>到 Ubuntu 上应改成 Linux 路径，例如：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">volumes:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">/home/你的用户名/mysql-data:/var/lib/mysql</span></span><br></pre></td></tr></table></figure>
+
+<p>然后启动：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /home/你的用户名/docker-python-mysql</span><br><span class="line">docker compose up -d</span><br><span class="line">docker compose ps</span><br><span class="line">docker compose logs python-app</span><br></pre></td></tr></table></figure>
+
+<p>如果日志里能看到 Python 成功连接 MySQL，说明服务编排和容器网络已经迁移成功。</p>
+<p>这里最容易错的是路径。Windows 的 D:&#x2F;mysql-data 到 Ubuntu 上没有意义，必须改成 Linux 服务器上的真实目录。Dify 迁移也是同理，先看 volumes，再决定哪些目录或 volume 要带走。</p>
+<h4 id="4-5-2-离线迁移：目标服务器不能拉镜像"><a href="#4-5-2-离线迁移：目标服务器不能拉镜像" class="headerlink" title="4.5.2 离线迁移：目标服务器不能拉镜像"></a>4.5.2 离线迁移：目标服务器不能拉镜像</h4><p>服务器不能访问外网、镜像拉取很慢、内网环境不允许在线下载时，可以用 docker save 和 docker load 迁移镜像。</p>
+<p>先在有网机器上确认镜像：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker images</span><br></pre></td></tr></table></figure>
+
+<p>打包 MySQL 镜像和自定义 Python 镜像：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker save mysql:8.0.45 -o ./mysql-8.0.45.tar</span><br><span class="line">docker save docker-python-mysql-python-app:latest -o ./python-app.tar</span><br></pre></td></tr></table></figure>
+
+<p>把这些文件上传到目标服务器：</p>
+<div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
+<thead>
+<tr>
+<th>文件</th>
+<th>是否必需</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>mysql-8.0.45.tar</td>
+<td>必需</td>
+<td>MySQL 镜像包</td>
+</tr>
+<tr>
+<td>python-app.tar</td>
+<td>必需</td>
+<td>自定义 Python 镜像包</td>
+</tr>
+<tr>
+<td>docker-compose.yml</td>
+<td>必需</td>
+<td>服务编排配置</td>
+</tr>
+<tr>
+<td>.env</td>
+<td>有则上传</td>
+<td>环境变量配置</td>
+</tr>
+<tr>
+<td>数据备份</td>
+<td>视情况</td>
+<td>数据库 SQL 备份或挂载目录备份</td>
+</tr>
+</tbody></table></div>
+<p>在目标服务器导入镜像：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker load -i ./mysql-8.0.45.tar</span><br><span class="line">docker load -i ./python-app.tar</span><br><span class="line">docker images</span><br></pre></td></tr></table></figure>
+
+<p>如果原来的 Compose 里写的是：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">python-app:</span></span><br><span class="line">  <span class="attr">build:</span> <span class="string">.</span></span><br></pre></td></tr></table></figure>
+
+<p>离线环境里没有构建上下文或依赖下载条件时，可以改成已经导入的镜像：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">python-app:</span></span><br><span class="line">  <span class="attr">image:</span> <span class="string">docker-python-mysql-python-app:latest</span></span><br></pre></td></tr></table></figure>
+
+<p>同时把数据卷路径改成 Ubuntu 路径：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">mysql-db:</span></span><br><span class="line">  <span class="attr">volumes:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">/home/你的用户名/mysql-data:/var/lib/mysql</span></span><br></pre></td></tr></table></figure>
+
+<p>最后启动并验证：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker compose up -d</span><br><span class="line">docker compose ps</span><br><span class="line">docker compose logs python-app</span><br></pre></td></tr></table></figure>
+
+<p>这个思路迁移到 Dify 也一样：提前准备好所需镜像、.env、docker-compose.yaml、envs&#x2F; 目录、volume &#x2F; 挂载目录和数据库备份，再到目标服务器导入和启动。</p>
+<p>对 Dify 这类系统，还要额外注意两点：</p>
+<ul>
+<li>只迁移镜像不等于迁移数据。账号、应用、工作流、知识库、上传文件都在数据库、向量库和挂载目录里。</li>
+<li>只复制 docker-compose.yaml 不等于配置一致。新旧版本的 .env.example、envs&#x2F;*.env.example 可能新增变量，升级或迁移时要逐项对照。</li>
+</ul>
+<h3 id="4-6-危险操作清单"><a href="#4-6-危险操作清单" class="headerlink" title="4.6 危险操作清单"></a>4.6 危险操作清单</h3><p>Docker 里有些命令看起来像”清理环境”，实际是在删数据。Dify、RAG、问数项目要格外小心：数据库或向量库没了，页面也许还能重新初始化，但旧账号、应用、工作流和知识库已经不在了。</p>
+<p>这些命令执行前，先停几秒确认：</p>
+<div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
+<thead>
+<tr>
+<th>操作</th>
+<th>影响</th>
+<th>风险等级</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>docker compose stop</td>
+<td>停止服务，容器仍保留</td>
+<td>低</td>
+</tr>
+<tr>
+<td>docker compose down</td>
+<td>删除当前项目容器和网络，默认保留 volume</td>
+<td>中</td>
+</tr>
+<tr>
+<td>docker compose down -v</td>
+<td>删除当前项目容器、网络和 volume</td>
+<td>高</td>
+</tr>
+<tr>
+<td>docker volume rm &lt;volume&gt;</td>
+<td>删除指定 volume</td>
+<td>高</td>
+</tr>
+<tr>
+<td>docker volume prune</td>
+<td>删除所有未使用 volume</td>
+<td>高</td>
+</tr>
+<tr>
+<td>rm -rf .&#x2F;volumes</td>
+<td>删除当前目录下的挂载数据</td>
+<td>高</td>
+</tr>
+<tr>
+<td>sudo rm -rf &#x2F;var&#x2F;lib&#x2F;docker</td>
+<td>删除 Docker 管理的全部数据</td>
+<td>极高</td>
+</tr>
+</tbody></table></div>
+<p>动手前先问三个问题：</p>
+<ul>
+<li>当前服务是否已经停止写入？</li>
+<li>数据库、上传文件、向量库和插件目录是否已经备份？</li>
+<li>我删的是测试环境，还是有人正在使用的真实环境？</li>
+</ul>
+<p>如果答案不确定，先执行查看命令，不要执行删除命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker compose ps</span><br><span class="line">docker volume <span class="built_in">ls</span></span><br><span class="line">docker inspect &lt;容器名&gt; --format <span class="string">&#x27;&#123;&#123;json .Mounts&#125;&#125;&#x27;</span></span><br><span class="line"><span class="built_in">ls</span> -lah ./volumes</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-7-Docker-基础常见报错"><a href="#4-7-Docker-基础常见报错" class="headerlink" title="4.7 Docker 基础常见报错"></a>4.7 Docker 基础常见报错</h3><p>进入 Dify 排障前，先把 Docker 自身的问题排掉。有些”平台启动失败”，实际还没到平台层。</p>
+<div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
+<thead>
+<tr>
+<th>报错或现象</th>
+<th>常见原因</th>
+<th>处理方式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Docker Desktop 提示 WSL 2 未配置</td>
+<td>WSL、虚拟机平台或 WSL 内核缺失</td>
+<td>检查虚拟化、WSL 功能和内核</td>
+</tr>
+<tr>
+<td>Connection refused</td>
+<td>目标服务没启动、端口写错、服务还没就绪</td>
+<td>先看 docker ps，再看 docker logs 或 docker compose logs</td>
+</tr>
+<tr>
+<td>Compose 提示 YAML 格式错误</td>
+<td>缩进、冒号、引号或 Tab 问题</td>
+<td>YAML 使用空格缩进，冒号后保留空格，避免中文引号</td>
+</tr>
+<tr>
+<td>Ubuntu 执行 docker 提示权限不足</td>
+<td>当前用户不在 docker 用户组</td>
+<td>执行 sudo usermod -aG docker $USER 后重新登录</td>
+</tr>
+<tr>
+<td>port is already allocated</td>
+<td>宿主机端口被其他进程或容器占用</td>
+<td>换宿主机端口，或停掉占用端口的容器</td>
+</tr>
+<tr>
+<td>镜像拉取超时</td>
+<td>Docker Engine 网络或镜像源不可用</td>
+<td>配置镜像源、代理，或走离线 docker save&#x2F;load</td>
+</tr>
+</tbody></table></div>
+<p>排错时按这个顺序来：</p>
+<blockquote>
+<p>Docker 是否正常 -&gt; 容器是否启动 -&gt; 应用日志</p>
+</blockquote>
+<hr>
+<h2 id="5-把-Docker-知识迁移到-Dify-部署结构"><a href="#5-把-Docker-知识迁移到-Dify-部署结构" class="headerlink" title="5 把 Docker 知识迁移到 Dify 部署结构"></a>5 把 Docker 知识迁移到 Dify 部署结构</h2><p>Dify 不是一个单进程应用。用 Compose 启动后，你看到的是一组容器在一起工作。</p>
+<p>Dify 使用 Docker Compose 启动时，通常会包含 api、worker、worker_beat、web、plugin_daemon 这些服务，也会启动 weaviate、db_postgres、redis、nginx、ssrf_proxy、sandbox 等依赖组件。不同版本的 service 名、镜像 tag、可选组件可能变化，实际排查时以你本机的 docker-compose.yaml、.env 和 docker compose ps 输出为准。</p>
+<p>前面讲过的 Docker 概念，放到 Dify 里大概是这样：</p>
+<div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
+<thead>
+<tr>
+<th>Docker 概念</th>
+<th>在 Dify 里的对应物</th>
+<th>排障时看什么</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>镜像</td>
+<td>langgenius&#x2F;dify-api、langgenius&#x2F;dify-web、postgres、redis 等</td>
+<td>docker images、docker compose pull</td>
+</tr>
+<tr>
+<td>容器 &#x2F; 服务</td>
+<td>api、worker、web、nginx、db_postgres 等</td>
+<td>docker compose ps、docker ps</td>
+</tr>
+<tr>
+<td>端口映射</td>
+<td>EXPOSE_NGINX_PORT、EXPOSE_NGINX_SSL_PORT</td>
+<td>docker compose ps、.env</td>
+</tr>
+<tr>
+<td>volume &#x2F; bind mount</td>
+<td>.&#x2F;volumes&#x2F;db&#x2F;data、.&#x2F;volumes&#x2F;app&#x2F;storage 等</td>
+<td>docker inspect … Mounts</td>
+</tr>
+<tr>
+<td>网络</td>
+<td>Compose 自动创建的项目网络、ssrf_proxy_network 等</td>
+<td>服务名互访、日志里的连接失败</td>
+</tr>
+<tr>
+<td>环境变量</td>
+<td>.env、envs&#x2F;*.env</td>
+<td>数据库、Redis、URL、向量库、密钥配置</td>
+</tr>
+</tbody></table></div>
+<p>读 Dify 的 compose 文件，不用从第一行硬读到最后一行。先抓四类信息：</p>
+<ul>
+<li>服务：这套部署启动了哪些容器。</li>
+<li>镜像：哪些服务使用官方镜像，哪些服务可能需要本地构建。</li>
+<li>挂载：数据库、Redis、上传文件、插件、向量库数据保存在哪里。</li>
+<li>入口：浏览器请求从哪个服务和端口进入。</li>
+</ul>
+<h3 id="5-1-访问链路"><a href="#5-1-访问链路" class="headerlink" title="5.1 访问链路"></a>5.1 访问链路</h3><p>浏览器先访问 nginx，再由 nginx 转给 web 或 api。api 和 worker 再去访问 PostgreSQL、Redis、向量库、sandbox、plugin_daemon。</p>
+<p>排障时也按这条链路看：</p>
+<ul>
+<li>页面完全打不开：先看 nginx 和端口映射。</li>
+<li>页面能打开但接口报错：看 api。</li>
+<li>知识库索引、异步任务不动：看 worker。</li>
+<li>登录、应用、工作流数据异常：看 db_postgres。</li>
+<li>队列、缓存、任务状态异常：看 redis。</li>
+<li>知识库检索异常：看当前启用的向量库。</li>
+</ul>
+<h3 id="5-2-典型容器分工"><a href="#5-2-典型容器分工" class="headerlink" title="5.2 典型容器分工"></a>5.2 典型容器分工</h3><div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
+<thead>
+<tr>
+<th>层次</th>
+<th>常见服务</th>
+<th>主要职责</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>入口层</td>
+<td>nginx</td>
+<td>对外提供 80&#x2F;443 入口，转发到 web&#x2F;api</td>
+</tr>
+<tr>
+<td>应用层</td>
+<td>web</td>
+<td>Dify 控制台和应用页面</td>
+</tr>
+<tr>
+<td>应用层</td>
+<td>api</td>
+<td>后端接口、鉴权、工作流、应用配置等</td>
+</tr>
+<tr>
+<td>应用层</td>
+<td>api_websocket</td>
+<td>协作、实时通信等可选能力</td>
+</tr>
+<tr>
+<td>任务层</td>
+<td>worker</td>
+<td>异步任务、知识库索引、队列消费</td>
+</tr>
+<tr>
+<td>任务层</td>
+<td>worker_beat</td>
+<td>定时任务调度</td>
+</tr>
+<tr>
+<td>数据层</td>
+<td>db_postgres 或其他数据库服务</td>
+<td>主业务数据库</td>
+</tr>
+<tr>
+<td>数据层</td>
+<td>redis</td>
+<td>缓存、队列、任务中间状态</td>
+</tr>
+<tr>
+<td>向量层</td>
+<td>weaviate &#x2F; milvus &#x2F; opensearch 等</td>
+<td>知识库向量检索，取决于配置</td>
+</tr>
+<tr>
+<td>安全层</td>
+<td>sandbox</td>
+<td>安全执行代码节点</td>
+</tr>
+<tr>
+<td>安全层</td>
+<td>ssrf_proxy</td>
+<td>代理外部访问，降低 SSRF 风险</td>
+</tr>
+<tr>
+<td>插件层</td>
+<td>plugin_daemon</td>
+<td>插件、工具、模型供应商等扩展能力支撑</td>
+</tr>
+<tr>
+<td>初始化</td>
+<td>init_permissions</td>
+<td>初始化挂载目录权限，通常执行后退出</td>
+</tr>
+</tbody></table></div>
+<p>实际环境中可以用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker compose config --services</span><br><span class="line">docker compose ps</span><br><span class="line">docker ps</span><br></pre></td></tr></table></figure>
+
+<p>确认当前版本到底启动了哪些服务。</p>
+<p>读官方 compose 时，可以先按这几类服务来理解：</p>
+<div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
+<thead>
+<tr>
+<th>服务</th>
+<th>镜像或来源</th>
+<th>主要作用</th>
+<th>关键挂载 &#x2F; 端口</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>nginx</td>
+<td>nginx:latest</td>
+<td>对外入口，转发到 web &#x2F; api</td>
+<td>${EXPOSE_NGINX_PORT:-80}、${EXPOSE_NGINX_SSL_PORT:-443}</td>
+</tr>
+<tr>
+<td>web</td>
+<td>langgenius&#x2F;dify-web:&lt;version&gt;</td>
+<td>前端页面</td>
+<td>主要依赖环境变量</td>
+</tr>
+<tr>
+<td>api</td>
+<td>langgenius&#x2F;dify-api:&lt;version&gt;</td>
+<td>后端接口</td>
+<td>.&#x2F;volumes&#x2F;app&#x2F;storage:&#x2F;app&#x2F;api&#x2F;storage</td>
+</tr>
+<tr>
+<td>api_websocket</td>
+<td>langgenius&#x2F;dify-api:&lt;version&gt;</td>
+<td>WebSocket &#x2F; 协作能力，可选启用</td>
+<td>取决于 COMPOSE_PROFILES 和当前版本</td>
+</tr>
+<tr>
+<td>worker</td>
+<td>langgenius&#x2F;dify-api:&lt;version&gt;</td>
+<td>后台任务、知识库索引、队列消费</td>
+<td>.&#x2F;volumes&#x2F;app&#x2F;storage:&#x2F;app&#x2F;api&#x2F;storage</td>
+</tr>
+<tr>
+<td>worker_beat</td>
+<td>langgenius&#x2F;dify-api:&lt;version&gt;</td>
+<td>定时任务调度</td>
+<td>主要依赖数据库和 Redis</td>
+</tr>
+<tr>
+<td>db_postgres</td>
+<td>postgres:15-alpine</td>
+<td>主业务数据库</td>
+<td>.&#x2F;volumes&#x2F;db&#x2F;data:&#x2F;var&#x2F;lib&#x2F;postgresql&#x2F;data</td>
+</tr>
+<tr>
+<td>db_mysql &#x2F; oceanbase &#x2F; seekdb 等</td>
+<td>数据库镜像或外部数据库配置</td>
+<td>可选数据库后端</td>
+<td>取决于当前版本和 .env &#x2F; envs&#x2F; 配置</td>
+</tr>
+<tr>
+<td>redis</td>
+<td>redis:6-alpine</td>
+<td>缓存、队列、中间状态</td>
+<td>.&#x2F;volumes&#x2F;redis&#x2F;data:&#x2F;data</td>
+</tr>
+<tr>
+<td>sandbox</td>
+<td>langgenius&#x2F;dify-sandbox:&lt;version&gt;</td>
+<td>代码节点隔离执行</td>
+<td>.&#x2F;volumes&#x2F;sandbox&#x2F;…</td>
+</tr>
+<tr>
+<td>plugin_daemon</td>
+<td>langgenius&#x2F;dify-plugin-daemon:&lt;version&gt;</td>
+<td>插件服务</td>
+<td>.&#x2F;volumes&#x2F;plugin_daemon:&#x2F;app&#x2F;storage</td>
+</tr>
+<tr>
+<td>ssrf_proxy</td>
+<td>ubuntu&#x2F;squid:latest</td>
+<td>外部访问代理与 SSRF 防护</td>
+<td>ssrf_proxy_network</td>
+</tr>
+<tr>
+<td>weaviate &#x2F; qdrant &#x2F; pgvector 等</td>
+<td>向量库镜像</td>
+<td>知识库向量检索</td>
+<td>对应 .&#x2F;volumes&#x2F;&lt;向量库&gt; 目录</td>
+</tr>
+</tbody></table></div>
+<p>读 compose 文件不是为了记住每一行，而是为了回答三个问题：启动了哪些服务，数据挂载在哪里，外部请求从哪个端口进入。</p>
+<h3 id="5-3-同一个镜像为什么会起多个容器"><a href="#5-3-同一个镜像为什么会起多个容器" class="headerlink" title="5.3 同一个镜像为什么会起多个容器"></a>5.3 同一个镜像为什么会起多个容器</h3><p>Dify 后端常见的 api、worker、worker_beat 可能使用同一个后端镜像，只是启动模式不同：</p>
+<ul>
+<li>api：对外提供后端接口。</li>
+<li>worker：消费队列并执行后台任务。</li>
+<li>worker_beat：负责定时调度。</li>
+</ul>
+<p>在官方 compose 里，这几个服务都可能使用 langgenius&#x2F;dify-api:&lt;version&gt;，但通过不同的启动命令或环境变量区分角色。</p>
+<p>示意配置：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">api:</span></span><br><span class="line">  <span class="attr">image:</span> <span class="string">langgenius/dify-api:&lt;version&gt;</span></span><br><span class="line">  <span class="attr">environment:</span></span><br><span class="line">    <span class="attr">MODE:</span> <span class="string">api</span></span><br><span class="line"></span><br><span class="line"><span class="attr">worker:</span></span><br><span class="line">  <span class="attr">image:</span> <span class="string">langgenius/dify-api:&lt;version&gt;</span></span><br><span class="line">  <span class="attr">environment:</span></span><br><span class="line">    <span class="attr">MODE:</span> <span class="string">worker</span></span><br><span class="line"></span><br><span class="line"><span class="attr">worker_beat:</span></span><br><span class="line">  <span class="attr">image:</span> <span class="string">langgenius/dify-api:&lt;version&gt;</span></span><br><span class="line">  <span class="attr">environment:</span></span><br><span class="line">    <span class="attr">MODE:</span> <span class="string">beat</span></span><br></pre></td></tr></table></figure>
+
+<p>所以看到多个容器对应同一个镜像，不代表哪里配错了。判断职责时，要看 service 名、容器名、日志和环境变量，而不是只看镜像名。</p>
+<h3 id="5-4-docker-目录"><a href="#5-4-docker-目录" class="headerlink" title="5.4 docker 目录"></a>5.4 docker 目录</h3><p>Dify 仓库里的 docker&#x2F; 目录主要是部署配置，不是业务源码本身。常见内容包括：</p>
+<ul>
+<li>docker-compose.yaml：服务清单。</li>
+<li>.env：部署参数、端口、密钥、数据库连接等。</li>
+<li>envs&#x2F;：按核心服务、数据库、向量库、安全配置等拆分的环境变量文件。</li>
+<li>nginx&#x2F;：入口代理配置模板。</li>
+<li>volumes&#x2F;：部分部署方式下的运行数据和挂载目录。</li>
+</ul>
+<p>官方 docker-compose.yaml 开头也明确提示：该文件由生成脚本生成，不建议直接手动大改。日常部署优先调整 .env；确实需要改 compose 行为时，再考虑 override 或模板层面的改造。</p>
+<p>如果 Compose 里使用的是 image: langgenius&#x2F;dify-web:&lt;version&gt; 或 image: langgenius&#x2F;dify-api:&lt;version&gt;，实际运行的是官方已经构建好的镜像，不会自动读取你本地的 web&#x2F; 或 api&#x2F; 源码目录。</p>
+<p>只有某个服务配置了 build:，例如：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">web:</span></span><br><span class="line">    <span class="attr">build:</span></span><br><span class="line">      <span class="attr">context:</span> <span class="string">../web</span></span><br></pre></td></tr></table></figure>
+
+<p>才表示 Compose 会从本地源码构建镜像。</p>
+<p>因此，docker&#x2F; 目录更像部署说明书，不是源码目录。</p>
+<h3 id="5-5-数据存储位置"><a href="#5-5-数据存储位置" class="headerlink" title="5.5 数据存储位置"></a>5.5 数据存储位置</h3><p>看到这里，重点已经从”容器怎么启动”变成了”数据在哪里”。Dify 的容器可以重建，数据库、向量库、上传文件不能随便丢。</p>
+<p>确认 Dify 数据位置时，优先看 Compose 中的挂载配置，而不是直接进容器翻文件。</p>
+<p>Dify 的关键数据通常包括：</p>
+<div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
+<thead>
+<tr>
+<th>数据类型</th>
+<th>常见服务</th>
+<th>常见位置</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>账号、应用、工作流、配置</td>
+<td>PostgreSQL</td>
+<td>.&#x2F;volumes&#x2F;db&#x2F;data 或 named volume</td>
+</tr>
+<tr>
+<td>缓存、队列状态</td>
+<td>Redis</td>
+<td>.&#x2F;volumes&#x2F;redis&#x2F;data 或 named volume</td>
+</tr>
+<tr>
+<td>知识库向量数据</td>
+<td>Weaviate &#x2F; Milvus &#x2F; OpenSearch 等</td>
+<td>.&#x2F;volumes&#x2F;weaviate 或对应 volume</td>
+</tr>
+<tr>
+<td>用户上传文件、应用运行文件</td>
+<td>API &#x2F; Worker</td>
+<td>.&#x2F;volumes&#x2F;app&#x2F;storage</td>
+</tr>
+<tr>
+<td>插件数据</td>
+<td>plugin_daemon</td>
+<td>.&#x2F;volumes&#x2F;plugin_daemon</td>
+</tr>
+<tr>
+<td>代码节点依赖和配置</td>
+<td>sandbox</td>
+<td>.&#x2F;volumes&#x2F;sandbox&#x2F;dependencies、.&#x2F;volumes&#x2F;sandbox&#x2F;conf</td>
+</tr>
+<tr>
+<td>Nginx 运行配置或证书</td>
+<td>nginx</td>
+<td>.&#x2F;nginx、.&#x2F;volumes&#x2F;nginx</td>
+</tr>
+<tr>
+<td>HTTPS 证书申请数据</td>
+<td>certbot</td>
+<td>.&#x2F;volumes&#x2F;certbot&#x2F;…</td>
+</tr>
+</tbody></table></div>
+<p>具体路径以当前版本的 docker-compose.yaml 为准。要确认一个容器实际挂了什么目录，可以执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker inspect &lt;容器名&gt; --format <span class="string">&#x27;&#123;&#123;json .Mounts&#125;&#125;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>例如查看 PostgreSQL：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker inspect docker-db_postgres-1 --format <span class="string">&#x27;&#123;&#123;json .Mounts&#125;&#125;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>如果容器名不一致，先用 docker ps 看 NAMES 列，再替换命令里的容器名。</p>
+<p>判断数据位置时，优先相信 docker-compose.yaml 和 docker inspect，不要只看文件夹名字。有些版本使用 .&#x2F;volumes&#x2F;…，有些环境使用 Docker named volume，路径表现会不同。</p>
+<h3 id="5-6-删除容器会不会丢数据"><a href="#5-6-删除容器会不会丢数据" class="headerlink" title="5.6 删除容器会不会丢数据"></a>5.6 删除容器会不会丢数据</h3><p>通常不会。前提是数据已经通过 volume 或宿主机目录挂载出来。</p>
+<p>危险操作主要是这些：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker compose down -v</span><br><span class="line">docker volume <span class="built_in">rm</span> &lt;volume名&gt;</span><br><span class="line">docker volume prune</span><br><span class="line"><span class="built_in">rm</span> -rf ./volumes</span><br></pre></td></tr></table></figure>
+
+<p>这些操作可能删除真实数据。升级、迁移和清理环境前，先确认 volume 和挂载目录，再备份。</p>
+<p>本地测试环境里，清空 volume 有时是为了重新来一遍；服务器或生产环境里，它通常就是高风险操作。看到 -v、volume rm、prune、rm -rf，都应该先停一下确认。</p>
+<p>docker compose down 默认不删数据，但升级过程可能执行数据库 migration，改表结构或写入新数据。升级中途失败时，volume 可能还在，但里面的数据已经处于半升级状态。</p>
+<p>所以升级前必须做逻辑备份，例如用 pg_dump 导出 PostgreSQL 数据。备份文件和 volume 不是一回事：</p>
+<ul>
+<li><strong>Volume</strong>：数据库原始数据目录。</li>
+<li><strong>pg_dump</strong>：可恢复、可迁移的 SQL 备份。</li>
+</ul>
+<p>建议保留 volume，但不要只依赖 volume；先导出 SQL 备份，再启动新版本。这样即使 migration 失败，也还有一条可恢复路径。</p>
+<hr>
+<h2 id="6-Dify-排障：状态、日志、数据与数据库连接"><a href="#6-Dify-排障：状态、日志、数据与数据库连接" class="headerlink" title="6 Dify 排障：状态、日志、数据与数据库连接"></a>6 Dify 排障：状态、日志、数据与数据库连接</h2><p>Dify 排障别一上来就改 .env，也别一上来就重装。先判断问题发生在哪一层，再看对应日志。</p>
+<div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
+<thead>
+<tr>
+<th>现象</th>
+<th>优先检查</th>
+<th>常用命令</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>浏览器完全打不开</td>
+<td>Docker 是否运行、nginx 是否启动、端口是否映射</td>
+<td>docker compose ps、docker compose logs -f nginx</td>
+</tr>
+<tr>
+<td>页面能打开但接口报错</td>
+<td>api 日志、数据库和 Redis 连接</td>
+<td>docker compose logs -f api</td>
+</tr>
+<tr>
+<td>知识库索引卡住</td>
+<td>worker、向量库、Redis</td>
+<td>docker compose logs -f worker</td>
+</tr>
+<tr>
+<td>升级后进入初始化页</td>
+<td>PostgreSQL 是否读到旧数据、volume 是否变了</td>
+<td>psql 查询、docker inspect … Mounts</td>
+</tr>
+<tr>
+<td>数据库工具连不上</td>
+<td>端口映射、SSH 隧道、数据库账号密码</td>
+<td>docker ps、ssh -L …</td>
+</tr>
+</tbody></table></div>
+<h3 id="6-1-常见排障路径"><a href="#6-1-常见排障路径" class="headerlink" title="6.1 常见排障路径"></a>6.1 常见排障路径</h3><p>遇到 Dify 无法访问时，建议按下面的链路排查：</p>
+<ol>
+<li>Docker 是否运行</li>
+<li>是否在正确 docker 目录执行命令</li>
+<li>docker compose ps 看容器状态</li>
+<li>入口端口是否映射</li>
+<li>nginx&#x2F;web&#x2F;api 日志</li>
+<li>db&#x2F;redis&#x2F;向量库日志</li>
+<li>.env 配置和数据挂载</li>
+</ol>
+<p>这个顺序是为了把问题分层定位：先排 Docker 和目录问题，再看容器、网络、日志，最后再进入 Dify 配置和数据。</p>
+<h3 id="6-2-页面无法访问"><a href="#6-2-页面无法访问" class="headerlink" title="6.2 页面无法访问"></a>6.2 页面无法访问</h3><p>先执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker compose ps</span><br><span class="line">docker ps</span><br><span class="line">docker compose logs -f nginx</span><br><span class="line">docker compose logs -f web</span><br><span class="line">docker compose logs -f api</span><br></pre></td></tr></table></figure>
+
+<p>重点看：</p>
+<ul>
+<li>nginx 是否运行。</li>
+<li>web 和 api 是否运行。</li>
+<li>nginx 是否映射了你访问的端口，例如 80:80、8080:80。</li>
+<li>.env 中端口、域名、URL 配置是否和访问地址一致。</li>
+<li>本机防火墙、代理、端口占用是否影响访问。</li>
+</ul>
+<p>如果 nginx 没起来，先看入口层；如果 nginx 正常但接口报错，继续看 api；如果 api 连不上依赖，再看数据库、Redis、向量库。.env 建议在日志已经指向配置问题时再修改。</p>
+<h3 id="6-3-容器启动失败或重启循环"><a href="#6-3-容器启动失败或重启循环" class="headerlink" title="6.3 容器启动失败或重启循环"></a>6.3 容器启动失败或重启循环</h3><p>先找具体失败服务：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker compose ps</span><br></pre></td></tr></table></figure>
+
+<p>再看日志：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker compose logs -f &lt;服务名&gt;</span><br></pre></td></tr></table></figure>
+
+<p>例如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker compose logs -f api</span><br><span class="line">docker compose logs -f worker</span><br><span class="line">docker compose logs -f db_postgres</span><br><span class="line">docker compose logs -f redis</span><br></pre></td></tr></table></figure>
+
+<p>常见原因：</p>
+<ul>
+<li>.env 缺少变量或变量不兼容当前版本。</li>
+<li>数据库、Redis、向量库还没准备好。</li>
+<li>端口被占用。</li>
+<li>镜像没拉完整。</li>
+<li>旧版本数据和新版本 migration 不兼容。</li>
+</ul>
+<p>日志里先找第一条关键错误，不要只看最后一行。有些容器会因为前面的配置或连接错误反复重启，最后一行只是”进程退出”。</p>
+<h3 id="6-4-用-Navicat-连接-Dify-数据库"><a href="#6-4-用-Navicat-连接-Dify-数据库" class="headerlink" title="6.4 用 Navicat 连接 Dify 数据库"></a>6.4 用 Navicat 连接 Dify 数据库</h3><p>不要直接修改数据库文件目录。docker&#x2F;volumes&#x2F;db&#x2F;data 这类目录是 PostgreSQL 的底层数据文件，不是给 Navicat 直接打开的。</p>
+<p>要管理数据库，应该通过 PostgreSQL 协议连接。</p>
+<p>本节只讨论如何通过 PostgreSQL 协议安全连接数据库。生产环境中，改表、删数据、批量更新前都应先备份，并确认影响范围。</p>
+<p><strong>本地开发环境：暴露端口</strong></p>
+<p>如果只是本地学习，可以在 Compose 中给 PostgreSQL 暴露端口，例如：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">db_postgres:</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;5432:5432&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>然后重启数据库服务：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker compose up -d db_postgres</span><br></pre></td></tr></table></figure>
+
+<p>Navicat 连接参数通常类似：</p>
+<div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Host</td>
+<td>127.0.0.1</td>
+</tr>
+<tr>
+<td>Port</td>
+<td>5432</td>
+</tr>
+<tr>
+<td>User</td>
+<td>.env 中的数据库用户</td>
+</tr>
+<tr>
+<td>Password</td>
+<td>.env 中的数据库密码</td>
+</tr>
+<tr>
+<td>Database</td>
+<td>dify</td>
+</tr>
+</tbody></table></div>
+<blockquote>
+<p>注意：生产环境不要把 5432 直接暴露到公网。</p>
+</blockquote>
+<p>本地学习时暴露 5432:5432 没问题，因为访问范围通常只在你自己的电脑上。服务器环境要多考虑安全组、防火墙、数据库弱口令和公网扫描。</p>
+<p><strong>服务器环境：优先用 SSH 隧道</strong></p>
+<p>服务器环境里，更推荐让数据库只在服务器内部访问，然后用 SSH 隧道把本机端口转发过去。</p>
+<p>思路是：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Navicat 本机端口</span><br><span class="line">  -&gt; SSH 隧道</span><br><span class="line">  -&gt; 服务器</span><br><span class="line">  -&gt; PostgreSQL 容器或宿主机映射端口</span><br></pre></td></tr></table></figure>
+
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -L 15432:127.0.0.1:5432 user@your-server</span><br></pre></td></tr></table></figure>
+
+<p>然后 Navicat 连：</p>
+<div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Host</td>
+<td>127.0.0.1</td>
+</tr>
+<tr>
+<td>Port</td>
+<td>15432</td>
+</tr>
+<tr>
+<td>User</td>
+<td>.env 中的数据库用户</td>
+</tr>
+<tr>
+<td>Password</td>
+<td>.env 中的数据库密码</td>
+</tr>
+<tr>
+<td>Database</td>
+<td>dify</td>
+</tr>
+</tbody></table></div>
+<p>如果数据库端口没有映射到宿主机，而只在容器网络里可见，需要先确认容器 IP 或临时使用跳板方式。生产环境建议由运维统一配置安全访问方式。</p>
+<p>有些团队会用堡垒机、VPN、内网跳板或云厂商数据库访问策略来做这件事。课程里给的是通用思路，实际生产环境要服从团队的安全规范。</p>
+<p><strong>Mac + SSH 隧道连接服务器 PostgreSQL</strong></p>
+<p>下面是一条更贴近实操的路径：本机用 Navicat，数据库仍留在服务器 Docker 内部网络里，不把 5432 暴露到公网。</p>
+<p>先在服务器上确认 Postgres 容器 IP：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker inspect -f <span class="string">&#x27;&#123;&#123;range .NetworkSettings.Networks&#125;&#125;&#123;&#123;.IPAddress&#125;&#125;&#123;&#123;end&#125;&#125;&#x27;</span> docker-db_postgres-1</span><br></pre></td></tr></table></figure>
+
+<p>假设输出为 172.20.0.4，后面 SSH 隧道就转发到这个容器 IP。</p>
+<p>常见填写方式：</p>
+<div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Host</td>
+<td>127.0.0.1</td>
+</tr>
+<tr>
+<td>Port</td>
+<td>15432</td>
+</tr>
+<tr>
+<td>User</td>
+<td>.env 中的数据库用户</td>
+</tr>
+<tr>
+<td>Password</td>
+<td>.env 中的数据库密码</td>
+</tr>
+<tr>
+<td>Database</td>
+<td>dify</td>
+</tr>
+</tbody></table></div>
+<p>连接成功后，就可以像普通 PostgreSQL 一样查看 Dify 表结构和数据。</p>
+<p>生产环境里，查看表结构通常没问题；如果要改数据、删数据或批量更新，先备份，再确认影响范围。</p>
+<hr>
+<h2 id="7-Dify-升级、备份与源码改造"><a href="#7-Dify-升级、备份与源码改造" class="headerlink" title="7 Dify 升级、备份与源码改造"></a>7 Dify 升级、备份与源码改造</h2><p>Dify 升级不是简单执行 docker compose pull &amp;&amp; docker compose up -d。它同时牵涉镜像、.env、数据库 migration、volume 挂载、插件目录、向量库和前后端版本兼容。</p>
+<p>升级前先按这个清单确认一遍：</p>
+<div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
+<thead>
+<tr>
+<th>检查项</th>
+<th>为什么重要</th>
+<th>推荐动作</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>旧环境是否健康</td>
+<td>带着旧问题升级，会让排障更乱</td>
+<td>先看 docker compose ps 和 api 日志</td>
+</tr>
+<tr>
+<td>数据库是否已备份</td>
+<td>migration 可能改表结构</td>
+<td>用 pg_dump 导出 SQL</td>
+</tr>
+<tr>
+<td>volume &#x2F; 挂载目录是否确认</td>
+<td>新版本可能挂到新目录</td>
+<td>用 docker inspect 看 Mounts</td>
+</tr>
+<tr>
+<td>.env 是否对照新版本</td>
+<td>新版本可能新增或废弃变量</td>
+<td>对比 .env.example 和 envs&#x2F;*.env.example</td>
+</tr>
+<tr>
+<td>是否需要回滚</td>
+<td>升级失败时要能退回</td>
+<td>保留旧目录、旧 .env、备份文件</td>
+</tr>
+</tbody></table></div>
+<h3 id="7-1-升级流程"><a href="#7-1-升级流程" class="headerlink" title="7.1 升级流程"></a>7.1 升级流程</h3><p>升级前的原则：先备份，后停服务；先确认数据位置，再启动新版本。</p>
+<p>下面用”旧版本 -&gt; 新版本”的通用流程说明。命令里的容器名、路径和版本号都要按你的环境替换。</p>
+<p>Dify 升级不仅是拉取新镜像，还涉及镜像版本、.env 配置、数据库 migration、volume 挂载和前后端兼容。任何一个环节没对上，都可能表现为页面打不开、进入 &#x2F;install 或后台任务异常。</p>
+<p><strong>第 1 步：升级前检查</strong></p>
+<p>在旧版本 docker 目录执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker compose ps</span><br><span class="line">docker ps</span><br><span class="line">docker compose logs --<span class="built_in">tail</span>=100 api</span><br></pre></td></tr></table></figure>
+
+<p>先确认旧环境本身是可用的。不要在旧环境已经异常、数据状态不明时直接升级。</p>
+<p>如果旧环境已经有报错，先记录当前状态和日志。否则升级失败后，很难判断问题是升级引入的，还是旧环境本来就已经异常。</p>
+<p><strong>第 2 步：确认数据库名</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -it docker-db_postgres-1 psql -U postgres -c <span class="string">&quot;\l&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>常见业务库名是 dify。如果你的数据库容器叫 docker-db-1 或其他名字，按 docker ps 结果替换。</p>
+<p><strong>第 3 步：备份数据库</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -t docker-db_postgres-1 pg_dump -U postgres dify &gt; dify_backup.sql</span><br></pre></td></tr></table></figure>
+
+<p>建议把备份文件复制到安全位置，不要只放在即将改动的部署目录里。</p>
+<p>备份完成后，最好至少确认文件不是 0 字节；重要环境还可以在测试库里试导入一次。没有验证过的备份，只能算”可能有用”。</p>
+<p><strong>第 4 步：停旧版本</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker compose down</span><br></pre></td></tr></table></figure>
+
+<p>这一步会删除当前 Compose 项目创建的容器和网络，但默认不删除 volume。除非你明确要清空数据，否则不要使用 docker compose down -v。</p>
+<p>这里用 down 是为了让旧容器退出，避免新旧版本同时占用端口或写同一份数据。它不是清库操作，也不应该顺手加 -v。</p>
+<p>执行后，终端里通常会看到容器和网络被移除。</p>
+<p><strong>第 5 步：准备新版本</strong></p>
+<p>常见方式是拉取或解压新版本 Dify，然后进入新版本的 docker 目录。</p>
+<p>如果使用 git clone 拉取新版本，网络不稳定时可能会中断，失败后可以重试或先处理代理 &#x2F; 镜像源问题。</p>
+<p>把旧版本 .env 复制过来，再按新版本 .env.example 补齐新增变量。若项目提供同步脚本，可以使用官方推荐脚本；如果没有，就逐项对照新旧 .env。</p>
+<p>同步脚本或配置对比工具通常会提示哪些变量需要保留、补齐或调整，实际改配置时，建议一项一项确认，不要整段盲贴。</p>
+<p>重点检查：</p>
+<ul>
+<li>数据库服务名，例如 DB_HOST。</li>
+<li>COMPOSE_PROFILES。</li>
+<li>端口和域名。</li>
+<li>密钥类配置。</li>
+<li>向量库类型和对应连接配置。</li>
+</ul>
+<p>.env 是升级里最容易被忽略的文件。旧版本能跑，不代表旧 .env 能完整满足新版本。新增变量可以用默认值起步，但数据库、密钥、URL、向量库类型这几类不能随便变。</p>
+<p>改完后用 grep 之类的命令确认关键变量已经生效。</p>
+<p><strong>第 6 步：拉取并启动新版本</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker compose pull</span><br><span class="line">docker compose up -d</span><br></pre></td></tr></table></figure>
+
+<p>镜像拉取阶段会逐个下载服务镜像。启动后可以用 docker ps 或 docker compose ps 查看容器状态。</p>
+<p>启动后查看：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker compose ps</span><br><span class="line">docker compose logs -f api</span><br><span class="line">docker compose logs -f worker</span><br></pre></td></tr></table></figure>
+
+<p>如果进入 &#x2F;install 或没有旧数据，回到第 6.4 小节检查 volume 和数据库数据。</p>
+<p>启动后先不要急着清理旧目录和旧备份。等登录、应用列表、知识库、工作流、文件上传、后台任务都确认正常后，再考虑归档旧版本。</p>
+<p><strong>第 7 步：必要时导入旧备份</strong></p>
+<p>如果确认新环境是空库，且你已经决定用备份恢复，可以导入：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> /path/to/dify_backup.sql | docker <span class="built_in">exec</span> -i docker-db_postgres-1 psql -U postgres -d dify</span><br></pre></td></tr></table></figure>
+
+<p>如果新库已经初始化过，直接导入可能出现重复索引、重复约束等错误。更稳妥的做法是：确认没有新业务数据后，重建空库再导入。</p>
+<p>这里的”确认没有新业务数据”很重要。如果新环境已经有人注册、创建应用或上传文件，直接重建数据库会覆盖这些新数据。生产环境恢复前应先停服务并保留当前状态备份。</p>
+<p>如果看到大量 already exists 之类的错误，通常说明目标库不是干净空库。</p>
+<p>确认可以清空目标库后，再执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -it docker-db_postgres-1 psql -U postgres -c <span class="string">&quot;SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname=&#x27;dify&#x27; AND pid &lt;&gt; pg_backend_pid();&quot;</span></span><br><span class="line">docker <span class="built_in">exec</span> -it docker-db_postgres-1 psql -U postgres -c <span class="string">&quot;DROP DATABASE IF EXISTS dify;&quot;</span></span><br><span class="line">docker <span class="built_in">exec</span> -it docker-db_postgres-1 psql -U postgres -c <span class="string">&quot;CREATE DATABASE dify OWNER postgres;&quot;</span></span><br><span class="line"><span class="built_in">cat</span> /path/to/dify_backup.sql | docker <span class="built_in">exec</span> -i docker-db_postgres-1 psql -U postgres -d dify</span><br></pre></td></tr></table></figure>
+
+<p>重建空库并重新导入时，先确认你手里已经有可用备份。</p>
+<p>完成后重启关键服务：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker restart docker-api-1 docker-worker-1 docker-worker_beat-1 docker-web-1</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-2-修改-Dify-前端源码并让改动生效"><a href="#7-2-修改-Dify-前端源码并让改动生效" class="headerlink" title="7.2 修改 Dify 前端源码并让改动生效"></a>7.2 修改 Dify 前端源码并让改动生效</h3><p>如果 Compose 使用的是官方镜像：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">web:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">langgenius/dify-web:&lt;version&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>那么你修改本地 web&#x2F; 目录不会自动生效。因为实际运行的是镜像里已经构建好的前端产物。</p>
+<p>要让本地源码生效，需要改为构建自己的 web 镜像。</p>
+<p>这一节解决的是开发改造问题，不是普通部署问题。如果只是安装或升级 Dify，不需要改这里；只有你真的要改前端代码、换交互、加页面，才需要走本地 build。</p>
+<p><strong>推荐用 override</strong></p>
+<p>在 docker 目录新增 docker-compose.override.yaml：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">web:</span></span><br><span class="line">    <span class="attr">build:</span></span><br><span class="line">      <span class="attr">context:</span> <span class="string">../web</span></span><br><span class="line">      <span class="attr">dockerfile:</span> <span class="string">Dockerfile</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">my-dify-web:local</span></span><br></pre></td></tr></table></figure>
+
+<p>这样升级时更容易对比官方文件，不会把本地改动混进官方 docker-compose.yaml。</p>
+<p>官方 compose 文件本身是生成文件，升级时也最容易变化。override 的好处是把”官方部署文件”和”本地改造”分开。以后升级 Dify 时，可以先更新官方 compose，再单独检查自己的 override 是否还适配。</p>
+<p><strong>构建并重启 web</strong></p>
+<p>在 docker 目录执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker compose build web</span><br><span class="line">docker compose up -d web</span><br></pre></td></tr></table></figure>
+
+<p>如果前端依赖环境变量或构建参数，还要按当前 Dify 版本的 web&#x2F;Dockerfile 和官方说明补齐。</p>
+<p><strong>源码构建场景下是否需要 pull</strong></p>
+<ul>
+<li>改前端源码时：web 使用本地 build，不靠 docker compose pull 获取官方 web 镜像。</li>
+<li>其他服务：api、postgres、redis、weaviate 等仍可按升级流程拉取官方镜像。</li>
+</ul>
+<p>如果同时改了后端 api&#x2F;，也要为 api 服务配置对应的 build 和镜像；只改 web，不会让后端代码变化生效。</p>
+<hr>
+<h2 id="8-Docker-常用命令速查"><a href="#8-Docker-常用命令速查" class="headerlink" title="8 Docker 常用命令速查"></a>8 Docker 常用命令速查</h2><h3 id="8-1-镜像管理"><a href="#8-1-镜像管理" class="headerlink" title="8.1 镜像管理"></a>8.1 镜像管理</h3><div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
+<thead>
+<tr>
+<th>目的</th>
+<th>命令</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>查看本地镜像</td>
+<td>docker images</td>
+</tr>
+<tr>
+<td>拉取镜像</td>
+<td>docker pull mysql:8.0.45</td>
+</tr>
+<tr>
+<td>搜索镜像</td>
+<td>docker search mysql</td>
+</tr>
+<tr>
+<td>删除镜像</td>
+<td>docker rmi mysql:8.0.45</td>
+</tr>
+<tr>
+<td>查看镜像详细信息</td>
+<td>docker inspect mysql:8.0.45</td>
+</tr>
+<tr>
+<td>构建自定义镜像</td>
+<td>docker build -t my-app:1.0 .</td>
+</tr>
+<tr>
+<td>打包镜像</td>
+<td>docker save mysql:8.0.45 -o mysql.tar</td>
+</tr>
+<tr>
+<td>导入镜像</td>
+<td>docker load -i mysql.tar</td>
+</tr>
+</tbody></table></div>
+<h3 id="8-2-容器管理"><a href="#8-2-容器管理" class="headerlink" title="8.2 容器管理"></a>8.2 容器管理</h3><div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
+<thead>
+<tr>
+<th>目的</th>
+<th>命令</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>查看运行中容器</td>
+<td>docker ps</td>
+</tr>
+<tr>
+<td>查看全部容器</td>
+<td>docker ps -a</td>
+</tr>
+<tr>
+<td>查看容器日志</td>
+<td>docker logs -f &lt;容器名&gt;</td>
+</tr>
+<tr>
+<td>进入容器</td>
+<td>docker exec -it &lt;容器名&gt; sh</td>
+</tr>
+<tr>
+<td>停止容器</td>
+<td>docker stop &lt;容器名&gt;</td>
+</tr>
+<tr>
+<td>启动容器</td>
+<td>docker start &lt;容器名&gt;</td>
+</tr>
+<tr>
+<td>重启容器</td>
+<td>docker restart &lt;容器名&gt;</td>
+</tr>
+<tr>
+<td>删除已停止容器</td>
+<td>docker rm &lt;容器名&gt;</td>
+</tr>
+<tr>
+<td>查看容器挂载</td>
+<td>docker inspect &lt;容器名&gt; –format ‘‘</td>
+</tr>
+</tbody></table></div>
+<h3 id="8-3-Compose-项目管理"><a href="#8-3-Compose-项目管理" class="headerlink" title="8.3 Compose 项目管理"></a>8.3 Compose 项目管理</h3><div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
+<thead>
+<tr>
+<th>目的</th>
+<th>命令</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>启动整套服务</td>
+<td>docker compose up -d</td>
+</tr>
+<tr>
+<td>启动并重新构建</td>
+<td>docker compose up -d –build</td>
+</tr>
+<tr>
+<td>查看服务状态</td>
+<td>docker compose ps</td>
+</tr>
+<tr>
+<td>查看全部服务容器</td>
+<td>docker compose ps -a</td>
+</tr>
+<tr>
+<td>查看服务清单</td>
+<td>docker compose config –services</td>
+</tr>
+<tr>
+<td>查看某个服务日志</td>
+<td>docker compose logs -f &lt;服务名&gt;</td>
+</tr>
+<tr>
+<td>临时运行一个服务</td>
+<td>docker compose run –rm &lt;服务名&gt;</td>
+</tr>
+<tr>
+<td>进入服务容器执行命令</td>
+<td>docker compose exec &lt;服务名&gt; sh</td>
+</tr>
+<tr>
+<td>拉取镜像</td>
+<td>docker compose pull</td>
+</tr>
+<tr>
+<td>构建服务镜像</td>
+<td>docker compose build &lt;服务名&gt;</td>
+</tr>
+<tr>
+<td>停止服务</td>
+<td>docker compose stop</td>
+</tr>
+<tr>
+<td>停止并删除容器、网络</td>
+<td>docker compose down</td>
+</tr>
+<tr>
+<td>停止并删除容器、网络、volume</td>
+<td>docker compose down -v</td>
+</tr>
+<tr>
+<td>停止并删除项目关联镜像</td>
+<td>docker compose down –rmi all</td>
+</tr>
+<tr>
+<td>查看最终配置</td>
+<td>docker compose config</td>
+</tr>
+</tbody></table></div>
+<h3 id="8-4-Dify-常用命令"><a href="#8-4-Dify-常用命令" class="headerlink" title="8.4 Dify 常用命令"></a>8.4 Dify 常用命令</h3><p>下面命令默认在 Dify 的 docker 目录执行。</p>
+<div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
+<thead>
+<tr>
+<th>目的</th>
+<th>命令</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>查看服务清单</td>
+<td>docker compose config –services</td>
+</tr>
+<tr>
+<td>查看全部容器</td>
+<td>docker ps -a</td>
+</tr>
+<tr>
+<td>查看 API 日志</td>
+<td>docker compose logs -f api</td>
+</tr>
+<tr>
+<td>查看 worker 日志</td>
+<td>docker compose logs -f worker</td>
+</tr>
+<tr>
+<td>查看 nginx 日志</td>
+<td>docker compose logs -f nginx</td>
+</tr>
+<tr>
+<td>查看数据库日志</td>
+<td>docker compose logs -f db_postgres</td>
+</tr>
+<tr>
+<td>进入数据库容器</td>
+<td>docker exec -it docker-db_postgres-1 sh</td>
+</tr>
+<tr>
+<td>连接 PostgreSQL</td>
+<td>docker exec -it docker-db_postgres-1 psql -U postgres -d dify</td>
+</tr>
+<tr>
+<td>查看容器挂载</td>
+<td>docker inspect &lt;容器名&gt; –format ‘‘</td>
+</tr>
+<tr>
+<td>查看 volume</td>
+<td>docker volume ls</td>
+</tr>
+<tr>
+<td>备份数据库</td>
+<td>docker exec -t docker-db_postgres-1 pg_dump -U postgres dify &gt; dify_backup.sql</td>
+</tr>
+</tbody></table></div>
+<p>容器名和服务名可能因 Dify 版本或 Compose 项目名不同而变化。命令执行失败时，先用 docker compose ps 或 docker ps 确认当前环境里的真实名称。</p>
+<h3 id="8-5-Ubuntu-服务器常用命令"><a href="#8-5-Ubuntu-服务器常用命令" class="headerlink" title="8.5 Ubuntu 服务器常用命令"></a>8.5 Ubuntu 服务器常用命令</h3><div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
+<thead>
+<tr>
+<th>目的</th>
+<th>命令</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>查看 Docker 服务状态</td>
+<td>sudo systemctl status docker</td>
+</tr>
+<tr>
+<td>重启 Docker 服务</td>
+<td>sudo systemctl restart docker</td>
+</tr>
+<tr>
+<td>配置当前用户免 sudo 使用</td>
+<td>sudo usermod -aG docker $USER</td>
+</tr>
+<tr>
+<td>查看 Docker Engine 配置</td>
+<td>docker info</td>
+</tr>
+<tr>
+<td>编辑镜像源配置</td>
+<td>sudo vim &#x2F;etc&#x2F;docker&#x2F;daemon.json</td>
+</tr>
+<tr>
+<td>重新加载 systemd 配置</td>
+<td>sudo systemctl daemon-reload</td>
+</tr>
+<tr>
+<td>停止 Docker 服务</td>
+<td>sudo systemctl stop docker</td>
+</tr>
+<tr>
+<td>卸载 Docker 软件包</td>
+<td>sudo apt remove -y docker-ce docker-ce-cli containerd.io docker-compose-plugin</td>
+</tr>
+<tr>
+<td>删除 Docker 数据目录</td>
+<td>sudo rm -rf &#x2F;var&#x2F;lib&#x2F;docker &#x2F;var&#x2F;lib&#x2F;containerd</td>
+</tr>
+</tbody></table></div>
+<p>最后一条是高风险清理命令，会删除本机 Docker 管理的数据。只在确认没有重要容器、镜像、volume 后使用。</p>
+<h3 id="8-6-危险操作清单"><a href="#8-6-危险操作清单" class="headerlink" title="8.6 危险操作清单"></a>8.6 危险操作清单</h3><p>这些命令不是不能用，而是不能在没备份、没确认环境的情况下随手用：</p>
+<div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>可能后果</th>
+<th>使用前必须确认</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>docker compose down -v</td>
+<td>删除当前 Compose 项目的 volume</td>
+<td>数据库、向量库、上传文件是否已备份</td>
+</tr>
+<tr>
+<td>docker volume rm &lt;volume名&gt;</td>
+<td>删除指定 volume</td>
+<td>这个 volume 是否真的是废弃数据</td>
+</tr>
+<tr>
+<td>docker volume prune</td>
+<td>删除所有未被容器使用的 volume</td>
+<td>是否有停掉但还要保留数据的项目</td>
+</tr>
+<tr>
+<td>docker system prune -af</td>
+<td>清理未使用容器、网络、镜像、构建缓存</td>
+<td>是否能接受重新拉镜像和重建缓存</td>
+</tr>
+<tr>
+<td>rm -rf .&#x2F;volumes</td>
+<td>删除当前部署目录下的挂载数据</td>
+<td>是否已经确认是测试环境或有备份</td>
+</tr>
+<tr>
+<td>sudo rm -rf &#x2F;var&#x2F;lib&#x2F;docker</td>
+<td>删除 Docker Engine 管理的全部本地数据</td>
+<td>是否是在重装机器，且已迁出所有数据</td>
+</tr>
+<tr>
+<td>DROP DATABASE dify;</td>
+<td>删除 Dify 业务数据库</td>
+<td>是否已经停服务、备份、确认目标库可清空</td>
+</tr>
+</tbody></table></div>
+<p>确实要清空测试环境时，建议先把”查看命令”和”删除命令”分开执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker compose ps</span><br><span class="line">docker volume <span class="built_in">ls</span></span><br><span class="line">docker inspect &lt;容器名&gt; --format <span class="string">&#x27;&#123;&#123;json .Mounts&#125;&#125;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>确认之后，再执行清理命令。这个习惯在本地看起来慢一点，到了服务器上能少很多麻烦。</p>
+</div>
+    <footer class="reference-article__footer">
+      <span>标签</span><a href="/tags/Docker/">Docker</a>
+    </footer>
+  </article>
+  
+    <aside class="reference-toc" aria-label="本页目录"><p>本页目录</p><ol class="reference-toc__list"><li class="reference-toc__list-item reference-toc__list-level-1"><a class="reference-toc__list-link" href="#Docker-%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%E4%B8%8E-Dify-%E9%83%A8%E7%BD%B2%E6%8E%92%E9%9A%9C"><span class="reference-toc__list-text">Docker 快速入门与 Dify 部署排障</span></a><ol class="reference-toc__list-child"><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#1-%E5%AD%A6%E4%B9%A0-Docker"><span class="reference-toc__list-text">1 学习 Docker</span></a><ol class="reference-toc__list-child"><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#1-1-%E7%8E%AF%E5%A2%83%E4%B8%8D%E4%B8%80%E8%87%B4%E7%9A%84%E9%97%AE%E9%A2%98"><span class="reference-toc__list-text">1.1 环境不一致的问题</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#1-2-Docker-%E6%98%AF%E4%BB%80%E4%B9%88"><span class="reference-toc__list-text">1.2 Docker 是什么</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#1-3-Docker-%E5%92%8C%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="reference-toc__list-text">1.3 Docker 和虚拟机的区别</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#1-4-Docker-%E6%9E%B6%E6%9E%84"><span class="reference-toc__list-text">1.4 Docker 架构</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#1-5-%E9%95%9C%E5%83%8F%E3%80%81%E5%AE%B9%E5%99%A8%E3%80%81%E4%BB%93%E5%BA%93%E3%80%81%E6%95%B0%E6%8D%AE%E5%8D%B7"><span class="reference-toc__list-text">1.5 镜像、容器、仓库、数据卷</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#1-6-Dockerfile-%E5%92%8C-Compose"><span class="reference-toc__list-text">1.6 Dockerfile 和 Compose</span></a></li></ol></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#2-Docker-%E5%AE%89%E8%A3%85%EF%BC%9A%E6%9C%AC%E5%9C%B0-Windows-%E4%B8%8E%E6%9C%8D%E5%8A%A1%E5%99%A8-Ubuntu"><span class="reference-toc__list-text">2 Docker 安装：本地 Windows 与服务器 Ubuntu</span></a><ol class="reference-toc__list-child"><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#2-1-%E5%85%88%E5%88%A4%E6%96%AD%E4%BD%A0%E8%A6%81%E8%A3%85%E5%9C%A8%E5%93%AA%E9%87%8C"><span class="reference-toc__list-text">2.1 先判断你要装在哪里</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#2-2-Windows-%E5%AE%89%E8%A3%85%E5%89%8D%E5%87%86%E5%A4%87"><span class="reference-toc__list-text">2.2 Windows 安装前准备</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#2-3-%E4%B8%8B%E8%BD%BD-Docker-Desktop"><span class="reference-toc__list-text">2.3 下载 Docker Desktop</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#2-4-%E5%AE%89%E8%A3%85%E5%B9%B6%E5%90%AF%E5%8A%A8-Docker-Desktop"><span class="reference-toc__list-text">2.4 安装并启动 Docker Desktop</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#2-5-%E9%AA%8C%E8%AF%81-Docker-%E7%8E%AF%E5%A2%83"><span class="reference-toc__list-text">2.5 验证 Docker 环境</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#2-6-%E5%90%AF%E5%8A%A8-MySQL-%E5%AE%B9%E5%99%A8"><span class="reference-toc__list-text">2.6 启动 MySQL 容器</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#2-7-%E4%BB%8E-docker-ps-%E5%8C%BA%E5%88%86%E9%95%9C%E5%83%8F%E5%92%8C%E5%AE%B9%E5%99%A8"><span class="reference-toc__list-text">2.7 从 docker ps 区分镜像和容器</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#2-8-%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4%E9%80%9F%E6%9F%A5"><span class="reference-toc__list-text">2.8 基础命令速查</span></a></li></ol></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#3-%E4%BB%8E%E5%8D%95%E5%AE%B9%E5%99%A8%E5%88%B0-Compose-%E5%A4%9A%E6%9C%8D%E5%8A%A1%E7%BC%96%E6%8E%92"><span class="reference-toc__list-text">3 从单容器到 Compose 多服务编排</span></a><ol class="reference-toc__list-child"><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#3-1-Dockerfile"><span class="reference-toc__list-text">3.1 Dockerfile</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#3-2-Compose"><span class="reference-toc__list-text">3.2 Compose</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#3-3-MySQL-Python-%E7%9A%84-Compose-%E5%B0%8F%E6%A1%88%E4%BE%8B"><span class="reference-toc__list-text">3.3 MySQL + Python 的 Compose 小案例</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#3-4-%E8%BF%90%E8%A1%8C%E5%92%8C%E9%AA%8C%E8%AF%81-Compose-%E5%B0%8F%E6%A1%88%E4%BE%8B"><span class="reference-toc__list-text">3.4 运行和验证 Compose 小案例</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#3-5-Compose-%E9%85%8D%E7%BD%AE%E9%98%85%E8%AF%BB%E9%A1%BA%E5%BA%8F"><span class="reference-toc__list-text">3.5 Compose 配置阅读顺序</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#3-6-Compose-%E5%91%BD%E4%BB%A4%E9%80%9F%E6%9F%A5"><span class="reference-toc__list-text">3.6 Compose 命令速查</span></a></li></ol></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#4-%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96%E3%80%81%E7%BD%91%E7%BB%9C%E3%80%81%E8%BF%81%E7%A7%BB%E4%B8%8E%E5%8D%B1%E9%99%A9%E8%BE%B9%E7%95%8C"><span class="reference-toc__list-text">4 数据持久化、网络、迁移与危险边界</span></a><ol class="reference-toc__list-child"><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#4-1-%E7%AB%AF%E5%8F%A3%E6%98%A0%E5%B0%84"><span class="reference-toc__list-text">4.1 端口映射</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#4-2-volume-%E5%92%8C-bind-mount"><span class="reference-toc__list-text">4.2 volume 和 bind mount</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#4-3-%E5%AE%B9%E5%99%A8%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E4%B8%8E%E6%95%B0%E6%8D%AE%E8%BE%B9%E7%95%8C"><span class="reference-toc__list-text">4.3 容器生命周期与数据边界</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#4-4-%E7%BD%91%E7%BB%9C%E6%85%A2%E6%88%96%E9%95%9C%E5%83%8F%E6%8B%89%E5%8F%96%E5%A4%B1%E8%B4%A5"><span class="reference-toc__list-text">4.4 网络慢或镜像拉取失败</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#4-5-%E8%B7%A8%E6%9C%BA%E5%99%A8%E8%BF%81%E7%A7%BB%E4%B8%8E%E7%A6%BB%E7%BA%BF%E5%90%8C%E6%AD%A5"><span class="reference-toc__list-text">4.5 跨机器迁移与离线同步</span></a><ol class="reference-toc__list-child"><li class="reference-toc__list-item reference-toc__list-level-4"><a class="reference-toc__list-link" href="#4-5-1-%E5%9C%A8%E7%BA%BF%E8%BF%81%E7%A7%BB%EF%BC%9A%E7%9B%AE%E6%A0%87%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%8F%AF%E4%BB%A5%E6%8B%89%E9%95%9C%E5%83%8F"><span class="reference-toc__list-text">4.5.1 在线迁移：目标服务器可以拉镜像</span></a></li><li class="reference-toc__list-item reference-toc__list-level-4"><a class="reference-toc__list-link" href="#4-5-2-%E7%A6%BB%E7%BA%BF%E8%BF%81%E7%A7%BB%EF%BC%9A%E7%9B%AE%E6%A0%87%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8D%E8%83%BD%E6%8B%89%E9%95%9C%E5%83%8F"><span class="reference-toc__list-text">4.5.2 离线迁移：目标服务器不能拉镜像</span></a></li></ol></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#4-6-%E5%8D%B1%E9%99%A9%E6%93%8D%E4%BD%9C%E6%B8%85%E5%8D%95"><span class="reference-toc__list-text">4.6 危险操作清单</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#4-7-Docker-%E5%9F%BA%E7%A1%80%E5%B8%B8%E8%A7%81%E6%8A%A5%E9%94%99"><span class="reference-toc__list-text">4.7 Docker 基础常见报错</span></a></li></ol></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#5-%E6%8A%8A-Docker-%E7%9F%A5%E8%AF%86%E8%BF%81%E7%A7%BB%E5%88%B0-Dify-%E9%83%A8%E7%BD%B2%E7%BB%93%E6%9E%84"><span class="reference-toc__list-text">5 把 Docker 知识迁移到 Dify 部署结构</span></a><ol class="reference-toc__list-child"><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#5-1-%E8%AE%BF%E9%97%AE%E9%93%BE%E8%B7%AF"><span class="reference-toc__list-text">5.1 访问链路</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#5-2-%E5%85%B8%E5%9E%8B%E5%AE%B9%E5%99%A8%E5%88%86%E5%B7%A5"><span class="reference-toc__list-text">5.2 典型容器分工</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#5-3-%E5%90%8C%E4%B8%80%E4%B8%AA%E9%95%9C%E5%83%8F%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BC%9A%E8%B5%B7%E5%A4%9A%E4%B8%AA%E5%AE%B9%E5%99%A8"><span class="reference-toc__list-text">5.3 同一个镜像为什么会起多个容器</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#5-4-docker-%E7%9B%AE%E5%BD%95"><span class="reference-toc__list-text">5.4 docker 目录</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#5-5-%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%BD%8D%E7%BD%AE"><span class="reference-toc__list-text">5.5 数据存储位置</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#5-6-%E5%88%A0%E9%99%A4%E5%AE%B9%E5%99%A8%E4%BC%9A%E4%B8%8D%E4%BC%9A%E4%B8%A2%E6%95%B0%E6%8D%AE"><span class="reference-toc__list-text">5.6 删除容器会不会丢数据</span></a></li></ol></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#6-Dify-%E6%8E%92%E9%9A%9C%EF%BC%9A%E7%8A%B6%E6%80%81%E3%80%81%E6%97%A5%E5%BF%97%E3%80%81%E6%95%B0%E6%8D%AE%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5"><span class="reference-toc__list-text">6 Dify 排障：状态、日志、数据与数据库连接</span></a><ol class="reference-toc__list-child"><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#6-1-%E5%B8%B8%E8%A7%81%E6%8E%92%E9%9A%9C%E8%B7%AF%E5%BE%84"><span class="reference-toc__list-text">6.1 常见排障路径</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#6-2-%E9%A1%B5%E9%9D%A2%E6%97%A0%E6%B3%95%E8%AE%BF%E9%97%AE"><span class="reference-toc__list-text">6.2 页面无法访问</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#6-3-%E5%AE%B9%E5%99%A8%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5%E6%88%96%E9%87%8D%E5%90%AF%E5%BE%AA%E7%8E%AF"><span class="reference-toc__list-text">6.3 容器启动失败或重启循环</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#6-4-%E7%94%A8-Navicat-%E8%BF%9E%E6%8E%A5-Dify-%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="reference-toc__list-text">6.4 用 Navicat 连接 Dify 数据库</span></a></li></ol></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#7-Dify-%E5%8D%87%E7%BA%A7%E3%80%81%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%BA%90%E7%A0%81%E6%94%B9%E9%80%A0"><span class="reference-toc__list-text">7 Dify 升级、备份与源码改造</span></a><ol class="reference-toc__list-child"><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#7-1-%E5%8D%87%E7%BA%A7%E6%B5%81%E7%A8%8B"><span class="reference-toc__list-text">7.1 升级流程</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#7-2-%E4%BF%AE%E6%94%B9-Dify-%E5%89%8D%E7%AB%AF%E6%BA%90%E7%A0%81%E5%B9%B6%E8%AE%A9%E6%94%B9%E5%8A%A8%E7%94%9F%E6%95%88"><span class="reference-toc__list-text">7.2 修改 Dify 前端源码并让改动生效</span></a></li></ol></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#8-Docker-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E9%80%9F%E6%9F%A5"><span class="reference-toc__list-text">8 Docker 常用命令速查</span></a><ol class="reference-toc__list-child"><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#8-1-%E9%95%9C%E5%83%8F%E7%AE%A1%E7%90%86"><span class="reference-toc__list-text">8.1 镜像管理</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#8-2-%E5%AE%B9%E5%99%A8%E7%AE%A1%E7%90%86"><span class="reference-toc__list-text">8.2 容器管理</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#8-3-Compose-%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86"><span class="reference-toc__list-text">8.3 Compose 项目管理</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#8-4-Dify-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="reference-toc__list-text">8.4 Dify 常用命令</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#8-5-Ubuntu-%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="reference-toc__list-text">8.5 Ubuntu 服务器常用命令</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#8-6-%E5%8D%B1%E9%99%A9%E6%93%8D%E4%BD%9C%E6%B8%85%E5%8D%95"><span class="reference-toc__list-text">8.6 危险操作清单</span></a></li></ol></li></ol></li></ol></aside>
+  
+</div>
+</main>
+        
+      </div>
+      <footer id="footer">
+  <div class="outer reference-footer-grid">
+    <section>
+      <h2>快速阅读</h2>
+      <a href="/archives/">全部文章</a>
+      <a href="/tags/LLM/">大模型与 RAG</a>
+      <a href="/tags/ai-agent/">Agent 实战</a>
+    </section>
+    <section>
+      <h2>技术专题</h2>
+      <a href="/tags/Fast-api%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86">Python 与 FastAPI</a>
+      <a href="/tags/AWS">AWS 云服务</a>
+      <a href="/archives">项目复盘</a>
+    </section>
+    <section>
+      <h2>站内索引</h2>
+      <a href="/tags/LLM/">标签：LLM</a>
+      <a href="/tags/ai-agent/">标签：AI Agent</a>
+      <a href="/archives/">按时间浏览</a>
+    </section>
+    <section>
+      <h2>关于本站</h2>
+      <a href="/">首页</a>
+      <a href="/archives">文章归档</a>
+      <span>记录学习，也分享实践。</span>
+    </section>
+  </div>
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+  <script src="/js/responsive.js" defer></script>
+</body>
+</html>
