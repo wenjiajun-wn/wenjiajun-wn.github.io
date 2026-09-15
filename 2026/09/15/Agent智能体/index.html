@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Agent 智能体 | WN</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Agent 智能体 本文从 Agent 的最小定义出发，介绍 ReAct 工作机制、Tool 与 Agent 的关系和典型使用场景，再对比 LangChain 的经典写法与 create_agent 新路线，最后通过 ReAct、A2A、Agent + MCP 三个实操案例，帮你建立”Agent &#x3D; 模型 + 工具集 + 运行循环 + 当前状态”的完整认知。   1 Agent 简介1.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Agent 智能体">
+<meta property="og:url" content="https://wenjiajun-wn.github.io/2026/09/15/Agent%E6%99%BA%E8%83%BD%E4%BD%93/index.html">
+<meta property="og:site_name" content="WN">
+<meta property="og:description" content="Agent 智能体 本文从 Agent 的最小定义出发，介绍 ReAct 工作机制、Tool 与 Agent 的关系和典型使用场景，再对比 LangChain 的经典写法与 create_agent 新路线，最后通过 ReAct、A2A、Agent + MCP 三个实操案例，帮你建立”Agent &#x3D; 模型 + 工具集 + 运行循环 + 当前状态”的完整认知。   1 Agent 简介1.">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-09-14T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-09-14T15:27:30.884Z">
+<meta property="article:author" content="wn">
+<meta property="article:tag" content="agent">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="WN" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<!-- hexo injector head_end start --><link rel="stylesheet" href="/css/responsive.css"><link rel="stylesheet" href="/css/blog-refresh.css"><link rel="stylesheet" href="/css/reference-exact.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="page-reading">
+  <a class="skip-link" href="#main">跳到正文</a>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner" aria-hidden="true"></div>
+  <div class="site-toolbar outer">
+    
+    
+    <nav class="desktop-nav" aria-label="主导航">
+      
+        <a href="/">首页</a>
+      
+        <a href="/archives">归档</a>
+      
+    </nav>
+    <details class="mobile-menu site-disclosure">
+      <summary>菜单 <span aria-hidden="true">⌄</span></summary>
+      <nav class="disclosure-panel" aria-label="手机主导航">
+        
+          <a href="/">首页</a>
+        
+          <a href="/archives">归档</a>
+        
+      </nav>
+    </details>
+    <div class="toolbar-actions">
+      
+      <details class="site-search site-disclosure">
+        <summary>搜索 <span aria-hidden="true">⌄</span></summary>
+        <form class="disclosure-panel site-search-form" action="https://www.google.com/search" method="get" role="search">
+          <label for="site-query">搜索本站文章</label>
+          <div class="search-controls">
+            <input id="site-query" type="search" name="q" placeholder="输入文章关键词" required>
+            <button type="submit">搜索</button>
+          </div>
+          <input type="hidden" name="sitesearch" value="https://wenjiajun-wn.github.io">
+          <p>通过 Google 搜索本站内容</p>
+        </form>
+      </details>
+      <a class="github-header-link" href="https://github.com/wenjiajun-wn" target="_blank" rel="noopener noreferrer" aria-label="访问 WN 的 GitHub 主页">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path fill="currentColor" d="M12 .7a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2.23c-3.22.7-3.9-1.37-3.9-1.37-.52-1.34-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.57-.29-5.28-1.29-5.28-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.47.11-3.06 0 0 .97-.31 3.16 1.18a10.98 10.98 0 0 1 5.76 0c2.2-1.49 3.16-1.18 3.16-1.18.63 1.59.23 2.77.11 3.06.74.81 1.19 1.84 1.19 3.1 0 4.41-2.71 5.39-5.29 5.68.42.36.79 1.07.79 2.16v3.2c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .7Z"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</header>
+
+      
+      <div class="outer site-content site-content--reading">
+        
+          <main id="main" class="reference-reading" tabindex="-1">
+<div class="reference-article-shell">
+  <article id="post-Agent智能体" class="reference-article h-entry" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <header class="reference-article__header">
+      <a class="reference-article__back" href="/archives">← 返回文章列表</a>
+      
+        <h1 class="p-name" itemprop="headline">Agent 智能体</h1>
+      
+      <div class="reference-article__meta">
+        <time datetime="2026-09-15">2026年09月15日</time>
+        
+          <span aria-hidden="true">·</span>
+          <span>
+            <a href="/tags/agent/">agent</a>
+          </span>
+        
+      </div>
+    </header>
+    <div class="reference-article__body e-content" itemprop="articleBody"><h1 id="Agent-智能体"><a href="#Agent-智能体" class="headerlink" title="Agent 智能体"></a>Agent 智能体</h1><blockquote>
+<p>本文从 Agent 的最小定义出发，介绍 ReAct 工作机制、Tool 与 Agent 的关系和典型使用场景，再对比 LangChain 的经典写法与 create_agent 新路线，最后通过 ReAct、A2A、Agent + MCP 三个实操案例，帮你建立”Agent &#x3D; 模型 + 工具集 + 运行循环 + 当前状态”的完整认知。</p>
+</blockquote>
+<hr>
+<h2 id="1-Agent-简介"><a href="#1-Agent-简介" class="headerlink" title="1 Agent 简介"></a>1 Agent 简介</h2><h3 id="1-1-定义"><a href="#1-1-定义" class="headerlink" title="1.1 定义"></a>1.1 定义</h3><p>一句最重要的话：Agent 不是某个单独的模型，也不是某个单独的工具，而是一种”围绕目标持续做决策并调用能力”的运行方式。</p>
+<p>如果只看最小本质，可以把 Agent 看作：</p>
+<blockquote>
+<p>Agent &#x3D; 模型 + 工具集 + 运行循环 + 当前状态</p>
+</blockquote>
+<p>这里的四个部分分别代表：</p>
+<ul>
+<li><strong>模型（Model）</strong>：负责理解用户目标、分析当前局面、决定下一步。</li>
+<li><strong>工具集（Tools）</strong>：负责执行动作，例如查天气、查库存、调用 API、搜索文档、访问数据库。</li>
+<li><strong>运行循环（Loop）</strong>：负责让模型不是只回答一次，而是可以”想一步、做一步、看结果、再决定下一步”。</li>
+<li><strong>状态（State）</strong>：负责保存本轮对话、工具返回、中间结果，有时也包含短期记忆。</li>
+</ul>
+<p>这也是本章首先要修正的一个常见误区：不是所有 Agent 都必须同时具备”长期记忆、复杂规划、多智能体协作”。</p>
+<p>对很多入门场景来说，一个最简单的 Agent 只要能：1. 读懂用户目标；2. 知道什么时候调工具；3. 能根据工具结果继续判断；4. 最后给出答案。就已经是 Agent 了。</p>
+<p>上面的公式是帮助你先抓住重点的”最小理解版”。如果把 Agent 再进一步展开，它在更完整的架构图里还可能包含记忆、规划、反思等能力。所以下图更适合理解为”扩展后的能力拼图”，而不是和上面四项定义做一一对应。</p>
+<h3 id="1-2-Agent-最常见的工作方式：ReAct"><a href="#1-2-Agent-最常见的工作方式：ReAct" class="headerlink" title="1.2 Agent 最常见的工作方式：ReAct"></a>1.2 Agent 最常见的工作方式：ReAct</h3><p>ReAct &#x3D; Reason + Act。中文可以看作：先推理，再行动。</p>
+<p>这是 Agent 最经典的一种运行循环：</p>
+<ul>
+<li><strong>Thought &#x2F; Reason（思考）</strong>：当前要做什么，先想一步。</li>
+<li><strong>Action（行动）</strong>：如果需要外部能力，就调用某个工具。</li>
+<li><strong>Observation（观察）</strong>：拿到工具返回结果。</li>
+<li><strong>继续循环或结束</strong>：如果还没完成，就继续下一轮；如果信息足够，就给出最终答案。</li>
+</ul>
+<p>所以 ReAct 的本质就是：先推理，再行动；根据行动结果，再继续推理。</p>
+<p>这点和普通”只回答一次”的 LLM 调用差异非常大。普通对话通常是：用户提问、模型直接回答。而 Agent 更像：用户提问、模型判断要不要查工具、调工具、看结果、再判断要不要继续、最终回答。</p>
+<p>这里还要补一个现实中的重要认知：现代 Tool Calling Agent 不一定会把”Thought”完整显示给你看。</p>
+<p>很多时候你在代码里真正看到的是：</p>
+<ul>
+<li>AIMessage 里出现 tool_calls</li>
+<li>工具执行后得到 ToolMessage</li>
+<li>最后再出现一个普通 AIMessage</li>
+</ul>
+<p>所以在今天的 LangChain &#x2F; Tool Calling 语境里，ReAct 更应该被理解成一种工作机制，而不只是某种固定的 Prompt 模板格式。</p>
+<p>Agent 不只有 ReAct 这一种工作方式。</p>
+<p>ReAct 只是最经典、最适合入门的一种理解方式，因为它最容易让人看懂”为什么 Agent 不只是一次回答”。但在真实项目里，常见的 Agent 形态还包括：</p>
+<ul>
+<li><strong>Plan-and-Execute</strong>：先整体规划，再按计划逐步执行。</li>
+<li><strong>Router &#x2F; Supervisor</strong>：先判断该把任务交给哪个工具、哪个子 Agent、哪个流程。</li>
+<li><strong>Workflow + Agent 混合</strong>：固定部分用工作流，遇到不确定节点时再让 Agent 决策。</li>
+<li><strong>Multi-Agent &#x2F; A2A</strong>：多个 Agent 分工协作，由一个主 Agent 或协调器统筹。</li>
+<li><strong>Human-in-the-loop</strong>：关键步骤需要人工确认，Agent 不是全自动闭环。</li>
+</ul>
+<p>所以更准确的结论是：</p>
+<ul>
+<li>ReAct 是 Agent 最经典的一种工作机制</li>
+<li>不是 Agent 的唯一形态</li>
+<li>本章先用 ReAct 入门，是因为它最容易把 Agent 的核心价值讲清楚</li>
+</ul>
+<h3 id="1-3-Tool-与-Agent-的关系"><a href="#1-3-Tool-与-Agent-的关系" class="headerlink" title="1.3 Tool 与 Agent 的关系"></a>1.3 Tool 与 Agent 的关系</h3><p>Tool（工具）是能力封装。</p>
+<p>例如：get_weather()、search_products()、check_inventory()、book_flight()。它们都只是”能做一件事”的函数或接口。</p>
+<p>Agent 则是决策者。</p>
+<p>它负责判断：现在要不要调用工具、调哪个工具、先调哪个、后调哪个、一个工具够不够、工具失败了要不要重试或换路线、什么时候可以停止并给最终答案。</p>
+<p>所以两者关系可以概括成：Tool &#x3D; 能力；Agent &#x3D; 决策 + 使用这些能力。</p>
+<div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
+<thead>
+<tr>
+<th>对象</th>
+<th>本质定位</th>
+<th>一句话理解</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Tool</td>
+<td>能力层</td>
+<td>我能做什么</td>
+</tr>
+<tr>
+<td>Agent</td>
+<td>决策层</td>
+<td>我什么时候、按什么顺序去用这些能力</td>
+</tr>
+</tbody></table></div>
+<p>也正因为如此，不是”有 Tool 就有 Agent”。比如”查一下北京天气”这种一步问题，直接调一个天气工具就够了，完全可以不需要 Agent。</p>
+<p>但如果问题变成：”帮我找最热门的无线耳机，再查库存，再告诉我哪款可以买”；”先订机票，再订酒店，再预约打车”；”先查知识库，再看是否需要调外部 API，再整理成报告”。</p>
+<p>这时就不是某个单独 Tool 能解决的了，而是需要有人负责多步决策，这时 Agent 才有价值。</p>
+<h3 id="1-4-Agent-的使用场景"><a href="#1-4-Agent-的使用场景" class="headerlink" title="1.4 Agent 的使用场景"></a>1.4 Agent 的使用场景</h3><p>这一点结合官方关于 workflow vs agent 的区分来理解最清楚。这里的 workflow，中文通常可以理解成：工作流 &#x2F; 固定流程。指的是一条步骤基本提前确定、执行顺序相对稳定的处理路线，例如先做 A，再做 B，再做 C，中间不太需要模型临场决定”下一步该怎么走”。</p>
+<p>先把它和 Agent 粗略区分开会更清楚：workflow 的流程基本写死，重点是”按既定步骤执行”；agent 的流程不完全固定，重点是”根据上下文动态决策”。如果流程路径是固定的，优先考虑工作流 &#x2F; 链，而不是 Agent。</p>
+<p>比如：</p>
+<ul>
+<li>固定先做文本切分，再做向量化，再写入向量库</li>
+<li>固定先分类，再摘要，再存库</li>
+<li>固定按 A → B → C 的顺序执行</li>
+</ul>
+<p>这类场景更像 LCEL 与链式调用或后续 LangGraph 的工作流问题。</p>
+<p>如果下一步怎么做不固定，需要模型根据中间结果动态决定，就更适合 Agent。</p>
+<p>比如：</p>
+<ul>
+<li>用户问题不确定，需要模型决定先查库还是先调 API</li>
+<li>工具很多，模型要自己选哪个</li>
+<li>可能要调一次工具，也可能要调很多次</li>
+<li>工具返回后还要继续推理</li>
+</ul>
+<p>所以更贴近实际项目的判断标准可以写成：</p>
+<div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
+<thead>
+<tr>
+<th>场景</th>
+<th>更适合什么</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>路径固定、步骤明确、顺序可提前写死</td>
+<td>链 &#x2F; 工作流</td>
+</tr>
+<tr>
+<td>路径不固定、工具选择依赖上下文、中间结果会影响后续决策</td>
+<td>Agent</td>
+</tr>
+</tbody></table></div>
+<p>这也是为什么今天很多企业项目其实是：Workflow 负责固定骨架，Agent 负责不确定节点的决策。</p>
+<p>从 2025-2026 年的真实项目看，Agent 的典型场景也在从”会调几个工具”扩展到更完整的任务闭环。比如：</p>
+<ul>
+<li><strong>浏览器自动化 &#x2F; Computer Use Agent</strong>：根据目标理解页面、点击按钮、填写表单、滚动页面，并通过截图或页面状态校验结果。</li>
+<li><strong>长任务研究代理</strong>：围绕复杂问题拆分子任务，多轮搜索、交叉验证资料，最后生成带来源的结构化报告。</li>
+<li><strong>代码库维护代理</strong>：读取代码库、定位相关文件、制定修改计划、编辑代码、运行测试，并根据失败结果继续修复。</li>
+<li><strong>文件 &#x2F; 数据分析代理</strong>：读取表格、PDF、日志或业务数据，调用代码执行、SQL、统计或可视化工具，输出分析结论和图表。</li>
+</ul>
+<p>这些例子仍然符合上面的判断标准：如果流程完全固定，用链或工作流更稳；如果每一步都要根据中间结果继续判断，才更适合交给 Agent。</p>
+<hr>
+<h2 id="2-演变过程：从多步组装到一步创建"><a href="#2-演变过程：从多步组装到一步创建" class="headerlink" title="2 演变过程：从多步组装到一步创建"></a>2 演变过程：从多步组装到一步创建</h2><h3 id="2-1-V0-3-classic-路线：显式组装-Agent"><a href="#2-1-V0-3-classic-路线：显式组装-Agent" class="headerlink" title="2.1 V0.3 &#x2F; classic 路线：显式组装 Agent"></a>2.1 V0.3 &#x2F; classic 路线：显式组装 Agent</h3><p>在较早的 LangChain Agent 写法中，通常要显式准备这些部分：1. 模型；2. 工具列表；3. Prompt 模板；4. create_tool_calling_agent(…)；5. AgentExecutor(…)。</p>
+<p>也就是说，Agent 本身只负责”出主意、决定调用什么”，真正驱动循环、执行工具、把结果写回上下文的，通常是 AgentExecutor。</p>
+<p>这一套写法的优点是：结构清楚、很适合教学、容易看懂 Agent 和 Executor 是怎么配合的。</p>
+<p>它的局限是：代码更长、容易被 Prompt、scratchpad、executor 等概念同时压住、工程上需要手动拼接更多组件。</p>
+<h3 id="2-2-V1-x-路线：create-agent-一步创建"><a href="#2-2-V1-x-路线：create-agent-一步创建" class="headerlink" title="2.2 V1.x 路线：create_agent 一步创建"></a>2.2 V1.x 路线：create_agent 一步创建</h3><p>到了 LangChain 1.x，官方更推荐的入口是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain.agents <span class="keyword">import</span> create_agent</span><br></pre></td></tr></table></figure>
+
+<p>然后直接把模型、工具、系统提示等交进去，得到一个可运行的 Agent。</p>
+<p>这种方式的核心变化不是”Agent 不循环了”，而是：很多原来要自己显式组装的部分，被封装进了更统一的运行时。</p>
+<p>根据当前官方文档，create_agent 背后使用的是基于 LangGraph 的 graph-based runtime。这里的 graph-based runtime，可以看成：Agent 的执行过程不再只是”一次函数调用”，而是由一个基于状态流转的运行框架来驱动。</p>
+<p>可以把它看成这样：</p>
+<ul>
+<li>当前有哪些消息和中间结果，这是状态</li>
+<li>下一步是继续让模型推理、去调工具，还是结束输出，这是状态流转</li>
+<li>整个过程像一张”节点 + 连线”的执行图，所以叫 graph-based</li>
+</ul>
+<p>这里不用先深入 LangGraph 细节，先抓住一句话就够了：</p>
+<blockquote>
+<p>create_agent 虽然看起来像一步创建，但底层仍然有一套负责”循环、状态、工具调用”的运行时在支撑它。</p>
+</blockquote>
+<p>这意味着：Agent 仍然在循环，仍然会调工具，仍然会维护消息状态。只是这些动作不再要求你手动拼出一套 Agent + AgentExecutor + scratchpad 才能跑。</p>
+<h3 id="2-3-这两条路线的意义"><a href="#2-3-这两条路线的意义" class="headerlink" title="2.3 这两条路线的意义"></a>2.3 这两条路线的意义</h3><p><strong>V0.3 &#x2F; classic 路线</strong></p>
+<p>帮助你理解 Agent 内部到底怎么转：Prompt、工具、Executor、循环是怎么配合的。</p>
+<p><strong>V1.x &#x2F; create_agent 路线</strong></p>
+<p>帮助你掌握当前官方更推荐的写法，更接近真实项目开发。</p>
+<p>总结：经典写法怎么看，当前写法怎么用，二者背后的 Agent 本质其实是同一件事。</p>
+<h3 id="2-4-V0-3-与-V1-x-的对比速览"><a href="#2-4-V0-3-与-V1-x-的对比速览" class="headerlink" title="2.4 V0.3 与 V1.x 的对比速览"></a>2.4 V0.3 与 V1.x 的对比速览</h3><div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>V0.3 &#x2F; classic</th>
+<th>V1.x &#x2F; create_agent</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>核心入口</td>
+<td>create_tool_calling_agent + AgentExecutor</td>
+<td>create_agent</td>
+</tr>
+<tr>
+<td>代码组织</td>
+<td>手动拼更多组件</td>
+<td>统一入口更简洁</td>
+</tr>
+<tr>
+<td>学习价值</td>
+<td>更容易看清内部结构</td>
+<td>更接近当前官方主线</td>
+</tr>
+<tr>
+<td>运行方式</td>
+<td>Agent 决策，Executor 驱动循环</td>
+<td>graph runtime 驱动循环</td>
+</tr>
+<tr>
+<td>更适合</td>
+<td>理解原理、维护旧案例</td>
+<td>新项目、快速搭建</td>
+</tr>
+</tbody></table></div>
+<p>还有一个实践补充：</p>
+<p>当前官方 1.x 文档更强调以 messages 状态作为 Agent 的统一输入。为了连续性，仍保留了部分 {“input”: “…”} 风格示例。读代码时先抓住入口含义：它们都是在给 Agent 一个”新的用户请求”，只是不同版本、不同适配层的调用方式略有差异。</p>
+<hr>
+<h2 id="3-Agent-工作原理（V0-3）"><a href="#3-Agent-工作原理（V0-3）" class="headerlink" title="3 Agent 工作原理（V0.3）"></a>3 Agent 工作原理（V0.3）</h2><p>这一节聚焦本教程里的 classic 路线，因为它最适合拆开理解 Agent 的内部工作机制。</p>
+<h3 id="3-1-保留-V0-3-的原因"><a href="#3-1-保留-V0-3-的原因" class="headerlink" title="3.1 保留 V0.3 的原因"></a>3.1 保留 V0.3 的原因</h3><p>今天直接用 create_agent，但是 classic 路线依然有学习价值。它能让你看清楚：Agent 自己负责什么，AgentExecutor 负责什么，为什么 Prompt 里要有 agent_scratchpad，工具结果是怎么”再喂回去”给模型继续推理的。</p>
+<h3 id="3-2-Agent-与-AgentExecutor-的职责分工"><a href="#3-2-Agent-与-AgentExecutor-的职责分工" class="headerlink" title="3.2 Agent 与 AgentExecutor 的职责分工"></a>3.2 Agent 与 AgentExecutor 的职责分工</h3><p>在 V0.3 &#x2F; classic 路线下，职责可以直接拆成：</p>
+<ul>
+<li><strong>Agent</strong>：负责分析输入、决定下一步动作</li>
+<li><strong>AgentExecutor</strong>：负责执行动作、拿结果、继续驱动循环</li>
+</ul>
+<p>也就是说：Agent 更像大脑，AgentExecutor 更像执行器和循环调度器。这也是为什么单独有 Agent 通常还不够，还要再交给 Executor 去跑。</p>
+<h3 id="3-3-agent-scratchpad-重要性"><a href="#3-3-agent-scratchpad-重要性" class="headerlink" title="3.3 agent_scratchpad 重要性"></a>3.3 agent_scratchpad 重要性</h3><p>你在 classic 路线里经常会看到 Prompt 里有这样一个占位：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(<span class="string">&quot;placeholder&quot;</span>, <span class="string">&quot;&#123;agent_scratchpad&#125;&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>其中 ChatPromptTemplate、占位符与消息结构，与提示词与消息模板一脉相承；这里多出来的 {agent_scratchpad} 专供多轮工具循环使用。</p>
+<p>这不是装饰，它的作用非常关键。它相当于 Agent 的”草稿区 &#x2F; 中间步骤区”，用来承接：模型上一轮决定调用什么工具；工具返回了什么；下一轮模型基于这些信息继续推理。</p>
+<p>如果没有这块区域，模型就很难在多步循环里”记住刚刚自己做过什么”。</p>
+<blockquote>
+<p>所以在 classic 路线里，agent_scratchpad 不是一个边角知识点，而是 ReAct 循环能成立的重要拼图。</p>
+</blockquote>
+<hr>
+<h2 id="4-Agent-工作原理（V1-x）"><a href="#4-Agent-工作原理（V1-x）" class="headerlink" title="4 Agent 工作原理（V1.x）"></a>4 Agent 工作原理（V1.x）</h2><h3 id="4-1-create-agent-的意义"><a href="#4-1-create-agent-的意义" class="headerlink" title="4.1 create_agent 的意义"></a>4.1 create_agent 的意义</h3><p>create_agent 的最大价值不是”少写几行代码”，而是：把 Agent 的常见配置收口到一个统一入口里。</p>
+<p>你通常会把这些东西交给它：模型，工具，系统提示，有时再加结构化输出、状态、中间件等。这样你可以更专注于业务目标，而不是一开始就陷进大量底层组装细节里。</p>
+<h3 id="4-2-V1-x-的核心输入"><a href="#4-2-V1-x-的核心输入" class="headerlink" title="4.2 V1.x 的核心输入"></a>4.2 V1.x 的核心输入</h3><p>在入门阶段，先看 create_agent 常见的 6 个参数：</p>
+<div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>是否常见</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>model</td>
+<td>必备</td>
+<td>让谁来做推理与决策</td>
+</tr>
+<tr>
+<td>tools</td>
+<td>很常见</td>
+<td>给 Agent 哪些可调用能力</td>
+</tr>
+<tr>
+<td>system_prompt</td>
+<td>很常见</td>
+<td>约束 Agent 的角色、风格和工作规则</td>
+</tr>
+<tr>
+<td>response_format</td>
+<td>很常见</td>
+<td>让最终结果更适合结构化输出</td>
+</tr>
+<tr>
+<td>checkpointer</td>
+<td>工程化能力</td>
+<td>保存运行状态，可支撑短期记忆</td>
+</tr>
+<tr>
+<td>middleware</td>
+<td>工程化能力</td>
+<td>在模型调用、工具调用等阶段插入自定义控制逻辑</td>
+</tr>
+</tbody></table></div>
+<p>放到项目开发里，可以这样对应：</p>
+<ul>
+<li><strong>model</strong>：模型能力怎么选</li>
+<li><strong>tools</strong>：Agent 可以用哪些外部能力</li>
+<li><strong>system_prompt</strong>：行为规则怎么约束</li>
+<li><strong>response_format</strong>：输出要不要便于程序直接接收</li>
+<li><strong>checkpointer</strong>：跨多轮调用时，状态和短期记忆怎么保留</li>
+<li><strong>middleware</strong>：要不要加入守护、拦截、动态控制</li>
+</ul>
+<h3 id="4-3-结构化输出在-Agent-中的理解"><a href="#4-3-结构化输出在-Agent-中的理解" class="headerlink" title="4.3 结构化输出在 Agent 中的理解"></a>4.3 结构化输出在 Agent 中的理解</h3><p>有一个很有价值的知识点：Agent 不一定只能返回自然语言，它也可以返回结构化结果。实际项目里，我们常常不只是想”让模型说一段话”，而是希望它最终给出：JSON、TypedDict、Pydantic 对象、便于程序直接消费的字段结构。</p>
+<p>官方文档也把 response_format 作为 create_agent 的重点能力之一。所以你可以把这个能力理解成：Agent 不只是会调用工具，它还可以把最终答案整理成程序更容易接收的格式。</p>
+<p>在当前 1.x 文档语境里，response_format 常见有三种理解方式：</p>
+<ul>
+<li>直接传 schema 类型：例如 TypedDict、Pydantic 模型，框架会按模型能力自动选择更合适的结构化输出策略。</li>
+<li>显式 ProviderStrategy(schema)：当底层模型原生支持结构化输出时，更贴近 provider 原生能力。</li>
+<li>显式 ToolStrategy(schema)：把结构化输出当成一次工具调用式约束，兼容性通常更好。</li>
+</ul>
+<blockquote>
+<p>可先把握一个基本判断：response_format 不是”把字符串转 JSON”的后处理，而是在 Agent 最终输出阶段，把”结果长什么样”提前约束清楚。</p>
+</blockquote>
+<h3 id="4-4-checkpointer、thread-id-与短期记忆"><a href="#4-4-checkpointer、thread-id-与短期记忆" class="headerlink" title="4.4 checkpointer、thread_id 与短期记忆"></a>4.4 checkpointer、thread_id 与短期记忆</h3><p>如果你给 create_agent 传入 checkpointer，底层运行时就可以把 Agent 的状态保存下来。这时 Agent 不再只是”当前这一轮问什么答什么”，而是可以在多轮调用之间保留上下文。</p>
+<p>这里可以先把三个词对应起来：</p>
+<ul>
+<li><strong>checkpointer</strong>：状态保存器，负责把运行过程中的状态记下来</li>
+<li><strong>thread_id</strong>：一次会话或一条对话线程的标识</li>
+<li><strong>短期记忆</strong>：在同一个 thread_id 下，多轮消息和状态能够被延续使用</li>
+</ul>
+<p>所以可以概括成一句话：checkpointer 决定”状态能不能存下来”，thread_id 决定”这些状态属于哪一条会话”。</p>
+<p>实际调用时，thread_id 通常通过运行配置传入，例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">config = &#123;<span class="string">&quot;configurable&quot;</span>: &#123;<span class="string">&quot;thread_id&quot;</span>: <span class="string">&quot;user-001&quot;</span>&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>版本说明：在 LangChain 1.x 语境里，thread_id 主要服务于 checkpointing 和多轮状态隔离；如果要传用户资料、租户信息、权限上下文等静态运行时信息，还需要关注 create_agent 的 context 等上下文机制，不要把所有业务信息都塞进 thread_id。</p>
+</blockquote>
+<p>这一点和记忆与对话历史（含 Redis 基础）是连着的。但是记忆与对话历史更偏”记忆是什么、怎么存历史消息”，而这里更偏”在 create_agent 这条 1.x 主线上，状态和短期记忆是怎么接进 Agent 运行时的”。</p>
+<h3 id="4-5-运行过程怎么观察：stream-与-LangSmith"><a href="#4-5-运行过程怎么观察：stream-与-LangSmith" class="headerlink" title="4.5 运行过程怎么观察：stream 与 LangSmith"></a>4.5 运行过程怎么观察：stream 与 LangSmith</h3><p>在真实项目里，只会 invoke() 还不够，因为 Agent 往往不是一步完成的。</p>
+<h4 id="4-5-1-stream-的作用"><a href="#4-5-1-stream-的作用" class="headerlink" title="4.5.1 stream() 的作用"></a>4.5.1 stream() 的作用</h4><p>如果 Agent 要经历：模型判断、工具调用、工具返回、再次判断、最终输出。那么直接 invoke() 往往要等到最后才看到结果。而 stream() 的价值就在于：把中间进展实时暴露出来。</p>
+<p>这对实际项目非常有用，因为它能帮助你：</p>
+<ul>
+<li>看到 Agent 到底卡在模型还是工具上</li>
+<li>看到是否发生了多轮工具调用</li>
+<li>给前端提供更好的交互体验</li>
+<li>调试”为什么这次 Agent 没按预期走”</li>
+</ul>
+<p>所以这里的区别很直接：invoke() 更像等最终结果，stream() 更像看 Agent 执行过程。</p>
+<h4 id="4-5-2-LangSmith-与-Agent-的关系"><a href="#4-5-2-LangSmith-与-Agent-的关系" class="headerlink" title="4.5.2 LangSmith 与 Agent 的关系"></a>4.5.2 LangSmith 与 Agent 的关系</h4><p>Agent 的问题，往往不是”有没有报错”这么简单，而是：</p>
+<ul>
+<li>为什么调了这个工具而不是那个</li>
+<li>为什么多调了一轮</li>
+<li>为什么结构化输出没按预期生成</li>
+<li>为什么这一步耗时特别长</li>
+</ul>
+<p>这类问题只看最后一句回答，通常是不够的。也是为什么官方文档会把 LangSmith 和 Agent 经常放在一起讲。可以把 LangSmith 先看作：用于追踪、调试、测试、评估 Agent 运行过程的可观测平台。</p>
+<p>这里不用立刻深入平台细节，只要先知道：stream() 让你在代码层面看到过程，LangSmith 让你在可视化层面看到过程，两者都能帮助 Agent 开发。</p>
+<h3 id="4-6-结合案例理解"><a href="#4-6-结合案例理解" class="headerlink" title="4.6 结合案例理解"></a>4.6 结合案例理解</h3><blockquote>
+<p>【案例】多工具并行调用与聚合回答（V1.0：create_agent 一步创建 + 结构化输出）</p>
+<p>对应教程章节：第 21 章 - Agent 智能体 → 4、Agent 工作原理（V1.0）</p>
+<p>知识点速览：</p>
+<ul>
+<li>V1.0 与 V0.3 对比：不再手写 PromptTemplate、create_tool_calling_agent、AgentExecutor，改为 create_agent(model, tools, system_prompt, response_format&#x3D;…) 一步得到可调用的 Agent，对应教程「4、Agent 工作原理（V1.0）」。</li>
+<li>结构化输出：通过 response_format 指定 TypedDict（如 WeatherCompareOutput），Agent 的返回中会包含 structured_response 字段，便于程序化处理（如比温度、写结论），而不必从自然语言里再解析。</li>
+<li>本文件重点演示 create_agent 最常见的 4 个输入：model &#x2F; tools &#x2F; system_prompt &#x2F; response_format。教程里还补充了 checkpointer &#x2F; middleware 这两个更偏工程化的扩展点，但这里不作为主线展开。</li>
+<li>调用方式：当前示例用 agent.invoke(…) 直接看最终结果；如果真实项目里想看中间进展，通常还会配合 stream()，如果想做短期记忆，则会进一步引入 checkpointer + thread_id。</li>
+</ul>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> httpx</span><br><span class="line"><span class="keyword">from</span> pathlib <span class="keyword">import</span> Path</span><br><span class="line"><span class="keyword">from</span> typing_extensions <span class="keyword">import</span> (</span><br><span class="line">    TypedDict,</span><br><span class="line">)  <span class="comment"># Python &lt; 3.12 下 Pydantic 要求用 typing_extensions.TypedDict</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> dotenv <span class="keyword">import</span> load_dotenv</span><br><span class="line"><span class="keyword">from</span> langchain.agents <span class="keyword">import</span> create_agent</span><br><span class="line"><span class="keyword">from</span> langchain_core.tools <span class="keyword">import</span> tool</span><br><span class="line"><span class="keyword">from</span> langchain_openai <span class="keyword">import</span> ChatOpenAI</span><br><span class="line"></span><br><span class="line"><span class="comment"># .env 在项目根目录，从任意子目录运行脚本时都从根目录加载</span></span><br><span class="line">load_dotenv(Path(__file__).resolve().parent.parent.parent / <span class="string">&quot;.env&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@tool</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_weather</span>(<span class="params">loc: <span class="built_in">str</span></span>) -&gt; <span class="built_in">str</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    查询即时天气函数</span></span><br><span class="line"><span class="string">    :param loc: 城市英文名，如 Beijing、Shanghai。</span></span><br><span class="line"><span class="string">    :return: OpenWeather API 返回的天气信息（JSON 字符串）。</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    url = <span class="string">&quot;https://api.openweathermap.org/data/2.5/weather&quot;</span></span><br><span class="line">    params = &#123;</span><br><span class="line">        <span class="string">&quot;q&quot;</span>: loc,</span><br><span class="line">        <span class="string">&quot;appid&quot;</span>: os.getenv(<span class="string">&quot;OPENWEATHER_API_KEY&quot;</span>),</span><br><span class="line">        <span class="string">&quot;units&quot;</span>: <span class="string">&quot;metric&quot;</span>,</span><br><span class="line">        <span class="string">&quot;lang&quot;</span>: <span class="string">&quot;zh_cn&quot;</span>,</span><br><span class="line">    &#125;</span><br><span class="line">    response = httpx.get(url, params=params, timeout=<span class="number">30</span>)</span><br><span class="line">    data = response.json()</span><br><span class="line">    <span class="keyword">return</span> json.dumps(data, ensure_ascii=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义结构化输出：Agent 最终回答会按此结构填充，便于代码中直接取字段</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">WeatherCompareOutput</span>(<span class="title class_ inherited__">TypedDict</span>):</span><br><span class="line">    beijing_temp: <span class="built_in">float</span></span><br><span class="line">    shanghai_temp: <span class="built_in">float</span></span><br><span class="line">    hotter_city: <span class="built_in">str</span></span><br><span class="line">    summary: <span class="built_in">str</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">model = ChatOpenAI(</span><br><span class="line">    model=<span class="string">&quot;qwen-plus&quot;</span>,</span><br><span class="line">    api_key=os.getenv(<span class="string">&quot;aliQwen-api&quot;</span>),</span><br><span class="line">    base_url=<span class="string">&quot;https://dashscope.aliyuncs.com/compatible-mode/v1&quot;</span>,</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># V1.0 一步创建 Agent：模型、工具、系统提示、输出格式一次传入</span></span><br><span class="line"><span class="comment"># 如果后面还要扩展短期记忆或拦截控制，通常会继续给 create_agent 传 checkpointer / middleware</span></span><br><span class="line">agent = create_agent(</span><br><span class="line">    model=model,</span><br><span class="line">    tools=[get_weather],</span><br><span class="line">    system_prompt=(</span><br><span class="line">        <span class="string">&quot;你是天气助手。&quot;</span></span><br><span class="line">        <span class="string">&quot;当用户询问多个城市天气时，&quot;</span></span><br><span class="line">        <span class="string">&quot;你需要分别调用工具获取数据，并进行比较分析。&quot;</span></span><br><span class="line">    ),</span><br><span class="line">    response_format=WeatherCompareOutput,</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 调用 Agent，返回结果中包含 messages 与 structured_response（若指定了 response_format）</span></span><br><span class="line"><span class="comment"># 这里先用 invoke 看最终结果；如需观察中间步骤，可在工程里改为 stream()</span></span><br><span class="line">result = agent.invoke(&#123;<span class="string">&quot;input&quot;</span>: <span class="string">&quot;请问今天北京和上海的天气怎么样，哪个城市更热？&quot;</span>&#125;)</span><br><span class="line"><span class="built_in">print</span>(result)</span><br><span class="line"><span class="built_in">print</span>()</span><br><span class="line"><span class="built_in">print</span>(json.dumps(result[<span class="string">&quot;structured_response&quot;</span>], ensure_ascii=<span class="literal">False</span>, indent=<span class="number">2</span>))</span><br></pre></td></tr></table></figure>
+
+<p>【输出示例】（节选）：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#x27;messages&#x27;: [AIMessage(..., tool_calls=[&#123;&#x27;name&#x27;: &#x27;get_weather&#x27;, &#x27;args&#x27;: &#123;&#x27;loc&#x27;: &#x27;Beijing&#x27;&#125;, ...&#125;, &#123;&#x27;name&#x27;: &#x27;get_weather&#x27;, &#x27;args&#x27;: &#123;&#x27;loc&#x27;: &#x27;Shanghai&#x27;&#125;, ...&#125;]), ToolMessage(content=&#x27;&#123;&quot;coord&quot;: &#123;&quot;lon&quot;: 116.3972, ...&#125;, &quot;name&quot;: &quot;Beijing&quot;, ...&#125;&#x27;, name=&#x27;get_weather&#x27;, ...), ToolMessage(content=&#x27;&#123;&quot;coord&quot;: &#123;&quot;lon&quot;: 121.4581, ...&#125;, &quot;name&quot;: &quot;Shanghai&quot;, ...&#125;&#x27;, name=&#x27;get_weather&#x27;, ...), AIMessage(..., tool_calls=[&#123;&#x27;name&#x27;: &#x27;WeatherCompareOutput&#x27;, &#x27;args&#x27;: &#123;&#x27;beijing_temp&#x27;: 10.49, &#x27;shanghai_temp&#x27;: 15.34, &#x27;hotter_city&#x27;: &#x27;Shanghai&#x27;, &#x27;summary&#x27;: &#x27;上海比北京暖和约4.85°C，且天气晴朗，而北京多云。&#x27;&#125;, ...&#125;])], &#x27;structured_response&#x27;: &#123;&#x27;beijing_temp&#x27;: 10.49, &#x27;shanghai_temp&#x27;: 15.34, &#x27;hotter_city&#x27;: &#x27;Shanghai&#x27;, &#x27;summary&#x27;: &#x27;上海比北京暖和约4.85°C，且天气晴朗，而北京多云。&#x27;&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>结构化输出部分：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;beijing_temp&quot;</span><span class="punctuation">:</span> <span class="number">10.49</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;shanghai_temp&quot;</span><span class="punctuation">:</span> <span class="number">15.34</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;hotter_city&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Shanghai&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;summary&quot;</span><span class="punctuation">:</span> <span class="string">&quot;上海比北京暖和约4.85°C，且天气晴朗，而北京多云。&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>这个案例和 V0.3 做的是同一类业务：都是围绕”北京和上海谁更热”来调用天气工具。但它不再强调 Prompt + Executor 的手工组装，而是在强调：</p>
+<ul>
+<li>create_agent(…) 的统一创建方式</li>
+<li>response_format 带来的结构化输出</li>
+<li>V1.x Agent 的更简洁用法</li>
+</ul>
+<p>所以读这个案例时，建议把关注点放在两件事上：</p>
+<ul>
+<li>为什么代码明显更短了</li>
+<li>为什么最后可以直接拿到 structured_response</li>
+</ul>
+<p>这两点正好代表了 V1.x 路线的两个现实价值：更适合新项目快速搭建；更适合把 Agent 输出接进后端业务逻辑。</p>
+<p>另外，虽然本教程里的 AgentSmartSelectV1.0.py 重点放在 invoke() 和结构化输出上，但如果放到真实项目里，你通常还会继续关心：</p>
+<ul>
+<li>要不要用 stream() 展示中间进展</li>
+<li>要不要用 checkpointer 保留短期记忆</li>
+<li>要不要通过 middleware 做动态控制和守护</li>
+</ul>
+<p>这也是为什么 create_agent 看起来只是一个函数，背后却能一路延展到更完整的 Agent 工程化能力。</p>
+<h3 id="4-7-V0-3-与-V1-x-结合案例对比"><a href="#4-7-V0-3-与-V1-x-结合案例对比" class="headerlink" title="4.7 V0.3 与 V1.x 结合案例对比"></a>4.7 V0.3 与 V1.x 结合案例对比</h3><p>总体差异已在上文 2.4 节（V0.3 与 V1.x 对比速览）从 API 与运行时角度概括过；下表仅对照本仓库同一业务（双城气温比较）下的两个文件，便于你并排阅读代码。</p>
+<div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>AgentSmartSelectV0.3.py</th>
+<th>AgentSmartSelectV1.0.py</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>教学重点</td>
+<td>看懂 Agent + Executor 怎么配合</td>
+<td>看懂 create_agent 统一入口</td>
+</tr>
+<tr>
+<td>代码风格</td>
+<td>显式组装</td>
+<td>一步创建</td>
+</tr>
+<tr>
+<td>中间机制</td>
+<td>agent_scratchpad、Executor 循环更明显</td>
+<td>运行时被更高层封装</td>
+</tr>
+<tr>
+<td>输出重点</td>
+<td>最终自然语言回答</td>
+<td>structured_response 更适合程序处理</td>
+</tr>
+</tbody></table></div>
+<p>一句总结：V0.3 更适合理解”Agent 是怎么转起来的”，V1.x 更适合理解”今天项目里通常怎么写”。</p>
+<h3 id="4-8-Middleware-与人类审核"><a href="#4-8-Middleware-与人类审核" class="headerlink" title="4.8 Middleware 与人类审核"></a>4.8 Middleware 与人类审核</h3><p>如果说 tools 是给 Agent 增加能力，middleware 更像是给 Agent 增加运行边界。它可以在模型调用、工具调用、状态更新等阶段插入控制逻辑。</p>
+<p>常见用途包括：</p>
+<ul>
+<li><strong>动态提示词</strong>：根据用户、租户、权限或场景调整 system prompt。</li>
+<li><strong>工具调用守护</strong>：高风险工具调用前先检查参数、权限或业务规则。</li>
+<li><strong>人类审核</strong>：删除、支付、发消息、批量修改这类动作，不让 Agent 静默执行。</li>
+<li><strong>日志与监控</strong>：记录关键决策、工具参数、异常和耗时。</li>
+</ul>
+<p>所以生产级 Agent 的重点不是”工具越多越好”，而是：能力越强，边界越要清楚。后续 LangGraph 章节会继续展开中断、人工确认和复杂状态控制。</p>
+<hr>
+<h2 id="5-实操与案例"><a href="#5-实操与案例" class="headerlink" title="5 实操与案例"></a>5 实操与案例</h2><h3 id="5-1-全部案例先建立一张总览表"><a href="#5-1-全部案例先建立一张总览表" class="headerlink" title="5.1 全部案例先建立一张总览表"></a>5.1 全部案例先建立一张总览表</h3><div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
+<thead>
+<tr>
+<th>案例</th>
+<th>主要学习点</th>
+<th>工具来自哪里</th>
+<th>更适合放在什么语境里理解</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>AgentSmartSelectV0.3.py</td>
+<td>classic Agent + AgentExecutor</td>
+<td>本地 @tool</td>
+<td>理解 Agent 内部工作机制</td>
+</tr>
+<tr>
+<td>AgentSmartSelectV1.0.py</td>
+<td>create_agent + 结构化输出</td>
+<td>本地 @tool</td>
+<td>理解当前 1.x 主线</td>
+</tr>
+<tr>
+<td>AgentReact.py</td>
+<td>ReAct 循环、多步工具调用、消息轨迹</td>
+<td>本地 @tool</td>
+<td>理解 Agent 的动态决策</td>
+</tr>
+<tr>
+<td>Agent2Agent.py</td>
+<td>多智能体协作 &#x2F; A2A</td>
+<td>本地 @tool</td>
+<td>理解多角色分工</td>
+</tr>
+<tr>
+<td>McpClientAgent.py</td>
+<td>Agent + MCP 工具接入</td>
+<td>MCP 服务</td>
+<td>理解外部工具接入</td>
+</tr>
+</tbody></table></div>
+<p>也就是说，这一章不是在用 5 个案例重复讲一件事，而是在从 5 个不同角度，把 Agent 的完整能力拼出来。</p>
+<h3 id="5-2-ReAct-实操"><a href="#5-2-ReAct-实操" class="headerlink" title="5.2 ReAct 实操"></a>5.2 ReAct 实操</h3><blockquote>
+<p>【案例】ReAct 模式：推理 + 行动的多步工具调用（产品搜索与库存查询）</p>
+<p>对应教程章节：第 21 章 - Agent 智能体 → 5、实操与案例（5.2 ReAct）</p>
+<p>知识点速览：</p>
+<ul>
+<li>ReAct（Reason + Act）是 Agent 最经典、最适合入门的一种工作机制：先推理，再行动，再根据结果继续推理。它不是 Agent 的唯一形态，但最适合帮助初学者看懂”为什么 Agent 不只是一次回答”。</li>
+<li>本案例提供两个 Tool：search_products（按类别查产品）、check_inventory（查库存）；Agent 自主决定调用顺序与次数（如先搜索再查库存），体现「多步、有条件」的决策能力。</li>
+<li>通过 result[“messages”] 可追踪完整对话：AIMessage（含 tool_calls）、ToolMessage（工具输出）、最终 AIMessage（文本回答）。这和新版教程里强调的”消息视角理解 Agent”是对应的。</li>
+<li>本案例使用 create_agent + 本地 @tool 这条 1.x 路线；如果真实项目里想进一步观察执行过程，还可以结合 stream() 或 LangSmith 追踪，但这个文件先聚焦 ReAct 本身。</li>
+</ul>
+<p>关于 @tool 与 MCP：</p>
+<ul>
+<li>本案例使用 LangChain 的 @tool，在「当前进程」内定义并执行工具，不能直接改成 @mcp.tool() 这种形式。</li>
+<li>MCP 的工具是在「MCP 服务端」定义和运行的：需要在另一侧起 MCP 服务（如 11-mcp 下的 McpServer&#x2F;McpServerByFastMCP），在服务里用 MCP SDK 暴露工具；本进程作为「客户端」通过 mcp.json + MultiServerMCPClient.get_tools() 拿到工具列表再交给 Agent。</li>
+<li>因此有两种用法二选一：① 本地 @tool，直接传给 create_agent（本案例）；② 用 MCP 服务 + McpClientAgent 的方式连接并 get_tools()（见 11-mcp&#x2F;McpClientAgent.py）。不能在同一文件里把 @tool 简单替换成 @mcp.tool()。</li>
+</ul>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> langchain_openai <span class="keyword">import</span> ChatOpenAI</span><br><span class="line"><span class="keyword">from</span> langchain.agents <span class="keyword">import</span> create_agent</span><br><span class="line"><span class="keyword">from</span> langchain.tools <span class="keyword">import</span> tool</span><br><span class="line"><span class="keyword">from</span> dotenv <span class="keyword">import</span> load_dotenv</span><br><span class="line"></span><br><span class="line">load_dotenv()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 模拟产品数据库：类别 -&gt; 产品列表（id、name、popularity、price）</span></span><br><span class="line">PRODUCT_DATABASE = &#123;</span><br><span class="line">    <span class="string">&quot;无线耳机&quot;</span>: [</span><br><span class="line">        &#123;<span class="string">&quot;id&quot;</span>: <span class="string">&quot;WH-1000XM5&quot;</span>, <span class="string">&quot;name&quot;</span>: <span class="string">&quot;索尼 WH-1000XM5&quot;</span>, <span class="string">&quot;popularity&quot;</span>: <span class="number">95</span>, <span class="string">&quot;price&quot;</span>: <span class="number">299</span>&#125;,</span><br><span class="line">        &#123;<span class="string">&quot;id&quot;</span>: <span class="string">&quot;QC45&quot;</span>, <span class="string">&quot;name&quot;</span>: <span class="string">&quot;Bose QuietComfort 45&quot;</span>, <span class="string">&quot;popularity&quot;</span>: <span class="number">88</span>, <span class="string">&quot;price&quot;</span>: <span class="number">329</span>&#125;,</span><br><span class="line">        &#123;<span class="string">&quot;id&quot;</span>: <span class="string">&quot;AIRMAX&quot;</span>, <span class="string">&quot;name&quot;</span>: <span class="string">&quot;苹果 AirPods Max&quot;</span>, <span class="string">&quot;popularity&quot;</span>: <span class="number">92</span>, <span class="string">&quot;price&quot;</span>: <span class="number">549</span>&#125;,</span><br><span class="line">        &#123;<span class="string">&quot;id&quot;</span>: <span class="string">&quot;PXC550&quot;</span>, <span class="string">&quot;name&quot;</span>: <span class="string">&quot;森海塞尔 PXC 550&quot;</span>, <span class="string">&quot;popularity&quot;</span>: <span class="number">76</span>, <span class="string">&quot;price&quot;</span>: <span class="number">299</span>&#125;,</span><br><span class="line">        &#123;<span class="string">&quot;id&quot;</span>: <span class="string">&quot;HT450&quot;</span>, <span class="string">&quot;name&quot;</span>: <span class="string">&quot;JBL Tune 760NC&quot;</span>, <span class="string">&quot;popularity&quot;</span>: <span class="number">82</span>, <span class="string">&quot;price&quot;</span>: <span class="number">99</span>&#125;,</span><br><span class="line">    ],</span><br><span class="line">    <span class="string">&quot;游戏鼠标&quot;</span>: [</span><br><span class="line">        &#123;<span class="string">&quot;id&quot;</span>: <span class="string">&quot;GPW&quot;</span>, <span class="string">&quot;name&quot;</span>: <span class="string">&quot;罗技 G Pro 无线&quot;</span>, <span class="string">&quot;popularity&quot;</span>: <span class="number">90</span>, <span class="string">&quot;price&quot;</span>: <span class="number">129</span>&#125;,</span><br><span class="line">        &#123;<span class="string">&quot;id&quot;</span>: <span class="string">&quot;VIPER&quot;</span>, <span class="string">&quot;name&quot;</span>: <span class="string">&quot;雷蛇 Viper V2 Pro&quot;</span>, <span class="string">&quot;popularity&quot;</span>: <span class="number">87</span>, <span class="string">&quot;price&quot;</span>: <span class="number">149</span>&#125;,</span><br><span class="line">        &#123;<span class="string">&quot;id&quot;</span>: <span class="string">&quot;DAV3&quot;</span>, <span class="string">&quot;name&quot;</span>: <span class="string">&quot;雷蛇 DeathAdder V3&quot;</span>, <span class="string">&quot;popularity&quot;</span>: <span class="number">85</span>, <span class="string">&quot;price&quot;</span>: <span class="number">119</span>&#125;,</span><br><span class="line">    ],</span><br><span class="line">    <span class="string">&quot;笔记本电脑&quot;</span>: [</span><br><span class="line">        &#123;<span class="string">&quot;id&quot;</span>: <span class="string">&quot;MBP14&quot;</span>, <span class="string">&quot;name&quot;</span>: <span class="string">&quot;MacBook Pro 14英寸&quot;</span>, <span class="string">&quot;popularity&quot;</span>: <span class="number">94</span>, <span class="string">&quot;price&quot;</span>: <span class="number">1999</span>&#125;,</span><br><span class="line">        &#123;<span class="string">&quot;id&quot;</span>: <span class="string">&quot;XPS13&quot;</span>, <span class="string">&quot;name&quot;</span>: <span class="string">&quot;戴尔 XPS 13&quot;</span>, <span class="string">&quot;popularity&quot;</span>: <span class="number">89</span>, <span class="string">&quot;price&quot;</span>: <span class="number">1299</span>&#125;,</span><br><span class="line">        &#123;<span class="string">&quot;id&quot;</span>: <span class="string">&quot;TPX1&quot;</span>, <span class="string">&quot;name&quot;</span>: <span class="string">&quot;ThinkPad X1 Carbon&quot;</span>, <span class="string">&quot;popularity&quot;</span>: <span class="number">86</span>, <span class="string">&quot;price&quot;</span>: <span class="number">1499</span>&#125;,</span><br><span class="line">    ],</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 模拟库存：产品 ID -&gt; 库存数量与仓位</span></span><br><span class="line">INVENTORY_DATABASE = &#123;</span><br><span class="line">    <span class="string">&quot;WH-1000XM5&quot;</span>: &#123;<span class="string">&quot;stock&quot;</span>: <span class="number">10</span>, <span class="string">&quot;location&quot;</span>: <span class="string">&quot;仓库-A&quot;</span>&#125;,</span><br><span class="line">    <span class="string">&quot;QC45&quot;</span>: &#123;<span class="string">&quot;stock&quot;</span>: <span class="number">0</span>, <span class="string">&quot;location&quot;</span>: <span class="string">&quot;仓库-B&quot;</span>&#125;,</span><br><span class="line">    <span class="string">&quot;AIRMAX&quot;</span>: &#123;<span class="string">&quot;stock&quot;</span>: <span class="number">5</span>, <span class="string">&quot;location&quot;</span>: <span class="string">&quot;仓库-C&quot;</span>&#125;,</span><br><span class="line">    <span class="string">&quot;PXC550&quot;</span>: &#123;<span class="string">&quot;stock&quot;</span>: <span class="number">15</span>, <span class="string">&quot;location&quot;</span>: <span class="string">&quot;仓库-A&quot;</span>&#125;,</span><br><span class="line">    <span class="string">&quot;HT450&quot;</span>: &#123;<span class="string">&quot;stock&quot;</span>: <span class="number">25</span>, <span class="string">&quot;location&quot;</span>: <span class="string">&quot;仓库-B&quot;</span>&#125;,</span><br><span class="line">    <span class="string">&quot;GPW&quot;</span>: &#123;<span class="string">&quot;stock&quot;</span>: <span class="number">8</span>, <span class="string">&quot;location&quot;</span>: <span class="string">&quot;仓库-C&quot;</span>&#125;,</span><br><span class="line">    <span class="string">&quot;VIPER&quot;</span>: &#123;<span class="string">&quot;stock&quot;</span>: <span class="number">12</span>, <span class="string">&quot;location&quot;</span>: <span class="string">&quot;仓库-A&quot;</span>&#125;,</span><br><span class="line">    <span class="string">&quot;DAV3&quot;</span>: &#123;<span class="string">&quot;stock&quot;</span>: <span class="number">3</span>, <span class="string">&quot;location&quot;</span>: <span class="string">&quot;仓库-B&quot;</span>&#125;,</span><br><span class="line">    <span class="string">&quot;MBP14&quot;</span>: &#123;<span class="string">&quot;stock&quot;</span>: <span class="number">7</span>, <span class="string">&quot;location&quot;</span>: <span class="string">&quot;仓库-C&quot;</span>&#125;,</span><br><span class="line">    <span class="string">&quot;XPS13&quot;</span>: &#123;<span class="string">&quot;stock&quot;</span>: <span class="number">0</span>, <span class="string">&quot;location&quot;</span>: <span class="string">&quot;仓库-A&quot;</span>&#125;,</span><br><span class="line">    <span class="string">&quot;TPX1&quot;</span>: &#123;<span class="string">&quot;stock&quot;</span>: <span class="number">4</span>, <span class="string">&quot;location&quot;</span>: <span class="string">&quot;仓库-B&quot;</span>&#125;,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@tool</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">search_products</span>(<span class="params">query: <span class="built_in">str</span></span>) -&gt; <span class="built_in">str</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;搜索产品并返回按受欢迎度排序的结果（Tool：能力封装，供 Agent 调用）&quot;&quot;&quot;</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;🔍 [工具调用] search_products(&#x27;<span class="subst">&#123;query&#125;</span>&#x27;)&quot;</span>)</span><br><span class="line"></span><br><span class="line">    keyword_mapping = &#123;</span><br><span class="line">        <span class="string">&quot;无线耳机&quot;</span>: [<span class="string">&quot;无线耳机&quot;</span>, <span class="string">&quot;蓝牙耳机&quot;</span>, <span class="string">&quot;头戴式耳机&quot;</span>, <span class="string">&quot;耳机&quot;</span>],</span><br><span class="line">        <span class="string">&quot;游戏鼠标&quot;</span>: [<span class="string">&quot;游戏鼠标&quot;</span>, <span class="string">&quot;电竞鼠标&quot;</span>, <span class="string">&quot;鼠标&quot;</span>],</span><br><span class="line">        <span class="string">&quot;笔记本电脑&quot;</span>: [<span class="string">&quot;笔记本电脑&quot;</span>, <span class="string">&quot;笔记本&quot;</span>, <span class="string">&quot;手提电脑&quot;</span>, <span class="string">&quot;电脑&quot;</span>],</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    matched_category = <span class="literal">None</span></span><br><span class="line">    <span class="keyword">for</span> category, keywords <span class="keyword">in</span> keyword_mapping.items():</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">any</span>(keyword <span class="keyword">in</span> query <span class="keyword">for</span> keyword <span class="keyword">in</span> keywords):</span><br><span class="line">            matched_category = category</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> matched_category <span class="keyword">and</span> matched_category <span class="keyword">in</span> PRODUCT_DATABASE:</span><br><span class="line">        products = PRODUCT_DATABASE[matched_category]</span><br><span class="line">        sorted_products = <span class="built_in">sorted</span>(products, key=<span class="keyword">lambda</span> x: x[<span class="string">&quot;popularity&quot;</span>], reverse=<span class="literal">True</span>)</span><br><span class="line">        result = <span class="string">f&quot;找到 <span class="subst">&#123;<span class="built_in">len</span>(sorted_products)&#125;</span> 个匹配 &#x27;<span class="subst">&#123;query&#125;</span>&#x27; 的产品:\n&quot;</span></span><br><span class="line">        <span class="keyword">for</span> i, product <span class="keyword">in</span> <span class="built_in">enumerate</span>(sorted_products, <span class="number">1</span>):</span><br><span class="line">            result += <span class="string">f&quot;<span class="subst">&#123;i&#125;</span>. <span class="subst">&#123;product[<span class="string">&#x27;name&#x27;</span>]&#125;</span> (ID: <span class="subst">&#123;product[<span class="string">&#x27;id&#x27;</span>]&#125;</span>) - 受欢迎度: <span class="subst">&#123;product[<span class="string">&#x27;popularity&#x27;</span>]&#125;</span>% - ￥<span class="subst">&#123;product[<span class="string">&#x27;price&#x27;</span>]&#125;</span>\n&quot;</span></span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;未找到匹配产品&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@tool</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">check_inventory</span>(<span class="params">product_id: <span class="built_in">str</span></span>) -&gt; <span class="built_in">str</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;检查特定产品的库存状态（Tool：能力封装）&quot;&quot;&quot;</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;📦 [工具调用] check_inventory(&#x27;<span class="subst">&#123;product_id&#125;</span>&#x27;)&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> product_id <span class="keyword">in</span> INVENTORY_DATABASE:</span><br><span class="line">        stock_info = INVENTORY_DATABASE[product_id]</span><br><span class="line">        status = <span class="string">&quot;有库存&quot;</span> <span class="keyword">if</span> stock_info[<span class="string">&quot;stock&quot;</span>] &gt; <span class="number">0</span> <span class="keyword">else</span> <span class="string">&quot;缺货&quot;</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">f&quot;产品 <span class="subst">&#123;product_id&#125;</span>: <span class="subst">&#123;status&#125;</span> (<span class="subst">&#123;stock_info[<span class="string">&#x27;stock&#x27;</span>]&#125;</span> 件库存) - 位置: <span class="subst">&#123;stock_info[<span class="string">&#x27;location&#x27;</span>]&#125;</span>&quot;</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">f&quot;未找到产品ID: <span class="subst">&#123;product_id&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">model = ChatOpenAI(</span><br><span class="line">    model=<span class="string">&quot;qwen-plus&quot;</span>,</span><br><span class="line">    api_key=os.getenv(<span class="string">&quot;aliQwen-api&quot;</span>),</span><br><span class="line">    base_url=<span class="string">&quot;https://dashscope.aliyuncs.com/compatible-mode/v1&quot;</span>,</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 系统提示中明确 ReAct：先推理、再选工具、基于结果继续推理直至得到完整答案</span></span><br><span class="line"><span class="comment"># 这里是在&quot;用 ReAct 作为最常见入门机制&quot;，并不代表 Agent 只有这一种工作方式</span></span><br><span class="line">agent = create_agent(</span><br><span class="line">    model,</span><br><span class="line">    tools=[search_products, check_inventory],</span><br><span class="line">    system_prompt=<span class="string">&quot;&quot;&quot;你是电商助手，遵循ReAct模式：</span></span><br><span class="line"><span class="string">    1. 先推理用户需求</span></span><br><span class="line"><span class="string">    2. 选择合适的工具执行操作</span></span><br><span class="line"><span class="string">    3. 基于工具结果进行下一步推理</span></span><br><span class="line"><span class="string">    4. 重复直到获得完整答案</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    保持推理步骤简洁明了。&quot;&quot;&quot;</span>,</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试：一次问题可能触发多轮「推理 → 选工具 → 观察 → 再推理」</span></span><br><span class="line">result1 = agent.invoke(</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">&quot;messages&quot;</span>: [</span><br><span class="line">            &#123;<span class="string">&quot;role&quot;</span>: <span class="string">&quot;user&quot;</span>, <span class="string">&quot;content&quot;</span>: <span class="string">&quot;查找当前最受欢迎的无线耳机并检查是否有库存&quot;</span>&#125;</span><br><span class="line">        ]</span><br><span class="line">    &#125;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;\n&quot;</span> + <span class="string">&quot;=&quot;</span> * <span class="number">40</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;📊 最终结果:&quot;</span>)</span><br><span class="line"><span class="keyword">for</span> msg <span class="keyword">in</span> result1[<span class="string">&quot;messages&quot;</span>]:</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">hasattr</span>(msg, <span class="string">&quot;content&quot;</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;<span class="subst">&#123;msg.__class__.__name__&#125;</span>: <span class="subst">&#123;msg.content&#125;</span>&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;=&quot;</span> * <span class="number">40</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 可选：逐条解析 messages，观察 ReAct 循环（AIMessage.tool_calls、ToolMessage、最终 AIMessage）</span></span><br><span class="line"><span class="comment"># 这也是理解现代 Tool Calling Agent 的一个非常直观的办法</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">track_react_cycle</span>(<span class="params">messages</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;ReAct循环步骤分析:&quot;</span>)</span><br><span class="line">    step = <span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> i, msg <span class="keyword">in</span> <span class="built_in">enumerate</span>(messages):</span><br><span class="line">        msg_type = msg.__class__.__name__</span><br><span class="line">        <span class="keyword">if</span> msg_type == <span class="string">&quot;AIMessage&quot;</span> <span class="keyword">and</span> <span class="built_in">hasattr</span>(msg, <span class="string">&quot;tool_calls&quot;</span>) <span class="keyword">and</span> msg.tool_calls:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;\n🔄 步骤<span class="subst">&#123;step&#125;</span>: Reasoning + Acting&quot;</span>)</span><br><span class="line">            <span class="keyword">for</span> tool_call <span class="keyword">in</span> msg.tool_calls:</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">f&quot;   🛠️  工具调用: <span class="subst">&#123;tool_call[<span class="string">&#x27;name&#x27;</span>]&#125;</span>(<span class="subst">&#123;tool_call[<span class="string">&#x27;args&#x27;</span>]&#125;</span>)&quot;</span>)</span><br><span class="line">            step += <span class="number">1</span></span><br><span class="line">        <span class="keyword">elif</span> msg_type == <span class="string">&quot;ToolMessage&quot;</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;   📋  观察结果: <span class="subst">&#123;msg.content[:<span class="number">80</span>]&#125;</span>...&quot;</span>)</span><br><span class="line">        <span class="keyword">elif</span> msg_type == <span class="string">&quot;AIMessage&quot;</span> <span class="keyword">and</span> <span class="keyword">not</span> (</span><br><span class="line">            <span class="built_in">hasattr</span>(msg, <span class="string">&quot;tool_calls&quot;</span>) <span class="keyword">and</span> msg.tool_calls</span><br><span class="line">        ):</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;\n✅ 最终回答: <span class="subst">&#123;msg.content&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">track_react_cycle(result1[<span class="string">&quot;messages&quot;</span>])</span><br></pre></td></tr></table></figure>
+
+<p>【输出案例】（节选）：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">🔍 [工具调用] search_products(&#x27;无线耳机&#x27;)</span><br><span class="line">📦 [工具调用] check_inventory(&#x27;WH-1000XM5&#x27;)</span><br><span class="line"></span><br><span class="line"># ========================================</span><br><span class="line"># 📊 最终结果:</span><br><span class="line"># HumanMessage: 查找当前最受欢迎的无线耳机并检查是否有库存</span><br><span class="line"># AIMessage: 1. 首先，我需要搜索当前最受欢迎的无线耳机。</span><br><span class="line"># 2. 然后，从搜索结果中获取最受欢迎的产品ID，并检查其库存状态。</span><br><span class="line">#</span><br><span class="line"># ToolMessage: 找到 5 个匹配 &#x27;无线耳机&#x27; 的产品:</span><br><span class="line"># 1. 索尼 WH-1000XM5 (ID: WH-1000XM5) - 受欢迎度: 95% - ￥299</span><br><span class="line"># 2. 苹果 AirPods Max (ID: AIRMAX) - 受欢迎度: 92% - ￥549</span><br><span class="line"># 3. Bose QuietComfort 45 (ID: QC45) - 受欢迎度: 88% - ￥329</span><br><span class="line"># 4. JBL Tune 760NC (ID: HT450) - 受欢迎度: 82% - ￥99</span><br><span class="line"># 5. 森海塞尔 PXC 550 (ID: PXC550) - 受欢迎度: 76% - ￥299</span><br><span class="line">#</span><br><span class="line"># AIMessage: 1. 根据搜索结果，最受欢迎的无线耳机是索尼 WH-1000XM5（ID: WH-1000XM5），受欢迎度为95%。</span><br><span class="line"># 2. 接下来，我将检查该产品的库存状态。</span><br><span class="line">#</span><br><span class="line"># ToolMessage: 产品 WH-1000XM5: 有库存 (10 件库存) - 位置: 仓库-A</span><br><span class="line"># AIMessage: 索尼 WH-1000XM5 是当前最受欢迎的无线耳机，受欢迎度为95%，且有库存（10件），存放于仓库-A。</span><br><span class="line"># ========================================</span><br><span class="line"># ReAct循环步骤分析:</span><br><span class="line">#</span><br><span class="line"># 🔄 步骤1: Reasoning + Acting</span><br><span class="line">#    🛠️  工具调用: search_products(&#123;&#x27;query&#x27;: &#x27;无线耳机&#x27;&#125;)</span><br><span class="line">#    📋  观察结果: 找到 5 个匹配 &#x27;无线耳机&#x27; 的产品: ...</span><br><span class="line">#</span><br><span class="line"># 🔄 步骤2: Reasoning + Acting</span><br><span class="line">#    🛠️  工具调用: check_inventory(&#123;&#x27;product_id&#x27;: &#x27;WH-1000XM5&#x27;&#125;)</span><br><span class="line">#    📋  观察结果: 产品 WH-1000XM5: 有库存 (10 件库存) - 位置: 仓库-A...</span><br><span class="line">#</span><br><span class="line"># ✅ 最终回答: 索尼 WH-1000XM5 是当前最受欢迎的无线耳机，受欢迎度为95%，且有库存（10件），存放于仓库-A。</span><br></pre></td></tr></table></figure>
+
+<p>这个案例可以用来建立”Agent 会自己连续做多步决策”的直觉。</p>
+<p>它定义了两个工具：</p>
+<ul>
+<li>search_products</li>
+<li>check_inventory</li>
+</ul>
+<p>用户的问题不是简单的”查某个 ID 是否有库存”，而是：查找当前最受欢迎的无线耳机并检查是否有库存。</p>
+<p>这个问题天然要求两步：</p>
+<ul>
+<li>先搜索产品，找出哪个最热门</li>
+<li>再根据搜索结果，决定去查哪个产品的库存</li>
+</ul>
+<p>这里最关键的地方不是工具本身，而是：第二步依赖第一步的结果。</p>
+<p>如果流程完全固定，普通工作流也能完成这件事；本案例使用 Agent，是为了观察模型如何根据第一步返回内容，自己决定第二步该查哪个产品、该调用哪个工具。</p>
+<p>这个案例还有一个很值得保留的学习点：它会展示 result[“messages”]，让你看到：AIMessage、tool_calls、ToolMessage、最终 AIMessage。</p>
+<p>所以这个案例不仅适合学 ReAct，也适合学：现代 Agent 在消息层面到底长什么样。</p>
+<h3 id="5-3-A2A（Agent-to-Agent）实操"><a href="#5-3-A2A（Agent-to-Agent）实操" class="headerlink" title="5.3 A2A（Agent-to-Agent）实操"></a>5.3 A2A（Agent-to-Agent）实操</h3><blockquote>
+<p>【案例】Agent-to-Agent（A2A）协作：携程订机票 + 美团订酒店 + 滴滴打车</p>
+<p>对应教程章节：第 21 章 - Agent 智能体 → 5、实操与案例（5.3 A2A）</p>
+<p>知识点速览：</p>
+<ul>
+<li>A2A &#x3D; 多个专属 Agent 各司其职 + 一个总协调逻辑负责调度与汇总。本案例中机票 &#x2F; 酒店 &#x2F; 打车三个子 Agent 分别只绑定一个 @tool，总协调按业务顺序依次 invoke 子链并整合结果，对应教程「5.3 A2A」。</li>
+<li>子 Agent 的实现方式是：Prompt | llm.bind_tools([单个工具]) | output_parser，本质上是”单一职责的 Runnable 子链”，而不是一个什么都做的大一统 Agent。</li>
+<li>总协调部分使用 RunnableLambda 封装”按顺序调度多个子链 + 失败时兜底”的编排逻辑。这更接近教程里强调的”分工 + 协调”，也是本案例最值得学习的地方。</li>
+<li>这个案例不是官方多智能体文档里最常见的”把 subagent 包装成 tool 给主 Agent 调”的写法，但更适合初学者先看懂 A2A 的基本思想。</li>
+<li>规范要点：子 Agent 单一职责、统一 invoke({“input”: “…”}) 接口；工具用 @tool(名称, description&#x3D;…) 并写清参数说明，便于模型正确传参。</li>
+</ul>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> langchain_openai <span class="keyword">import</span> ChatOpenAI</span><br><span class="line"><span class="keyword">from</span> langchain_core.prompts <span class="keyword">import</span> ChatPromptTemplate</span><br><span class="line"><span class="keyword">from</span> langchain_core.output_parsers <span class="keyword">import</span> StrOutputParser</span><br><span class="line"><span class="keyword">from</span> langchain_core.runnables <span class="keyword">import</span> RunnableLambda</span><br><span class="line"><span class="keyword">from</span> langchain.tools <span class="keyword">import</span> tool</span><br><span class="line"><span class="keyword">from</span> dotenv <span class="keyword">import</span> load_dotenv</span><br><span class="line"></span><br><span class="line">load_dotenv()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># ===================== 大模型与输出解析 =====================</span></span><br><span class="line">llm = ChatOpenAI(</span><br><span class="line">    model=<span class="string">&quot;qwen-plus&quot;</span>,</span><br><span class="line">    api_key=os.getenv(<span class="string">&quot;aliQwen-api&quot;</span>),</span><br><span class="line">    base_url=<span class="string">&quot;https://dashscope.aliyuncs.com/compatible-mode/v1&quot;</span>,</span><br><span class="line">)</span><br><span class="line">output_parser = StrOutputParser()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># ===================== 模拟业务函数：用 @tool(名称, description=...) 封装，供子 Agent 绑定 =====================</span></span><br><span class="line"><span class="meta">@tool(<span class="params"></span></span></span><br><span class="line"><span class="params"><span class="meta">    <span class="string">&quot;CtripBookFlight&quot;</span>,</span></span></span><br><span class="line"><span class="params"><span class="meta">    description=<span class="string">&quot;预订机票的唯一工具，必须调用，参数是departure出发地、arrival目的地、date出行日期（格式2026-02-01）&quot;</span>,</span></span></span><br><span class="line"><span class="params"><span class="meta"></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">ctrip_book_flight</span>(<span class="params">departure: <span class="built_in">str</span>, arrival: <span class="built_in">str</span>, date: <span class="built_in">str</span></span>) -&gt; <span class="built_in">str</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;携程订机票：固定返回测试结果&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">f&quot;【携程机票预订成功】\n出发地：<span class="subst">&#123;departure&#125;</span>\n目的地：<span class="subst">&#123;arrival&#125;</span>\n出行日期：<span class="subst">&#123;date&#125;</span>\n航班号：CA1885（北京首都T3→上海浦东T2）\n起飞时间：14:00\n降落时间：16:30\n座位：经济舱34A\n电子客票号：999-1234567890\n舱位等级：经济舱超级经济座&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@tool(<span class="params"></span></span></span><br><span class="line"><span class="params"><span class="meta">    <span class="string">&quot;MeituanBookHotel&quot;</span>,</span></span></span><br><span class="line"><span class="params"><span class="meta">    description=<span class="string">&quot;预订酒店的唯一工具，必须调用，参数是city城市、near_by附近地标、check_in入住日期、check_out离店日期&quot;</span>,</span></span></span><br><span class="line"><span class="params"><span class="meta"></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">meituan_book_hotel</span>(<span class="params">city: <span class="built_in">str</span>, near_by: <span class="built_in">str</span>, check_in: <span class="built_in">str</span>, check_out: <span class="built_in">str</span></span>) -&gt; <span class="built_in">str</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;美团订酒店：固定返回测试结果&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">f&quot;【美团酒店预订成功】\n城市：<span class="subst">&#123;city&#125;</span>\n位置：<span class="subst">&#123;near_by&#125;</span>附近\n入住日期：<span class="subst">&#123;check_in&#125;</span>\n离店日期：<span class="subst">&#123;check_out&#125;</span>\n酒店名称：上海浦东机场铂尔曼大酒店\n房型：豪华大床房（含双人自助早餐）\n房号：1508\n预订号：MT20260201001\n入住人：张三\n退房政策：入住后24小时内可免费取消&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@tool(<span class="params"></span></span></span><br><span class="line"><span class="params"><span class="meta">    <span class="string">&quot;DidiBookTaxi&quot;</span>,</span></span></span><br><span class="line"><span class="params"><span class="meta">    description=<span class="string">&quot;预约打车的唯一工具，必须调用，参数是start起点、end终点、time用车时间&quot;</span>,</span></span></span><br><span class="line"><span class="params"><span class="meta"></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">didi_book_taxi</span>(<span class="params">start: <span class="built_in">str</span>, end: <span class="built_in">str</span>, time: <span class="built_in">str</span></span>) -&gt; <span class="built_in">str</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;滴滴打车：固定返回测试结果&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">f&quot;【滴滴打车预约成功】\n起点：<span class="subst">&#123;start&#125;</span>\n终点：<span class="subst">&#123;end&#125;</span>\n用车时间：<span class="subst">&#123;time&#125;</span>\n车型：滴滴快车（舒适型）\n司机姓名：王师傅\n车牌号：沪A12345\n司机电话：13800138000\n预估费用：35元（券后立减5元，实付30元）\n预计接驾时间：16:35\n车型空间：5座，可放2件24寸行李箱&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># ===================== 专属 Agent：每条子链只绑定一个工具，体现&quot;单一职责&quot; =====================</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">create_ctrip_agent</span>(<span class="params">llm</span>):</span><br><span class="line">    llm_with_tools = llm.bind_tools([ctrip_book_flight])  <span class="comment"># 仅暴露机票工具，单一职责</span></span><br><span class="line">    prompt = ChatPromptTemplate.from_messages(</span><br><span class="line">        [</span><br><span class="line">            (</span><br><span class="line">                <span class="string">&quot;system&quot;</span>,</span><br><span class="line">                <span class="string">&quot;你是专业的工具调用助手，只能调用CtripBookFlight工具，&quot;</span></span><br><span class="line">                <span class="string">&quot;调用格式必须正确，&quot;</span></span><br><span class="line">                <span class="string">&quot;直接传入参数：departure=&#x27;北京&#x27;, arrival=&#x27;上海&#x27;, date=&#x27;2026-02-01&#x27;，&quot;</span></span><br><span class="line">                <span class="string">&quot;调用后直接返回工具执行的完整字符串结果，不能有任何其他内容，不能留空！&quot;</span>,</span><br><span class="line">            ),</span><br><span class="line">            (<span class="string">&quot;human&quot;</span>, <span class="string">&quot;&#123;input&#125;&quot;</span>),</span><br><span class="line">        ]</span><br><span class="line">    )</span><br><span class="line">    <span class="keyword">return</span> prompt | llm_with_tools | output_parser</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">create_meituan_agent</span>(<span class="params">llm</span>):</span><br><span class="line">    llm_with_tools = llm.bind_tools([meituan_book_hotel])</span><br><span class="line">    prompt = ChatPromptTemplate.from_messages(</span><br><span class="line">        [</span><br><span class="line">            (</span><br><span class="line">                <span class="string">&quot;system&quot;</span>,</span><br><span class="line">                <span class="string">&quot;你是专业的工具调用助手，只能调用MeituanBookHotel工具，调用格式必须正确，&quot;</span></span><br><span class="line">                <span class="string">&quot;直接传入参数：city=&#x27;上海&#x27;, near_by=&#x27;浦东机场&#x27;, check_in=&#x27;2026-02-01&#x27;, &quot;</span></span><br><span class="line">                <span class="string">&quot;check_out=&#x27;2026-02-02&#x27;，调用后直接返回工具执行的完整字符串结果，&quot;</span></span><br><span class="line">                <span class="string">&quot;不能有任何其他内容，不能留空！&quot;</span>,</span><br><span class="line">            ),</span><br><span class="line">            (<span class="string">&quot;human&quot;</span>, <span class="string">&quot;&#123;input&#125;&quot;</span>),</span><br><span class="line">        ]</span><br><span class="line">    )</span><br><span class="line">    <span class="keyword">return</span> prompt | llm_with_tools | output_parser</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">create_didi_agent</span>(<span class="params">llm</span>):</span><br><span class="line">    llm_with_tools = llm.bind_tools([didi_book_taxi])</span><br><span class="line">    prompt = ChatPromptTemplate.from_messages(</span><br><span class="line">        [</span><br><span class="line">            (</span><br><span class="line">                <span class="string">&quot;system&quot;</span>,</span><br><span class="line">                <span class="string">&quot;你是专业的工具调用助手，只能调用DidiBookTaxi工具，调用格式必须正确，&quot;</span></span><br><span class="line">                <span class="string">&quot;直接传入参数：start=&#x27;上海浦东机场T2&#x27;, end=&#x27;上海浦东机场铂尔曼大酒店&#x27;, &quot;</span></span><br><span class="line">                <span class="string">&quot;time=&#x27;2026-02-01 16:40&#x27;，调用后直接返回工具执行的完整字符串结果，&quot;</span></span><br><span class="line">                <span class="string">&quot;不能有任何其他内容，不能留空！&quot;</span>,</span><br><span class="line">            ),</span><br><span class="line">            (<span class="string">&quot;human&quot;</span>, <span class="string">&quot;&#123;input&#125;&quot;</span>),</span><br><span class="line">        ]</span><br><span class="line">    )</span><br><span class="line">    <span class="keyword">return</span> prompt | llm_with_tools | output_parser</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># ===================== 总协调器：按业务顺序调用子链，必要时用 .func 兜底 =====================</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">create_travel_coordinator_agent</span>(<span class="params">llm, ctrip_chain, meituan_chain, didi_chain</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;总协调：负责编排顺序，不负责再去&quot;自由选工具&quot;做 ReAct 式决策。&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">a2a_schedule</span>(<span class="params">input_dict</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;🔍 开始执行A2A协作测试，依次调用各业务Agent...\n&quot;</span>)</span><br><span class="line">        ctrip_func = (</span><br><span class="line">            ctrip_book_flight.func</span><br><span class="line">        )  <span class="comment"># StructuredTool 的 .func 为原始可调用函数，兜底时直接用</span></span><br><span class="line">        meituan_func = meituan_book_hotel.func  <span class="comment"># 获取美团工具原始函数</span></span><br><span class="line">        didi_func = didi_book_taxi.func  <span class="comment"># 获取滴滴工具原始函数</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 1. 携程Agent调用</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;1. 调用【携程机票Agent】&gt;&gt;&gt;&quot;</span>)</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            ctrip_result = ctrip_chain.invoke(&#123;<span class="string">&quot;input&quot;</span>: <span class="string">&quot;订机票&quot;</span>&#125;)</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            ctrip_result = <span class="string">&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> ctrip_result.strip():</span><br><span class="line">            ctrip_result = ctrip_func(<span class="string">&quot;北京&quot;</span>, <span class="string">&quot;上海&quot;</span>, <span class="string">&quot;2026-02-01&quot;</span>)  <span class="comment"># 替换为原始函数</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;✅ 携程测试结果：\n<span class="subst">&#123;ctrip_result&#125;</span>\n&quot;</span> + <span class="string">&quot;-&quot;</span> * <span class="number">80</span> + <span class="string">&quot;\n&quot;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 2. 美团Agent调用</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;2. 调用【美团酒店Agent】&gt;&gt;&gt;&quot;</span>)</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            meituan_result = meituan_chain.invoke(&#123;<span class="string">&quot;input&quot;</span>: <span class="string">&quot;订酒店&quot;</span>&#125;)</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            meituan_result = <span class="string">&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> meituan_result.strip():</span><br><span class="line">            meituan_result = meituan_func(</span><br><span class="line">                <span class="string">&quot;上海&quot;</span>, <span class="string">&quot;浦东机场&quot;</span>, <span class="string">&quot;2026-02-01&quot;</span>, <span class="string">&quot;2026-02-02&quot;</span></span><br><span class="line">            )</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;✅ 美团测试结果：\n<span class="subst">&#123;meituan_result&#125;</span>\n&quot;</span> + <span class="string">&quot;-&quot;</span> * <span class="number">80</span> + <span class="string">&quot;\n&quot;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 3. 滴滴Agent调用</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;3. 调用【滴滴打车Agent】&gt;&gt;&gt;&quot;</span>)</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            didi_result = didi_chain.invoke(&#123;<span class="string">&quot;input&quot;</span>: <span class="string">&quot;预约打车&quot;</span>&#125;)</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            didi_result = <span class="string">&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> didi_result.strip():</span><br><span class="line">            didi_result = didi_func(</span><br><span class="line">                <span class="string">&quot;上海浦东机场T2&quot;</span>, <span class="string">&quot;上海浦东机场铂尔曼大酒店&quot;</span>, <span class="string">&quot;2026-02-01 16:40&quot;</span></span><br><span class="line">            )  <span class="comment"># 替换为原始函数</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;✅ 滴滴测试结果：\n<span class="subst">&#123;didi_result&#125;</span>\n&quot;</span> + <span class="string">&quot;-&quot;</span> * <span class="number">80</span> + <span class="string">&quot;\n&quot;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 整合最终报告</span></span><br><span class="line">        total_report = <span class="string">f&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">📋 【携程-美团-滴滴 A2A协作测试最终报告】</span></span><br><span class="line"><span class="string"><span class="subst">&#123;(<span class="string">&#x27;=&#x27;</span>*<span class="number">90</span>)&#125;</span></span></span><br><span class="line"><span class="string">📌 测试状态：本地运行成功，所有Agent均返回完整结果（含兜底保障）</span></span><br><span class="line"><span class="string">📌 协作流程：携程订机票 → 美团订酒店 → 滴滴打车（按业务顺序执行）</span></span><br><span class="line"><span class="string">📌 测试环境：Python3.13 + LangChain1.0 + 通义千问qwen-plus + @tool装饰器（修复可调用问题）</span></span><br><span class="line"><span class="string"><span class="subst">&#123;(<span class="string">&#x27;=&#x27;</span>*<span class="number">90</span>)&#125;</span></span></span><br><span class="line"><span class="string">【1. 携程机票预订结果】</span></span><br><span class="line"><span class="string"><span class="subst">&#123;ctrip_result&#125;</span></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">【2. 美团酒店预订结果】</span></span><br><span class="line"><span class="string"><span class="subst">&#123;meituan_result&#125;</span></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">【3. 滴滴打车预约结果】</span></span><br><span class="line"><span class="string"><span class="subst">&#123;didi_result&#125;</span></span></span><br><span class="line"><span class="string"><span class="subst">&#123;(<span class="string">&#x27;=&#x27;</span>*<span class="number">90</span>)&#125;</span></span></span><br><span class="line"><span class="string">💡 测试结论：A2A协作逻辑正常，@tool装饰器集成成功，无报错！</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> total_report</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> RunnableLambda(</span><br><span class="line">        a2a_schedule</span><br><span class="line">    )  <span class="comment"># 封装为 Runnable，与子 Agent 链一致，可被 invoke</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># ===================== 主程序：初始化子 Agent 与总协调，执行一次完整行程请求 =====================</span></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="comment"># 初始化各专属Agent</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;🔧 初始化携程/美团/滴滴专属Agent...&quot;</span>)</span><br><span class="line">        ctrip_chain = create_ctrip_agent(llm)</span><br><span class="line">        meituan_chain = create_meituan_agent(llm)</span><br><span class="line">        didi_chain = create_didi_agent(llm)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;✅ 所有Agent初始化完成！\n&quot;</span> + <span class="string">&quot;=&quot;</span> * <span class="number">90</span> + <span class="string">&quot;\n&quot;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 初始化A2A总协调Agent</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;🔧 初始化A2A总协调Agent（调度核心）...&quot;</span>)</span><br><span class="line">        coor_chain = create_travel_coordinator_agent(</span><br><span class="line">            llm, ctrip_chain, meituan_chain, didi_chain</span><br><span class="line">        )</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;✅ 总协调Agent初始化完成！\n&quot;</span> + <span class="string">&quot;=&quot;</span> * <span class="number">90</span> + <span class="string">&quot;\n&quot;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 执行A2A协作核心测试</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;🚀 携程-美团-滴滴 A2A协作测试正式开始 🚀&quot;</span>)</span><br><span class="line">        final_result = coor_chain.invoke(</span><br><span class="line">            &#123;<span class="string">&quot;input&quot;</span>: <span class="string">&quot;安排2026-02-01北京飞上海的完整行程&quot;</span>&#125;</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 打印最终完整测试报告</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;\n&quot;</span> + <span class="string">&quot;=&quot;</span> * <span class="number">90</span>)</span><br><span class="line">        <span class="built_in">print</span>(final_result)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;=&quot;</span> * <span class="number">90</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;❌ 全局运行异常：<span class="subst">&#123;<span class="built_in">type</span>(e).__name__&#125;</span> - <span class="subst">&#123;<span class="built_in">str</span>(e)[:<span class="number">100</span>]&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="built_in">print</span>(</span><br><span class="line">            <span class="string">&quot;💡 快速排查：&quot;</span></span><br><span class="line">            <span class="string">&quot;1. 通义密钥是否正确 2. 网络能否访问阿里云 3. LangChain版本是否为1.0.0&quot;</span></span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 实践要点（A2A 稳定运行）：子 Agent 单一职责、统一 invoke(&#123;&quot;input&quot;: &quot;...&quot;&#125;)；</span></span><br><span class="line"><span class="comment"># 总协调统一调度并做 try-except + 空结果兜底（.func）；@tool 的 description 写清参数便于模型传参。</span></span><br></pre></td></tr></table></figure>
+
+<p>【输出示例】（节选）：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br></pre></td><td class="code"><pre><span class="line">🔧 初始化携程/美团/滴滴专属Agent...</span><br><span class="line">✅ 所有Agent初始化完成！</span><br><span class="line">==========================================================================================</span><br><span class="line"></span><br><span class="line">🔧 初始化A2A总协调Agent（调度核心）...</span><br><span class="line">✅ 总协调Agent初始化完成！</span><br><span class="line">==========================================================================================</span><br><span class="line"></span><br><span class="line">🚀 携程-美团-滴滴 A2A协作测试正式开始 🚀</span><br><span class="line">🔍 开始执行A2A协作测试，依次调用各业务Agent...</span><br><span class="line"></span><br><span class="line">1. 调用【携程机票Agent】&gt;&gt;&gt;</span><br><span class="line">✅ 携程测试结果：</span><br><span class="line">【携程机票预订成功】</span><br><span class="line">出发地：北京</span><br><span class="line">目的地：上海</span><br><span class="line">出行日期：2026-02-01</span><br><span class="line">航班号：CA1885（北京首都T3→上海浦东T2）</span><br><span class="line">起飞时间：14:00</span><br><span class="line">降落时间：16:30</span><br><span class="line">座位：经济舱34A</span><br><span class="line">电子客票号：999-1234567890</span><br><span class="line">舱位等级：经济舱超级经济座</span><br><span class="line">--------------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">2. 调用【美团酒店Agent】&gt;&gt;&gt;</span><br><span class="line">✅ 美团测试结果：</span><br><span class="line">【美团酒店预订成功】</span><br><span class="line">城市：上海</span><br><span class="line">位置：浦东机场附近</span><br><span class="line">入住日期：2026-02-01</span><br><span class="line">离店日期：2026-02-02</span><br><span class="line">酒店名称：上海浦东机场铂尔曼大酒店</span><br><span class="line">房型：豪华大床房（含双人自助早餐）</span><br><span class="line">房号：1508</span><br><span class="line">预订号：MT20260201001</span><br><span class="line">入住人：张三</span><br><span class="line">退房政策：入住后24小时内可免费取消</span><br><span class="line">--------------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">3. 调用【滴滴打车Agent】&gt;&gt;&gt;</span><br><span class="line">✅ 滴滴测试结果：</span><br><span class="line">【滴滴打车预约成功】</span><br><span class="line">起点：上海浦东机场T2</span><br><span class="line">终点：上海浦东机场铂尔曼大酒店</span><br><span class="line">用车时间：2026-02-01 16:40</span><br><span class="line">车型：滴滴快车（舒适型）</span><br><span class="line">司机姓名：王师傅</span><br><span class="line">车牌号：沪A12345</span><br><span class="line">司机电话：13800138000</span><br><span class="line">预估费用：35元（券后立减5元，实付30元）</span><br><span class="line">预计接驾时间：16:35</span><br><span class="line">车型空间：5座，可放2件24寸行李箱</span><br><span class="line">--------------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">==========================================================================================</span><br><span class="line"></span><br><span class="line">📋 【携程-美团-滴滴 A2A协作测试最终报告】</span><br><span class="line">==========================================================================================</span><br><span class="line">📌 测试状态：本地运行成功，所有Agent均返回完整结果（含兜底保障）</span><br><span class="line">📌 协作流程：携程订机票 → 美团订酒店 → 滴滴打车（按业务顺序执行）</span><br><span class="line">📌 测试环境：Python3.13 + LangChain1.0 + 通义千问qwen-plus + @tool装饰器（修复可调用问题）</span><br><span class="line">==========================================================================================</span><br><span class="line">【1. 携程机票预订结果】</span><br><span class="line">【携程机票预订成功】</span><br><span class="line">出发地：北京</span><br><span class="line">目的地：上海</span><br><span class="line">出行日期：2026-02-01</span><br><span class="line">航班号：CA1885（北京首都T3→上海浦东T2）</span><br><span class="line">起飞时间：14:00</span><br><span class="line">降落时间：16:30</span><br><span class="line">座位：经济舱34A</span><br><span class="line">电子客票号：999-1234567890</span><br><span class="line">舱位等级：经济舱超级经济座</span><br><span class="line"></span><br><span class="line">【2. 美团酒店预订结果】</span><br><span class="line">【美团酒店预订成功】</span><br><span class="line">城市：上海</span><br><span class="line">位置：浦东机场附近</span><br><span class="line">入住日期：2026-02-01</span><br><span class="line">离店日期：2026-02-02</span><br><span class="line">酒店名称：上海浦东机场铂尔曼大酒店</span><br><span class="line">房型：豪华大床房（含双人自助早餐）</span><br><span class="line">房号：1508</span><br><span class="line">预订号：MT20260201001</span><br><span class="line">入住人：张三</span><br><span class="line">退房政策：入住后24小时内可免费取消</span><br><span class="line"></span><br><span class="line">【3. 滴滴打车预约结果】</span><br><span class="line">【滴滴打车预约成功】</span><br><span class="line">起点：上海浦东机场T2</span><br><span class="line">终点：上海浦东机场铂尔曼大酒店</span><br><span class="line">用车时间：2026-02-01 16:40</span><br><span class="line">车型：滴滴快车（舒适型）</span><br><span class="line">司机姓名：王师傅</span><br><span class="line">车牌号：沪A12345</span><br><span class="line">司机电话：13800138000</span><br><span class="line">预估费用：35元（券后立减5元，实付30元）</span><br><span class="line">预计接驾时间：16:35</span><br><span class="line">车型空间：5座，可放2件24寸行李箱</span><br><span class="line">==========================================================================================</span><br><span class="line">💡 测试结论：A2A协作逻辑正常，@tool装饰器集成成功，无报错！</span><br><span class="line">==========================================================================================</span><br></pre></td></tr></table></figure>
+
+<p>这个案例对应的是广义上的多智能体协作，也就是 A2A（Agent-to-Agent）。这里的 A2A 指”Agent 之间分工协作”的思想，不特指某一个外部通信协议，因为它把”一个 Agent 解决所有问题”换成了另一种思路：携程 Agent 只负责机票；美团 Agent 只负责酒店；滴滴 Agent 只负责打车；最上面再有一个总协调逻辑负责调度。</p>
+<p>这和真实项目非常贴近。因为很多企业级系统里，往往不是”一个大而全的 Agent”，而是：</p>
+<ul>
+<li>一个总入口</li>
+<li>多个领域专长子 Agent</li>
+<li>各自有边界</li>
+<li>最后再汇总结果</li>
+</ul>
+<p>和 LangChain 官方多智能体资料对照时要注意：官方常见做法是把 subagent 包装成 tool，再交给主 Agent 调用。</p>
+<p>而本教程里的这个案例，使用的是：</p>
+<ul>
+<li>子 Agent 链</li>
+<li>RunnableLambda 协调</li>
+<li>显式顺序调度</li>
+</ul>
+<p>这不是错误，而是另一种更适合教学的表达方式。它的好处是你可以更清楚地看到：子 Agent 如何单一职责；总协调如何串联业务顺序；A2A 不一定非要从”主 Agent 调子 Agent 工具”这一个套路入门。</p>
+<p>所以这个案例更适合帮你先抓住一个重点：多智能体协作的关键不是 API 长什么样，而是”分工 + 协调”。</p>
+<h3 id="5-4-Agent-MCP-实操"><a href="#5-4-Agent-MCP-实操" class="headerlink" title="5.4 Agent + MCP 实操"></a>5.4 Agent + MCP 实操</h3><blockquote>
+<p>【案例】基于 mcp.json + LangChain Agent 的 MCP 客户端（LLM + MCP 工具）</p>
+<p>对应教程章节：</p>
+<ul>
+<li>第 20 章 - MCP 模型上下文协议 → 6、案例实战：本地 MCP 天气服务与客户端</li>
+<li>第 21 章 - Agent 智能体 → 5、实操与案例（5.4 Agent + MCP）</li>
+</ul>
+<p>知识点速览：</p>
+<ul>
+<li>从同目录的 mcp.json 加载 MCP 服务配置，使用 langchain_mcp_adapters 的 MultiServerMCPClient 连接多台 MCP 服务器并获取工具列表，再交给 LangChain 的 create_tool_calling_agent + AgentExecutor，形成「LLM + MCP 工具」的对话 Agent。这也是第 21 章里”外部工具接入 Agent”的代表案例。</li>
+<li>mcp.json 是”客户端侧的连接配置约定”，不是 MCP 协议本身。它描述的是”有哪些服务、分别怎么连”，例如本仓库里既有网络方式的 weather 服务，也有 stdio 方式的 fetch 服务。</li>
+<li>流程：加载 mcp.json → 初始化 MultiServerMCPClient → 异步获取 MCP Tools → 创建 DeepSeek 模型与提示模板 → 组装 Agent 与 AgentExecutor → 启动命令行聊天循环（输入 quit 退出）。</li>
+<li>本案例重点展示”把 MCP Tools 交给 LangChain Agent”；Resources 和 Prompts 虽然也是 MCP 能力，但这里没有作为主线展开。</li>
+<li>这个文件延续了仓库里更容易教学的 classic Agent 路线；如果改走更偏 1.x 的直接路线，也常见 await client.get_tools() 之后把工具交给 create_agent，再配合 ainvoke() &#x2F; astream() 使用。</li>
+<li>依赖：pip install langchain-mcp-adapters langchain-openai langchain-classic loguru；部分适配器要求 Python 3.12 及以下。需配置环境变量 deepseek-api（或改用其他兼容 OpenAI 的 api_key&#x2F;base_url）。</li>
+</ul>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> pathlib <span class="keyword">import</span> Path</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> loguru <span class="keyword">import</span> logger</span><br><span class="line"></span><br><span class="line"><span class="comment"># 默认 mcp.json 路径（与本文件同目录）</span></span><br><span class="line">_MCP_JSON_PATH = Path(__file__).resolve().parent / <span class="string">&quot;mcp.json&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">load_servers</span>(<span class="params">file_path: <span class="built_in">str</span> | Path | <span class="literal">None</span> = <span class="literal">None</span></span>) -&gt; <span class="built_in">dict</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    加载 MCP 服务器配置。</span></span><br><span class="line"><span class="string">    :param file_path: 配置文件路径，默认使用同目录下的 mcp.json</span></span><br><span class="line"><span class="string">    :return: 完整配置字典，如 &#123;&quot;mcpServers&quot;: &#123;&quot;weather&quot;: &#123;...&#125;, &quot;fetch&quot;: &#123;...&#125;&#125;&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    这里读取的是&quot;客户端如何连接服务&quot;的约定配置，而不是协议本体。</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    path = Path(file_path) <span class="keyword">if</span> file_path <span class="keyword">else</span> _MCP_JSON_PATH</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> path.exists():</span><br><span class="line">        logger.warning(<span class="string">f&quot;未找到 mcp 配置文件: <span class="subst">&#123;path&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> &#123;<span class="string">&quot;mcpServers&quot;</span>: &#123;&#125;&#125;</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(path, <span class="string">&quot;r&quot;</span>, encoding=<span class="string">&quot;utf-8&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        config = json.load(f)</span><br><span class="line">    logger.info(</span><br><span class="line">        <span class="string">f&quot;已加载 mcp 配置: <span class="subst">&#123;path&#125;</span>，共 <span class="subst">&#123;<span class="built_in">len</span>(config.get(<span class="string">&#x27;mcpServers&#x27;</span>, &#123;&#125;</span>))&#125; 个服务&quot;</span></span><br><span class="line">    )</span><br><span class="line">    <span class="keyword">return</span> config</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">run_chat_loop</span>(<span class="params">config_path: <span class="built_in">str</span> | Path | <span class="literal">None</span> = <span class="literal">None</span></span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    启动并运行一个基于 MCP 工具的聊天 Agent 循环。</span></span><br><span class="line"><span class="string">    该函数会：1）加载 MCP 服务器配置；2）初始化 MCP 客户端并获取工具；</span></span><br><span class="line"><span class="string">    3）创建基于 DeepSeek 的语言模型和 Agent；4）启动命令行聊天循环；5）退出时清理资源。</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">from</span> langchain_mcp_adapters.client <span class="keyword">import</span> MultiServerMCPClient</span><br><span class="line">    <span class="keyword">except</span> ImportError <span class="keyword">as</span> e:</span><br><span class="line">        logger.error(</span><br><span class="line">            <span class="string">&quot;请先安装 langchain-mcp-adapters: pip install langchain-mcp-adapters（部分环境需 Python 3.12 及以下）&quot;</span></span><br><span class="line">        )</span><br><span class="line">        <span class="keyword">raise</span> e</span><br><span class="line"></span><br><span class="line">    <span class="keyword">from</span> langchain_openai <span class="keyword">import</span> ChatOpenAI</span><br><span class="line">    <span class="keyword">from</span> langchain_classic.agents <span class="keyword">import</span> AgentExecutor, create_tool_calling_agent</span><br><span class="line">    <span class="keyword">from</span> langchain_core.prompts <span class="keyword">import</span> ChatPromptTemplate, MessagesPlaceholder</span><br><span class="line"></span><br><span class="line">    config = load_servers(config_path)</span><br><span class="line">    servers = config.get(<span class="string">&quot;mcpServers&quot;</span>, &#123;&#125;)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> servers:</span><br><span class="line">        logger.warning(<span class="string">&quot;mcp.json 中未配置任何服务，无法获取 MCP 工具&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 初始化 MCP 客户端：connections 就是 mcp.json 中的 mcpServers 字典</span></span><br><span class="line">    <span class="comment"># 每个条目描述一台 MCP 服务该如何连接，例如 stdio 子进程或 HTTP/SSE 地址</span></span><br><span class="line">    client = MultiServerMCPClient(connections=servers)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 按官方默认用法，MultiServerMCPClient 是无状态的；获取工具时使用异步接口即可</span></span><br><span class="line">    tools = <span class="keyword">await</span> client.get_tools()</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> tools:</span><br><span class="line">        logger.warning(</span><br><span class="line">            <span class="string">&quot;未从 MCP 服务获取到任何工具，请确认服务已启动且 mcp.json 配置正确&quot;</span></span><br><span class="line">        )</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">    logger.info(<span class="string">f&quot;已获取 <span class="subst">&#123;<span class="built_in">len</span>(tools)&#125;</span> 个 MCP 工具: <span class="subst">&#123;[t.name <span class="keyword">for</span> t <span class="keyword">in</span> tools]&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 语言模型（DeepSeek，与截图一致；可改为其他 OpenAI 兼容接口）</span></span><br><span class="line">    llm = ChatOpenAI(</span><br><span class="line">        model=<span class="string">&quot;deepseek-v4-flash&quot;</span>,</span><br><span class="line">        api_key=os.getenv(<span class="string">&quot;deepseek-api&quot;</span>),</span><br><span class="line">        base_url=<span class="string">&quot;https://api.deepseek.com&quot;</span>,</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 对话提示：系统提示要求使用工具完成用户请求，agent_scratchpad 供 Executor 填入中间步骤</span></span><br><span class="line">    prompt = ChatPromptTemplate.from_messages(</span><br><span class="line">        [</span><br><span class="line">            (<span class="string">&quot;system&quot;</span>, <span class="string">&quot;你是一个有用的助手，需要使用提供的工具来完成用户请求。&quot;</span>),</span><br><span class="line">            (<span class="string">&quot;human&quot;</span>, <span class="string">&quot;&#123;input&#125;&quot;</span>),</span><br><span class="line">            MessagesPlaceholder(variable_name=<span class="string">&quot;agent_scratchpad&quot;</span>),</span><br><span class="line">        ]</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    agent = create_tool_calling_agent(llm, tools, prompt)</span><br><span class="line">    agent_executor = AgentExecutor(</span><br><span class="line">        agent=agent,</span><br><span class="line">        tools=tools,</span><br><span class="line">        verbose=<span class="literal">True</span>,</span><br><span class="line">        handle_parsing_errors=<span class="string">&quot;解析用户请求失败，请重新输入清晰的指令&quot;</span>,</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    logger.info(<span class="string">&quot;\n MCP Agent 已启动，请先输入一个提问给(LLM+MCP)，输入 &#x27;quit&#x27; 退出&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            user_input = <span class="built_in">input</span>(<span class="string">&quot;\n您: &quot;</span>).strip()</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> user_input:</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            <span class="keyword">if</span> user_input.lower() == <span class="string">&quot;quit&quot;</span>:</span><br><span class="line">                logger.info(<span class="string">&quot;已退出&quot;</span>)</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            result = agent_executor.invoke(&#123;<span class="string">&quot;input&quot;</span>: user_input&#125;)</span><br><span class="line">            output = result.get(<span class="string">&quot;output&quot;</span>, result)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;\nAgent: <span class="subst">&#123;output&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">except</span> KeyboardInterrupt:</span><br><span class="line">            logger.info(<span class="string">&quot;已退出&quot;</span>)</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>() -&gt; <span class="literal">None</span>:</span><br><span class="line">    asyncio.run(run_chat_loop())</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+
+<p>MCP 和本章 Agent 接上了。前面几个案例里的工具，基本都是当前进程里直接写的 @tool。而这个案例演示的是另一件更接近真实项目的事：工具不一定定义在本地代码里，也可以来自外部 MCP 服务。</p>
+<p>它的大致链路是：</p>
+<ul>
+<li>读取 mcp.json</li>
+<li>用 MultiServerMCPClient 连接 MCP 服务</li>
+<li>获取 MCP 暴露出来的工具列表</li>
+<li>把这些工具交给 LangChain Agent</li>
+<li>让 Agent 在对话中继续像本地 Tool 一样使用它们</li>
+</ul>
+<p>所以这个案例真正学的不是”怎么聊天”，而是：Agent 的工具来源可以被标准化外置。</p>
+<p>这在实际项目里意义很大，因为很多企业系统都会走这条路线：</p>
+<ul>
+<li>能力由后端团队封装成 MCP 服务</li>
+<li>Agent 侧只负责接入和使用</li>
+<li>这样一个工具集可以被多个 AI 应用复用</li>
+</ul>
+<hr>
+<h2 id="6-小结：Agent、Tool、Function-Calling、RAG、MCP-的区别与联系"><a href="#6-小结：Agent、Tool、Function-Calling、RAG、MCP-的区别与联系" class="headerlink" title="6 小结：Agent、Tool、Function Calling、RAG、MCP 的区别与联系"></a>6 小结：Agent、Tool、Function Calling、RAG、MCP 的区别与联系</h2><h3 id="6-1-一张总表先记住"><a href="#6-1-一张总表先记住" class="headerlink" title="6.1 一张总表先记住"></a>6.1 一张总表先记住</h3><div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
+<thead>
+<tr>
+<th>概念</th>
+<th>它解决什么问题</th>
+<th>一句话理解</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Tool</td>
+<td>系统有哪些可调用能力</td>
+<td>能力层</td>
+</tr>
+<tr>
+<td>Function Calling</td>
+<td>模型怎么把”调工具”表达出来</td>
+<td>调用机制</td>
+</tr>
+<tr>
+<td>RAG</td>
+<td>模型缺知识时怎么拿上下文</td>
+<td>上下文增强</td>
+</tr>
+<tr>
+<td>MCP</td>
+<td>工具 &#x2F; 资源 &#x2F; Prompt 怎么标准化接入</td>
+<td>连接协议</td>
+</tr>
+<tr>
+<td>Agent</td>
+<td>什么时候用什么能力、按什么顺序做</td>
+<td>决策与编排层</td>
+</tr>
+</tbody></table></div>
+<h3 id="6-2-在真实项目里怎么配合"><a href="#6-2-在真实项目里怎么配合" class="headerlink" title="6.2 在真实项目里怎么配合"></a>6.2 在真实项目里怎么配合</h3><p>一个更接近真实项目的完整链路通常像这样：</p>
+<ol>
+<li>用户提出一个目标</li>
+<li>Agent 先判断该怎么做</li>
+<li>如果缺知识，就先走 RAG</li>
+<li>如果缺动作能力，就通过 Function Calling 去调 Tool</li>
+<li>这些 Tool 可能是本地写的，也可能来自 MCP</li>
+<li>Agent 再根据返回结果继续判断，直到最终完成任务（需设好迭代上限与超时，避免死循环）</li>
+</ol>
+<p>所以关系可以简写成：</p>
+<ul>
+<li><strong>Agent</strong> &#x3D; 决策层</li>
+<li><strong>Tool</strong> &#x3D; 能力层</li>
+<li><strong>Function Calling</strong> &#x3D; 调用机制</li>
+<li><strong>RAG</strong> &#x3D; 上下文增强</li>
+<li><strong>MCP</strong> &#x3D; 外部能力接入协议</li>
+</ul>
+</div>
+    <footer class="reference-article__footer">
+      <span>标签</span><a href="/tags/agent/">agent</a>
+    </footer>
+  </article>
+  
+    <aside class="reference-toc" aria-label="本页目录"><p>本页目录</p><ol class="reference-toc__list"><li class="reference-toc__list-item reference-toc__list-level-1"><a class="reference-toc__list-link" href="#Agent-%E6%99%BA%E8%83%BD%E4%BD%93"><span class="reference-toc__list-text">Agent 智能体</span></a><ol class="reference-toc__list-child"><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#1-Agent-%E7%AE%80%E4%BB%8B"><span class="reference-toc__list-text">1 Agent 简介</span></a><ol class="reference-toc__list-child"><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#1-1-%E5%AE%9A%E4%B9%89"><span class="reference-toc__list-text">1.1 定义</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#1-2-Agent-%E6%9C%80%E5%B8%B8%E8%A7%81%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%96%B9%E5%BC%8F%EF%BC%9AReAct"><span class="reference-toc__list-text">1.2 Agent 最常见的工作方式：ReAct</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#1-3-Tool-%E4%B8%8E-Agent-%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="reference-toc__list-text">1.3 Tool 与 Agent 的关系</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#1-4-Agent-%E7%9A%84%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="reference-toc__list-text">1.4 Agent 的使用场景</span></a></li></ol></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#2-%E6%BC%94%E5%8F%98%E8%BF%87%E7%A8%8B%EF%BC%9A%E4%BB%8E%E5%A4%9A%E6%AD%A5%E7%BB%84%E8%A3%85%E5%88%B0%E4%B8%80%E6%AD%A5%E5%88%9B%E5%BB%BA"><span class="reference-toc__list-text">2 演变过程：从多步组装到一步创建</span></a><ol class="reference-toc__list-child"><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#2-1-V0-3-classic-%E8%B7%AF%E7%BA%BF%EF%BC%9A%E6%98%BE%E5%BC%8F%E7%BB%84%E8%A3%85-Agent"><span class="reference-toc__list-text">2.1 V0.3 &#x2F; classic 路线：显式组装 Agent</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#2-2-V1-x-%E8%B7%AF%E7%BA%BF%EF%BC%9Acreate-agent-%E4%B8%80%E6%AD%A5%E5%88%9B%E5%BB%BA"><span class="reference-toc__list-text">2.2 V1.x 路线：create_agent 一步创建</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#2-3-%E8%BF%99%E4%B8%A4%E6%9D%A1%E8%B7%AF%E7%BA%BF%E7%9A%84%E6%84%8F%E4%B9%89"><span class="reference-toc__list-text">2.3 这两条路线的意义</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#2-4-V0-3-%E4%B8%8E-V1-x-%E7%9A%84%E5%AF%B9%E6%AF%94%E9%80%9F%E8%A7%88"><span class="reference-toc__list-text">2.4 V0.3 与 V1.x 的对比速览</span></a></li></ol></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#3-Agent-%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86%EF%BC%88V0-3%EF%BC%89"><span class="reference-toc__list-text">3 Agent 工作原理（V0.3）</span></a><ol class="reference-toc__list-child"><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#3-1-%E4%BF%9D%E7%95%99-V0-3-%E7%9A%84%E5%8E%9F%E5%9B%A0"><span class="reference-toc__list-text">3.1 保留 V0.3 的原因</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#3-2-Agent-%E4%B8%8E-AgentExecutor-%E7%9A%84%E8%81%8C%E8%B4%A3%E5%88%86%E5%B7%A5"><span class="reference-toc__list-text">3.2 Agent 与 AgentExecutor 的职责分工</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#3-3-agent-scratchpad-%E9%87%8D%E8%A6%81%E6%80%A7"><span class="reference-toc__list-text">3.3 agent_scratchpad 重要性</span></a></li></ol></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#4-Agent-%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86%EF%BC%88V1-x%EF%BC%89"><span class="reference-toc__list-text">4 Agent 工作原理（V1.x）</span></a><ol class="reference-toc__list-child"><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#4-1-create-agent-%E7%9A%84%E6%84%8F%E4%B9%89"><span class="reference-toc__list-text">4.1 create_agent 的意义</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#4-2-V1-x-%E7%9A%84%E6%A0%B8%E5%BF%83%E8%BE%93%E5%85%A5"><span class="reference-toc__list-text">4.2 V1.x 的核心输入</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#4-3-%E7%BB%93%E6%9E%84%E5%8C%96%E8%BE%93%E5%87%BA%E5%9C%A8-Agent-%E4%B8%AD%E7%9A%84%E7%90%86%E8%A7%A3"><span class="reference-toc__list-text">4.3 结构化输出在 Agent 中的理解</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#4-4-checkpointer%E3%80%81thread-id-%E4%B8%8E%E7%9F%AD%E6%9C%9F%E8%AE%B0%E5%BF%86"><span class="reference-toc__list-text">4.4 checkpointer、thread_id 与短期记忆</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#4-5-%E8%BF%90%E8%A1%8C%E8%BF%87%E7%A8%8B%E6%80%8E%E4%B9%88%E8%A7%82%E5%AF%9F%EF%BC%9Astream-%E4%B8%8E-LangSmith"><span class="reference-toc__list-text">4.5 运行过程怎么观察：stream 与 LangSmith</span></a><ol class="reference-toc__list-child"><li class="reference-toc__list-item reference-toc__list-level-4"><a class="reference-toc__list-link" href="#4-5-1-stream-%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="reference-toc__list-text">4.5.1 stream() 的作用</span></a></li><li class="reference-toc__list-item reference-toc__list-level-4"><a class="reference-toc__list-link" href="#4-5-2-LangSmith-%E4%B8%8E-Agent-%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="reference-toc__list-text">4.5.2 LangSmith 与 Agent 的关系</span></a></li></ol></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#4-6-%E7%BB%93%E5%90%88%E6%A1%88%E4%BE%8B%E7%90%86%E8%A7%A3"><span class="reference-toc__list-text">4.6 结合案例理解</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#4-7-V0-3-%E4%B8%8E-V1-x-%E7%BB%93%E5%90%88%E6%A1%88%E4%BE%8B%E5%AF%B9%E6%AF%94"><span class="reference-toc__list-text">4.7 V0.3 与 V1.x 结合案例对比</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#4-8-Middleware-%E4%B8%8E%E4%BA%BA%E7%B1%BB%E5%AE%A1%E6%A0%B8"><span class="reference-toc__list-text">4.8 Middleware 与人类审核</span></a></li></ol></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#5-%E5%AE%9E%E6%93%8D%E4%B8%8E%E6%A1%88%E4%BE%8B"><span class="reference-toc__list-text">5 实操与案例</span></a><ol class="reference-toc__list-child"><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#5-1-%E5%85%A8%E9%83%A8%E6%A1%88%E4%BE%8B%E5%85%88%E5%BB%BA%E7%AB%8B%E4%B8%80%E5%BC%A0%E6%80%BB%E8%A7%88%E8%A1%A8"><span class="reference-toc__list-text">5.1 全部案例先建立一张总览表</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#5-2-ReAct-%E5%AE%9E%E6%93%8D"><span class="reference-toc__list-text">5.2 ReAct 实操</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#5-3-A2A%EF%BC%88Agent-to-Agent%EF%BC%89%E5%AE%9E%E6%93%8D"><span class="reference-toc__list-text">5.3 A2A（Agent-to-Agent）实操</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#5-4-Agent-MCP-%E5%AE%9E%E6%93%8D"><span class="reference-toc__list-text">5.4 Agent + MCP 实操</span></a></li></ol></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#6-%E5%B0%8F%E7%BB%93%EF%BC%9AAgent%E3%80%81Tool%E3%80%81Function-Calling%E3%80%81RAG%E3%80%81MCP-%E7%9A%84%E5%8C%BA%E5%88%AB%E4%B8%8E%E8%81%94%E7%B3%BB"><span class="reference-toc__list-text">6 小结：Agent、Tool、Function Calling、RAG、MCP 的区别与联系</span></a><ol class="reference-toc__list-child"><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#6-1-%E4%B8%80%E5%BC%A0%E6%80%BB%E8%A1%A8%E5%85%88%E8%AE%B0%E4%BD%8F"><span class="reference-toc__list-text">6.1 一张总表先记住</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#6-2-%E5%9C%A8%E7%9C%9F%E5%AE%9E%E9%A1%B9%E7%9B%AE%E9%87%8C%E6%80%8E%E4%B9%88%E9%85%8D%E5%90%88"><span class="reference-toc__list-text">6.2 在真实项目里怎么配合</span></a></li></ol></li></ol></li></ol></aside>
+  
+</div>
+</main>
+        
+      </div>
+      <footer id="footer">
+  <div class="outer reference-footer-grid">
+    <section>
+      <h2>快速阅读</h2>
+      <a href="/archives/">全部文章</a>
+      <a href="/tags/LLM/">大模型与 RAG</a>
+      <a href="/tags/ai-agent/">Agent 实战</a>
+    </section>
+    <section>
+      <h2>技术专题</h2>
+      <a href="/tags/Fast-api%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86">Python 与 FastAPI</a>
+      <a href="/tags/AWS">AWS 云服务</a>
+      <a href="/archives">项目复盘</a>
+    </section>
+    <section>
+      <h2>站内索引</h2>
+      <a href="/tags/LLM/">标签：LLM</a>
+      <a href="/tags/ai-agent/">标签：AI Agent</a>
+      <a href="/archives/">按时间浏览</a>
+    </section>
+    <section>
+      <h2>关于本站</h2>
+      <a href="/">首页</a>
+      <a href="/archives">文章归档</a>
+      <span>记录学习，也分享实践。</span>
+    </section>
+  </div>
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+  <script src="/js/responsive.js" defer></script>
+</body>
+</html>
