@@ -110,6 +110,12 @@
         
       </div>
     </header>
+    
+      <details class="reference-mobile-toc">
+        <summary>本页目录</summary>
+        <nav aria-label="本页目录"><ol class="reference-toc__list"><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#%E9%A1%B9%E7%9B%AE%E6%A6%82%E8%BF%B0"><span class="reference-toc__list-text">项目概述</span></a></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B"><span class="reference-toc__list-text">技术选型</span></a></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#%E7%AC%AC%E4%B8%80%E7%89%88%EF%BC%9A%E6%89%8B%E5%8A%A8%E4%B8%8A%E4%BC%A0%E6%88%AA%E5%9B%BE"><span class="reference-toc__list-text">第一版：手动上传截图</span></a></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#%E7%AC%AC%E4%BA%8C%E7%89%88%EF%BC%9A%E6%88%AA%E5%9B%BE%E8%87%AA%E5%8A%A8%E8%AF%86%E5%88%AB"><span class="reference-toc__list-text">第二版：截图自动识别</span></a><ol class="reference-toc__list-child"><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#%E5%89%AA%E8%B4%B4%E6%9D%BF%E4%B8%8E%E5%9B%BE%E7%89%87%E9%A2%84%E5%A4%84%E7%90%86"><span class="reference-toc__list-text">剪贴板与图片预处理</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#Vision-LLM-%E4%B8%8E-Prompt"><span class="reference-toc__list-text">Vision LLM 与 Prompt</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#%E6%97%A5%E5%8E%86%E5%90%8C%E6%AD%A5"><span class="reference-toc__list-text">日历同步</span></a></li><li class="reference-toc__list-item reference-toc__list-level-3"><a class="reference-toc__list-link" href="#%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99"><span class="reference-toc__list-text">设计原则</span></a></li></ol></li></ol></nav>
+      </details>
+    
     <div class="reference-article__body e-content" itemprop="articleBody"><h2 id="项目概述"><a href="#项目概述" class="headerlink" title="项目概述"></a>项目概述</h2><p>日常工作中截图里有很多待办信息，手动录入日历太麻烦，所以想用 AI 自动化。</p>
 <p>项目的本质是：用户截图或上传图片 → OCR 提取文字 → 交给 AI 大模型分析总结 → 最终提取出待办事项。</p>
 <h2 id="技术选型"><a href="#技术选型" class="headerlink" title="技术选型"></a>技术选型</h2><p><strong>OCR</strong>（光学字符识别，Optical Character Recognition）是一种能把图片、扫描件或纸质文档上的文字”翻译”成电子设备可以编辑、搜索的文本的技术。</p>
