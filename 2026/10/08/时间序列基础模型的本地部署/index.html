@@ -13,15 +13,16 @@
 <meta property="og:site_name" content="WN">
 <meta property="og:description" content="把 Chronos-Bolt 部署成一个 GPU 时间序列预测 API 一次真实的部署记录：Conda 环境、PyTorch CUDA、FastAPI&#x2F;Uvicorn、Tesla T4、Swagger 测试、进程守护、开机自启动，以及 API 上线前真正需要补的安全与工程化能力。    1. 最终想实现什么？今天的目标其实很简单：把一个时间序列基础模型部署到 GPU 服务器上，并通过 H">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://wenjiajun-wn.github.io/images/chronos-deploy/architecture.png">
+<meta property="og:image" content="https://wenjiajun-wn.github.io/images/chronos-deploy/architecture.jpg">
+<meta property="og:image" content="https://wenjiajun-wn.github.io/images/chronos-deploy/request-flow.jpg">
 <meta property="og:image" content="https://wenjiajun-wn.github.io/images/chronos-deploy/predict-result.png">
 <meta property="og:image" content="https://wenjiajun-wn.github.io/images/chronos-deploy/swagger-ui.png">
 <meta property="article:published_time" content="2026-10-07T16:00:00.000Z">
-<meta property="article:modified_time" content="2026-10-08T07:23:00.663Z">
+<meta property="article:modified_time" content="2026-10-08T08:26:10.487Z">
 <meta property="article:author" content="wn">
 <meta property="article:tag" content="本地大模型部署">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://wenjiajun-wn.github.io/images/chronos-deploy/architecture.png">
+<meta name="twitter:image" content="https://wenjiajun-wn.github.io/images/chronos-deploy/architecture.jpg">
   
     <link rel="alternate" href="/atom.xml" title="WN" type="application/atom+xml">
   
@@ -122,13 +123,14 @@
 <p>一次真实的部署记录：Conda 环境、PyTorch CUDA、FastAPI&#x2F;Uvicorn、Tesla T4、Swagger 测试、进程守护、开机自启动，以及 API 上线前真正需要补的安全与工程化能力。</p>
 </blockquote>
 <hr>
-<p><img src="/images/chronos-deploy/architecture.png" alt="Chronos 预测 API 架构图"></p>
+<p><img src="/images/chronos-deploy/architecture.jpg" alt="Chronos 预测 API 架构图"></p>
 <h2 id="1-最终想实现什么？"><a href="#1-最终想实现什么？" class="headerlink" title="1. 最终想实现什么？"></a>1. 最终想实现什么？</h2><p>今天的目标其实很简单：把一个时间序列基础模型部署到 GPU 服务器上，并通过 HTTP API 提供预测能力。</p>
 <p>最终我把链路跑通到了下面这个状态：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">服务器启动</span><br><span class="line">   ↓</span><br><span class="line">HAI 启动 supervisord</span><br><span class="line">   ↓</span><br><span class="line">chronos-api 自动启动</span><br><span class="line">   ↓</span><br><span class="line">加载 Chronos-Bolt</span><br><span class="line">   ↓</span><br><span class="line">Tesla T4</span><br><span class="line">   ↓</span><br><span class="line">FastAPI / Uvicorn</span><br><span class="line">   ↓</span><br><span class="line">公网 /predict</span><br></pre></td></tr></table></figure>
 
 <p>但真正做下来，问题并不主要出在模型本身，而是集中在几个很典型的工程环节：Conda repodata 太大、PyTorch wheel 下载过慢、FastAPI 请求格式导致 422、SSH 断开后的进程生命周期、服务器重启后的自动恢复，以及 API 真正暴露到公网后的安全问题。</p>
 <p>这篇文章把整个过程和当天踩过的坑完整记录下来。</p>
+<p><img src="/images/chronos-deploy/request-flow.jpg" alt="完整架构与请求响应流程"></p>
 <p>我希望把 Chronos-Bolt 包成一个简单的时间序列预测服务。调用者只需要提交历史序列和预测长度：</p>
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;values&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="number">10</span><span class="punctuation">,</span> <span class="number">11</span><span class="punctuation">,</span> <span class="number">12</span><span class="punctuation">,</span> <span class="number">13</span><span class="punctuation">,</span> <span class="number">15</span><span class="punctuation">,</span> <span class="number">16</span><span class="punctuation">,</span> <span class="number">18</span><span class="punctuation">,</span> <span class="number">20</span><span class="punctuation">,</span> <span class="number">21</span><span class="punctuation">,</span> <span class="number">23</span><span class="punctuation">,</span> <span class="number">25</span><span class="punctuation">,</span> <span class="number">26</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;prediction_length&quot;</span><span class="punctuation">:</span> <span class="number">8</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
 
