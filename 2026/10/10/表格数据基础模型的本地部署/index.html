@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>表格数据基础模型的本地部署 | WN</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="从 0 部署 TabPFN API：一次表格数据基础模型的踩坑记录最近在做表格数据基础模型相关的实验，顺手把 TabPFN 部署成了一个可以远程调用的 API。 目标其实很简单：服务器接收表格数据，调用 TabPFN 在 GPU 上完成预测，然后把结果返回给客户端。 一开始以为主要工作就是装环境、写 FastAPI、启动 Uvicorn，真正部署下来才发现，模型本身反而是最省事的一部分。更多时间花">
+<meta property="og:type" content="article">
+<meta property="og:title" content="表格数据基础模型的本地部署">
+<meta property="og:url" content="https://wenjiajun-wn.github.io/2026/10/10/%E8%A1%A8%E6%A0%BC%E6%95%B0%E6%8D%AE%E5%9F%BA%E7%A1%80%E6%A8%A1%E5%9E%8B%E7%9A%84%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/index.html">
+<meta property="og:site_name" content="WN">
+<meta property="og:description" content="从 0 部署 TabPFN API：一次表格数据基础模型的踩坑记录最近在做表格数据基础模型相关的实验，顺手把 TabPFN 部署成了一个可以远程调用的 API。 目标其实很简单：服务器接收表格数据，调用 TabPFN 在 GPU 上完成预测，然后把结果返回给客户端。 一开始以为主要工作就是装环境、写 FastAPI、启动 Uvicorn，真正部署下来才发现，模型本身反而是最省事的一部分。更多时间花">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://wenjiajun-wn.github.io/images/tabpfn-deploy/flow.png">
+<meta property="article:published_time" content="2026-10-09T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-10-10T08:24:44.928Z">
+<meta property="article:author" content="wn">
+<meta property="article:tag" content="本地大模型部署">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wenjiajun-wn.github.io/images/tabpfn-deploy/flow.png">
+  
+    <link rel="alternate" href="/atom.xml" title="WN" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<!-- hexo injector head_end start --><link rel="stylesheet" href="/css/custom.css"><link rel="stylesheet" href="/css/responsive.css"><link rel="stylesheet" href="/css/blog-refresh.css"><link rel="stylesheet" href="/css/reference-exact.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="page-reading">
+  <a class="skip-link" href="#main">跳到正文</a>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner" aria-hidden="true"></div>
+  <div class="site-toolbar outer">
+    
+    
+    <nav class="desktop-nav" aria-label="主导航">
+      
+        <a href="/">首页</a>
+      
+        <a href="/archives">归档</a>
+      
+    </nav>
+    <details class="mobile-menu site-disclosure">
+      <summary>菜单 <span aria-hidden="true">⌄</span></summary>
+      <nav class="disclosure-panel" aria-label="手机主导航">
+        
+          <a href="/">首页</a>
+        
+          <a href="/archives">归档</a>
+        
+      </nav>
+    </details>
+    <div class="toolbar-actions">
+      
+      <details class="site-search site-disclosure">
+        <summary>搜索 <span aria-hidden="true">⌄</span></summary>
+        <form class="disclosure-panel site-search-form" action="https://www.google.com/search" method="get" role="search">
+          <label for="site-query">搜索本站文章</label>
+          <div class="search-controls">
+            <input id="site-query" type="search" name="q" placeholder="输入文章关键词" required>
+            <button type="submit">搜索</button>
+          </div>
+          <input type="hidden" name="sitesearch" value="https://wenjiajun-wn.github.io">
+          <p>通过 Google 搜索本站内容</p>
+        </form>
+      </details>
+      <a class="github-header-link" href="https://github.com/wenjiajun-wn" target="_blank" rel="noopener noreferrer" aria-label="访问 WN 的 GitHub 主页">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path fill="currentColor" d="M12 .7a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2.23c-3.22.7-3.9-1.37-3.9-1.37-.52-1.34-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.57-.29-5.28-1.29-5.28-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.47.11-3.06 0 0 .97-.31 3.16 1.18a10.98 10.98 0 0 1 5.76 0c2.2-1.49 3.16-1.18 3.16-1.18.63 1.59.23 2.77.11 3.06.74.81 1.19 1.84 1.19 3.1 0 4.41-2.71 5.39-5.29 5.68.42.36.79 1.07.79 2.16v3.2c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .7Z"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</header>
+
+      
+      <div class="outer site-content site-content--reading">
+        
+          <main id="main" class="reference-reading" tabindex="-1">
+<div class="reference-article-shell">
+  <article id="post-表格数据基础模型的本地部署" class="reference-article h-entry" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <header class="reference-article__header">
+      <a class="reference-article__back" href="/archives">← 返回文章列表</a>
+      
+        <h1 class="p-name" itemprop="headline">表格数据基础模型的本地部署</h1>
+      
+      <div class="reference-article__meta">
+        <time datetime="2026-10-10">2026年10月10日</time>
+        
+          <span aria-hidden="true">·</span>
+          <span>
+            <a href="/tags/%E6%9C%AC%E5%9C%B0%E5%A4%A7%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2/">本地大模型部署</a>
+          </span>
+        
+      </div>
+    </header>
+    
+      <details class="reference-mobile-toc">
+        <summary>本页目录</summary>
+        <nav aria-label="本页目录"><ol class="reference-toc__list"><li class="reference-toc__list-item reference-toc__list-level-1"><a class="reference-toc__list-link" href="#%E4%BB%8E-0-%E9%83%A8%E7%BD%B2-TabPFN-API%EF%BC%9A%E4%B8%80%E6%AC%A1%E8%A1%A8%E6%A0%BC%E6%95%B0%E6%8D%AE%E5%9F%BA%E7%A1%80%E6%A8%A1%E5%9E%8B%E7%9A%84%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95"><span class="reference-toc__list-text">从 0 部署 TabPFN API：一次表格数据基础模型的踩坑记录</span></a><ol class="reference-toc__list-child"><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#1-%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E9%83%A8%E7%BD%B2-TabPFN"><span class="reference-toc__list-text">1. 为什么要部署 TabPFN</span></a></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#2-%E5%85%88%E6%8A%8A-Python-%E7%8E%AF%E5%A2%83%E9%9A%94%E7%A6%BB%E5%BC%80"><span class="reference-toc__list-text">2. 先把 Python 环境隔离开</span></a></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#3-TabPFN-3-5-%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA%E9%97%AE%E9%A2%98%EF%BC%9A%E6%A8%A1%E5%9E%8B%E4%B8%8D%E6%98%AF%E8%A3%85%E5%AE%8C%E5%8C%85%E5%B0%B1%E8%83%BD%E7%9B%B4%E6%8E%A5%E7%94%A8"><span class="reference-toc__list-text">3. TabPFN 3.5 的第一个问题：模型不是装完包就能直接用</span></a></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#4-Hugging-Face-%E7%BD%91%E7%BB%9C%E6%85%A2%EF%BC%8C%E6%9C%80%E5%90%8E%E6%94%B9%E6%88%90%E6%9C%AC%E5%9C%B0%E6%A8%A1%E5%9E%8B"><span class="reference-toc__list-text">4. Hugging Face 网络慢，最后改成本地模型</span></a></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#5-%E5%85%88%E9%AA%8C%E8%AF%81%E6%A8%A1%E5%9E%8B%EF%BC%8C%E5%86%8D%E5%86%99-API"><span class="reference-toc__list-text">5. 先验证模型，再写 API</span></a></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#6-%E7%94%A8-FastAPI-%E5%B0%81%E8%A3%85%E6%A8%A1%E5%9E%8B"><span class="reference-toc__list-text">6. 用 FastAPI 封装模型</span></a></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#7-8000-%E7%AB%AF%E5%8F%A3%E5%B7%B2%E7%BB%8F%E6%9C%89%E4%BA%BA%E7%94%A8%E4%BA%86"><span class="reference-toc__list-text">7. 8000 端口已经有人用了</span></a></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#8-GPU-%E6%9C%8D%E5%8A%A1%E4%B8%8D%E8%A6%81%E9%9A%8F%E4%BE%BF%E5%BC%80%E5%A4%9A%E4%B8%AA-worker"><span class="reference-toc__list-text">8. GPU 服务不要随便开多个 worker</span></a></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#9-SSH-%E4%B8%80%E5%85%B3%EF%BC%8CUvicorn-%E4%B9%9F%E8%B7%9F%E7%9D%80%E6%B2%A1%E4%BA%86"><span class="reference-toc__list-text">9. SSH 一关，Uvicorn 也跟着没了</span></a></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#10-%E6%83%B3%E7%94%A8-systemd%EF%BC%8C%E7%BB%93%E6%9E%9C%E5%8F%91%E7%8E%B0%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%A0%B9%E6%9C%AC%E4%B8%8D%E6%98%AF-systemd"><span class="reference-toc__list-text">10. 想用 systemd，结果发现服务器根本不是 systemd</span></a></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#11-%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%87%8C%E5%85%B6%E5%AE%9E%E8%BF%98%E6%9C%89%E4%B8%80%E5%A5%97-Supervisor"><span class="reference-toc__list-text">11. 服务器里其实还有一套 Supervisor</span></a></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#12-%E6%9C%80%E5%90%8E%E6%80%BB%E7%BB%93%E4%B8%80%E4%B8%8B%E8%BF%99%E6%AC%A1%E7%9C%9F%E6%AD%A3%E6%9C%89%E7%94%A8%E7%9A%84%E7%BB%8F%E9%AA%8C"><span class="reference-toc__list-text">12. 最后总结一下这次真正有用的经验</span></a></li></ol></li></ol></nav>
+      </details>
+    
+    <div class="reference-article__body e-content" itemprop="articleBody"><h1 id="从-0-部署-TabPFN-API：一次表格数据基础模型的踩坑记录"><a href="#从-0-部署-TabPFN-API：一次表格数据基础模型的踩坑记录" class="headerlink" title="从 0 部署 TabPFN API：一次表格数据基础模型的踩坑记录"></a>从 0 部署 TabPFN API：一次表格数据基础模型的踩坑记录</h1><p>最近在做表格数据基础模型相关的实验，顺手把 TabPFN 部署成了一个可以远程调用的 API。</p>
+<p>目标其实很简单：服务器接收表格数据，调用 TabPFN 在 GPU 上完成预测，然后把结果返回给客户端。</p>
+<p>一开始以为主要工作就是装环境、写 FastAPI、启动 Uvicorn，真正部署下来才发现，模型本身反而是最省事的一部分。更多时间花在了 Python 环境、Hugging Face 权限、模型下载、端口冲突以及后台进程管理上。</p>
+<p>最终服务器上同时运行了两个模型服务：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Tesla T4 GPU Server</span><br><span class="line"></span><br><span class="line">├── Chronos / TSFM API</span><br><span class="line">│   ├── Conda: tsfm-api</span><br><span class="line">│   └── Port: 8000</span><br><span class="line">│</span><br><span class="line">└── TabPFN API</span><br><span class="line">    ├── Conda: tabpfn-api</span><br><span class="line">    ├── Model: TabPFN 3.5</span><br><span class="line">    └── Port: 8001</span><br></pre></td></tr></table></figure>
+
+<p>这篇主要记录一下整个部署过程，以及中间比较值得记下来的坑。</p>
+<hr>
+<p><a href="/images/tabpfn-deploy/flow.png"><img src="/images/tabpfn-deploy/flow.png" alt="TabPFN 部署与推理流程"></a></p>
+<h2 id="1-为什么要部署-TabPFN"><a href="#1-为什么要部署-TabPFN" class="headerlink" title="1. 为什么要部署 TabPFN"></a>1. 为什么要部署 TabPFN</h2><p>传统表格机器学习常见的方法包括：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">XGBoost</span><br><span class="line">LightGBM</span><br><span class="line">CatBoost</span><br><span class="line">Random Forest</span><br><span class="line">MLP</span><br></pre></td></tr></table></figure>
+
+<p>通常是针对某一个数据集单独训练一个模型。</p>
+<p>TabPFN 属于另一类思路。它预先在大量任务上进行训练，希望学到更通用的表格预测能力，使用时仍然保留了类似 sklearn 的接口：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">model.fit(X_train, y_train)</span><br><span class="line">y_pred = model.predict(X_test)</span><br></pre></td></tr></table></figure>
+
+<p>所以我希望把它封装成一个统一 API。之后不管是网页、Benchmark，还是其他服务，都可以直接通过 HTTP 请求调用，而不用关心底层模型具体怎么部署。</p>
+<hr>
+<h2 id="2-先把-Python-环境隔离开"><a href="#2-先把-Python-环境隔离开" class="headerlink" title="2. 先把 Python 环境隔离开"></a>2. 先把 Python 环境隔离开</h2><p>服务器上已经有一个时间序列基础模型服务，因此 TabPFN 单独创建了一个 Conda 环境：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">conda create -n tabpfn-api python=3.10</span><br><span class="line">conda activate tabpfn-api</span><br></pre></td></tr></table></figure>
+
+<p>最终使用的是 Python 3.10。</p>
+<p>这个过程本身没什么复杂的，但服务器上同时存在很多套 Python：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">/usr/bin/python</span><br><span class="line"></span><br><span class="line">/root/miniforge3/bin/python</span><br><span class="line"></span><br><span class="line">/root/miniforge3/envs/tsfm-api/bin/python</span><br><span class="line"></span><br><span class="line">/root/miniforge3/envs/tabpfn-api/bin/python</span><br><span class="line"></span><br><span class="line">/etc/.hai/miniforge3/bin/python3</span><br></pre></td></tr></table></figure>
+
+<p>所以后面排错时，经常需要先确认：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">which</span> python</span><br><span class="line"><span class="built_in">which</span> pip</span><br><span class="line"><span class="built_in">which</span> uvicorn</span><br><span class="line"></span><br><span class="line">python --version</span><br></pre></td></tr></table></figure>
+
+<p>在本地开发时，这类问题不算明显，但服务器上一旦同时存在多个 Conda 环境，很容易出现：</p>
+<blockquote>
+<p>明明在 A 环境里安装了包，实际启动服务时却跑到了 B 环境。</p>
+</blockquote>
+<p>因此我现在部署服务时，会习惯性先检查 <code>which python</code> 和 <code>which uvicorn</code>。</p>
+<hr>
+<h2 id="3-TabPFN-3-5-的第一个问题：模型不是装完包就能直接用"><a href="#3-TabPFN-3-5-的第一个问题：模型不是装完包就能直接用" class="headerlink" title="3. TabPFN 3.5 的第一个问题：模型不是装完包就能直接用"></a>3. TabPFN 3.5 的第一个问题：模型不是装完包就能直接用</h2><p>Python package 安装完成以后，第一次真正加载 TabPFN 3.5 时，需要从 Hugging Face 下载模型权重。</p>
+<p>这里遇到了两个问题。</p>
+<p>一个是服务器访问 Hugging Face 不稳定。</p>
+<p>另一个是模型仓库本身需要授权，也就是 Hugging Face 的 gated model。</p>
+<p>因此单纯：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">from_pretrained(...)</span><br></pre></td></tr></table></figure>
+
+<p>并不一定能直接成功。</p>
+<p>需要先在 Hugging Face 页面接受模型使用条款，然后给服务器配置 Token。</p>
+<p>例如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> HF_TOKEN=hf_xxxxxxxxx</span><br></pre></td></tr></table></figure>
+
+<p>Token 最好不要直接写进 Python 文件。</p>
+<p>比如不建议：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">HF_TOKEN = <span class="string">&quot;hf_xxxxxxxxx&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>因为代码后面可能会上传 GitHub、共享给其他人，或者打进 Docker 镜像。</p>
+<p>更合适的方式还是环境变量：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">token = os.getenv(<span class="string">&quot;HF_TOKEN&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="4-Hugging-Face-网络慢，最后改成本地模型"><a href="#4-Hugging-Face-网络慢，最后改成本地模型" class="headerlink" title="4. Hugging Face 网络慢，最后改成本地模型"></a>4. Hugging Face 网络慢，最后改成本地模型</h2><p>权限解决之后，下载速度仍然不太稳定。</p>
+<p>TabPFN 3.5 的模型权重大约有 2 GB，对国内或者部分云服务器来说，直接访问 Hugging Face 经常容易卡住。</p>
+<p>最后使用了 Hugging Face Mirror：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> HF_ENDPOINT=https://hf-mirror.com</span><br></pre></td></tr></table></figure>
+
+<p>然后把模型完整下载到服务器本地，例如：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/root/models/tabpfn_3_5</span><br></pre></td></tr></table></figure>
+
+<p>之后 API 启动时直接从本地加载模型，不再依赖外部网络。</p>
+<p>这个改动其实很重要。</p>
+<p>一开始的思路比较自然：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">API 启动</span><br><span class="line">→ Hugging Face</span><br><span class="line">→ 加载模型</span><br><span class="line">→ 提供服务</span><br></pre></td></tr></table></figure>
+
+<p>但真正做服务时，更稳妥的方式应该是：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">提前下载模型</span><br><span class="line">→ 保存在本地</span><br><span class="line">→ API 启动时直接加载本地权重</span><br></pre></td></tr></table></figure>
+
+<p>这样即使 Hugging Face 暂时访问不了，服务仍然可以正常启动。</p>
+<hr>
+<h2 id="5-先验证模型，再写-API"><a href="#5-先验证模型，再写-API" class="headerlink" title="5. 先验证模型，再写 API"></a>5. 先验证模型，再写 API</h2><p>这次还有一个比较明显的体会：不要一开始就把所有东西写进 FastAPI 里。</p>
+<p>如果 API 启动失败，问题可能来自很多地方：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">CUDA</span><br><span class="line">PyTorch</span><br><span class="line">TabPFN</span><br><span class="line">模型权重</span><br><span class="line">Python 环境</span><br><span class="line">FastAPI</span><br><span class="line">Uvicorn</span><br><span class="line">端口</span><br></pre></td></tr></table></figure>
+
+<p>全部混在一起之后反而不好排查。</p>
+<p>所以后来改成分层测试。</p>
+<p>先看 GPU：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nvidia-smi</span><br></pre></td></tr></table></figure>
+
+<p>然后看 PyTorch：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(torch.cuda.is_available())</span><br><span class="line"><span class="built_in">print</span>(torch.cuda.get_device_name(<span class="number">0</span>))</span><br></pre></td></tr></table></figure>
+
+<p>服务器返回：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">True</span><br><span class="line">Tesla T4</span><br></pre></td></tr></table></figure>
+
+<p>接着单独写一个最小 TabPFN 脚本，确认：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">加载模型</span><br><span class="line">→ fit</span><br><span class="line">→ predict</span><br></pre></td></tr></table></figure>
+
+<p>可以完整执行。</p>
+<p>当时测试任务得到的准确率大约是：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0.9649</span><br></pre></td></tr></table></figure>
+
+<p>到这一步，至少可以确定环境、CUDA、模型权重和 TabPFN 本身都没有问题。</p>
+<p>之后再开始写 API，排错明显简单很多。</p>
+<hr>
+<h2 id="6-用-FastAPI-封装模型"><a href="#6-用-FastAPI-封装模型" class="headerlink" title="6. 用 FastAPI 封装模型"></a>6. 用 FastAPI 封装模型</h2><p>API 最后使用的是：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FastAPI + Uvicorn</span><br></pre></td></tr></table></figure>
+
+<p>请求流程大致是：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Client</span><br><span class="line">   ↓</span><br><span class="line">POST /predict</span><br><span class="line">   ↓</span><br><span class="line">FastAPI</span><br><span class="line">   ↓</span><br><span class="line">参数校验</span><br><span class="line">   ↓</span><br><span class="line">TabPFN</span><br><span class="line">   ↓</span><br><span class="line">GPU inference</span><br><span class="line">   ↓</span><br><span class="line">JSON response</span><br></pre></td></tr></table></figure>
+
+<p>同时增加了一个很简单的：</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET /health</span><br></pre></td></tr></table></figure>
+
+<p>用于检查服务是否正常。</p>
+<p>返回类似：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;status&quot;</span><span class="punctuation">:</span> <span class="string">&quot;ok&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;cuda_available&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;gpu&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Tesla T4&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>这个接口后来非常有用。</p>
+<p>因为浏览器打不开服务时，光看现象很难判断到底是模型没起来、Uvicorn 没起来，还是公网端口没开放。</p>
+<p>有 <code>/health</code> 以后，可以先在服务器内部测试：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl http://127.0.0.1:8001/health</span><br></pre></td></tr></table></figure>
+
+<p>如果 localhost 能返回结果，就说明应用本身大概率没问题，接下来再查网络即可。</p>
+<hr>
+<h2 id="7-8000-端口已经有人用了"><a href="#7-8000-端口已经有人用了" class="headerlink" title="7. 8000 端口已经有人用了"></a>7. 8000 端口已经有人用了</h2><p>第一次启动 TabPFN 时，本来直接用了常见的 8000：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uvicorn app:app --host 0.0.0.0 --port 8000</span><br></pre></td></tr></table></figure>
+
+<p>结果发现端口已经被占用。</p>
+<p>检查：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps aux | grep <span class="string">&#x27;[u]vicorn&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>才发现之前部署的 Chronos 时间序列模型已经在使用：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Port 8000</span><br></pre></td></tr></table></figure>
+
+<p>因此 TabPFN 改成了：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Port 8001</span><br></pre></td></tr></table></figure>
+
+<p>最终变成：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">8000 → Chronos / TSFM</span><br><span class="line">8001 → TabPFN</span><br></pre></td></tr></table></figure>
+
+<p>TabPFN 的启动命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">uvicorn app:app \</span><br><span class="line">  --host 0.0.0.0 \</span><br><span class="line">  --port 8001 \</span><br><span class="line">  --workers 1</span><br></pre></td></tr></table></figure>
+
+<p>如果服务器以后还会继续部署其他模型，最好提前留一个简单的端口表，不然时间一长很容易忘。</p>
+<p>例如：</p>
+<div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
+<thead>
+<tr>
+<th>Port</th>
+<th>Service</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>8000</td>
+<td>Chronos</td>
+</tr>
+<tr>
+<td>8001</td>
+<td>TabPFN</td>
+</tr>
+<tr>
+<td>8002</td>
+<td>Reserved</td>
+</tr>
+<tr>
+<td>8080</td>
+<td>Gateway</td>
+</tr>
+</tbody></table></div>
+<hr>
+<h2 id="8-GPU-服务不要随便开多个-worker"><a href="#8-GPU-服务不要随便开多个-worker" class="headerlink" title="8. GPU 服务不要随便开多个 worker"></a>8. GPU 服务不要随便开多个 worker</h2><p>普通 Web 服务经常会通过：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">--workers 4</span><br></pre></td></tr></table></figure>
+
+<p>增加并发。</p>
+<p>但 GPU 模型服务不太适合直接这么做。</p>
+<p>因为每个 Uvicorn worker 都是独立进程，很可能各自加载一份模型：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Worker 1 → 一份模型</span><br><span class="line">Worker 2 → 一份模型</span><br><span class="line">Worker 3 → 一份模型</span><br><span class="line">Worker 4 → 一份模型</span><br></pre></td></tr></table></figure>
+
+<p>对 GPU 来说，这很容易把显存直接占满。</p>
+<p>所以这里明确使用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">--workers 1</span><br></pre></td></tr></table></figure>
+
+<p>先保证只有一个 TabPFN 实例常驻 GPU。</p>
+<p>如果以后真的有较大的并发需求，更合理的方向应该是做请求队列、batch inference，或者从网关层控制请求，而不是简单增加模型进程数。</p>
+<hr>
+<h2 id="9-SSH-一关，Uvicorn-也跟着没了"><a href="#9-SSH-一关，Uvicorn-也跟着没了" class="headerlink" title="9. SSH 一关，Uvicorn 也跟着没了"></a>9. SSH 一关，Uvicorn 也跟着没了</h2><p>直接运行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uvicorn app:app ...</span><br></pre></td></tr></table></figure>
+
+<p>默认是前台进程。</p>
+<p>这意味着 SSH 断开之后，Uvicorn 很可能也会结束。</p>
+<p>因此最开始先用 <code>nohup</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">nohup</span> uvicorn app:app \</span><br><span class="line">  --host 0.0.0.0 \</span><br><span class="line">  --port 8001 \</span><br><span class="line">  --workers 1 \</span><br><span class="line">  &gt; tabpfn.log 2&gt;&amp;1 &amp;</span><br></pre></td></tr></table></figure>
+
+<p>然后检查：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps aux | grep <span class="string">&#x27;[u]vicorn&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>再测试：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl http://127.0.0.1:8001/health</span><br></pre></td></tr></table></figure>
+
+<p>能正常返回：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;status&quot;</span><span class="punctuation">:</span> <span class="string">&quot;ok&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;cuda_available&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;gpu&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Tesla T4&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>至少说明服务已经在后台稳定运行。</p>
+<p><code>nohup</code> 不算特别漂亮，但对于先把服务跑起来而言足够简单，也比较可靠。</p>
+<hr>
+<h2 id="10-想用-systemd，结果发现服务器根本不是-systemd"><a href="#10-想用-systemd，结果发现服务器根本不是-systemd" class="headerlink" title="10. 想用 systemd，结果发现服务器根本不是 systemd"></a>10. 想用 systemd，结果发现服务器根本不是 systemd</h2><p>服务跑起来以后，下一步自然是想把它配置成 systemd：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">systemctl start tabpfn-api</span><br><span class="line">systemctl stop tabpfn-api</span><br><span class="line">systemctl restart tabpfn-api</span><br></pre></td></tr></table></figure>
+
+<p>还可以配置自动重启。</p>
+<p>结果实际操作时发现 <code>systemctl</code> 并不能正常工作。</p>
+<p>后来检查：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -p 1 -o pid,cmd</span><br></pre></td></tr></table></figure>
+
+<p>才发现 PID 1 并不是 systemd，而是：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dumb-init</span><br></pre></td></tr></table></figure>
+
+<p>也就是说，这个所谓的 Ubuntu GPU 服务器实际上运行在一个容器化环境里。</p>
+<p>大致更像：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Host</span><br><span class="line">  ↓</span><br><span class="line">Container</span><br><span class="line">  ↓</span><br><span class="line">当前 Shell</span><br></pre></td></tr></table></figure>
+
+<p>而不是传统的：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Ubuntu</span><br><span class="line">  ↓</span><br><span class="line">systemd</span><br></pre></td></tr></table></figure>
+
+<p>这算是这次比较典型的一个坑。</p>
+<p>以前比较习惯看到 Ubuntu 就默认：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl</span><br></pre></td></tr></table></figure>
+
+<p>应该可用，但现在很多 GPU 云平台给你的其实是一个容器环境。</p>
+<p>所以以后如果想配置 systemd，我会先跑：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -p 1 -o pid,cmd</span><br></pre></td></tr></table></figure>
+
+<p>确认一下当前到底是什么 init system。</p>
+<hr>
+<h2 id="11-服务器里其实还有一套-Supervisor"><a href="#11-服务器里其实还有一套-Supervisor" class="headerlink" title="11. 服务器里其实还有一套 Supervisor"></a>11. 服务器里其实还有一套 Supervisor</h2><p>继续查进程时又发现：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -p 18 -o pid,cmd</span><br></pre></td></tr></table></figure>
+
+<p>结果类似：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/etc/.hai/miniforge3/bin/python3</span><br><span class="line">/etc/.hai/miniforge3/bin/supervisord</span><br><span class="line">-c ...</span><br></pre></td></tr></table></figure>
+
+<p>说明平台内部其实已经使用了 Supervisor。</p>
+<p>之前的 Chronos API 很可能就是通过这套 Supervisor 管理的。</p>
+<p>这也解释了为什么有时候手动结束某个服务之后，它过一会又重新起来了。</p>
+<p>本来想直接用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">supervisorctl status</span><br></pre></td></tr></table></figure>
+
+<p>查看服务，结果又发现平台的 Supervisor 配置并不是标准用户环境。</p>
+<p>部分脚本的 shebang 甚至还指向：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/home/ubuntu/hai/miniforge3/bin/python</span><br></pre></td></tr></table></figure>
+
+<p>而真正正在运行的 Python 是：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/etc/.hai/miniforge3/bin/python3</span><br></pre></td></tr></table></figure>
+
+<p>所以 <code>supervisorctl</code> 并不能直接正常使用。</p>
+<p>到这里我没有继续强行修改平台的 Supervisor 配置。</p>
+<p>毕竟它还在管理其他已有服务，如果为了 TabPFN 修改平台级配置，反而可能引入新的问题。</p>
+<p>最终保持：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Chronos</span><br><span class="line">→ Supervisor 管理</span><br><span class="line">→ Port 8000</span><br><span class="line"></span><br><span class="line">TabPFN</span><br><span class="line">→ nohup 管理</span><br><span class="line">→ Port 8001</span><br></pre></td></tr></table></figure>
+
+<p>虽然不是最统一的方案，但至少两边都稳定。</p>
+<hr>
+<h2 id="12-最后总结一下这次真正有用的经验"><a href="#12-最后总结一下这次真正有用的经验" class="headerlink" title="12. 最后总结一下这次真正有用的经验"></a>12. 最后总结一下这次真正有用的经验</h2><p>整个部署完成以后，真正值得留下来的其实不是某一条命令，而是一套排错顺序。</p>
+<p>以后再遇到类似模型服务，我会按照下面这个顺序来：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">1. nvidia-smi</span><br><span class="line">   确认 GPU</span><br><span class="line"></span><br><span class="line">2. which python</span><br><span class="line">   确认环境</span><br><span class="line"></span><br><span class="line">3. torch.cuda.is_available()</span><br><span class="line">   确认 PyTorch CUDA</span><br><span class="line"></span><br><span class="line">4. 单独测试模型</span><br><span class="line">   不涉及 API</span><br><span class="line"></span><br><span class="line">5. 模型提前下载到本地</span><br><span class="line">   避免启动依赖外网</span><br><span class="line"></span><br><span class="line">6. 写 FastAPI</span><br><span class="line"></span><br><span class="line">7. 添加 /health</span><br><span class="line"></span><br><span class="line">8. 检查端口占用</span><br><span class="line"></span><br><span class="line">9. Uvicorn 单 worker 启动</span><br><span class="line"></span><br><span class="line">10. curl localhost</span><br><span class="line"></span><br><span class="line">11. 后台运行</span><br><span class="line"></span><br><span class="line">12. 最后再检查公网访问</span><br></pre></td></tr></table></figure>
+
+<p>简单来说就是从内向外排查：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Model</span><br><span class="line">  ↓</span><br><span class="line">Python / CUDA</span><br><span class="line">  ↓</span><br><span class="line">Process</span><br><span class="line">  ↓</span><br><span class="line">Localhost</span><br><span class="line">  ↓</span><br><span class="line">Port</span><br><span class="line">  ↓</span><br><span class="line">Network</span><br><span class="line">  ↓</span><br><span class="line">Public IP</span><br></pre></td></tr></table></figure>
+
+<p>这次实际遇到的问题可以简单归纳成：</p>
+<div class="table-scroll" role="region" aria-label="数据表格，可左右滚动查看完整内容" tabindex="0"><table>
+<thead>
+<tr>
+<th>问题</th>
+<th>原因</th>
+<th>解决办法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>TabPFN 权重下载失败</td>
+<td>Hugging Face gated model</td>
+<td>接受协议并配置 Token</td>
+</tr>
+<tr>
+<td>Hugging Face 下载慢</td>
+<td>网络问题</td>
+<td>使用 Mirror</td>
+</tr>
+<tr>
+<td>服务启动依赖外网</td>
+<td>在线加载权重</td>
+<td>提前下载本地模型</td>
+</tr>
+<tr>
+<td>8000 无法启动</td>
+<td>Chronos 已占用</td>
+<td>TabPFN 使用 8001</td>
+</tr>
+<tr>
+<td>SSH 关闭后服务消失</td>
+<td>Uvicorn 前台运行</td>
+<td><code>nohup</code></td>
+</tr>
+<tr>
+<td>systemd 不可用</td>
+<td>当前是容器环境</td>
+<td>不使用 systemd</td>
+</tr>
+<tr>
+<td>supervisorctl 异常</td>
+<td>平台定制 Supervisor</td>
+<td>不强行修改</td>
+</tr>
+<tr>
+<td>Python 环境混乱</td>
+<td>多套 Conda&#x2F;Python</td>
+<td>检查 <code>which python</code></td>
+</tr>
+<tr>
+<td>GPU 容易 OOM</td>
+<td>多 worker 重复加载模型</td>
+<td><code>--workers 1</code></td>
+</tr>
+</tbody></table></div>
+<p>最后服务器上的结构大致变成：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">                Tesla T4</span><br><span class="line">                   │</span><br><span class="line">      ┌────────────┴────────────┐</span><br><span class="line">      │                         │</span><br><span class="line">   Chronos                   TabPFN</span><br><span class="line">      │                         │</span><br><span class="line">  tsfm-api                 tabpfn-api</span><br><span class="line">      │                         │</span><br><span class="line">   :8000                     :8001</span><br><span class="line">      │                         │</span><br><span class="line">Supervisor                   nohup</span><br></pre></td></tr></table></figure>
+
+<p>一开始只是想把 TabPFN 跑成一个 API，最后真正花时间的反而是模型外面的这些东西：环境、模型文件、端口、进程以及服务器本身的运行方式。</p>
+<p>不过这些坑踩过一次之后，后面再部署新的 Foundation Model 会顺很多。</p>
+<p>至少现在碰到“服务打不开”时，不会第一反应就是反复改代码，而是先确认：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">模型能不能跑？</span><br><span class="line">进程在不在？</span><br><span class="line">localhost 通不通？</span><br><span class="line">端口有没有占用？</span><br><span class="line">最后才看公网。</span><br></pre></td></tr></table></figure>
+
+<p>这套顺序目前看下来，比记住某一条具体命令更有用。</p>
+</div>
+    <footer class="reference-article__footer">
+      <span>标签</span><a href="/tags/%E6%9C%AC%E5%9C%B0%E5%A4%A7%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2/">本地大模型部署</a>
+    </footer>
+  </article>
+  
+    <aside class="reference-toc" aria-label="本页目录"><p>本页目录</p><ol class="reference-toc__list"><li class="reference-toc__list-item reference-toc__list-level-1"><a class="reference-toc__list-link" href="#%E4%BB%8E-0-%E9%83%A8%E7%BD%B2-TabPFN-API%EF%BC%9A%E4%B8%80%E6%AC%A1%E8%A1%A8%E6%A0%BC%E6%95%B0%E6%8D%AE%E5%9F%BA%E7%A1%80%E6%A8%A1%E5%9E%8B%E7%9A%84%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95"><span class="reference-toc__list-text">从 0 部署 TabPFN API：一次表格数据基础模型的踩坑记录</span></a><ol class="reference-toc__list-child"><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#1-%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E9%83%A8%E7%BD%B2-TabPFN"><span class="reference-toc__list-text">1. 为什么要部署 TabPFN</span></a></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#2-%E5%85%88%E6%8A%8A-Python-%E7%8E%AF%E5%A2%83%E9%9A%94%E7%A6%BB%E5%BC%80"><span class="reference-toc__list-text">2. 先把 Python 环境隔离开</span></a></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#3-TabPFN-3-5-%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA%E9%97%AE%E9%A2%98%EF%BC%9A%E6%A8%A1%E5%9E%8B%E4%B8%8D%E6%98%AF%E8%A3%85%E5%AE%8C%E5%8C%85%E5%B0%B1%E8%83%BD%E7%9B%B4%E6%8E%A5%E7%94%A8"><span class="reference-toc__list-text">3. TabPFN 3.5 的第一个问题：模型不是装完包就能直接用</span></a></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#4-Hugging-Face-%E7%BD%91%E7%BB%9C%E6%85%A2%EF%BC%8C%E6%9C%80%E5%90%8E%E6%94%B9%E6%88%90%E6%9C%AC%E5%9C%B0%E6%A8%A1%E5%9E%8B"><span class="reference-toc__list-text">4. Hugging Face 网络慢，最后改成本地模型</span></a></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#5-%E5%85%88%E9%AA%8C%E8%AF%81%E6%A8%A1%E5%9E%8B%EF%BC%8C%E5%86%8D%E5%86%99-API"><span class="reference-toc__list-text">5. 先验证模型，再写 API</span></a></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#6-%E7%94%A8-FastAPI-%E5%B0%81%E8%A3%85%E6%A8%A1%E5%9E%8B"><span class="reference-toc__list-text">6. 用 FastAPI 封装模型</span></a></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#7-8000-%E7%AB%AF%E5%8F%A3%E5%B7%B2%E7%BB%8F%E6%9C%89%E4%BA%BA%E7%94%A8%E4%BA%86"><span class="reference-toc__list-text">7. 8000 端口已经有人用了</span></a></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#8-GPU-%E6%9C%8D%E5%8A%A1%E4%B8%8D%E8%A6%81%E9%9A%8F%E4%BE%BF%E5%BC%80%E5%A4%9A%E4%B8%AA-worker"><span class="reference-toc__list-text">8. GPU 服务不要随便开多个 worker</span></a></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#9-SSH-%E4%B8%80%E5%85%B3%EF%BC%8CUvicorn-%E4%B9%9F%E8%B7%9F%E7%9D%80%E6%B2%A1%E4%BA%86"><span class="reference-toc__list-text">9. SSH 一关，Uvicorn 也跟着没了</span></a></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#10-%E6%83%B3%E7%94%A8-systemd%EF%BC%8C%E7%BB%93%E6%9E%9C%E5%8F%91%E7%8E%B0%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%A0%B9%E6%9C%AC%E4%B8%8D%E6%98%AF-systemd"><span class="reference-toc__list-text">10. 想用 systemd，结果发现服务器根本不是 systemd</span></a></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#11-%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%87%8C%E5%85%B6%E5%AE%9E%E8%BF%98%E6%9C%89%E4%B8%80%E5%A5%97-Supervisor"><span class="reference-toc__list-text">11. 服务器里其实还有一套 Supervisor</span></a></li><li class="reference-toc__list-item reference-toc__list-level-2"><a class="reference-toc__list-link" href="#12-%E6%9C%80%E5%90%8E%E6%80%BB%E7%BB%93%E4%B8%80%E4%B8%8B%E8%BF%99%E6%AC%A1%E7%9C%9F%E6%AD%A3%E6%9C%89%E7%94%A8%E7%9A%84%E7%BB%8F%E9%AA%8C"><span class="reference-toc__list-text">12. 最后总结一下这次真正有用的经验</span></a></li></ol></li></ol></aside>
+  
+</div>
+</main>
+        
+      </div>
+      <footer id="footer">
+  <div class="outer reference-footer-grid">
+    <section>
+      <h2>快速阅读</h2>
+      <a href="/archives/">全部文章</a>
+      <a href="/tags/LLM/">大模型与 RAG</a>
+      <a href="/tags/ai-agent/">Agent 实战</a>
+    </section>
+    <section>
+      <h2>技术专题</h2>
+      <a href="/tags/Fast-api%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86">Python 与 FastAPI</a>
+      <a href="/tags/AWS">AWS 云服务</a>
+      <a href="/archives">项目复盘</a>
+    </section>
+    <section>
+      <h2>站内索引</h2>
+      <a href="/tags/LLM/">标签：LLM</a>
+      <a href="/tags/ai-agent/">标签：AI Agent</a>
+      <a href="/archives/">按时间浏览</a>
+    </section>
+    <section>
+      <h2>关于本站</h2>
+      <a href="/">首页</a>
+      <a href="/archives">文章归档</a>
+      <span>记录学习，也分享实践。</span>
+    </section>
+  </div>
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+  <script src="/js/responsive.js" defer></script>
+</body>
+</html>
